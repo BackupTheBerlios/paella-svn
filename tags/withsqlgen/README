@@ -1,0 +1,84 @@
+This project is inspired heavily by fai (fully automatic install) by Thomas Lange
+fai's homepage -- http://www.informatik.uni-koeln.de/fai/
+
+unlike fai, paella is able to install different suites simultaneously.
+it uses a postgres database to store most of the configuration,
+including text file templates.
+
+there are a couple little modules to help mirror/sync a debian mirror.
+it is planned to be able to create/sync a partial binary repository,
+and create/sync a partial source repository complete with its
+build-deps.
+
+UPDATE:
+the paella-debrepos has the tools to create and maintain a small mini-dinstall
+server, and a custom mirror (no partial mirrors, yet).
+
+
+the nfsroot installer is planned to be sid based, while the nfs/postgres server
+will run sarge
+
+
+python 2.3 is required now
+
+the project is still alive. :)
+
+btw, this system isn't really designed for beowulf clusters, but for creating and
+managing very complex network/system configurations, and migrating installations
+by just keeping track of packages/configs/data rather than system images and
+complete backups
+
+
+there is information about the structure of the database in the document section
+of the berlios site.
+
+
+
+quick setup
+
+You need to be running sarge+ on a server for nfs and postgres. The newer postgres 
+checks for constraints before table drops,and the code doen't reflect that yet.  (and still doesn't)
+You may also need apache running on a server. You also need a sid workstation to do
+administration with.
+
+
+To create a new database:
+	on server:
+	if you want plpgsql in all new databases:
+		as posgres user, createlang -d template1 plpgsql
+	else:
+		createlang -d $dbname plpgsql
+	createdb $dbname
+	
+	on admin staion:
+	edit .paellarc to config db connection
+	also config import_path (default /usr/share/paella/defaultdb)
+	IMPORTANT:
+		ugly hardcoded debian mirror,
+		need debian mirror on local filesystem (or nfs).
+		also needs to be in /mirrors/debian
+	Note:
+		need to fix this soon.
+	type paella-admin
+	menu->database->restore
+	double-click database.xml
+
+
+
+
+starting with a blank database:
+	there is a blank.xml file in the config/share/databases 	
+	directory that you can restore from.  then in the 
+	template manager you can use importdir to import the
+	traits similiar to updatedir mentioned above.
+
+
+
+the profile was chosen to be the singlemost install unit.  This means
+that paella can only install profiles.  A profile is a collection of
+traits and an enviroment. Profile overrides traits.  So a variable in
+the profile enviroment overrides all of the corresponding trait
+enviroments in that profile.  So, the trait enviroments can be seen as
+default values and the profiles are more specific.  Currently, there is
+little support for profile environments (but, it's part of the design).
+

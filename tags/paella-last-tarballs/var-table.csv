@@ -1,0 +1,20 @@
+trait	name	value
+DEFAULT	domain	gregscomputerservice.com
+DEFAULT	nameserver	10.0.0.1
+DEFAULT	gateway	10.0.0.1
+DEFAULT	mail_dir	/var/mail
+DEFAULT	LOG_OK_LOGINS	no
+DEFAULT	QUOTAS_ENAB	yes
+DEFAULT	SULOG_FILE	/var/log/sulog
+DEFAULT	umask	022
+DEFAULT	admin	umeboshi
+DEFAULT	admin-pubkey	~/.ssh/id_dsa.pub
+DEFAULT	method	dhcp
+DEFAULT	postmaster	umeboshi
+DEFAULT	root	umeboshi
+DEFAULT	mailname	bard
+PPP	username	user
+PPP	password	passwd
+FIREWALL	ipaddr	10.0.0.1
+FIREWALL	local-services	all
+

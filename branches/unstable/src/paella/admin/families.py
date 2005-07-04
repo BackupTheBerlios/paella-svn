@@ -13,7 +13,9 @@ from useless.gtk.helpers import make_menu, right_click_menu, HasDialogs
 
 from useless.base import debug, Error
 from useless.sqlgen.clause import Eq
-from paella.profile.family import Family, FamilyVariablesConfig
+#from paella.profile.family import Family, FamilyVariablesConfig
+from paella.db.family import Family
+from paella.db.family.main import FamilyVariablesConfig
 
 from traitgen import DragListWindow
 

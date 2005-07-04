@@ -11,11 +11,12 @@ from gtk import mainloop, mainquit
 
 from useless.base import Error, debug
 from useless.db.midlevel import StatementCursor
-from paella.profile.base import PaellaConfig, PaellaConnection
-from paella.profile.base import DefaultEnvironment
-from paella.profile.profile import PaellaDatabase
-from paella.machines.xmlgen import MachineDatabaseElement
-from paella.machines.machine import MachineHandler
+
+from paella.db import PaellaConfig, PaellaConnection
+from paella.db import DefaultEnvironment
+from paella.db.main import PaellaDatabase
+from paella.db.machine.xmlgen import MachineDatabaseElement
+from paella.db.machine import MachineHandler
 
 
 from profilegen import ProfileGenWin

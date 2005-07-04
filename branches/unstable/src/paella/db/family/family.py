@@ -12,7 +12,7 @@ from useless.sqlgen.statement import Statement
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment, MultiEnvironment
 
-from base import VariablesConfig
+from paella.base.objects import VariablesConfig
 from base import Suites, make_deplist
 from trait import Trait
 from xmlgen import FamilyElement

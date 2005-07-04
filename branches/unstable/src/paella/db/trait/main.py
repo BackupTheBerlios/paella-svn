@@ -1,31 +1,31 @@
-import os
-from os.path import dirname, join
-from sets import Set
+#import os
+#from os.path import dirname, join
+#from sets import Set
 from xml.dom.minidom import Element
 from tarfile import TarFile
-from xml.dom.minidom import parse as parse_file
+#from xml.dom.minidom import parse as parse_file
 
-from kjbuckets import kjGraph
+#from kjbuckets import kjGraph
 
-from useless.base import ExistsError, UnbornError, Error, debug
-from useless.base.xmlfile import TextElement
-from useless.base.util import ujoin, makepaths, filecopy, strfile, RefDict
-from useless.base.tarball import make_tarball
+#from useless.base import ExistsError, UnbornError, Error, debug
+#from useless.base.xmlfile import TextElement
+#from useless.base.util import ujoin, makepaths, filecopy, strfile, RefDict
+#from useless.base.tarball import make_tarball
 
-from useless.sqlgen.clause import one_many, Eq, In, NotIn
+#from useless.sqlgen.clause import one_many, Eq, In, NotIn
 
-from useless.db.midlevel import StatementCursor
+#from useless.db.midlevel import StatementCursor
 
+
+#from base import Suites, AllTraits, Traits
+#from base import TraitRelation, TraitEnvironment
+#from base import Template, TextFileManager
+
+#from xmlgen import EnvironElement, ParentElement
+#from xmlgen import PackageElement, TemplateElement
+#from xmlgen import DebConfigurationElement
+#from xmlgen import DebConfElement
 from xmlparse import TraitParser
-
-from base import Suites, AllTraits, Traits
-from base import TraitRelation, TraitEnvironment
-from base import Template, TextFileManager
-
-from xmlgen import EnvironElement, ParentElement
-from xmlgen import PackageElement, TemplateElement
-from xmlgen import DebConfigurationElement
-from xmlgen import DebConfElement
 
 
 def make_trait_tarfile(trait, traittemplate, template_path, tarname):

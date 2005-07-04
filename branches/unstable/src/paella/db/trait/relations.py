@@ -7,10 +7,20 @@ from useless.base import Error
 from useless.base.util import ujoin, RefDict, strfile
 
 from useless.sqlgen.clause import one_many, Eq, In
+from useless.db.midlevel import Environment
+
 from paella.base.objects import TextFileManager
 
-from base import TraitRelation, TraitEnvironment
+from base import TraitRelation
 from base import Template
+
+class TraitEnvironment(Environment):
+    def __init__(self, conn, suite, trait):
+        self.suite = suite
+        table = ujoin(suite, 'variables')
+        Environment.__init__(self, conn, table, 'trait')
+        self.set_main(trait)
+
 
 class TraitParent(TraitRelation):
     def __init__(self, conn, suite):

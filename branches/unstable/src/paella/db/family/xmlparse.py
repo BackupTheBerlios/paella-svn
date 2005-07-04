@@ -2,9 +2,7 @@ from xml.dom.minidom import parse as parse_file
 from xml.dom.minidom import parseString as parse_string
 
 from useless.base import Error, debug
-from useless.base.xmlfile import ParserHelper, DictElement
-
-from xmlgen import EnvironElement
+from useless.base.xmlfile import ParserHelper
 
 class FamilyParser(ParserHelper):
     def __init__(self, element):

@@ -2,6 +2,8 @@ from xml.dom.minidom import Element
 
 from useless.base.xmlfile import TextElement, DictElement
 
+from paella.db.xmlgen import BaseVariableElement
+
 class FamilyVariableElement(BaseVariableElement):
     def __init__(self, trait, name, value):
         BaseVariableElement.__init__(self, 'family_variable',

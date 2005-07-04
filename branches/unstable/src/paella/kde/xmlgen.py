@@ -6,10 +6,11 @@ from useless.xmlgen.base import ListItem, UnorderedList
 from useless.xmlgen.base import BR, HR, Bold, TR, TD, Paragraph
 from useless.xmlgen.base import SimpleTitleElement
 
-from paella.db.midlevel import StatementCursor
-from paella.profile.trait import Trait
-from paella.profile.profile import Profile
-from paella.profile.family import Family
+from useless.db.midlevel import StatementCursor
+
+from paella.paelladb.trait import Trait
+from paella.paelladb.profile import Profile
+from paella.paelladb.family import Family
 from paella.machines.machine import MachineHandler
 
 class RecordElement(BaseElement):

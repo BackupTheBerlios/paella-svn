@@ -130,49 +130,6 @@ class Template(_Template):
     def set_trait(self, trait):
         self.trait = trait
         
-
-class TextFileManager(object):
-    def __init__(self, conn):
-        object.__init__(self)
-        self.conn = conn
-        self.cursor = StatementCursor(self.conn)
-        self.cursor.set_table('textfiles')
-
-    def insert_file(self, datafile):
-        md5 = self._md5sum(datafile)
-        data = datafile.read()
-        md5size = '_'.join([md5, str(len(data))])
-        return self._insert_data(md5size, data)
-
-    def insert_data(self, data):
-        md5 = md5sum(strfile(data))
-        md5size = '_'.join([md5, str(len(data))])
-        return self._insert_data(md5size, data)
-    
-    def _insert_data(self, md5size, data):
-        clause=Eq('md5size', md5size)
-        try:
-            row = self.cursor.select_row(clause=clause)
-        except NoExistError:
-            row = None
-        if not row:
-            self.cursor.insert(data={'md5size' : md5size, 'data' : data})
-            row = self.cursor.select_row(clause=clause)
-        return row.fileid
-
-    def get_data(self, id):
-        row = self.cursor.select_row(clause=Eq('fileid', id))
-        return row.data
-
-    def get_strfile(self, id):
-        return strfile(self.get_data(id))
-
-    def _md5sum(self, datafile):
-        datafile.seek(0)
-        md5 = md5sum(datafile)
-        datafile.seek(0)
-        return md5
-    
 def get_traits(conn, profile):
     cursor = StatementCursor(conn)
     cursor.set_table('profile_trait')

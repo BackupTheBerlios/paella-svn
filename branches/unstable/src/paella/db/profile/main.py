@@ -23,7 +23,8 @@ from useless.db.midlevel import Environment
 #from trait import TraitParent, TraitDebconf
 #from trait import TraitPackage, TraitTemplate
 #from trait import TraitsElement, Trait
-#from family import Family
+from paella.db.trait import Trait
+from paella.db.family import Family
 
 #from xmlparse import PaellaParser, ProfilesParser, ProfileParser
 #from xmlgen import EnvironElement, SuitesElement
@@ -252,6 +253,15 @@ class Profile(StatementCursor):
             plist = [r.profile for r in self.select(clause=clause)]
         return plist
     
-
+#class Profile(object):
+#    def __init__(self, conn):
+#        object.__init__(self)
+#        self.conn = conn
+#        self.current = None
+#        
+#    def set_profile(self, profile):
+#        self.current = profile
+        
+    
 if __name__ == '__main__':
     pass

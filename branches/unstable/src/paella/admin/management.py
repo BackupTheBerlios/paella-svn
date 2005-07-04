@@ -23,7 +23,7 @@ from profilegen import ProfileGenWin
 from traitgen import TraitGenWin
 from template import TemplateManager
 from environ import EnvironmentEditorWin
-from debconf import DebconfBrowser
+#from debconf import DebconfBrowser
 from scriptomatic import ScriptManager
 from trait_manager import TraitManagerWin
 from machines import MainMachineWin

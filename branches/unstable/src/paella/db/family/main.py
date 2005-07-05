@@ -73,6 +73,14 @@ class Family(object):
         self.current = family
         self.parent.set_current(family)
         self.env.set_family(family)
+
+    def _check_family(self, family):
+        if family is not None:
+            return family
+        else:
+            family = self.current
+        if family is None:
+            raise Error, 'either pass a family arguement or call set_family on this object'
         
     def add_family(self, family, type='general'):
         pass
@@ -86,20 +94,19 @@ class Family(object):
         return dfamilies
 
     def parent_rows(self, family=None):
-        if family is None:
-            family = self.current
+        family = self._check_family(family)
         self.parent.set_clause(family)
         rows = self.parent.cmd.select(fields=['parent'], order='parent')
         self.parent.reset_clause()
         return rows
 
     def parents(self, family=None):
+        family = self._check_family(family)
         rows = self.parent_rows(family)
         return [x.parent for x in rows]
     
     def environment_rows(self, family=None):
-        if family is None:
-            family = self.current
+        family = self._check_family(family)
         clause = Eq('family', family)
         args = dict(fields=['trait', 'name', 'value'], clause=clause, order=['trait', 'name'])
         return self.env.cursor.select(**args)
@@ -122,7 +129,8 @@ class Family(object):
         else:
             raise ExistsError, '%s already exists' % family
 
-    def insert_parents(self, parents):
+    def insert_parents(self, parents, family=None):
+        family = self._check_family(family)
         self.parent.insert('parent', parents)
 
     def FamilyData(self, families=[]):
@@ -197,6 +205,25 @@ class Family(object):
                 families.append(f)
             del families[0]
         print len(families), 'families inserted'
+
+    def getVariablesConfig(self, family=None):
+        family = self._check_family(family)
+        return FamilyVariablesConfig(self.conn, family)
+    
+    def deleteVariable(self, trait, name, family=None):
+        family = self._check_family(family)
+        data = dict(family=family, trait=trait, name=name)
+        clause = reduce(and_, [Eq(k, v) for k,v in data.items()])
+        self.env.cursor.delete(clause=clause)
+
+    def insertVariable(self, trait, name, value, family=None):
+        family = self._check_family(family)
+        data = dict(family=family, trait=trait, name=name)
+        clause = reduce(and_, [Eq(k, v) for k,v in data.items()])
+        testrows = self.cursor.select(table='family_environment', clause=clause)
+        if not len(testrows):
+            data['value'] = value
+            self.cursor.insert(table='family_environment', data=data)
         
     
 if __name__ == '__main__':

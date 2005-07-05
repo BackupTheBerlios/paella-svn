@@ -27,10 +27,6 @@ from paella.db import PaellaConnection, PaellaConfig
 
 from paella.db.trait import Trait
 
-#these classes should be contained by Trait object
-from paella.db.trait.relations import TraitPackage, TraitParent
-
-
 def substring(field, substr):
     return 'substring(%s from 1 for %s)' %(field, len(substr))
 def substring_clause(section):
@@ -217,7 +213,6 @@ class TraitGenWin(CommandBoxWindow, HasDialogs):
                 self.browser.trait.create_trait(trait)
             except ExistsError:
                 dialogs.Message('trait %s already exists' % trait)
-                self.browser.traits.insert(data=insert_data)
             self.destroy_dialog(self.dialogs['create'])
             self.browser.reset_rows()
 

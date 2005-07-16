@@ -38,6 +38,10 @@ class Installer(object):
         self.target = None
         self.cfg = cfg
         self.defenv = DefaultEnvironment(self.conn)
+        #check for default environment
+        rows = self.defenv.cursor.select()
+        if not len(rows):
+            raise Error, 'There is no data in the default_environment table'
         self.set_logfile('_unused_')
 
     def set_logfile(self, logfile):
@@ -48,7 +52,8 @@ class Installer(object):
         
     def set_target(self, target):
         self.target = target
-
+        self.paelladir = os.path.join(target, 'root/paella')
+        
     def command(self, command, args='', chroot=True):
         cmd = '%s %s' % (command, args)
         if chroot:

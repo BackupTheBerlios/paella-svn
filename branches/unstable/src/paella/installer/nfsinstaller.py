@@ -34,7 +34,10 @@ class NewInstaller(object):
         self.debmirror = self.cfg.get('debrepos', 'http_mirror')
         self._raid_setup = False
         self._raid_drives = {}
-                
+        self._enable_bad_hacks = False
+        if self.cfg.is_it_true('installer', 'enable_bad_hacks'):
+            self._enable_bad_hacks = True
+        
     def _check_target(self):
         if not self.target:
             raise Error, 'no target specified'
@@ -61,6 +64,16 @@ class NewInstaller(object):
             logfile = '/paellalog/paella-install-%s.log' % machine
         os.environ['LOGFILE'] = logfile
         os.environ['PAELLA_MACHINE'] = machine
+        
+    def check_if_mounted(self, device):
+        mounts = file('/proc/mounts')
+        for line in file:
+            if line.startswith(device):
+                return True
+        return False
+
+    def unmount_device(self, device):
+        mounted = os.system('umount %s' % device)
         
     def make_filesystems(self):
         device = self.machine.array_hack(self.machine.current.machine_type)

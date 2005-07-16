@@ -4,7 +4,7 @@ from sets import Set
 from kjbuckets import kjGraph
 
 from useless.base import Error
-from useless.base.util import ujoin, RefDict, strfile
+from useless.base.util import ujoin, RefDict, strfile, filecopy
 
 from useless.sqlgen.clause import one_many, Eq, In
 from useless.db.midlevel import Environment

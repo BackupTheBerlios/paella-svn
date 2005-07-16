@@ -1,8 +1,13 @@
+from os.path import join
 from xml.dom.minidom import Element
 
 from useless.base.xmlfile import TextElement
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq
 
 from paella.db.xmlgen import BaseVariableElement
+
+from main import ProfileTrait, ProfileEnvironment, Profile
 
 class ProfileVariableElement(BaseVariableElement):
     def __init__(self, trait, name, value):

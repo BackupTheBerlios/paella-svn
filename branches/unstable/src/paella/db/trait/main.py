@@ -1,30 +1,26 @@
-#import os
-#from os.path import dirname, join
-#from sets import Set
+import os
+from os.path import dirname, join
+from sets import Set
 from xml.dom.minidom import Element
 from tarfile import TarFile
-#from xml.dom.minidom import parse as parse_file
+from xml.dom.minidom import parse as parse_file
 
-#from kjbuckets import kjGraph
+from useless.base import ExistsError, UnbornError, Error, debug
 
-#from useless.base import ExistsError, UnbornError, Error, debug
-#from useless.base.xmlfile import TextElement
-#from useless.base.util import ujoin, makepaths, filecopy, strfile, RefDict
-#from useless.base.tarball import make_tarball
-
-#from useless.sqlgen.clause import one_many, Eq, In, NotIn
-
-#from useless.db.midlevel import StatementCursor
+from useless.xmlgen.base import TextElement
+from useless.base.util import ujoin, makepaths
+from useless.db.midlevel import StatementCursor
 
 
-#from base import Suites, AllTraits, Traits
+from base import AllTraits, Traits
+from relations import TraitParent, TraitPackage
+from relations import TraitTemplate, TraitEnvironment
+from relations import TraitScript
 #from base import TraitRelation, TraitEnvironment
 #from base import Template, TextFileManager
 
-#from xmlgen import EnvironElement, ParentElement
-#from xmlgen import PackageElement, TemplateElement
-#from xmlgen import DebConfigurationElement
-#from xmlgen import DebConfElement
+from xmlgen import EnvironElement, ParentElement
+from xmlgen import PackageElement, TemplateElement
 from xmlparse import TraitParser
 
 
@@ -93,7 +89,6 @@ class Trait(object):
         self._parents = TraitParent(self.conn, self.suite)
         self._packages = TraitPackage(self.conn, self.suite)
         self._templates = TraitTemplate(self.conn, self.suite)
-        self._debconf = TraitDebconf(self.conn, self.suite)
         self._scripts = TraitScript(self.conn, self.suite)
         self.current_trait = None
         self.environ = {}
@@ -104,7 +99,6 @@ class Trait(object):
         self._parents.set_trait(trait)
         self._packages.set_trait(trait)
         self._templates.set_trait(trait)
-        self._debconf.set_trait(trait)
         self._scripts.set_trait(trait)
         
     def parents(self, trait=None):
@@ -175,7 +169,6 @@ class Trait(object):
         self._templates.delete_trait(trait)
         self._parents.delete_trait(trait)
         self._packages.delete_trait(trait)
-        self._debconf.delete_trait(trait)
         self._scripts.delete_trait(trait)
         self._traits.set_clause([('trait', trait)])
         self._traits.delete()
@@ -204,7 +197,6 @@ class Trait(object):
         self._parents.set_trait(trait.name)
         self._packages.set_trait(trait.name)
         self._templates.set_trait(trait.name)
-        self._debconf.set_trait(trait.name)
         self._scripts.set_trait(trait.name)
         self._parents.insert_parents(trait.parents)
         for package, action in trait.packages.items():
@@ -220,8 +212,6 @@ class Trait(object):
             #print idata
             self._templates.insert_template(idata, templatefile)
             n += 1
-        for debconf in trait.debconf.values():
-            self._debconf.insert(debconf, trait.name)
         for script in trait.scripts:
             #scriptfile = tar.get_script(script)
             scriptfile = file(join(path, 'script-%s' % script))
@@ -229,9 +219,6 @@ class Trait(object):
         environ = TraitEnvironment(self.conn, suite, trait.name)
         environ.update(trait.environ)
         self.set_trait(lasttrait)
-
-    def get_config(self):
-        return self._debconf.get_config()
 
     def backup_trait(self, tball_path):
         print 'this needs to be called export_trait'
@@ -260,13 +247,11 @@ class TraitElement(Element):
         self.env_element = Element('environ')
         self.templ_element = Element('templates')
         self.scripts_element = Element('scripts')
-        self.debconf_element = DebConfigurationElement()
         self.appendChild(self.desc_element)
         self.appendChild(self.parent_element)
         self.appendChild(self.pkg_element)
         self.appendChild(self.env_element)
         self.appendChild(self.templ_element)
-        self.appendChild(self.debconf_element)
         self.appendChild(self.scripts_element)
         self.set_suite(suite)
         
@@ -276,7 +261,6 @@ class TraitElement(Element):
         self.traitparent = TraitParent(self.conn, self.suite)
         self.traitpackage = TraitPackage(self.conn, self.suite)
         self.traittemplate = TraitTemplate(self.conn, self.suite)
-        self.traitdebconf = TraitDebconf(self.conn, self.suite)
         self.traitscripts = TraitScript(self.conn, self.suite)
 
     def set_environ(self):
@@ -311,14 +295,6 @@ class TraitElement(Element):
                 element.setAttribute(att, template[att])
             self.templ_element.appendChild(element)
 
-    def set_debconf(self):
-        self.debconf = self.traitdebconf.trait_debconf(self.name)
-        while self.debconf_element.hasChildNodes():
-            del self.debconf_element.childNodes[0]
-        for debconf in self.debconf:
-            element = DebConfElement(self.name, debconf)
-            self.debconf_element.appendChild(element)
-
     def set_scripts(self):
         self.scripts = [x.script for x in self.traitscripts.scripts(self.name)]
         while self.scripts_element.hasChildNodes():
@@ -344,7 +320,6 @@ class TraitElement(Element):
         self.set_parents()
         self.set_packages()
         self.set_templates()
-        self.set_debconf()
         self.set_scripts()
         
     def str(self):

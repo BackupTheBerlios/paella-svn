@@ -81,7 +81,8 @@ class Family(object):
             family = self.current
         if family is None:
             raise Error, 'either pass a family arguement or call set_family on this object'
-        
+        return family
+    
     def add_family(self, family, type='general'):
         pass
 

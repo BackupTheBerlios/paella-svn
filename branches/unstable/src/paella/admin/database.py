@@ -20,6 +20,7 @@ from paella.db.machine import MachineHandler
 
 #from paella.machines.xmlgen import ClientMachineDatabaseElement
 #from paella.machines.xmlgen import MachineDatabaseElement
+from paella.db.machine.xmlgen import MachineDatabaseElement
 #from paella.machines.machine import MachineHandler
 
 class DatabaseManager(object):

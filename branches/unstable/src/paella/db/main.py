@@ -1,33 +1,27 @@
-#import os
-#from os.path import join, dirname, isdir
+import os
+from os.path import join, dirname, isdir
 #from sets import Set
 
 from xml.dom.minidom import Element
-#from xml.dom.minidom import parse as parse_file
-#from xml.dom.minidom import parseString as parse_string
+from xml.dom.minidom import parse as parse_file
 
-#from useless.base import UnbornError, Error, debug
-#from useless.base.xmlfile import TextElement
-#from useless.base.util import ujoin, makepaths
-
-#from useless.sqlgen.clause import Eq
-
+from useless.base.util import makepaths, ujoin
+from useless.base import Error, UnbornError
 from useless.db.midlevel import StatementCursor
-#from useless.db.midlevel import Environment
-#from useless.db.lowlevel import OperationalError
 
-#from paella.schema.paellascheme import insert_packages, make_suite
-#from paella.schema.paellascheme import start_schema
+from paella.db.schema.paellascheme import insert_packages, make_suite
+from paella.db.schema.paellascheme import start_schema
 
-#from base import TraitEnvironment, get_suite, make_deplist
-#from trait import TraitParent, TraitDebconf
-#from trait import TraitPackage, TraitTemplate
-#from trait import TraitsElement, Trait
 from trait import Trait
+from trait.main import TraitsElement
+from trait.relations import TraitPackage, TraitParent
+from trait.relations import TraitTemplate
 from family import Family
+from profile import Profile, ProfileTrait
+from profile.xmlgen import PaellaProfiles
 
 from xmlgen import SuiteElement, SuitesElement
-
+from xmlparse import PaellaParser, ProfileParser
 #from xmlparse import PaellaParser, ProfilesParser, ProfileParser
 #from xmlgen import EnvironElement, SuitesElement
 #from xmlgen import SuiteElement, ProfileElement
@@ -202,7 +196,6 @@ class PaellaProcessor(object):
         self.traitparent = TraitParent(self.conn, suite)
         self.traitpackage = TraitPackage(self.conn, suite)
         self.traittemplate = TraitTemplate(self.conn, suite)
-        self.traitdebconf = TraitDebconf(self.conn, suite)
         self.family = Family(self.conn)
         
 

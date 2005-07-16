@@ -10,7 +10,7 @@
 #from useless.base.xmlfile import TextElement
 #from useless.base.util import ujoin, makepaths
 
-#from useless.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq
 
 from useless.db.midlevel import StatementCursor, SimpleRelation
 from useless.db.midlevel import Environment
@@ -23,7 +23,9 @@ from useless.db.midlevel import Environment
 #from trait import TraitParent, TraitDebconf
 #from trait import TraitPackage, TraitTemplate
 #from trait import TraitsElement, Trait
+from paella.db.base import get_suite
 from paella.db.trait import Trait
+from paella.db.trait.relations import TraitParent
 from paella.db.family import Family
 
 #from xmlparse import PaellaParser, ProfilesParser, ProfileParser

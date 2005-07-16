@@ -2,18 +2,12 @@ import os
 
 from useless.base import Error, NoExistError
 from useless.base.util import ujoin
-from useless.base.config import Configuration, list_rcfiles
+
 from useless.db.lowlevel import QuickConn
 from useless.db.midlevel import StatementCursor
 
+from paella.base import PaellaConfig
 from paella.base.objects import VariablesConfig
-
-class PaellaConfig(Configuration):
-    def __init__(self, section=None, files=list_rcfiles('paellarc')):
-        if section is None:
-            section = 'database'
-        Configuration.__init__(self, section=section, files=files)
-        
 
 class PaellaConnection(QuickConn):
     def __init__(self, cfg=None):

@@ -3,7 +3,6 @@
 <head>
    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
    <title>Paella</title>
-<link rel="stylesheet" href="http://developer.berlios.de/berlios.css" type="text/css">
 </head>
 <body>
 
@@ -15,7 +14,7 @@
 <td align=center>
 <h2>Welcome to <?php echo "http://".$HTTP_HOST; ?></h2>
 <p>This is the homepage of paella.  This site is under construction
-<br>Please check back soon for updates or visit <a href="http://developer.berlios.de/">BerliOS Developer Project</a> Homepage.
+<br>Project <a href="http://developer.berlios.de/projects/paella">page</a>.
 <br><a href="notes.html">Notes</a> about Paella
 <br>
 <p>The project is hosted by 

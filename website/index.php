@@ -16,7 +16,7 @@
 <h2>Welcome to <?php echo "http://".$HTTP_HOST; ?></h2>
 <p>This is the homepage of paella.  This site is under construction
 <br>Please check back soon for updates or visit <a href="http://developer.berlios.de/">BerliOS Developer Project</a> Homepage.
-<br><a href:="notes.html">Notes about Paella</a>
+<br><a href="notes.html">Notes</a> about Paella
 <br>
 <p>The project is hosted by 
 <a href="http://developer.berlios.de">

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
+<title></title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<div class="section" id="paella-notes">
+<h1><a name="paella-notes">Paella Notes</a></h1>
+<div class="section" id="what-is-paella">
+<h2><a name="what-is-paella">What is Paella</a></h2>
+<!-- small overview of paella -->
+<p>Paella is a installation/configuration management system centered on 
+being able to easily define, configure, maintain and update systems and 
+networks.</p>
+</div>
+<hr class="docutils" />
+<div class="section" id="objects-and-definitions">
+<h2><a name="objects-and-definitions">Objects and Definitions</a></h2>
+</div>
+<div class="section" id="suite">
+<h2><a name="suite">Suite</a></h2>
+<p>A suite is a similiar to debian suites like woody or sarge.  A suite 
+can be used to make different versions of configurations, or different
+styles of design and configurations.  Traits are held in suites.</p>
+</div>
+<div class="section" id="trait">
+<h2><a name="trait">Trait</a></h2>
+<p>A trait is the atomic unit that signifies a feature. 
+A trait belongs to a suite.  The table in the database that holds the list of traits
+is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
+and a set of variables.</p>
+<ul>
+<li><p class="first"><strong>parents</strong></p>
+<ul class="simple">
+<li>no trait can be processed during the installation before all
+of its parents are processed.</li>
+<li>parents are not required, but most traits should depend on a default
+trait.</li>
+<li>no trait can be processed during the installation before all of its
+parents are processed.</li>
+</ul>
+</li>
+<li><p class="first"><strong>packages</strong></p>
+<ul class="simple">
+<li>this is a list of packages to install or remove 
+- although other options are available, only install and remove are supported now</li>
+<li>packages are not required</li>
+</ul>
+</li>
+<li><p class="first"><strong>templates</strong></p>
+<ul class="simple">
+<li>templates can have simple tags for variable substitution</li>
+<li>templates store user/group and chmod permissions</li>
+<li>a template must currently be attached to a package<ul>
+<li>this feature should be removed, because traits that only need 
+traits get vestigial packages assigned to them like base-files, 
+initscripts, or bash</li>
+</ul>
+</li>
+<li>currently the var/cache/debconf/config.dat template is reserved 
+for debconf</li>
+</ul>
+</li>
+<li><p class="first"><strong>environment</strong></p>
+<ul>
+<li><p class="first">a collection of name, value pairs for use in the templates and scripts</p>
+</li>
+<li><p class="first">a trait's environment contains its parents' environment</p>
+</li>
+<li><dl class="first docutils">
+<dt>a big python dictionary is made of the environment where the keys</dt>
+<dd><p class="first last">are formed as &quot;trait_name&quot; where trait is the trait and name is the 
+name of the variable.</p>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>scripts</strong></p>
+<ul class="simple">
+<li>a trait is not required to have a script</li>
+<li>only three types of scripts are currently supported, pre, post, and chroot<ul>
+<li>chroot is a special script that is run in a chrooted environment in the target area. 
+This script should be aware of what's on the target system and only depend on 
+those things. The script shouldn't connect to paella or depend on other installation 
+tools not present in the target system.</li>
+<li>pre is executed before anything else is processed in the trait.<ul>
+<li>The pre script is executed with an os.system.</li>
+</ul>
+</li>
+<li>post is the very last action to perform in the trait<ul>
+<li>post should be able to talk to database and environment</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>other scripts<ul>
+<li>you can define a script for any
+step in the trait install process.</li>
+<li>if you make a script named install, remove, config,
+or reconfig, that step in the trait process is ignored,
+and the script run instead.  The script doesn't have
+to do anything, so it's a good way to skip a step in the 
+trait installation</li>
+<li>in order for a script to be executed its name must match
+a step in the trait processes.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="family">
+<h2><a name="family">Family</a></h2>
+<ul class="simple">
+<li>A family is a collection of variables from different traits<ul>
+<li>a family can have parents</li>
+<li>a family is not tied to a suite</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="profile">
+<h2><a name="profile">Profile</a></h2>
+<ul>
+<li><p class="first">A profile is a collection of traits, and an environment</p>
+<ul>
+<li><p class="first">Traits - the traits listed in the profile are ordered</p>
+</li>
+<li><p class="first">Families - an unordered list of families</p>
+</li>
+<li><dl class="first docutils">
+<dt>Environment</dt>
+<dd><ul class="first last simple">
+<li>the profile environment overrides the trait environments 
+and the family environment</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="machine-database">
+<h1><a name="machine-database">Machine Database</a></h1>
+<p>This section describes the machine database part of paella.  Profile, traits, and families
+should not be machine specific.  The Machine database trying to be design to hold
+information about physical systems to install logical systems from.</p>
+<div class="section" id="machine-type">
+<h2><a name="machine-type">Machine Type</a></h2>
+<p>A machine type is going to be the main identifier of a particular type of machine.
+This currently includes disks and kernel modules.  The disks of a machine type are a
+list of tuples in the database (machine_type, diskname, device) .  The current policy is 
+to treat all devices of a certain  diskname as a raid1 array if there is more than one
+device.</p>
+</div>
+<div class="section" id="machine">
+<h2><a name="machine">Machine</a></h2>
+<p>a machine contains</p>
+<ul class="simple">
+<li>a <strong>name</strong></li>
+<li>a <strong>machine_type</strong><ul>
+<li>this is one of the machine types that are already defined</li>
+</ul>
+</li>
+<li>a <strong>kernel</strong><ul>
+<li>a kernel is simply the name of a kernel image package</li>
+<li>the package must be install-able by apt, in a chroot environment, on the target system.</li>
+</ul>
+</li>
+<li>a <strong>filesystem</strong><ul>
+<li>a <a class="reference" href="#filesystem">filesystem</a> is a named ordered map of <a class="reference" href="#mount">mounts</a> to partition numbers</li>
+</ul>
+</li>
+<li>a <strong>profile</strong></li>
+</ul>
+</div>
+<div class="section" id="mount">
+<h2><a name="mount">Mount</a></h2>
+<p>a <a class="reference" href="#mount">mount</a> is named</p>
+<p>a mount describes filesystem type, mount option, dump, pass and the mount point</p>
+</div>
+<div class="section" id="filesystem">
+<h2><a name="filesystem">Filesystem</a></h2>
+<p>this is done on filesystem_mounts</p>
+<p>the target fstab will be completely formed from the filesystem information</p>
+</div>
+<div class="section" id="installer">
+<h2><a name="installer">Installer</a></h2>
+<p>The installers in paella are layered.  There is a <a class="reference" href="#trait-installer">trait installer</a>, a <a class="reference" href="#profile-installer">profile installer</a>,
+and a <a class="reference" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
+operation more structured.  The trait installer is the simplest and contains everything 
+needed for installing a trait.  The profile installer contains a trait installer, and it is 
+responsible for installing profiles.  The nfs installer contains a profile installer and is used
+to install a profile on a machine.  There is also a chroot installer that will install a profile
+to a target directory.</p>
+</div>
+<div class="section" id="trait-installer">
+<h2><a name="trait-installer">Trait Installer</a></h2>
+<p>The trait installer is responsible for installing a <a class="reference" href="#trait">trait</a> to a target location.
+It is pretty dumb as it doesn't check to see if a parent has been installed or not.
+This class should only be instantiated as a member of the <a class="reference" href="#profile-installer">profile installer</a> class,
+or a similiar class because the profiledata and familydata members start out empty.</p>
+<ul class="simple">
+<li>default trait install processes (in order)<ul>
+<li><strong>pre</strong><ul>
+<li>special script step</li>
+<li>if it exists, run the script before anything else</li>
+</ul>
+</li>
+<li><strong>remove</strong><ul>
+<li>remove packages marked remove in trait's package list</li>
+</ul>
+</li>
+<li><strong>install</strong><ul>
+<li>install packages marked install in trait's package list</li>
+</ul>
+</li>
+<li><strong>templates</strong><ul>
+<li>install the templates for the trait</li>
+</ul>
+</li>
+<li><strong>config</strong><ul>
+<li>currently doesn't do anything, can be used for a script</li>
+</ul>
+</li>
+<li><strong>chroot</strong><ul>
+<li>special script step</li>
+<li>if it exists, run the script chrooted in the target</li>
+</ul>
+</li>
+<li><strong>reconfig</strong><ul>
+<li>runs dpkg-reconfigure -plow on packages marked
+reconfig in the trait's package list.</li>
+</ul>
+</li>
+<li><strong>post</strong><ul>
+<li>special script step</li>
+<li>if it exists, run the script after everything else</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>the default trait processes can be overridden<ul>
+<li>put a comma separated list of processes in the default_environment
+under the section, <strong>installer</strong>, and the option <strong>trait_processes</strong>.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="profile-installer">
+<h2><a name="profile-installer">Profile Installer</a></h2>
+<p>The profile installer can be instantiated by itself.  It contains a trait installer.
+It is responsible for installing a profile to a target location.  A profile is the minimum
+install-able object, you can't install a trait alone, but you can have a profile with one trait
+in it.  The profile installer is responsible for making the complete list of traits that will be
+installed.  The list is composed of the traits listed in the profile itself, and all of their implied
+parents, ordered for install.  The profile installer then calls its trait installer for each trait
+in the list.</p>
+</div>
+<div class="section" id="nfs-installer">
+<h2><a name="nfs-installer">Nfs Installer</a></h2>
+<p>The nfs installer is responsible for installing a machine to a target location.  This is the
+installer that will be run on a machine to be installed.  This installer contains a profile
+installer.  The nfs installer will do all of the hardware related functions that are necessary
+to setup a target location for its profile installer.  The nfs installer will also setup the fstab,
+apt sources, and kernel for the machine.</p>
+</div>
+<div class="section" id="installer-toolkit">
+<h2><a name="installer-toolkit">Installer Toolkit</a></h2>
+<p>The installer toolkit is made to be used in the trait scripts.  It can't be
+used for the chroot script, unless you have paella configured on the
+target system.  It is the job of the installer toolkit to provide you with a
+good set of tools contained within the toolkit object, so that your scripts
+contain a minimum of boilerplate type code.</p>
+</div>
+<div class="section" id="automatic-install">
+<h2><a name="automatic-install">Automatic Install</a></h2>
+<p>Automatic installation is supported.  The setup if fairly simple.  There
+is no gui wrapper around parts of it yet, so to really use it, you will
+have to use python interactively, or psql.  There is a script on the nfs 
+installer called paella-submit-machine.  You pass it a machine name 
+argument</p>
+</div>
+<div class="section" id="database-schema">
+<h2><a name="database-schema">Database Schema</a></h2>
+<p>The database schema is not very complicated.</p>
+<p>The primary tables are:</p>
+<ul class="simple">
+<li>textfiles<ul>
+<li>a table containing an id, md5sum, size, and
+text of every template and script used in the
+database.</li>
+</ul>
+</li>
+<li>scriptnames<ul>
+<li>a list of names for the scripts</li>
+<li>right now this defaults to the steps of the trait
+processes.</li>
+</ul>
+</li>
+<li>suites</li>
+<li>default_environment</li>
+<li>current_environment</li>
+</ul>
+<p>Other tables are in related sets:</p>
+<ul>
+<li><p class="first"><strong>suite tables</strong>  -- there is a set for each suite in suites table</p>
+<ul>
+<li><p class="first">sarge_packages</p>
+<ul class="simple">
+<li>a list of all the packages available to this suite</li>
+</ul>
+</li>
+<li><p class="first">sarge_traits</p>
+<ul class="simple">
+<li>a list of all the <a class="reference" href="#trait">traits</a> in this suite</li>
+</ul>
+</li>
+<li><p class="first">sarge_trait_package</p>
+<ul class="simple">
+<li>relates traits to packages</li>
+<li>action on the package can be remove, install, config, reconfig<ul>
+<li>remove will remove the package, if installed</li>
+<li>install will install the package</li>
+<li>config does nothing right now</li>
+<li>reconfig runs dpkg-reconfigure -plow on the package</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">sarge_trait_parent</p>
+<ul class="simple">
+<li>relates traits to other traits</li>
+<li>current code can't handle cyclic dependencies</li>
+</ul>
+</li>
+<li><p class="first">sarge_scripts</p>
+<ul class="simple">
+<li>relates traits and scriptnames and textfiles</li>
+</ul>
+</li>
+<li><p class="first">sarge_templates</p>
+<ul>
+<li><p class="first">relates traits to packages and textfiles</p>
+</li>
+<li><p class="first">this is where the templates are located</p>
+</li>
+<li><p class="first">info can be preserved for user/group ownership
+and file mode.</p>
+</li>
+<li><p class="first">template tags have the form:</p>
+<pre class="literal-block">
+&lt;--|trait_name|--&gt;
+</pre>
+</li>
+</ul>
+<blockquote>
+<p>where trait is the name of the trait
+and name is the name of the variable
+for example:</p>
+<pre class="literal-block">
+&lt;--|xwindow_driver|--&gt;
+</pre>
+</blockquote>
+<ul class="simple">
+<li>parent directories created before installing the
+template will be root:root and system umask</li>
+</ul>
+</li>
+<li><p class="first">sarge_variables</p>
+<ul class="simple">
+<li>relates traits to name, value pairs</li>
+<li>a dictionary is made from this table and is used
+in the templates and in the scripts</li>
+<li>the keys in the dictionary are in the form
+as the template tags mentioned above, without
+the tag markers.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>profile tables</strong></p>
+<ul class="simple">
+<li><a class="reference" href="#profile">profiles</a></li>
+<li>profile_family</li>
+<li>profile_trait</li>
+<li>profile_variables</li>
+</ul>
+</li>
+<li><p class="first"><strong>family tables</strong></p>
+<ul class="simple">
+<li><a class="reference" href="#family">families</a></li>
+<li>family_environment</li>
+<li>family_parent</li>
+</ul>
+</li>
+<li><p class="first"><strong>machine tables</strong></p>
+<ul class="simple">
+<li>machines<ul>
+<li>list of <a class="reference" href="#machine">machines</a></li>
+<li>relates to machine_types, profiles, filesystems, kernels</li>
+</ul>
+</li>
+<li>machine_types<ul>
+<li>list of <a class="reference" href="#machine-type">machine_types</a></li>
+</ul>
+</li>
+<li>machine_disks<ul>
+<li>relates machine_types to disks and device name</li>
+</ul>
+</li>
+<li>machine_modules<ul>
+<li>ordered lists of modules</li>
+<li>relates to <a class="reference" href="#machine-type">machine_types</a></li>
+</ul>
+</li>
+<li>disks<ul>
+<li>list of disknames</li>
+</ul>
+</li>
+<li>filesystem_mounts<ul>
+<li>an ordered list of mounts for a filesystem</li>
+<li>relates to <a class="reference" href="#filesystem">filesystems</a></li>
+<li>size corresponds to fai diskconfig</li>
+<li>partition number for hard drive</li>
+</ul>
+</li>
+<li>filesystems<ul>
+<li>a list of <a class="reference" href="#filesystem">filesystems</a></li>
+</ul>
+</li>
+<li>kernels<ul>
+<li>a list of kernel package names</li>
+</ul>
+</li>
+<li>mounts<ul>
+<li>a list of <a class="reference" href="#mount">mounts</a> and options</li>
+</ul>
+</li>
+<li>partitions<ul>
+<li>a list of partition numbers and sfdisk info</li>
+<li>relates to disks</li>
+<li>use this info to dump with sfdisk</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="getting-started-with-paella">
+<h2><a name="getting-started-with-paella">Getting started with paella</a></h2>
+<p>People who will get the most benefit out of paella are IT consultants that manage
+multiple disjoint networks.  You may also benefit from it if your network is large enough,
+and you have mostly debian machines on it.  If you only maintain one network with a few
+machines, e.g. a firewall, a server, and a couple of desktops, the time involved it setting up
+paella and maintaining configurations might probably be more than just using more simple
+backup and restore methods.</p>
+<p>There are currently no real releases of paella, because i dislike the file release system at
+berlios, so you will have to check out the code via subversion, or alternately you can grab
+the debian packages from <a class="reference" href="http://gregscomputerservice.com">http://gregscomputerservice.com</a>.  The line for the sources.list
+is 'deb <a class="reference" href="http://gregscomputerservice.com/debian/local">http://gregscomputerservice.com/debian/local</a> common/'.</p>
+<p>A person who uses paella is expected to understand how to perform basic system 
+administration on a debian system.  They should also be comfortable with building their
+own debian packages from source, and debianizing a generic source application.  Paella 
+makes use of mini-dinstall to maintain a local mini-repository and can install systems that 
+reference that repository.  This provides a fairly simple way to add custom packages to the 
+systems that you will be designing.</p>
+<p>If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
+use the apt source above, you can check it out from subversion at berlios.  Paella
+depends on Useless.  Useless is a collection of python modules that I use in other database 
+applications.</p>
+<p>to get useless:
+svn checkout svn://svn.berlios.de/useless/trunk useless</p>
+<p>to get paella:
+svn checkout svn://svn.berlios.de/paella/trunk paella</p>
+<p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
+</div>
+<div class="section" id="hardware-recommendations">
+<h2><a name="hardware-recommendations">Hardware Recommendations</a></h2>
+<p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
+to support this.  Paella works best with at least one dedicated server and a management 
+desktop, both running debian.</p>
+<p>Server:</p>
+<p>The server will be responsible for running the nfs-server, the boot-server, the postgresql 
+server, and the webserver. It is recommended that you have a local mirror of a debian 
+repository on the server, and have it accessible over http.  You should also install the 
+paella-debrepos package on this machine to create and maintain your custom debian 
+repository.</p>
+<blockquote>
+<p>Database Setup:</p>
+<pre class="literal-block">
+apt-get install postgresql
+su postgres
+createuser -a -d adminuser
+createuser -A -D paella
+createlang plpgsql template1    
+exit
+su adminuser createdb paella
+</pre>
+</blockquote>
+<p>You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
+paella from anywhere on the local network, and allow adminuser from your management
+desktop.</p>
+<p>The setup of the boot-server and the nfs-server are beyond the scope of this 
+document, but the profiles are defined in the default database provided with paella.  So 
+instead of taking the time to setup the boot-server and nfs-server manually, you can use the 
+paella-chroot-install script to create the machine and tar it up.</p>
+<p>Desktop:</p>
+<p>The desktop should be about 400MHz Pentium or better with &gt;= 1024x768 resolution, 
+capable of running kde.  It is necessary to have access to your database on the server.  You
+should also have your EDITOR environment variable set to something that will pop-up 
+a window in X.  On this machine you will want to install the paella-admin and the 
+paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
+probably want to copy this to ~/.paellarc and edit it.</p>
+</div>
+<div class="section" id="local-debian-repository">
+<h2><a name="local-debian-repository">Local Debian Repository</a></h2>
+<p>Paella is built to make use of you local debian repository.  The paella-debrepos package 
+uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review 
+the documentation for it.  Install the paella-debrepos package on the server.  The init script 
+should fail because you are likely not to have a debrepos user.  This will be fixed later.  
+Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
+mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
+directory for each suite you have in paella, plus one called 'common'.</p>
+</div>
+<div class="section" id="using-paella-management">
+<h2><a name="using-paella-management">Using Paella-Management</a></h2>
+<p>The management interface is going through changes.  Paella started with a gtk interface, 
+and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
+gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do 
+very much right now, but bugs will be fixed on it.  A good portion of setting up and 
+configuring the machines is done with the gtk interface, so for the time being, anybody 
+using paella will have to bear through using it until the kde interface is ready.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

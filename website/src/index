@@ -10,6 +10,7 @@ Paella_ is a installation/configuration management system centered on
 being able to easily define, configure, maintain and update systems and 
 networks.
 
+-----------------
 
 Dependencies
 --------------------
@@ -27,21 +28,52 @@ Dependencies
 
 + python-kde3 and python-qtext
 
+  - only the management interface depends on these.
+
   - both of these should be easy to backport from sid.
 
   - parts of useless_ depend on this, and not paell-kde directly, but useless is split 
     to be able to use only what is needed.
 
+-----------------------------
+
+Intended Audience/Users
+----------------------------------
+
+Paella_ is written for system administrators using debian_.  Ultimately it should not 
+be required to learn sql or python to competently use paella, but currently this is
+not the case.  The user should, however, feel quite comfortable writing simple shell 
+scripts.
+
+The traits in paella are not meant to be replacements for packages.  A local repository 
+with self-made/backported packages will greatly enhance the amount of customization 
+that can be performed on systems.  People using paella should be able to make simple 
+packages, and upload them to their local repository using mini-dinstall or something 
+equivalent.  The paella-debrepos package helps with this.
+
+----------------------
 
 Download
 --------------
 
 Currently the best way to obtain paella is through subversion.  
 
+------------------
+
+Project
+----------
 
 project_ page
 
+-----------------------
+
+Documentation
+---------------------
+
+
 notes_ about paella
+
+gui_ document
 
 The project_ is hosted by |berlios|.
 
@@ -52,6 +84,7 @@ The project_ is hosted by |berlios|.
 .. _paella: http://paella.berlios.de
 .. _project: http://developer.berlios.de/projects/paella
 .. _notes: notes.html
+.. _gui:   gui.html
 .. _debian: http://debian.org
 .. _useless: http://developer.berlios.de/projects/useless
 

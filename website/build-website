@@ -5,4 +5,6 @@ echo "building index"
 rst2html src/index > index.html
 echo "building notes"
 rst2html ../paella/notes > notes.html
+echo "building gui"
+rst2html src/gui > gui.html
 

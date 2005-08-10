@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
+<title>Paella Gui</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="paella-gui">
+<h1 class="title">Paella Gui</h1>
+<div class="section" id="original-gui-design-goals">
+<h1><a name="original-gui-design-goals">Original gui design goals</a></h1>
+<p>The original goals for the gui were to provide enough of an interface to the <a class="reference" href="http://paella.berlios.de">paella</a> 
+database to do simple operations needed to create traits and their components.  
+Much of the gui was made without regard for new users, or users unfamiliar with 
+the code or paella system.  Most of my time spent in developing paella has been focused
+on the installer code, and in system design.  It can take a great deal of time in 
+testing, troubleshooting problems and improving systems.  As a result, the gui is 
+very minimalistic, and will not do all (although it will do most) necessary operations 
+needed to make use of the database.</p>
+</div>
+<div class="section" id="configuration-file">
+<h1><a name="configuration-file">Configuration File</a></h1>
+<p>The gui uses the paellarc config files ['/etc/paellarc', '~/.paellarc'].  Most options are 
+found in the management_gui section.</p>
+<dl class="docutils">
+<dt>management_suites</dt>
+<dd>This is comma separated list of suites to manage.  There will be a
+suite manager toolbar appear for each suite.</dd>
+<dt>template_profile</dt>
+<dd>This is the name of the profile to create other profiles from.  New profiles 
+will be copies of this.</dd>
+<dt>client_path</dt>
+<dd>This is the path where the imports and exports of clients reside.  This is
+not crucial to the operation of paella, and will be explained elsewhere.  
+When it is explained, I'll provide a link to the explanation.</dd>
+<dt>manager_pos</dt>
+<dd>This is the position on the screen of the main management window.  
+Example:  0, 480</dd>
+<dt>manager_size</dt>
+<dd>This is the size of the main management window..
+Example: 150, 200</dd>
+<dt>${suite}_pos</dt>
+<dd>This is the location of the suite management toolbar for that suite.
+Example: sarge_pos:  400, 0</dd>
+</dl>
+</div>
+</div>
+</body>
+</html>

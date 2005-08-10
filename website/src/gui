@@ -1,0 +1,50 @@
+Paella Gui
+============
+
+
+Original gui design goals
+---------------------------------
+
+The original goals for the gui were to provide enough of an interface to the paella_ 
+database to do simple operations needed to create traits and their components.  
+Much of the gui was made without regard for new users, or users unfamiliar with 
+the code or paella system.  Most of my time spent in developing paella has been focused
+on the installer code, and in system design.  It can take a great deal of time in 
+testing, troubleshooting problems and improving systems.  As a result, the gui is 
+very minimalistic, and will not do all (although it will do most) necessary operations 
+needed to make use of the database.
+
+
+Configuration File
+-------------------------
+
+The gui uses the paellarc config files ['/etc/paellarc', '~/.paellarc'].  Most options are 
+found in the management_gui section.
+
+management_suites
+	This is comma separated list of suites to manage.  There will be a
+	suite manager toolbar appear for each suite.
+
+template_profile
+	This is the name of the profile to create other profiles from.  New profiles 
+	will be copies of this.
+
+client_path
+	This is the path where the imports and exports of clients reside.  This is
+	not crucial to the operation of paella, and will be explained elsewhere.  
+	When it is explained, I'll provide a link to the explanation.
+
+manager_pos
+	This is the position on the screen of the main management window.  
+	Example:  0, 480
+
+manager_size
+	This is the size of the main management window..
+	Example: 150, 200
+
+${suite}_pos
+	This is the location of the suite management toolbar for that suite.
+	Example: sarge_pos:  400, 0
+
+
+.. _paella: http://paella.berlios.de

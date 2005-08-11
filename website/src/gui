@@ -94,6 +94,65 @@ will probably at some time be forced to use psql or a generic database manager o
 database.  A graphical database manager that I highly recommend is TOra_.  TOra is 
 available on sarge.
 
+-------------------------
+
+Using the Gui
+--------------------
+
+At the command line type in paella-management.  This should at least pull up the main 
+management window.  There are two menus on this window, database and edit.  The
+database menu has options to connect, disconnect, backup and restore a database.  
+Connect and disconnect are not really supported yet.  Backup and restore will backup
+and restore most of the database (with the exception of the main package tables, the 
+default_environment, and current_environment tables).  Using one of these menu 
+options will bring up a file dialog.  Only the directory values for the fileselection are 
+used.  It doesn't matter what file you select, the directory containing the file will be the
+argument that is passed.
+
+The other menu on the main management window is edit.  The options here will open 
+other management windows.
+
+The options are
+
+profiles
+	brings up the profile management window
+
+families
+	brings up the family management window
+
+suitemanager
+	brings up a dialog to select the suite, then brings
+	up a suitemanager toolbar window
+
+traitmanager
+	this option is deprecated, see traits below.
+
+machines
+	brings up a machine toolbar window
+
+traits
+	brings up a traitmanager window.  This object is not
+	actively developed.
+
+tdiff
+	brings up the template differ
+
+sdiff
+	brings up the script differ
+
+fdiff
+	brings up the family differ
+
+default_environment
+	brings up the default environment editor.
+
+clients
+	brings up the client manager
+
+browser
+	brings up the kde management interface
+	this option will do nothing if that interface is
+	not installed.
 
 
 ---------------------------

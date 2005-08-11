@@ -75,6 +75,39 @@ notes_ about paella
 
 gui_ document
 
+---------------------------
+
+Related Links
+------------------------
+
+FAI_ -- Fully Automated Installer for debian
+     Paella takes most of its inspiration from fai.
+
+Python_ -- Except for a few shell scripts, paella is written
+	entirely in python.
+
+Postgresql_ -- High quality SQL Database Server
+	    Paella uses a postgresql database.
+
+PyGTK_ -- Graphical Tool Kit for python
+       Paella uses pygtk for its graphical interface.
+
+PyKDE_ -- Graphical Tool Kit for python
+       Paella also uses pykde for its newer graphical interface.
+
+TOra_ -- ToolKit for Oracle
+      Also works very well with postgresql.  Highly recommended companion
+      to the deficient gui on paella.
+
+-------------------
+
+Authors
+-----------
+
+`Joseph Rawson`_ <umeboshi@gregscomputerservice.com>
+
+-----------------
+
 The project_ is hosted by |berlios|.
 
 
@@ -87,4 +120,11 @@ The project_ is hosted by |berlios|.
 .. _gui:   gui.html
 .. _debian: http://debian.org
 .. _useless: http://useless.berlios.de
-
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com

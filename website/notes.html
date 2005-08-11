@@ -121,6 +121,8 @@ a step in the trait processes.</li>
 <li>A family is a collection of variables from different traits<ul>
 <li>a family can have parents</li>
 <li>a family is not tied to a suite</li>
+<li>a variable in a family doesn't have to exist in a trait,
+but it has to be tied to a trait.</li>
 </ul>
 </li>
 </ul>
@@ -532,6 +534,7 @@ the tag markers.</li>
 </li>
 </ul>
 </div>
+<hr class="docutils" />
 <div class="section" id="getting-started-with-paella">
 <h2><a name="getting-started-with-paella">Getting started with paella</a></h2>
 <p>People who will get the most benefit out of paella are IT consultants that manage
@@ -560,6 +563,7 @@ svn checkout svn://svn.berlios.de/useless/trunk useless</p>
 svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 <p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="hardware-recommendations">
 <h2><a name="hardware-recommendations">Hardware Recommendations</a></h2>
 <p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
@@ -598,6 +602,7 @@ a window in X.  On this machine you will want to install the paella-admin and th
 paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
 probably want to copy this to ~/.paellarc and edit it.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="local-debian-repository">
 <h2><a name="local-debian-repository">Local Debian Repository</a></h2>
 <p>Paella is built to make use of you local debian repository.  The paella-debrepos package 
@@ -608,6 +613,7 @@ Anyway, in the root of the debian mirror, there needs to be a 'local' directory.
 mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
 directory for each suite you have in paella, plus one called 'common'.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="using-paella-management">
 <h2><a name="using-paella-management">Using Paella-Management</a></h2>
 <p>The management interface is going through changes.  Paella started with a gtk interface, 

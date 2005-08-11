@@ -1,0 +1,28 @@
+Paella Default Database
+==========================
+
+Paella comes with a default database to play with.  It is recommended that you
+start of with this database until you get a good feel for the paella system.
+
+
+
+The project_ is hosted by |berlios|.
+
+
+.. |berlios| image:: http://developer.berlios.de/bslogo.php?group_id=0&type=1
+   :target: http://developer.berlios.de
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com

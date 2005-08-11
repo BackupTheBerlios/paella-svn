@@ -4,9 +4,11 @@
 echo "building index"
 rst2html src/index > index.html
 echo "building notes"
-rst2html ../paella/notes > notes.html
+rst2html src/docs/notes > notes.html
 echo "building gui"
 rst2html src/gui > gui.html
 echo "building problems"
-rst2html src/problems > problems.html
+rst2html src/docs/problems > problems.html
+echo "building abstract"
+rst2html src/docs/abstract > abstract.html
 

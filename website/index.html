@@ -11,6 +11,7 @@
 <div class="document" id="paella">
 <h1 class="title">Paella</h1>
 <p>This is the homepage of paella.</p>
+<hr class="docutils" />
 <div class="section" id="what-is-paella">
 <h1><a name="what-is-paella">What is <a class="reference" href="http://paella.berlios.de">Paella</a>?</a></h1>
 <p><a class="reference" href="http://paella.berlios.de">Paella</a> is a installation/configuration management system centered on 
@@ -55,6 +56,13 @@ to be able to use only what is needed.</li>
 </ul>
 </li>
 </ul>
+<p>I have placed backports of the needed dependencies on the website.  These 
+packages should be enough to run paella on sarge.  Add these lines to your 
+/etc/apt/sources.list:</p>
+<pre class="literal-block">
+deb http://paella.berlios.de/ sarge/
+deb-src http://paella.berlios.de/ sarge/
+</pre>
 </div>
 <hr class="docutils" />
 <div class="section" id="intended-audience-users">

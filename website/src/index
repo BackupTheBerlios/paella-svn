@@ -3,6 +3,8 @@ Paella
 
 This is the homepage of paella.
 
+-----------------------------------
+
 What is Paella_?
 ---------------------
 
@@ -54,6 +56,14 @@ Dependencies
 
   - parts of useless_ depend on this, and not paell-kde directly, but useless is split 
     to be able to use only what is needed.
+
+I have placed backports of the needed dependencies on the website.  These 
+packages should be enough to run paella on sarge.  Add these lines to your 
+/etc/apt/sources.list::
+
+	deb http://paella.berlios.de/ sarge/
+	deb-src http://paella.berlios.de/ sarge/
+
 
 -----------------------------
 

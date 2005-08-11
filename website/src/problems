@@ -27,6 +27,11 @@ Known Problems with Paella_
 
   - maybe I can put my backport on berlios?
 
++ schema problems
+
+  - templates in the traits are tied to packages
+
+  - use of current_environment table needs updating
 
 
 This project_ is hosted by |berlios|.

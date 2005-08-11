@@ -12,11 +12,31 @@ networks.
 
 -----------------
 
+What is Paella_ **Not**?
+-------------------------------------
+
+Paella is not a fully extensible installer that can work in a variety of 
+environments.  The debian-installer works much better for a generic
+installer.  Paella is meant to run on an nfsroot system, with access to
+a postgresql database.  It can also install a system in a chroot environment.
+
+Paella is not a full-fledged configuration system (yet), so far I have been mostly 
+concerned with installation.  There is technically nothing preventing this.  With a good
+design of traits and their scripts, it may be possible to just do a chroot reinstall on
+the target system.  The scripts in the default database are not written for that yet, but
+there is nothing in the paella framework keeping reconfiguration from happening with
+a reinstall.  Paella does provide a good way to handle cf files for cfengine.
+
+--------------------------
+
 Dependencies
 --------------------
 
-+ debian_  (Paella_ is meant to run on a debian system.  Currently only i386
-  is able to be tested.)
++ debian_  
+
+  - Paella_ is meant to run on a debian system.  
+
+  - Currently only i386 is able to be tested.
 
   - most of paella can run on sarge, with the exception of the kde management
     interface.
@@ -75,6 +95,8 @@ notes_ about paella
 
 gui_ document
 
+known problems_ with paella.
+
 ---------------------------
 
 Related Links
@@ -108,7 +130,7 @@ Authors
 
 -----------------
 
-The project_ is hosted by |berlios|.
+This project_ is hosted by |berlios|.
 
 
 .. |berlios| image:: http://developer.berlios.de/bslogo.php?group_id=0&type=1
@@ -128,3 +150,4 @@ The project_ is hosted by |berlios|.
 .. _dfsg: http://www.debian.org/social_contract.html#guidelines
 .. _TOra: http://tora.sourceforge.net/
 .. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
+.. _problems: problems.html

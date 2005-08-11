@@ -7,4 +7,6 @@ echo "building notes"
 rst2html ../paella/notes > notes.html
 echo "building gui"
 rst2html src/gui > gui.html
+echo "building problems"
+rst2html src/problems > problems.html
 

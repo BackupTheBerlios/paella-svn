@@ -21,6 +21,7 @@ testing, troubleshooting problems and improving systems.  As a result, the gui i
 very minimalistic, and will not do all (although it will do most) necessary operations 
 needed to make use of the database.</p>
 </div>
+<hr class="docutils" />
 <div class="section" id="configuration-file">
 <h1><a name="configuration-file">Configuration File</a></h1>
 <p>The gui uses the paellarc config files ['/etc/paellarc', '~/.paellarc'].  Most options are 
@@ -46,6 +47,45 @@ Example: 150, 200</dd>
 <dd>This is the location of the suite management toolbar for that suite.
 Example: sarge_pos:  400, 0</dd>
 </dl>
+</div>
+<hr class="docutils" />
+<div class="section" id="gtk-qt-and-gnome-kde">
+<h1><a name="gtk-qt-and-gnome-kde">Gtk/Qt and Gnome/KDE</a></h1>
+<p>There are two graphical management interfaces for paella.  One is written 
+using <a class="reference" href="http://pygtk.org">pygtk</a>.  The other is written  using <a class="reference" href="http://www.riverbankcomputing.co.uk/pykde/index.php">pykde</a>.  I started paella writing the 
+pygtk interface, but during the end of 2004, I switched to developing with the
+pykde interface.</p>
+<p>Way back when I was using python1.5, I learned to write interfaces with pygtk.  At the 
+time the qt license was not <a class="reference" href="http://www.debian.org/social_contract.html#guidelines">dfsg</a> compatible, but gtk was.  By the time I got around 
+to writing paella, I had plenty of inertia with pygtk, although there was a dfsg compatible 
+qt available.</p>
+<p>I decided to play around with pykde one day and found it a little easier than gtk.  It takes 
+longer for me to write with pykde currently, because my relative exposure to when
+compared to pygtk.  I am expecting that to change with time and practice. One of the 
+things that attracted me to pykde is the lower level widget subclasses.  I haven't used
+to much of pygnome because of it's poor widget selection, and the difficutly in using 
+bonobo.  There don't seem to be many lowlevel replacements for gtk widgets that are 
+gnome aware.  To be fair, at the time the pygnome docs weren't fulfilling, so I may have
+missed out on something I didn't know about.  An example that I am thinking of is the 
+KComboBox which is a QComboBox with text completion methods and configurable 
+hotkeys.</p>
+</div>
+<div class="section" id="current-state-of-paella-gui">
+<h1><a name="current-state-of-paella-gui">Current State of Paella Gui</a></h1>
+<p>Currently, the gtk interface is being deprecated, and the kde interface is being actively 
+developed.  I will be happy to help with the gtk interface if somebody else feels 
+like actively maintaining it.  Any reasonable patch sent will be applied.  Some of the 
+operations with this interface are deprecated and should be removed.</p>
+<p>You still need to gtk interface to perform some of the operations.  All operations 
+available on the gtk interface will be available on the kde interface, except for the 
+deprecated/unused operations.</p>
+<p>Some of the operations are only available on the kde interface.  I am not planning on 
+duplicating this on the gtk interface.</p>
+<p>Between both interfaces, most of the simple operations, and some more complex ones 
+are supported.  Do not expect the gui's to be completely sufficient anytime soon.  You 
+will probably at some time be forced to use psql or a generic database manager on the 
+database.  A graphical database manager that I highly recommend is <a class="reference" href="http://tora.sourceforge.net/">TOra</a>.  TOra is 
+available on sarge.</p>
 </div>
 </div>
 </body>

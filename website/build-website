@@ -6,7 +6,7 @@ rst2html src/index > index.html
 echo "building notes"
 rst2html src/docs/notes > notes.html
 echo "building gui"
-rst2html src/gui > gui.html
+rst2html src/docs/gui > gui.html
 echo "building problems"
 rst2html src/docs/problems > problems.html
 echo "building abstract"

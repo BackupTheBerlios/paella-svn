@@ -11,4 +11,5 @@ echo "building problems"
 rst2html src/docs/problems > problems.html
 echo "building abstract"
 rst2html src/docs/abstract > abstract.html
-
+echo "building svnwebsite"
+rst2html src/svnwebsite > svnwebsite.html

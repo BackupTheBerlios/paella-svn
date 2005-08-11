@@ -1,0 +1,77 @@
+How this website is made
+------------------------------------
+
+I am writing this to hopefully help a person who has a project on
+|berlios| to easily put a website together and maintain it.
+
+I am not a web site developer, so putting a website together takes 
+a little more inertia for me.  I decided to use subversion to help maintain
+my website.  I use docutils_ to create the pages.
+
+From here on out, I am going to assume that you are developer with
+a project on http://developer.berlios.de .  To make the writing of this easier,
+you will have to assume your berlios account is "username" and your project is
+"projectname".  Finally it will be assumed that you have a typical repository layout
+where creating a toplevel directory would not present a problem.
+
+To start off with:
+
+create the toplevel directory::
+
+       svn mkdir svn+ssh://svn.berlios.de/svnroot/repos/projectname/website
+       
+I also made a source directory::
+
+       svn mkdir svn+ssh://svn.berlios.de/svnroot/repos/projectname/website/src
+
+and check it out::
+
+    svn co svn+ssh://svn.berlios.de/svnroot/repos/projectname/website
+
+The website directory is intended to be the root of the website.  You can start
+editing files and adding them to the repository.  I use reStructuredText formatted
+text files to create these pages in src.  You can see the sources for these pages
+at http://paella.berlios.de/src/ .
+
+This website is also sharing documentation with the paella source.  In my source 
+tree there is a docs directory with more reStructuredText files.  I share these with
+the website by making an empty docs directory in the /website/src directory.  Add
+this directory to the repository, and keep it empty.  Then cd into the website/src/docs 
+directory and svn switch svn+ssh://svn.berlios.de/svnroot/repos/projectname/trunk/docs,
+or whereever you want to share your docs.
+
+I have a simple script to build the site in the webroot, 
+http://paella.berlios.de/build-website .  I add the new files that are built to the
+repository and commit them.  I then export the website using a small one-liner, which
+can be found here, http://paella.berlios.de/export-website .
+
+ssh shell.berlios.de svn export --force svn://svn.berlios.de/projectname/website /home/groups/projectname/htdocs
+
+
+ 
+
+-----------------
+
+This project_ is hosted by |berlios|.
+
+
+.. |berlios| image:: http://developer.berlios.de/bslogo.php?group_id=0&type=1
+   :target: http://developer.berlios.de
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
+.. _problems: problems.html
+.. _tarball: http://download.berlios.de/paella/paella_0.7.20.tar.gz 
+.. _docutils: http://docutils.sourceforge.net

@@ -1,10 +1,6 @@
 Paella
 ========
 
-This is the homepage of paella.
-
------------------------------------
-
 What is Paella_?
 ---------------------
 
@@ -86,7 +82,16 @@ equivalent.  The paella-debrepos package helps with this.
 Download
 --------------
 
-Currently the best way to obtain paella is through subversion.  
+Currently the best way to obtain paella is through subversion::
+
+	  svn checkout svn://svn.berlios.de/useless/trunk useless
+	  svn checkout svn://svn.berlios.de/paella/trunk paella
+
+Have the build-deps installed on your system, and the packages should build 
+without problems.
+
+There is a tarball_ available, but it is likely to be out of date.  There is still a lot
+to do before a 1.0 release will be made.
 
 ------------------
 
@@ -111,6 +116,8 @@ known problems_ with paella.
 
 Related Links
 ------------------------
+
+Useless_ -- My toolkit of python code.
 
 FAI_ -- Fully Automated Installer for debian
      Paella takes most of its inspiration from fai.
@@ -161,3 +168,4 @@ This project_ is hosted by |berlios|.
 .. _TOra: http://tora.sourceforge.net/
 .. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
 .. _problems: problems.html
+.. _tarball: http://download.berlios.de/paella/paella_0.7.20.tar.gz 

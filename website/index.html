@@ -10,8 +10,6 @@
 <body>
 <div class="document" id="paella">
 <h1 class="title">Paella</h1>
-<p>This is the homepage of paella.</p>
-<hr class="docutils" />
 <div class="section" id="what-is-paella">
 <h1><a name="what-is-paella">What is <a class="reference" href="http://paella.berlios.de">Paella</a>?</a></h1>
 <p><a class="reference" href="http://paella.berlios.de">Paella</a> is a installation/configuration management system centered on 
@@ -80,7 +78,15 @@ equivalent.  The paella-debrepos package helps with this.</p>
 <hr class="docutils" />
 <div class="section" id="download">
 <h1><a name="download">Download</a></h1>
-<p>Currently the best way to obtain paella is through subversion.</p>
+<p>Currently the best way to obtain paella is through subversion:</p>
+<pre class="literal-block">
+svn checkout svn://svn.berlios.de/useless/trunk useless
+svn checkout svn://svn.berlios.de/paella/trunk paella
+</pre>
+<p>Have the build-deps installed on your system, and the packages should build 
+without problems.</p>
+<p>There is a <a class="reference" href="http://download.berlios.de/paella/paella_0.7.20.tar.gz">tarball</a> available, but it is likely to be out of date.  There is still a lot
+to do before a 1.0 release will be made.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="project">
@@ -97,6 +103,7 @@ equivalent.  The paella-debrepos package helps with this.</p>
 <hr class="docutils" />
 <div class="section" id="related-links">
 <h1><a name="related-links">Related Links</a></h1>
+<p><a class="reference" href="http://useless.berlios.de">Useless</a> -- My toolkit of python code.</p>
 <dl class="docutils">
 <dt><a class="reference" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> -- Fully Automated Installer for debian</dt>
 <dd>Paella takes most of its inspiration from fai.</dd>

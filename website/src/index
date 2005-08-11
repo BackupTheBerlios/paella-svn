@@ -112,6 +112,8 @@ gui_ document
 
 known problems_ with paella.
 
+how this website is maintained_.
+
 ---------------------------
 
 Related Links
@@ -169,3 +171,4 @@ This project_ is hosted by |berlios|.
 .. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
 .. _problems: problems.html
 .. _tarball: http://download.berlios.de/paella/paella_0.7.20.tar.gz 
+.. _maintained: svnwebsite.html

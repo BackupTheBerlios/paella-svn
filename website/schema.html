@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
+<title>Paella Database Design</title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="paella-database-design">
+<h1 class="title">Paella Database Design</h1>
+<div class="section" id="database-schema">
+<h1><a name="database-schema">Database Schema</a></h1>
+<p>The database schema is not very complicated.</p>
+<p>The primary tables are:</p>
+<ul class="simple">
+<li>textfiles<ul>
+<li>a table containing an id, md5sum, size, and
+text of every template and script used in the
+database.</li>
+</ul>
+</li>
+<li>scriptnames<ul>
+<li>a list of names for the scripts</li>
+<li>right now this defaults to the steps of the trait
+processes.</li>
+</ul>
+</li>
+<li>suites</li>
+<li>default_environment</li>
+<li>current_environment</li>
+</ul>
+<p>Other tables are in related sets:</p>
+<ul>
+<li><p class="first"><strong>suite tables</strong>  -- there is a set for each suite in suites table</p>
+<ul>
+<li><p class="first">sarge_packages</p>
+<ul class="simple">
+<li>a list of all the packages available to this suite</li>
+</ul>
+</li>
+<li><p class="first">sarge_traits</p>
+<ul class="simple">
+<li>a list of all the <a class="reference" href="#trait">traits</a> in this suite</li>
+</ul>
+</li>
+<li><p class="first">sarge_trait_package</p>
+<ul class="simple">
+<li>relates traits to packages</li>
+<li>action on the package can be remove, install, config, reconfig<ul>
+<li>remove will remove the package, if installed</li>
+<li>install will install the package</li>
+<li>config does nothing right now</li>
+<li>reconfig runs dpkg-reconfigure -plow on the package</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first">sarge_trait_parent</p>
+<ul class="simple">
+<li>relates traits to other traits</li>
+<li>current code can't handle cyclic dependencies</li>
+</ul>
+</li>
+<li><p class="first">sarge_scripts</p>
+<ul class="simple">
+<li>relates traits and scriptnames and textfiles</li>
+</ul>
+</li>
+<li><p class="first">sarge_templates</p>
+<ul>
+<li><p class="first">relates traits to packages and textfiles</p>
+</li>
+<li><p class="first">this is where the templates are located</p>
+</li>
+<li><p class="first">info can be preserved for user/group ownership
+and file mode.</p>
+</li>
+<li><p class="first">template tags have the form:</p>
+<pre class="literal-block">
+&lt;--|trait_name|--&gt;
+</pre>
+</li>
+</ul>
+<blockquote>
+<p>where trait is the name of the trait
+and name is the name of the variable
+for example:</p>
+<pre class="literal-block">
+&lt;--|xwindow_driver|--&gt;
+</pre>
+</blockquote>
+<ul class="simple">
+<li>parent directories created before installing the
+template will be root:root and system umask</li>
+</ul>
+</li>
+<li><p class="first">sarge_variables</p>
+<ul class="simple">
+<li>relates traits to name, value pairs</li>
+<li>a dictionary is made from this table and is used
+in the templates and in the scripts</li>
+<li>the keys in the dictionary are in the form
+as the template tags mentioned above, without
+the tag markers.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p class="first"><strong>profile tables</strong></p>
+<ul class="simple">
+<li><a class="reference" href="#profile">profiles</a></li>
+<li>profile_family</li>
+<li>profile_trait</li>
+<li>profile_variables</li>
+</ul>
+</li>
+<li><p class="first"><strong>family tables</strong></p>
+<ul class="simple">
+<li><a class="reference" href="#family">families</a></li>
+<li>family_environment</li>
+<li>family_parent</li>
+</ul>
+</li>
+<li><p class="first"><strong>machine tables</strong></p>
+<ul class="simple">
+<li>machines<ul>
+<li>list of <a class="reference" href="#machine">machines</a></li>
+<li>relates to machine_types, profiles, filesystems, kernels</li>
+</ul>
+</li>
+<li>machine_types<ul>
+<li>list of <a class="reference" href="#machine-type">machine_types</a></li>
+</ul>
+</li>
+<li>machine_disks<ul>
+<li>relates machine_types to disks and device name</li>
+</ul>
+</li>
+<li>machine_modules<ul>
+<li>ordered lists of modules</li>
+<li>relates to <a class="reference" href="#machine-type">machine_types</a></li>
+</ul>
+</li>
+<li>disks<ul>
+<li>list of disknames</li>
+</ul>
+</li>
+<li>filesystem_mounts<ul>
+<li>an ordered list of mounts for a filesystem</li>
+<li>relates to <a class="reference" href="#filesystem">filesystems</a></li>
+<li>size corresponds to fai diskconfig</li>
+<li>partition number for hard drive</li>
+</ul>
+</li>
+<li>filesystems<ul>
+<li>a list of <a class="reference" href="#filesystem">filesystems</a></li>
+</ul>
+</li>
+<li>kernels<ul>
+<li>a list of kernel package names</li>
+</ul>
+</li>
+<li>mounts<ul>
+<li>a list of <a class="reference" href="#mount">mounts</a> and options</li>
+</ul>
+</li>
+<li>partitions<ul>
+<li>a list of partition numbers and sfdisk info</li>
+<li>relates to disks</li>
+<li>use this info to dump with sfdisk</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section" id="database-setup">
+<h1><a name="database-setup">Database Setup</a></h1>
+<blockquote>
+<p>example:</p>
+<pre class="literal-block">
+apt-get install postgresql
+su postgres
+createuser -a -d adminuser
+createuser -A -D paella
+createlang plpgsql template1    
+exit
+su adminuser createdb paella
+</pre>
+</blockquote>
+<p>You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
+paella from anywhere on the local network, and allow adminuser from your management
+desktop.</p>
+</div>
+</div>
+</body>
+</html>

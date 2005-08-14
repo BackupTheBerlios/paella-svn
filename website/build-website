@@ -5,6 +5,7 @@ from os.path import join, basename
 import pipes
 from ConfigParser import ConfigParser, NoOptionError
 from md5 import md5
+import tempfile
 
 BLOCK_SIZE = 1024
 cfg = ConfigParser()
@@ -40,14 +41,23 @@ def store_page_md5sum(fullpath, md5=None):
     cfg.write(file('src/.md5sums', 'w'))
     
 
+def append_berlios_footer(fullpath):
+    tmp, path = tempfile.mkstemp('build', 'page', '.')
+    tmp = file(path, 'w')
+    tmp.write(file(fullpath).read())
+    tmp.write('.. include:: src/.berlios-footer\n')
+    tmp.close()
+    return path
+
 def buildpage(fullpath, targetpath='.'):
-    infile = fullpath
+    infile = append_berlios_footer(fullpath)
     outfile = join(targetpath, '%s.html' % basename(fullpath))
     print 'building', page
     t = pipes.Template()
     t.prepend('rst2html $IN', 'f-')
     t.copy(infile, outfile)
-
+    os.remove(infile)
+    
 def check_page(fullpath):
     md5 = md5sum(file(fullpath))
     smd5 = get_stored_md5sum(fullpath)

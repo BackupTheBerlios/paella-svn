@@ -1,0 +1,99 @@
+FAI_ and Paella_
+====================
+
+
+A brief history on my experience with fai_ and the birth of paella_.
+----------------------------------------------------------------------------------------------
+
+
+I first looked at fai_ back when potato was stable.  I had just moved
+all of the machines on a network to debian, and I was looking for an
+easy way to quickly install systems.  After looking it over, I decided not 
+to use it due to not having enough time to devote to setting everything 
+up.  There are many steps required to setup a network to be capable
+of fully automatic installation.  Making default system configurations
+and testing them can take quite a bit of time too.  Any sort of system 
+that performs network functions like fai or paella can take
+more time to setup and configure than doing a quick install/restore.
+
+
+I started using fai_ later on when I had time and reason to do so.  By this
+time woody was the stable release.  Before too long, I had a system up
+and running.  I started by modifying the sample configuration and testing
+the system.  Soon, the whole network was installed with fai.  Knowing that
+I would be using a system like this for a long term to manage system/network 
+configurations, I started concentrating on developing default configurations.
+
+
+During this time, I started using subversion for revision control.  I didn't feel
+like keeping a cvs repository for my systems.  I also don't care much for perl,
+and prefer python.  So paella was born from wanting to extend fai without having
+to dig into perl.  Paella started as a set of "hook" scripts in fai that connected to
+a postgresql database to get its configuration.  It eventually grew into it's own 
+system, and now only (optionally) uses the setup_hardisks script from fai.  The
+setup_hardisks script is generally more reliable than the code I made to setup 
+hardrives.  Most of my concentration on paella has been on the logical system 
+configuration and network integration.
+
+----------------------------
+
+Differences between FAI_ and Paella_
+------------------------------------------------------
+
++ Development Environment
+
+  First of all, paella is written in python, with a little bash.  Fai is written
+  with perl and bash.
+
++ Configuration Storage
+  
+  Fai uses an exported nfs filesystem to read configuration data from.  Paella
+  uses a postgresql database to read/write configuration data.
+
++ Configuration Design
+
+  Paella is concentrated around system design.  Paella tries to make a
+  distinction between logical and physical systems.  This distinction allows an
+  administrator to update/change the hardware of a particular system without
+  having to mess with the logical part of the system at all.  While this is possible
+  in fai, it can be difficult to manange.
+
++ Installer Design
+
+  A consequence of the configuration design allows the distinction in the design 
+  of the installer to be noted.  There are two main types of installers in paella.
+  There is a chroot installer and a machine installer.  The chroot installer is designed
+  to install a logical system (profile) to a target directory.  The machine installer is 
+  responsible to preparing a target directory on a physical system (machine_type).  
+  The machine installer then uses the chroot installer to install to the target directory
+  of the machine.
+
+  This separation makes it easier to do interesting things like install a fully configured
+  diskless system on a server.  You could also mount a loopback filesystem and
+  specify it to be the target directory for creating live cd's or embedded systems.
+
+
+Todo
+--------
+
+This document is unfinished.
+
+
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi@gregscomputerservice.com
+.. _problems: problems.html
+.. _tarball: http://download.berlios.de/paella/paella_0.7.20.tar.gz 
+.. _maintained: svnwebsite.html

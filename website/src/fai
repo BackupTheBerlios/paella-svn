@@ -48,7 +48,16 @@ Differences between FAI_ and Paella_
 + Configuration Storage
   
   Fai uses an exported nfs filesystem to read configuration data from.  Paella
-  uses a postgresql database to read/write configuration data.
+  uses a postgresql database to read/write configuration data.  The tables
+  are generally read only for the installer user, with the exception of a couple
+  tables reserved just for the installer to write to.
+
+  The use of a sql database has both advantages and disadvantages, when
+  compared to a file based configuration system.  Obviously it is easier on the
+  surface to modify a file based configurations system.  Scripts and files are much
+  easier to manage in a filesystem, rather than in a database.  On the other hand,
+  small data values and relationships are easier to track and modify in a database.
+
 
 + Configuration Design
 

@@ -8,7 +8,18 @@ author = 'Joseph Rawson'
 author_email = 'umeboshi@gregscomputerservice.com'
 url = 'http://developer.berlios.de/projects/etcsvn'
 
+# scripts = ['scripts/etcsvn']
 scripts = []
-setup(version=version, description=description, author=author,
-      author_email=author_email, url=url, packages=packages,
-      package_dir=package_dir, scripts=scripts)
+data_files = [('/usr/sbin', ['scripts/etcsvn']),
+              ('/etc', ['config/etcsvn.conf'])]
+packages = ['etcsvn']
+setup(name='etcsvn',
+      version=version,
+      description=description,
+      author=author,
+      author_email=author_email,
+      url=url,
+      packages=packages,
+      scripts=scripts,
+      data_files=data_files)
+

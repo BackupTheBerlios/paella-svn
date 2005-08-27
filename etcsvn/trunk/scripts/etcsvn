@@ -25,8 +25,44 @@ es = EtcSvn(config)
 COMMANDS = ['create', 'setup', 'update', 'checkup', 'backup', 'restore', 'clean',
             'import', 'export', 'status', 'commit', 'listfiles']
 
+HELP = {
+    'create' : """This command will create a local repository on your system,
+    using the url option in the config.""",
+    'setup' : """This command will checkout a working copy from the repository
+    to your workspace.""",
+    'update' : """This command will update your working copy.""",
+    'checkup' : """This command will check all of the files listed in the
+    repository configuration, and update changed files.  Doesn't check
+    for ownership/permission changes.""",
+    'backup' : """This command will update your working copy with all the files
+    being tracked in the repository configuration.  This command will track
+    ownership/permission changes.""",
+    'restore' : """This command will export files tracked in your repository
+    configuration to the system.  This command will overwrite any files
+    already there.""",
+    'clean' : """This command will remove your workspace, modified or not.""",
+    'import' : """This command takes a filename argument.  If the filename
+    doesn't start with '/' then it will be referenced from your $PWD.  Only
+    files are supported, etcsvn is unable to handle symbolic links, or
+    directory arguments.  It will handle parent directories to the file
+    correctly though.
+    Example:  etcsvn import /etc/fstab""",
+    'export' : """This command takes a filename argument. This command will
+    export a file from your working copy to the system.""",
+    'status' : """This command will report the status of your workspace.""",
+    'commit' : """This command will commit the workspace to the repository.""",
+    'listfiles' : """This command will list the files being tracked in the
+    repository."""
+    }
+    
 if not len(args):
-    raise RuntimeError, 'etcsvn <cmd> where cmd is in %s' % ', '.join(COMMANDS)
+    print 'Usage: etcsvn <cmd>'
+    print 'With these commands:'
+    print
+    for k,v in HELP.items():
+        print '%s:\t\t%s' % (k,v)
+        print
+    sys.exit(0)
 
 
 command = args[0]
@@ -42,7 +78,21 @@ if command in ['import', 'export']:
         print 'changing relative file', filename
         filename = os.path.join(os.getcwd(), filename)
         print 'changed to', filename
-        
+elif command == 'help':
+    try:
+        hcommand = args[1]
+    except IndexError:
+        print 'Usage:  etcsvn help <cmd>.'
+        print 'where <cmd> is one of %s' % ', '.join(HELP.keys())
+        raise ValueError, 'No subcommand provided'
+    hcommand = args[1]
+    if hcommand in HELP:
+        print HELP[hcommand]
+        sys.exit(0)
+    else:
+        print 'No help available for', hcommand
+        print 'Supported commands are', ' '.join(HELP.keys())
+        raise IndexError, 'command %s now available' % hcommand
 
 # load config if needed
 if command in ['checkup', 'backup', 'restore', 'import', 'export', 'listfiles']:
@@ -77,4 +127,5 @@ elif command == 'listfiles':
     for afile in files:
         print afile
 else:
+    print command, 'is not a supported command.'
     raise RuntimeError, '%s is not a supported command.' % command

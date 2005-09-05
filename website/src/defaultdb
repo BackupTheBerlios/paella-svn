@@ -4,6 +4,106 @@ Paella Default Database
 Paella comes with a default database to play with.  It is recommended that you
 start of with this database until you get a good feel for the paella system.
 
+----------------------
+
+Traits in the Default Database
+-------------------------------------
+
+- Basic Traits
+
+  + global
+
+  + base
+
+  + nettools
+
+  + default
+
+  + final
+
+- Main Traits
+
+  + localnet
+
+  + 
+
+- Server Traits
+
+  + boot_server
+
+  + clockserver
+
+  + dhcp_server
+
+  + dictionary
+
+  + diskless_server
+
+  + fileserver
+
+  + ldap_server
+
+  + mailserver
+
+  + nameserver
+
+  + nfs_server
+
+  + postgres
+
+  + samba
+
+  + squid
+
+  + webserver
+
+  + standard
+
+  + extended
+
+- Desktop Traits
+
+  + xwindow
+
+  + desktop
+
+  + enlightenment
+
+  + filesharing
+
+  + gkrellm
+
+  + glgames
+
+  + gnome
+
+  + graphics_editor
+
+  + gtkthemes
+
+  + hqgames
+
+  + kde
+
+  + media_tools
+
+  + netdesk
+
+  + office
+
+  + video
+
+  + webbrowser
+
+  + wine
+
+  + desktop_toys
+
+  + xgames
+
+  + xmms
+
+
 
 
 The project_ is hosted by |berlios|.

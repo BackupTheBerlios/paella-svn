@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+install/paella-base::
+	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
+	rm -r build/
+install/paella-debian::
+	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
+	rm -r build/
+install/paella-db::
+	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
+	rm -r build/	
+install/paella-dbgtk::
+	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
+	rm -r build/
+install/paella-installer::
+	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
+	rm -r build/	
+install/paella-admin::
+	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
+	rm -r build/	
+install/paella-kde-admin::
+	python setup.py kde-admin install --prefix=$(CURDIR)/debian/paella-kde-admin/usr
+	rm -r build/	
+build/paella-doc::
+	rst2html docs/notes > notes.html
+
+clean::
+	dh_clean `find -path *.pyc`
+	dh_clean `find -path *~`
+	dh_clean configure-stamp notes.html
+

@@ -18,13 +18,32 @@ todo for etch:
 --------
 
 ---------------------
-gtk client todo
+gtk->kde client todo
 ---------------------
 
 - main manager
 
+ - need client manager for kde
+
+ - need database import/export for kde
+
+ - deprecate commands 
+
+  - paella-management becomes paella-gtk-management
+  - paella-kde-management becomes paella-management
+
+
 ------
 
+---------------------------------
+general kde client todo
+---------------------------------
+
+- cleanup present code
+
+ - quit passing "app" around and use KApplication.kApplication() call
+
+ - use forgetHTML instead of xmlgen in text browsers
 
 --------------------------------------------------
 things done to database for testing
@@ -33,6 +52,7 @@ things done to database for testing
 - stuff to fix later, when more code is up to date
 
 removed kudzu, only test with sarge and desksarge
+	put kudzu back in teporarily to fix missing trait problems
 
 problems with importing Packages files into the database
 	problem seems to be blank lines in description field
@@ -44,5 +64,21 @@ problems with importing Packages files into the database
 		
 		fcmp - hqgames trait - sarge, desksarge
 		
-		fcmp - xgames trait - sarge, desksarge
+		fcmp - xgames trait - sarge, desksarge, kudzu
 
+		freecraft - xgames trait - kudzu
+		
+		cantus - media_tools - kudzu
+
+problems with missing traits that are present in kudzu
+	 
+- families
+	  
+ - removed admin_password variable from insecure 
+
+ - trait webmin only in kudzu
+	    
+- profiles
+ 
+ - ume_graphics only in kudzu
+	  

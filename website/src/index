@@ -101,6 +101,10 @@ Project
 
 project_ page
 
+Currently, paella is going through many changes for the new etch release.  The code
+in the trunk will probably be broken for a while.  The latest stable code is in the sarge branch.
+
+todo_ list for etch
 -----------------------
 
 Documentation
@@ -155,6 +159,7 @@ Authors
 .. _project: http://developer.berlios.de/projects/paella
 .. _notes: notes.html
 .. _gui:   gui.html
+.. _todo:  todo_etch.html
 .. _debian: http://debian.org
 .. _useless: http://useless.berlios.de
 .. _fai: http://www.informatik.uni-koeln.de/fai/

@@ -12,11 +12,16 @@ todo for etch:
 - write a script that converts old type templates to cheetah templates
 
 - rename template files in traits (use md5sum of filepath, instead of numbered order)
-	---- not using md5sum of filepath, but replacing '/' with '-slash-'
-	---- there is no need to determine template name from filename
-	---- as it's in the xml, so it will be easier to see which template is which
-	---- in the exported version.
-	---- mostly done but untested
+
+  - not using md5sum of filepath, but replacing '/' with '-slash-'
+
+  - there is no need to determine template name from filename
+
+  - as it's in the xml, so it will be easier to see which template is which
+
+  - in the exported version.
+
+  - mostly done but untested
 
 - fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
 	----done, made a conversion script for it
@@ -60,6 +65,8 @@ general kde client todo
  - quit passing "app" around and use KApplication.kApplication() call
 
  - use forgetHTML instead of xmlgen in text browsers
+
+   - This seems to be done 	
 
 --------------------------------------------------
 things done to database for testing

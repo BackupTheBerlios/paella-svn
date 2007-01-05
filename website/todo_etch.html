@@ -305,15 +305,14 @@ ul.auto-toc {
 </li>
 <li><p class="first">write a script that converts old type templates to cheetah templates</p>
 </li>
-<li><dl class="first docutils">
-<dt>rename template files in traits (use md5sum of filepath, instead of numbered order)</dt>
-<dd><p class="first last">---- not using md5sum of filepath, but replacing '/' with '-slash-'
----- there is no need to determine template name from filename
----- as it's in the xml, so it will be easier to see which template is which
----- in the exported version.
----- mostly done but untested</p>
-</dd>
-</dl>
+<li><p class="first">rename template files in traits (use md5sum of filepath, instead of numbered order)</p>
+<ul class="simple">
+<li>not using md5sum of filepath, but replacing '/' with '-slash-'</li>
+<li>there is no need to determine template name from filename</li>
+<li>as it's in the xml, so it will be easier to see which template is which</li>
+<li>in the exported version.</li>
+<li>mostly done but untested</li>
+</ul>
 </li>
 <li><dl class="first docutils">
 <dt>fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files</dt>
@@ -361,7 +360,10 @@ ul.auto-toc {
 <blockquote>
 <ul class="simple">
 <li>quit passing &quot;app&quot; around and use KApplication.kApplication() call</li>
-<li>use forgetHTML instead of xmlgen in text browsers</li>
+<li>use forgetHTML instead of xmlgen in text browsers<ul>
+<li>This seems to be done</li>
+</ul>
+</li>
 </ul>
 </blockquote>
 </div>

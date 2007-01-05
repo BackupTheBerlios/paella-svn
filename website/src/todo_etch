@@ -9,11 +9,27 @@ todo for etch:
 
 - use cheetah templates
 
+- write a script that converts old type templates to cheetah templates
+
 - rename template files in traits (use md5sum of filepath, instead of numbered order)
+	---- not using md5sum of filepath, but replacing '/' with '-slash-'
+	---- there is no need to determine template name from filename
+	---- as it's in the xml, so it will be easier to see which template is which
+	---- in the exported version.
+	---- mostly done but untested
 
-- fix environ variable tagnames in trait.xml files
-
+- fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
+	----done, made a conversion script for it
+		
 - fix problems encountered with importing Packages files into the database
+
+- get umlmachines working again
+
+- rename template files instead of using numbers
+
+- remove requirement that templates be matched to packages
+
+- use trait.xml conversion script to fix template filenames on exported traits
 
 --------
 

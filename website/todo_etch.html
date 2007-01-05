@@ -303,11 +303,33 @@ ul.auto-toc {
 </li>
 <li><p class="first">use cheetah templates</p>
 </li>
-<li><p class="first">rename template files in traits (use md5sum of filepath, instead of numbered order)</p>
+<li><p class="first">write a script that converts old type templates to cheetah templates</p>
 </li>
-<li><p class="first">fix environ variable tagnames in trait.xml files</p>
+<li><dl class="first docutils">
+<dt>rename template files in traits (use md5sum of filepath, instead of numbered order)</dt>
+<dd><p class="first last">---- not using md5sum of filepath, but replacing '/' with '-slash-'
+---- there is no need to determine template name from filename
+---- as it's in the xml, so it will be easier to see which template is which
+---- in the exported version.
+---- mostly done but untested</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files</dt>
+<dd><p class="first last">----done, made a conversion script for it</p>
+</dd>
+</dl>
 </li>
 <li><p class="first">fix problems encountered with importing Packages files into the database</p>
+</li>
+<li><p class="first">get umlmachines working again</p>
+</li>
+<li><p class="first">rename template files instead of using numbers</p>
+</li>
+<li><p class="first">remove requirement that templates be matched to packages</p>
+</li>
+<li><p class="first">use trait.xml conversion script to fix template filenames on exported traits</p>
 </li>
 </ul>
 <hr class="docutils" />

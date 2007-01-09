@@ -329,6 +329,12 @@ ul.auto-toc {
 <li><p class="first">remove requirement that templates be matched to packages</p>
 </li>
 <li><p class="first">use trait.xml conversion script to fix template filenames on exported traits</p>
+<ul class="simple">
+<li>decided not to do this, the export will use the new method by default</li>
+<li>the import will try the new method first then revert to the old</li>
+</ul>
+</li>
+<li><p class="first">consider using bcfg2 for live updating of already installed machines</p>
 </li>
 </ul>
 <hr class="docutils" />
@@ -341,6 +347,10 @@ ul.auto-toc {
 <ul class="simple">
 <li>need client manager for kde</li>
 <li>need database import/export for kde</li>
+<li>make family differ<ul>
+<li>this is done</li>
+</ul>
+</li>
 <li>deprecate commands</li>
 </ul>
 <blockquote>
@@ -350,6 +360,42 @@ ul.auto-toc {
 </ul>
 </blockquote>
 </blockquote>
+<ul class="simple">
+<li>suite-trait manager<ul>
+<li>need to make new traits, missing dialog to do so</li>
+<li>need to handle parents, fix edit, edit2 links</li>
+<li>need to be able to edit packages and actions<ul>
+<li>need a table header for packages table</li>
+</ul>
+</li>
+<li>need to handle variables</li>
+<li>need to make new scripts</li>
+<li>need to delete scripts</li>
+</ul>
+</li>
+<li>profile manager<ul>
+<li>need to make new profiles, missing dialog to do so</li>
+</ul>
+</li>
+<li>family manager<ul>
+<li>need to make new families, missing dialog to do so</li>
+<li>need to manage family parents</li>
+</ul>
+</li>
+<li>differs<ul>
+<li>mostly done</li>
+<li>alphabetize trait comboboxes</li>
+</ul>
+</li>
+<li>environment editors<ul>
+<li>appears to be done</li>
+</ul>
+</li>
+<li>machines manager<ul>
+<li>this area needs a lot of work still</li>
+</ul>
+</li>
+</ul>
 </div>
 <hr class="docutils" />
 <div class="section">
@@ -366,6 +412,10 @@ ul.auto-toc {
 </li>
 </ul>
 </blockquote>
+<ul class="simple">
+<li>need to make widgets out of different managers and keep them in
+one window.</li>
+</ul>
 </div>
 <div class="section">
 <h1><a id="things-done-to-database-for-testing" name="things-done-to-database-for-testing">things done to database for testing</a></h1>

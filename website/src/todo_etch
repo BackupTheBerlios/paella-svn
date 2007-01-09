@@ -36,6 +36,12 @@ todo for etch:
 
 - use trait.xml conversion script to fix template filenames on exported traits
 
+  - decided not to do this, the export will use the new method by default
+
+  - the import will try the new method first then revert to the old
+
+- consider using bcfg2 for live updating of already installed machines
+
 --------
 
 ---------------------
@@ -48,10 +54,55 @@ gtk->kde client todo
 
  - need database import/export for kde
 
+ - make family differ
+
+   - this is done
+
  - deprecate commands 
 
   - paella-management becomes paella-gtk-management
   - paella-kde-management becomes paella-management
+
+- suite-trait manager
+
+  - need to make new traits, missing dialog to do so
+
+  - need to handle parents, fix edit, edit2 links
+
+  - need to be able to edit packages and actions
+
+    - need a table header for packages table
+
+  - need to handle variables
+
+  - need to make new scripts
+
+  - need to delete scripts
+
+
+- profile manager
+
+  - need to make new profiles, missing dialog to do so
+
+- family manager
+
+  - need to make new families, missing dialog to do so
+
+  - need to manage family parents
+
+- differs
+
+  - mostly done
+
+  - alphabetize trait comboboxes
+
+- environment editors
+
+  - appears to be done
+
+- machines manager
+
+  - this area needs a lot of work still
 
 
 ------
@@ -66,7 +117,11 @@ general kde client todo
 
  - use forgetHTML instead of xmlgen in text browsers
 
-   - This seems to be done 	
+   - This seems to be done
+
+- need to make widgets out of different managers and keep them in
+  one window.
+
 
 --------------------------------------------------
 things done to database for testing

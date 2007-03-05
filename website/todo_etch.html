@@ -293,14 +293,6 @@ ul.auto-toc {
 <div class="document" id="todo-for-etch">
 <h1 class="title">todo for etch:</h1>
 <ul>
-<li><dl class="first docutils">
-<dt>remove python2.3 from all scripts</dt>
-<dd><p class="first last">-----done, looks like I did this a while ago</p>
-</dd>
-</dl>
-</li>
-<li><p class="first">completely deprecate the gtk management client</p>
-</li>
 <li><p class="first">use cheetah templates</p>
 </li>
 <li><p class="first">write a script that converts old type templates to cheetah templates</p>
@@ -314,19 +306,20 @@ ul.auto-toc {
 <li>mostly done but untested</li>
 </ul>
 </li>
-<li><dl class="first docutils">
-<dt>fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files</dt>
-<dd><p class="first last">----done, made a conversion script for it</p>
-</dd>
-</dl>
-</li>
 <li><p class="first">fix problems encountered with importing Packages files into the database</p>
+<ul class="simple">
+<li>there is a workaround that seems to be working for now</li>
+</ul>
 </li>
 <li><p class="first">get umlmachines working again</p>
 </li>
 <li><p class="first">rename template files instead of using numbers</p>
 </li>
-<li><p class="first">remove requirement that templates be matched to packages</p>
+<li><dl class="first docutils">
+<dt>remove requirement that templates be matched to packages</dt>
+<dd><p class="first last">-----done, I should've done this much, much sooner</p>
+</dd>
+</dl>
 </li>
 <li><p class="first">use trait.xml conversion script to fix template filenames on exported traits</p>
 <ul class="simple">
@@ -335,6 +328,24 @@ ul.auto-toc {
 </ul>
 </li>
 <li><p class="first">consider using bcfg2 for live updating of already installed machines</p>
+</li>
+<li><dl class="first docutils">
+<dt>remove python2.3 from all scripts</dt>
+<dd><p class="first last">-----done, looks like I did this a while ago</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>completely deprecate the gtk management client</dt>
+<dd><p class="first last">----done, the kde manager does most of what gtk manager did</p>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files</dt>
+<dd><p class="first last">----done, made a conversion script for it</p>
+</dd>
+</dl>
 </li>
 </ul>
 <hr class="docutils" />
@@ -345,8 +356,14 @@ ul.auto-toc {
 </ul>
 <blockquote>
 <ul class="simple">
-<li>need client manager for kde</li>
-<li>need database import/export for kde</li>
+<li>need client manager for kde<ul>
+<li>just started</li>
+</ul>
+</li>
+<li>need database import/export for kde<ul>
+<li>mostly done</li>
+</ul>
+</li>
 <li>make family differ<ul>
 <li>this is done</li>
 </ul>
@@ -362,15 +379,20 @@ ul.auto-toc {
 </blockquote>
 <ul class="simple">
 <li>suite-trait manager<ul>
-<li>need to make new traits, missing dialog to do so</li>
-<li>need to handle parents, fix edit, edit2 links</li>
+<li>need to make new traits, missing dialog to do so <strong>done</strong></li>
+<li>need to handle parents, fix edit, edit2 links <strong>done</strong></li>
 <li>need to be able to edit packages and actions<ul>
 <li>need a table header for packages table</li>
 </ul>
 </li>
 <li>need to handle variables</li>
-<li>need to make new scripts</li>
+<li>need to make new scripts <strong>done</strong></li>
 <li>need to delete scripts</li>
+<li>need to view scripts <strong>done</strong></li>
+<li>need to edit scripts <strong>done</strong></li>
+<li>need to view templates <strong>done</strong></li>
+<li>need to edit templates <strong>done</strong></li>
+<li>need to edit template data <strong>done</strong></li>
 </ul>
 </li>
 <li>profile manager<ul>
@@ -384,7 +406,7 @@ ul.auto-toc {
 </li>
 <li>differs<ul>
 <li>mostly done</li>
-<li>alphabetize trait comboboxes</li>
+<li>alphabetize trait comboboxes <strong>done</strong></li>
 </ul>
 </li>
 <li>environment editors<ul>
@@ -426,18 +448,17 @@ one window.</li>
 <dt>removed kudzu, only test with sarge and desksarge</dt>
 <dd>put kudzu back in teporarily to fix missing trait problems</dd>
 <dt>problems with importing Packages files into the database</dt>
-<dd><p class="first">problem seems to be blank lines in description field
-workaround now is to remove those packages from the traits
-and fix the culprit later</p>
-<dl class="last docutils">
-<dt>traits to fix when the problem is solved:</dt>
-<dd><p class="first">pyca - default trait - sarge, desksarge</p>
-<p>fcmp - hqgames trait - sarge, desksarge</p>
-<p>fcmp - xgames trait - sarge, desksarge, kudzu</p>
-<p>freecraft - xgames trait - kudzu</p>
-<p class="last">cantus - media_tools - kudzu</p>
-</dd>
-</dl>
+<dd><p class="first">problem seems to be blank lines in description field -NOT-
+problem seems to be character encoding
+decode to utf-8 seems to work ok
+traits to fix when the problem is solved:
+- pyca - default trait - sarge, desksarge</p>
+<ul class="last simple">
+<li>fcmp - hqgames trait - sarge, desksarge</li>
+<li>fcmp - xgames trait - sarge, desksarge, kudzu</li>
+<li>freecraft - xgames trait - kudzu</li>
+<li>cantus - media_tools - kudzu</li>
+</ul>
 </dd>
 </dl>
 <p>problems with missing traits that are present in kudzu</p>

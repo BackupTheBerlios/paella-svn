@@ -3,36 +3,318 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.3.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
 <title></title>
-<link rel="stylesheet" href="default.css" type="text/css" />
+<style type="text/css">
+
+/*
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
+:Revision: $Revision: 4224 $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin-left: 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em ;
+  background-color: #eeeeee }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+tt.docutils {
+  background-color: #eeeeee }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
 </head>
 <body>
 <div class="document">
-<div class="section" id="paella-notes">
-<h1><a name="paella-notes">Paella Notes</a></h1>
-<div class="section" id="what-is-paella">
-<h2><a name="what-is-paella">What is Paella</a></h2>
+<div class="section">
+<h1><a id="paella-notes" name="paella-notes">Paella Notes</a></h1>
+<div class="section">
+<h2><a id="what-is-paella" name="what-is-paella">What is Paella</a></h2>
 <!-- small overview of paella -->
-<p>Paella is a installation/configuration management system centered on 
-being able to easily define, configure, maintain and update systems and 
+<p>Paella is a installation/configuration management system centered on
+being able to easily define, configure, maintain and update systems and
 networks.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="objects-and-definitions">
-<h2><a name="objects-and-definitions">Objects and Definitions</a></h2>
+<div class="section">
+<h2><a id="objects-and-definitions" name="objects-and-definitions">Objects and Definitions</a></h2>
 </div>
-<div class="section" id="suite">
-<h2><a name="suite">Suite</a></h2>
-<p>A suite is a similiar to debian suites like woody or sarge.  A suite 
+<div class="section">
+<h2><a id="suite" name="suite">Suite</a></h2>
+<p>A suite is a similiar to debian suites like woody or sarge.  A suite
 can be used to make different versions of configurations, or different
 styles of design and configurations.  Traits are held in suites.</p>
 </div>
-<div class="section" id="trait">
-<h2><a name="trait">Trait</a></h2>
-<p>A trait is the atomic unit that signifies a feature. 
+<div class="section">
+<h2><a id="trait" name="trait">Trait</a></h2>
+<p>A trait is the atomic unit that signifies a feature.
 A trait belongs to a suite.  The table in the database that holds the list of traits
-is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
+is called $(suite)_traits.  A trait can have packages, parents, templates, scripts
 and a set of variables.</p>
 <ul>
 <li><p class="first"><strong>parents</strong></p>
@@ -47,7 +329,7 @@ parents are processed.</li>
 </li>
 <li><p class="first"><strong>packages</strong></p>
 <ul class="simple">
-<li>this is a list of packages to install or remove 
+<li>this is a list of packages to install or remove
 - although other options are available, only install and remove are supported now</li>
 <li>packages are not required</li>
 </ul>
@@ -57,12 +339,12 @@ parents are processed.</li>
 <li>templates can have simple tags for variable substitution</li>
 <li>templates store user/group and chmod permissions</li>
 <li>a template must currently be attached to a package<ul>
-<li>this feature should be removed, because traits that only need 
-traits get vestigial packages assigned to them like base-files, 
+<li>this feature should be removed, because traits that only need
+traits get vestigial packages assigned to them like base-files,
 initscripts, or bash</li>
 </ul>
 </li>
-<li>currently the var/cache/debconf/config.dat template is reserved 
+<li>currently the var/cache/debconf/config.dat template is reserved
 for debconf</li>
 </ul>
 </li>
@@ -74,7 +356,7 @@ for debconf</li>
 </li>
 <li><dl class="first docutils">
 <dt>a big python dictionary is made of the environment where the keys</dt>
-<dd><p class="first last">are formed as &quot;trait_name&quot; where trait is the trait and name is the 
+<dd><p class="first last">are formed as &quot;trait_name&quot; where trait is the trait and name is the
 name of the variable.</p>
 </dd>
 </dl>
@@ -85,9 +367,9 @@ name of the variable.</p>
 <ul class="simple">
 <li>a trait is not required to have a script</li>
 <li>only three types of scripts are currently supported, pre, post, and chroot<ul>
-<li>chroot is a special script that is run in a chrooted environment in the target area. 
-This script should be aware of what's on the target system and only depend on 
-those things. The script shouldn't connect to paella or depend on other installation 
+<li>chroot is a special script that is run in a chrooted environment in the target area.
+This script should be aware of what's on the target system and only depend on
+those things. The script shouldn't connect to paella or depend on other installation
 tools not present in the target system.</li>
 <li>pre is executed before anything else is processed in the trait.<ul>
 <li>The pre script is executed with an os.system.</li>
@@ -105,7 +387,7 @@ step in the trait install process.</li>
 <li>if you make a script named install, remove, config,
 or reconfig, that step in the trait process is ignored,
 and the script run instead.  The script doesn't have
-to do anything, so it's a good way to skip a step in the 
+to do anything, so it's a good way to skip a step in the
 trait installation</li>
 <li>in order for a script to be executed its name must match
 a step in the trait processes.</li>
@@ -115,8 +397,8 @@ a step in the trait processes.</li>
 </li>
 </ul>
 </div>
-<div class="section" id="family">
-<h2><a name="family">Family</a></h2>
+<div class="section">
+<h2><a id="family" name="family">Family</a></h2>
 <ul class="simple">
 <li>A family is a collection of variables from different traits<ul>
 <li>a family can have parents</li>
@@ -127,8 +409,8 @@ but it has to be tied to a trait.</li>
 </li>
 </ul>
 </div>
-<div class="section" id="profile">
-<h2><a name="profile">Profile</a></h2>
+<div class="section">
+<h2><a id="profile" name="profile">Profile</a></h2>
 <ul>
 <li><p class="first">A profile is a collection of traits, and an environment</p>
 <ul>
@@ -139,7 +421,7 @@ but it has to be tied to a trait.</li>
 <li><dl class="first docutils">
 <dt>Environment</dt>
 <dd><ul class="first last simple">
-<li>the profile environment overrides the trait environments 
+<li>the profile environment overrides the trait environments
 and the family environment</li>
 </ul>
 </dd>
@@ -150,21 +432,21 @@ and the family environment</li>
 </ul>
 </div>
 </div>
-<div class="section" id="machine-database">
-<h1><a name="machine-database">Machine Database</a></h1>
+<div class="section">
+<h1><a id="machine-database" name="machine-database">Machine Database</a></h1>
 <p>This section describes the machine database part of paella.  Profile, traits, and families
 should not be machine specific.  The Machine database trying to be design to hold
 information about physical systems to install logical systems from.</p>
-<div class="section" id="machine-type">
-<h2><a name="machine-type">Machine Type</a></h2>
+<div class="section">
+<h2><a id="machine-type" name="machine-type">Machine Type</a></h2>
 <p>A machine type is going to be the main identifier of a particular type of machine.
 This currently includes disks and kernel modules.  The disks of a machine type are a
-list of tuples in the database (machine_type, diskname, device) .  The current policy is 
+list of tuples in the database (machine_type, diskname, device) .  The current policy is
 to treat all devices of a certain  diskname as a raid1 array if there is more than one
 device.</p>
 </div>
-<div class="section" id="machine-type-scripts">
-<h2><a name="machine-type-scripts">Machine Type Scripts</a></h2>
+<div class="section">
+<h2><a id="machine-type-scripts" name="machine-type-scripts">Machine Type Scripts</a></h2>
 <p>Machine type scripts are steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. The default steps/scripts are:</p>
 <ul class="simple">
@@ -192,7 +474,7 @@ system into the target directory.</li>
 </li>
 <li>apt_sources_installer<ul>
 <li>this step should create a sources.list file that is appropriate
-for the installer environment.  It should place the file in 
+for the installer environment.  It should place the file in
 $target/etc/apt/sources.list</li>
 </ul>
 </li>
@@ -240,8 +522,8 @@ skipped for on-site installations.</li>
 </li>
 </ul>
 </div>
-<div class="section" id="machine">
-<h2><a name="machine">Machine</a></h2>
+<div class="section">
+<h2><a id="machine" name="machine">Machine</a></h2>
 <p>a machine contains</p>
 <ul class="simple">
 <li>a <strong>name</strong></li>
@@ -261,28 +543,28 @@ skipped for on-site installations.</li>
 <li>a <strong>profile</strong></li>
 </ul>
 </div>
-<div class="section" id="mount">
-<h2><a name="mount">Mount</a></h2>
+<div class="section">
+<h2><a id="mount" name="mount">Mount</a></h2>
 <p>a <a class="reference" href="#mount">mount</a> is named</p>
 <p>a mount describes filesystem type, mount option, dump, pass and the mount point</p>
 </div>
-<div class="section" id="filesystem">
-<h2><a name="filesystem">Filesystem</a></h2>
+<div class="section">
+<h2><a id="filesystem" name="filesystem">Filesystem</a></h2>
 <p>this is done on filesystem_mounts</p>
 <p>the target fstab will be completely formed from the filesystem information</p>
 </div>
-<div class="section" id="installer">
-<h2><a name="installer">Installer</a></h2>
+<div class="section">
+<h2><a id="installer" name="installer">Installer</a></h2>
 <p>The installers in paella are layered.  There is a <a class="reference" href="#trait-installer">trait installer</a>, a <a class="reference" href="#profile-installer">profile installer</a>,
 and a <a class="reference" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
-operation more structured.  The trait installer is the simplest and contains everything 
-needed for installing a trait.  The profile installer contains a trait installer, and it is 
+operation more structured.  The trait installer is the simplest and contains everything
+needed for installing a trait.  The profile installer contains a trait installer, and it is
 responsible for installing profiles.  The nfs installer contains a profile installer and is used
 to install a profile on a machine.  There is also a chroot installer that will install a profile
 to a target directory.</p>
 </div>
-<div class="section" id="trait-installer">
-<h2><a name="trait-installer">Trait Installer</a></h2>
+<div class="section">
+<h2><a id="trait-installer" name="trait-installer">Trait Installer</a></h2>
 <p>The trait installer is responsible for installing a <a class="reference" href="#trait">trait</a> to a target location.
 It is pretty dumb as it doesn't check to see if a parent has been installed or not.
 This class should only be instantiated as a member of the <a class="reference" href="#profile-installer">profile installer</a> class,
@@ -334,8 +616,8 @@ under the section, <strong>installer</strong>, and the option <strong>trait_proc
 </li>
 </ul>
 </div>
-<div class="section" id="profile-installer">
-<h2><a name="profile-installer">Profile Installer</a></h2>
+<div class="section">
+<h2><a id="profile-installer" name="profile-installer">Profile Installer</a></h2>
 <p>The profile installer can be instantiated by itself.  It contains a trait installer.
 It is responsible for installing a profile to a target location.  A profile is the minimum
 install-able object, you can't install a trait alone, but you can have a profile with one trait
@@ -344,32 +626,32 @@ installed.  The list is composed of the traits listed in the profile itself, and
 parents, ordered for install.  The profile installer then calls its trait installer for each trait
 in the list.</p>
 </div>
-<div class="section" id="nfs-installer">
-<h2><a name="nfs-installer">Nfs Installer</a></h2>
+<div class="section">
+<h2><a id="nfs-installer" name="nfs-installer">Nfs Installer</a></h2>
 <p>The nfs installer is responsible for installing a machine to a target location.  This is the
 installer that will be run on a machine to be installed.  This installer contains a profile
 installer.  The nfs installer will do all of the hardware related functions that are necessary
 to setup a target location for its profile installer.  The nfs installer will also setup the fstab,
 apt sources, and kernel for the machine.</p>
 </div>
-<div class="section" id="installer-toolkit">
-<h2><a name="installer-toolkit">Installer Toolkit</a></h2>
+<div class="section">
+<h2><a id="installer-toolkit" name="installer-toolkit">Installer Toolkit</a></h2>
 <p>The installer toolkit is made to be used in the trait scripts.  It can't be
 used for the chroot script, unless you have paella configured on the
 target system.  It is the job of the installer toolkit to provide you with a
 good set of tools contained within the toolkit object, so that your scripts
 contain a minimum of boilerplate type code.</p>
 </div>
-<div class="section" id="automatic-install">
-<h2><a name="automatic-install">Automatic Install</a></h2>
+<div class="section">
+<h2><a id="automatic-install" name="automatic-install">Automatic Install</a></h2>
 <p>Automatic installation is supported.  The setup if fairly simple.  There
 is no gui wrapper around parts of it yet, so to really use it, you will
-have to use python interactively, or psql.  There is a script on the nfs 
-installer called paella-submit-machine.  You pass it a machine name 
+have to use python interactively, or psql.  There is a script on the nfs
+installer called paella-submit-machine.  You pass it a machine name
 argument</p>
 </div>
-<div class="section" id="database-schema">
-<h2><a name="database-schema">Database Schema</a></h2>
+<div class="section">
+<h2><a id="database-schema" name="database-schema">Database Schema</a></h2>
 <p>The database schema is not very complicated.</p>
 <p>The primary tables are:</p>
 <ul class="simple">
@@ -535,8 +817,8 @@ the tag markers.</li>
 </ul>
 </div>
 <hr class="docutils" />
-<div class="section" id="getting-started-with-paella">
-<h2><a name="getting-started-with-paella">Getting started with paella</a></h2>
+<div class="section">
+<h2><a id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h2>
 <p>People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
 and you have mostly debian machines on it.  If you only maintain one network with a few
@@ -547,15 +829,15 @@ backup and restore methods.</p>
 berlios, so you will have to check out the code via subversion, or alternately you can grab
 the debian packages from <a class="reference" href="http://gregscomputerservice.com">http://gregscomputerservice.com</a>.  The line for the sources.list
 is 'deb <a class="reference" href="http://gregscomputerservice.com/debian/local">http://gregscomputerservice.com/debian/local</a> common/'.</p>
-<p>A person who uses paella is expected to understand how to perform basic system 
+<p>A person who uses paella is expected to understand how to perform basic system
 administration on a debian system.  They should also be comfortable with building their
-own debian packages from source, and debianizing a generic source application.  Paella 
-makes use of mini-dinstall to maintain a local mini-repository and can install systems that 
-reference that repository.  This provides a fairly simple way to add custom packages to the 
+own debian packages from source, and debianizing a generic source application.  Paella
+makes use of mini-dinstall to maintain a local mini-repository and can install systems that
+reference that repository.  This provides a fairly simple way to add custom packages to the
 systems that you will be designing.</p>
 <p>If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
 use the apt source above, you can check it out from subversion at berlios.  Paella
-depends on Useless.  Useless is a collection of python modules that I use in other database 
+depends on Useless.  Useless is a collection of python modules that I use in other database
 applications.</p>
 <p>to get useless:
 svn checkout svn://svn.berlios.de/useless/trunk useless</p>
@@ -564,16 +846,16 @@ svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 <p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="hardware-recommendations">
-<h2><a name="hardware-recommendations">Hardware Recommendations</a></h2>
-<p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network 
-to support this.  Paella works best with at least one dedicated server and a management 
+<div class="section">
+<h2><a id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
+<p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network
+to support this.  Paella works best with at least one dedicated server and a management
 desktop, both running debian.</p>
 <p>Server:</p>
-<p>The server will be responsible for running the nfs-server, the boot-server, the postgresql 
-server, and the webserver. It is recommended that you have a local mirror of a debian 
-repository on the server, and have it accessible over http.  You should also install the 
-paella-debrepos package on this machine to create and maintain your custom debian 
+<p>The server will be responsible for running the nfs-server, the boot-server, the postgresql
+server, and the webserver. It is recommended that you have a local mirror of a debian
+repository on the server, and have it accessible over http.  You should also install the
+paella-debrepos package on this machine to create and maintain your custom debian
 repository.</p>
 <blockquote>
 <p>Database Setup:</p>
@@ -582,7 +864,7 @@ apt-get install postgresql
 su postgres
 createuser -a -d adminuser
 createuser -A -D paella
-createlang plpgsql template1    
+createlang plpgsql template1
 exit
 su adminuser createdb paella
 </pre>
@@ -590,42 +872,42 @@ su adminuser createdb paella
 <p>You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
 paella from anywhere on the local network, and allow adminuser from your management
 desktop.</p>
-<p>The setup of the boot-server and the nfs-server are beyond the scope of this 
-document, but the profiles are defined in the default database provided with paella.  So 
-instead of taking the time to setup the boot-server and nfs-server manually, you can use the 
+<p>The setup of the boot-server and the nfs-server are beyond the scope of this
+document, but the profiles are defined in the default database provided with paella.  So
+instead of taking the time to setup the boot-server and nfs-server manually, you can use the
 paella-chroot-install script to create the machine and tar it up.</p>
 <p>Desktop:</p>
-<p>The desktop should be about 400MHz Pentium or better with &gt;= 1024x768 resolution, 
+<p>The desktop should be about 400MHz Pentium or better with &gt;= 1024x768 resolution,
 capable of running kde.  It is necessary to have access to your database on the server.  You
-should also have your EDITOR environment variable set to something that will pop-up 
-a window in X.  On this machine you will want to install the paella-admin and the 
+should also have your EDITOR environment variable set to something that will pop-up
+a window in X.  On this machine you will want to install the paella-admin and the
 paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
 probably want to copy this to ~/.paellarc and edit it.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="local-debian-repository">
-<h2><a name="local-debian-repository">Local Debian Repository</a></h2>
-<p>Paella is built to make use of you local debian repository.  The paella-debrepos package 
-uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review 
-the documentation for it.  Install the paella-debrepos package on the server.  The init script 
-should fail because you are likely not to have a debrepos user.  This will be fixed later.  
-Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The 
-mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a 
+<div class="section">
+<h2><a id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
+<p>Paella is built to make use of you local debian repository.  The paella-debrepos package
+uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review
+the documentation for it.  Install the paella-debrepos package on the server.  The init script
+should fail because you are likely not to have a debrepos user.  This will be fixed later.
+Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The
+mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a
 directory for each suite you have in paella, plus one called 'common'.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="using-paella-management">
-<h2><a name="using-paella-management">Using Paella-Management</a></h2>
-<p>The management interface is going through changes.  Paella started with a gtk interface, 
+<div class="section">
+<h2><a id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
+<p>The management interface is going through changes.  Paella started with a gtk interface,
 and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
-gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do 
-very much right now, but bugs will be fixed on it.  A good portion of setting up and 
-configuring the machines is done with the gtk interface, so for the time being, anybody 
+gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do
+very much right now, but bugs will be fixed on it.  A good portion of setting up and
+configuring the machines is done with the gtk interface, so for the time being, anybody
 using paella will have to bear through using it until the kde interface is ready.</p>
 </div>
 <hr class="docutils" />
-<div class="section" id="environment-variables-used-by-paella">
-<h2><a name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
+<div class="section">
+<h2><a id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
 <ul class="simple">
 <li>these are used to help override a configured db connection:<ul>
 <li><strong>PAELLA_DBHOST</strong> - hostname or ip of host paella database resides</li>
@@ -655,6 +937,88 @@ using paella will have to bear through using it until the kde interface is ready
 </ul>
 </li>
 </ul>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h2><a id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
+<p>I'm trying to move as much as possible from the paellarc file to
+the default environment in the database.
+(installer) means that the section or option is meaningful only to the installer code.
+(manager) means that the section or option is meaningful only to the db manager code.
+Otherwise the section or option is applicable to both the installer and manager parts of
+paella.</p>
+<ul class="simple">
+<li>Section <strong>database</strong><ul>
+<li>dbhost:  hostname or ip of host where paella database resides</li>
+<li>dbname:  name of paella database</li>
+<li>dbusername:  username to connect to database with</li>
+<li>dbpassword:  password to use for authentication (if necessary)</li>
+<li>import_path:  default path for import and export of database data</li>
+<li>export_path:  <strong>deprecated, use import_path*</strong></li>
+<li>autocommit:  <strong>deprecated, don't use</strong></li>
+</ul>
+</li>
+<li>Section <strong>debrepos</strong><ul>
+<li>I'm probably going to deprecate much of the paella-debrepos package
+as there are much better tools to handle this now.</li>
+<li>repos_host:  <strong>no info now</strong></li>
+<li>debroot:  <strong>no info now</strong></li>
+<li>repos_root:  <strong>no info now</strong></li>
+<li>official_suite:  <strong>no info now</strong></li>
+<li>local_suites:  <strong>no info now</strong></li>
+<li>sid_suites:  <strong>no info now</strong></li>
+<li>http_mirror:  <strong>no info now</strong></li>
+<li>official_main:  <strong>deprecated</strong></li>
+<li>official_nonus:  <strong>deprecated</strong></li>
+<li>official_security:  <strong>deprecated</strong></li>
+<li>other_repos:  <strong>no info now</strong></li>
+<li>other_repos_names:  <strong>no info now</strong></li>
+</ul>
+</li>
+<li>Section <strong>installer</strong><ul>
+<li>I'm probably going to deprecate much of the paella-debrepos package
+as there are much better tools to handle this now.</li>
+<li>enable_bad_hacks:<ul>
+<li>this ugly option needs to be removed</li>
+</ul>
+</li>
+<li>paella_storage:<ul>
+<li>parent directory for storing files that the installer needs
+like base tarballs, etc.</li>
+</ul>
+</li>
+<li>suite_storage:<ul>
+<li>default %(paella_storage)s/suites - where the base
+tarballs are stored.</li>
+</ul>
+</li>
+<li>bootstrap_suites:<ul>
+<li>a comma separated list of suites to keep tarballs of.
+this will probably be removed soon</li>
+</ul>
+</li>
+<li>use_devices_tarball:<ul>
+<li>This used to be handy as the MAKEDEV script used
+to take a long time to run.  We can now use udev to do most of the work that
+this option was here for.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Section <strong>management_gui</strong> (manager)<ul>
+<li>This section is for using the management gui interface.</li>
+<li>env_editor_size:</li>
+<li>bkuptarball_path:</li>
+<li>template_profile:</li>
+<li>default_profile_suite:</li>
+<li>client_path:</li>
+<li>manager_pos:</li>
+<li>manager_size:</li>
+<li>manager_type:</li>
+</ul>
+</li>
+</ul>
+<hr class="docutils" />
 <p>This <a class="reference" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 </div>
 </div>

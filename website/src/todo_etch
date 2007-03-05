@@ -2,11 +2,6 @@
 todo for etch:
 --------------------
 
-- remove python2.3 from all scripts
-	-----done, looks like I did this a while ago
-
-- completely deprecate the gtk management client
-
 - use cheetah templates
 
 - write a script that converts old type templates to cheetah templates
@@ -23,16 +18,16 @@ todo for etch:
 
   - mostly done but untested
 
-- fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
-	----done, made a conversion script for it
-		
 - fix problems encountered with importing Packages files into the database
+
+  - there is a workaround that seems to be working for now
 
 - get umlmachines working again
 
 - rename template files instead of using numbers
 
 - remove requirement that templates be matched to packages
+	-----done, I should've done this much, much sooner
 
 - use trait.xml conversion script to fix template filenames on exported traits
 
@@ -42,6 +37,15 @@ todo for etch:
 
 - consider using bcfg2 for live updating of already installed machines
 
+- remove python2.3 from all scripts
+	-----done, looks like I did this a while ago
+
+- completely deprecate the gtk management client
+	----done, the kde manager does most of what gtk manager did
+
+- fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
+	----done, made a conversion script for it
+		
 --------
 
 ---------------------
@@ -52,7 +56,11 @@ gtk->kde client todo
 
  - need client manager for kde
 
+   - just started
+
  - need database import/export for kde
+
+   - mostly done
 
  - make family differ
 
@@ -65,9 +73,9 @@ gtk->kde client todo
 
 - suite-trait manager
 
-  - need to make new traits, missing dialog to do so
+  - need to make new traits, missing dialog to do so **done**
 
-  - need to handle parents, fix edit, edit2 links
+  - need to handle parents, fix edit, edit2 links **done**
 
   - need to be able to edit packages and actions
 
@@ -75,10 +83,19 @@ gtk->kde client todo
 
   - need to handle variables
 
-  - need to make new scripts
+  - need to make new scripts **done**
 
   - need to delete scripts
 
+  - need to view scripts **done**
+
+  - need to edit scripts **done**
+
+  - need to view templates **done**
+
+  - need to edit templates **done**
+
+  - need to edit template data **done**
 
 - profile manager
 
@@ -94,7 +111,7 @@ gtk->kde client todo
 
   - mostly done
 
-  - alphabetize trait comboboxes
+  - alphabetize trait comboboxes **done**
 
 - environment editors
 
@@ -133,20 +150,19 @@ removed kudzu, only test with sarge and desksarge
 	put kudzu back in teporarily to fix missing trait problems
 
 problems with importing Packages files into the database
-	problem seems to be blank lines in description field
-	workaround now is to remove those packages from the traits
-	and fix the culprit later
-
+	problem seems to be blank lines in description field -NOT-
+	problem seems to be character encoding
+	decode to utf-8 seems to work ok	
 	traits to fix when the problem is solved:
-		pyca - default trait - sarge, desksarge
+	- pyca - default trait - sarge, desksarge
 		
-		fcmp - hqgames trait - sarge, desksarge
+	- fcmp - hqgames trait - sarge, desksarge
 		
-		fcmp - xgames trait - sarge, desksarge, kudzu
+	- fcmp - xgames trait - sarge, desksarge, kudzu
 
-		freecraft - xgames trait - kudzu
+	- freecraft - xgames trait - kudzu
 		
-		cantus - media_tools - kudzu
+	- cantus - media_tools - kudzu
 
 problems with missing traits that are present in kudzu
 	 

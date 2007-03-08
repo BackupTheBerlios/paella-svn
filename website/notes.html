@@ -5,296 +5,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
 <title></title>
-<style type="text/css">
-
-/*
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
-:Revision: $Revision: 4224 $
-:Copyright: This stylesheet has been placed in the public domain.
-
-Default cascading style sheet for the HTML output of Docutils.
-
-See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
-customize this style sheet.
-*/
-
-/* used to remove borders from tables and images */
-.borderless, table.borderless td, table.borderless th {
-  border: 0 }
-
-table.borderless td, table.borderless th {
-  /* Override padding for "table.docutils td" with "! important".
-     The right padding separates the table cells. */
-  padding: 0 0.5em 0 0 ! important }
-
-.first {
-  /* Override more specific margin styles with "! important". */
-  margin-top: 0 ! important }
-
-.last, .with-subtitle {
-  margin-bottom: 0 ! important }
-
-.hidden {
-  display: none }
-
-a.toc-backref {
-  text-decoration: none ;
-  color: black }
-
-blockquote.epigraph {
-  margin: 2em 5em ; }
-
-dl.docutils dd {
-  margin-bottom: 0.5em }
-
-/* Uncomment (and remove this text!) to get bold-faced definition list terms
-dl.docutils dt {
-  font-weight: bold }
-*/
-
-div.abstract {
-  margin: 2em 5em }
-
-div.abstract p.topic-title {
-  font-weight: bold ;
-  text-align: center }
-
-div.admonition, div.attention, div.caution, div.danger, div.error,
-div.hint, div.important, div.note, div.tip, div.warning {
-  margin: 2em ;
-  border: medium outset ;
-  padding: 1em }
-
-div.admonition p.admonition-title, div.hint p.admonition-title,
-div.important p.admonition-title, div.note p.admonition-title,
-div.tip p.admonition-title {
-  font-weight: bold ;
-  font-family: sans-serif }
-
-div.attention p.admonition-title, div.caution p.admonition-title,
-div.danger p.admonition-title, div.error p.admonition-title,
-div.warning p.admonition-title {
-  color: red ;
-  font-weight: bold ;
-  font-family: sans-serif }
-
-/* Uncomment (and remove this text!) to get reduced vertical space in
-   compound paragraphs.
-div.compound .compound-first, div.compound .compound-middle {
-  margin-bottom: 0.5em }
-
-div.compound .compound-last, div.compound .compound-middle {
-  margin-top: 0.5em }
-*/
-
-div.dedication {
-  margin: 2em 5em ;
-  text-align: center ;
-  font-style: italic }
-
-div.dedication p.topic-title {
-  font-weight: bold ;
-  font-style: normal }
-
-div.figure {
-  margin-left: 2em ;
-  margin-right: 2em }
-
-div.footer, div.header {
-  clear: both;
-  font-size: smaller }
-
-div.line-block {
-  display: block ;
-  margin-top: 1em ;
-  margin-bottom: 1em }
-
-div.line-block div.line-block {
-  margin-top: 0 ;
-  margin-bottom: 0 ;
-  margin-left: 1.5em }
-
-div.sidebar {
-  margin-left: 1em ;
-  border: medium outset ;
-  padding: 1em ;
-  background-color: #ffffee ;
-  width: 40% ;
-  float: right ;
-  clear: right }
-
-div.sidebar p.rubric {
-  font-family: sans-serif ;
-  font-size: medium }
-
-div.system-messages {
-  margin: 5em }
-
-div.system-messages h1 {
-  color: red }
-
-div.system-message {
-  border: medium outset ;
-  padding: 1em }
-
-div.system-message p.system-message-title {
-  color: red ;
-  font-weight: bold }
-
-div.topic {
-  margin: 2em }
-
-h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
-h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
-  margin-top: 0.4em }
-
-h1.title {
-  text-align: center }
-
-h2.subtitle {
-  text-align: center }
-
-hr.docutils {
-  width: 75% }
-
-img.align-left {
-  clear: left }
-
-img.align-right {
-  clear: right }
-
-ol.simple, ul.simple {
-  margin-bottom: 1em }
-
-ol.arabic {
-  list-style: decimal }
-
-ol.loweralpha {
-  list-style: lower-alpha }
-
-ol.upperalpha {
-  list-style: upper-alpha }
-
-ol.lowerroman {
-  list-style: lower-roman }
-
-ol.upperroman {
-  list-style: upper-roman }
-
-p.attribution {
-  text-align: right ;
-  margin-left: 50% }
-
-p.caption {
-  font-style: italic }
-
-p.credits {
-  font-style: italic ;
-  font-size: smaller }
-
-p.label {
-  white-space: nowrap }
-
-p.rubric {
-  font-weight: bold ;
-  font-size: larger ;
-  color: maroon ;
-  text-align: center }
-
-p.sidebar-title {
-  font-family: sans-serif ;
-  font-weight: bold ;
-  font-size: larger }
-
-p.sidebar-subtitle {
-  font-family: sans-serif ;
-  font-weight: bold }
-
-p.topic-title {
-  font-weight: bold }
-
-pre.address {
-  margin-bottom: 0 ;
-  margin-top: 0 ;
-  font-family: serif ;
-  font-size: 100% }
-
-pre.literal-block, pre.doctest-block {
-  margin-left: 2em ;
-  margin-right: 2em ;
-  background-color: #eeeeee }
-
-span.classifier {
-  font-family: sans-serif ;
-  font-style: oblique }
-
-span.classifier-delimiter {
-  font-family: sans-serif ;
-  font-weight: bold }
-
-span.interpreted {
-  font-family: sans-serif }
-
-span.option {
-  white-space: nowrap }
-
-span.pre {
-  white-space: pre }
-
-span.problematic {
-  color: red }
-
-span.section-subtitle {
-  /* font-size relative to parent (h1..h6 element) */
-  font-size: 80% }
-
-table.citation {
-  border-left: solid 1px gray;
-  margin-left: 1px }
-
-table.docinfo {
-  margin: 2em 4em }
-
-table.docutils {
-  margin-top: 0.5em ;
-  margin-bottom: 0.5em }
-
-table.footnote {
-  border-left: solid 1px black;
-  margin-left: 1px }
-
-table.docutils td, table.docutils th,
-table.docinfo td, table.docinfo th {
-  padding-left: 0.5em ;
-  padding-right: 0.5em ;
-  vertical-align: top }
-
-table.docutils th.field-name, table.docinfo th.docinfo-name {
-  font-weight: bold ;
-  text-align: left ;
-  white-space: nowrap ;
-  padding-left: 0 }
-
-h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
-h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
-  font-size: 100% }
-
-tt.docutils {
-  background-color: #eeeeee }
-
-ul.auto-toc {
-  list-style-type: none }
-
-</style>
+<link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
 <div class="document">
 <div class="section">
-<h1><a id="paella-notes" name="paella-notes">Paella Notes</a></h1>
+<h1><a class="toc-backref" href="#id2" id="paella-notes" name="paella-notes">Paella Notes</a></h1>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#paella-notes" id="id2" name="id2">Paella Notes</a><ul>
+<li><a class="reference" href="#what-is-paella" id="id3" name="id3">What is Paella</a></li>
+<li><a class="reference" href="#objects-and-definitions" id="id4" name="id4">Objects and Definitions</a></li>
+<li><a class="reference" href="#apt-source" id="id5" name="id5">Apt Source</a></li>
+<li><a class="reference" href="#suite" id="id6" name="id6">Suite</a></li>
+<li><a class="reference" href="#trait" id="id7" name="id7">Trait</a></li>
+<li><a class="reference" href="#family" id="id8" name="id8">Family</a></li>
+<li><a class="reference" href="#profile" id="id9" name="id9">Profile</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#machine-database" id="id10" name="id10">Machine Database</a><ul>
+<li><a class="reference" href="#machine-type" id="id11" name="id11">Machine Type</a></li>
+<li><a class="reference" href="#machine-type-scripts" id="id12" name="id12">Machine Type Scripts</a></li>
+<li><a class="reference" href="#machine" id="id13" name="id13">Machine</a></li>
+<li><a class="reference" href="#mount" id="id14" name="id14">Mount</a></li>
+<li><a class="reference" href="#filesystem" id="id15" name="id15">Filesystem</a></li>
+<li><a class="reference" href="#installer" id="id16" name="id16">Installer</a></li>
+<li><a class="reference" href="#trait-installer" id="id17" name="id17">Trait Installer</a></li>
+<li><a class="reference" href="#profile-installer" id="id18" name="id18">Profile Installer</a></li>
+<li><a class="reference" href="#nfs-installer" id="id19" name="id19">Nfs Installer</a></li>
+<li><a class="reference" href="#installer-toolkit" id="id20" name="id20">Installer Toolkit</a></li>
+<li><a class="reference" href="#automatic-install" id="id21" name="id21">Automatic Install</a></li>
+<li><a class="reference" href="#database-schema" id="id22" name="id22">Database Schema</a></li>
+<li><a class="reference" href="#getting-started-with-paella" id="id23" name="id23">Getting started with paella</a></li>
+<li><a class="reference" href="#hardware-recommendations" id="id24" name="id24">Hardware Recommendations</a></li>
+<li><a class="reference" href="#local-debian-repository" id="id25" name="id25">Local Debian Repository</a></li>
+<li><a class="reference" href="#using-paella-management" id="id26" name="id26">Using Paella-Management</a></li>
+<li><a class="reference" href="#environment-variables-used-by-paella" id="id27" name="id27">Environment Variables used by Paella</a></li>
+<li><a class="reference" href="#paellarc-configuration-file" id="id28" name="id28">Paellarc Configuration File</a></li>
+<li><a class="reference" href="#uml-machine-configuration-file" id="id29" name="id29">Uml Machine Configuration File</a></li>
+<li><a class="reference" href="#uml-kernel-options-used-by-paella-init-script" id="id30" name="id30">Uml Kernel Options used by paella-init script</a></li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section">
-<h2><a id="what-is-paella" name="what-is-paella">What is Paella</a></h2>
+<h2><a class="toc-backref" href="#id3" id="what-is-paella" name="what-is-paella">What is Paella</a></h2>
 <!-- small overview of paella -->
 <p>Paella is a installation/configuration management system centered on
 being able to easily define, configure, maintain and update systems and
@@ -302,16 +58,21 @@ networks.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="objects-and-definitions" name="objects-and-definitions">Objects and Definitions</a></h2>
+<h2><a class="toc-backref" href="#id4" id="objects-and-definitions" name="objects-and-definitions">Objects and Definitions</a></h2>
 </div>
 <div class="section">
-<h2><a id="suite" name="suite">Suite</a></h2>
+<h2><a class="toc-backref" href="#id5" id="apt-source" name="apt-source">Apt Source</a></h2>
+<p>An apt source is similar to a line in an /etc/apt/sources.list file.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id6" id="suite" name="suite">Suite</a></h2>
 <p>A suite is a similiar to debian suites like woody or sarge.  A suite
 can be used to make different versions of configurations, or different
 styles of design and configurations.  Traits are held in suites.</p>
+<p>Basically a suite is an ordered list of apt sources, and a set of traits.</p>
 </div>
 <div class="section">
-<h2><a id="trait" name="trait">Trait</a></h2>
+<h2><a class="toc-backref" href="#id7" id="trait" name="trait">Trait</a></h2>
 <p>A trait is the atomic unit that signifies a feature.
 A trait belongs to a suite.  The table in the database that holds the list of traits
 is called $(suite)_traits.  A trait can have packages, parents, templates, scripts
@@ -398,7 +159,7 @@ a step in the trait processes.</li>
 </ul>
 </div>
 <div class="section">
-<h2><a id="family" name="family">Family</a></h2>
+<h2><a class="toc-backref" href="#id8" id="family" name="family">Family</a></h2>
 <ul class="simple">
 <li>A family is a collection of variables from different traits<ul>
 <li>a family can have parents</li>
@@ -410,7 +171,7 @@ but it has to be tied to a trait.</li>
 </ul>
 </div>
 <div class="section">
-<h2><a id="profile" name="profile">Profile</a></h2>
+<h2><a class="toc-backref" href="#id9" id="profile" name="profile">Profile</a></h2>
 <ul>
 <li><p class="first">A profile is a collection of traits, and an environment</p>
 <ul>
@@ -433,20 +194,20 @@ and the family environment</li>
 </div>
 </div>
 <div class="section">
-<h1><a id="machine-database" name="machine-database">Machine Database</a></h1>
+<h1><a class="toc-backref" href="#id10" id="machine-database" name="machine-database">Machine Database</a></h1>
 <p>This section describes the machine database part of paella.  Profile, traits, and families
 should not be machine specific.  The Machine database trying to be design to hold
 information about physical systems to install logical systems from.</p>
 <div class="section">
-<h2><a id="machine-type" name="machine-type">Machine Type</a></h2>
+<h2><a class="toc-backref" href="#id11" id="machine-type" name="machine-type">Machine Type</a></h2>
 <p>A machine type is going to be the main identifier of a particular type of machine.
 This currently includes disks and kernel modules.  The disks of a machine type are a
 list of tuples in the database (machine_type, diskname, device) .  The current policy is
 to treat all devices of a certain  diskname as a raid1 array if there is more than one
-device.</p>
+device.  Machine Types will have parents soon.</p>
 </div>
 <div class="section">
-<h2><a id="machine-type-scripts" name="machine-type-scripts">Machine Type Scripts</a></h2>
+<h2><a class="toc-backref" href="#id12" id="machine-type-scripts" name="machine-type-scripts">Machine Type Scripts</a></h2>
 <p>Machine type scripts are steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. The default steps/scripts are:</p>
 <ul class="simple">
@@ -523,7 +284,7 @@ skipped for on-site installations.</li>
 </ul>
 </div>
 <div class="section">
-<h2><a id="machine" name="machine">Machine</a></h2>
+<h2><a class="toc-backref" href="#id13" id="machine" name="machine">Machine</a></h2>
 <p>a machine contains</p>
 <ul class="simple">
 <li>a <strong>name</strong></li>
@@ -544,17 +305,17 @@ skipped for on-site installations.</li>
 </ul>
 </div>
 <div class="section">
-<h2><a id="mount" name="mount">Mount</a></h2>
+<h2><a class="toc-backref" href="#id14" id="mount" name="mount">Mount</a></h2>
 <p>a <a class="reference" href="#mount">mount</a> is named</p>
 <p>a mount describes filesystem type, mount option, dump, pass and the mount point</p>
 </div>
 <div class="section">
-<h2><a id="filesystem" name="filesystem">Filesystem</a></h2>
+<h2><a class="toc-backref" href="#id15" id="filesystem" name="filesystem">Filesystem</a></h2>
 <p>this is done on filesystem_mounts</p>
 <p>the target fstab will be completely formed from the filesystem information</p>
 </div>
 <div class="section">
-<h2><a id="installer" name="installer">Installer</a></h2>
+<h2><a class="toc-backref" href="#id16" id="installer" name="installer">Installer</a></h2>
 <p>The installers in paella are layered.  There is a <a class="reference" href="#trait-installer">trait installer</a>, a <a class="reference" href="#profile-installer">profile installer</a>,
 and a <a class="reference" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
 operation more structured.  The trait installer is the simplest and contains everything
@@ -564,7 +325,7 @@ to install a profile on a machine.  There is also a chroot installer that will i
 to a target directory.</p>
 </div>
 <div class="section">
-<h2><a id="trait-installer" name="trait-installer">Trait Installer</a></h2>
+<h2><a class="toc-backref" href="#id17" id="trait-installer" name="trait-installer">Trait Installer</a></h2>
 <p>The trait installer is responsible for installing a <a class="reference" href="#trait">trait</a> to a target location.
 It is pretty dumb as it doesn't check to see if a parent has been installed or not.
 This class should only be instantiated as a member of the <a class="reference" href="#profile-installer">profile installer</a> class,
@@ -617,7 +378,7 @@ under the section, <strong>installer</strong>, and the option <strong>trait_proc
 </ul>
 </div>
 <div class="section">
-<h2><a id="profile-installer" name="profile-installer">Profile Installer</a></h2>
+<h2><a class="toc-backref" href="#id18" id="profile-installer" name="profile-installer">Profile Installer</a></h2>
 <p>The profile installer can be instantiated by itself.  It contains a trait installer.
 It is responsible for installing a profile to a target location.  A profile is the minimum
 install-able object, you can't install a trait alone, but you can have a profile with one trait
@@ -627,7 +388,7 @@ parents, ordered for install.  The profile installer then calls its trait instal
 in the list.</p>
 </div>
 <div class="section">
-<h2><a id="nfs-installer" name="nfs-installer">Nfs Installer</a></h2>
+<h2><a class="toc-backref" href="#id19" id="nfs-installer" name="nfs-installer">Nfs Installer</a></h2>
 <p>The nfs installer is responsible for installing a machine to a target location.  This is the
 installer that will be run on a machine to be installed.  This installer contains a profile
 installer.  The nfs installer will do all of the hardware related functions that are necessary
@@ -635,7 +396,7 @@ to setup a target location for its profile installer.  The nfs installer will al
 apt sources, and kernel for the machine.</p>
 </div>
 <div class="section">
-<h2><a id="installer-toolkit" name="installer-toolkit">Installer Toolkit</a></h2>
+<h2><a class="toc-backref" href="#id20" id="installer-toolkit" name="installer-toolkit">Installer Toolkit</a></h2>
 <p>The installer toolkit is made to be used in the trait scripts.  It can't be
 used for the chroot script, unless you have paella configured on the
 target system.  It is the job of the installer toolkit to provide you with a
@@ -643,7 +404,7 @@ good set of tools contained within the toolkit object, so that your scripts
 contain a minimum of boilerplate type code.</p>
 </div>
 <div class="section">
-<h2><a id="automatic-install" name="automatic-install">Automatic Install</a></h2>
+<h2><a class="toc-backref" href="#id21" id="automatic-install" name="automatic-install">Automatic Install</a></h2>
 <p>Automatic installation is supported.  The setup if fairly simple.  There
 is no gui wrapper around parts of it yet, so to really use it, you will
 have to use python interactively, or psql.  There is a script on the nfs
@@ -651,7 +412,7 @@ installer called paella-submit-machine.  You pass it a machine name
 argument</p>
 </div>
 <div class="section">
-<h2><a id="database-schema" name="database-schema">Database Schema</a></h2>
+<h2><a class="toc-backref" href="#id22" id="database-schema" name="database-schema">Database Schema</a></h2>
 <p>The database schema is not very complicated.</p>
 <p>The primary tables are:</p>
 <ul class="simple">
@@ -818,7 +579,7 @@ the tag markers.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h2>
+<h2><a class="toc-backref" href="#id23" id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h2>
 <p>People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
 and you have mostly debian machines on it.  If you only maintain one network with a few
@@ -847,7 +608,7 @@ svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
+<h2><a class="toc-backref" href="#id24" id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
 <p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network
 to support this.  Paella works best with at least one dedicated server and a management
 desktop, both running debian.</p>
@@ -886,7 +647,7 @@ probably want to copy this to ~/.paellarc and edit it.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
+<h2><a class="toc-backref" href="#id25" id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
 <p>Paella is built to make use of you local debian repository.  The paella-debrepos package
 uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review
 the documentation for it.  Install the paella-debrepos package on the server.  The init script
@@ -897,7 +658,7 @@ directory for each suite you have in paella, plus one called 'common'.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
+<h2><a class="toc-backref" href="#id26" id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
 <p>The management interface is going through changes.  Paella started with a gtk interface,
 and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
 gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do
@@ -907,7 +668,7 @@ using paella will have to bear through using it until the kde interface is ready
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
+<h2><a class="toc-backref" href="#id27" id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
 <ul class="simple">
 <li>these are used to help override a configured db connection:<ul>
 <li><strong>PAELLA_DBHOST</strong> - hostname or ip of host paella database resides</li>
@@ -940,7 +701,7 @@ using paella will have to bear through using it until the kde interface is ready
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id28" id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
 <p>I'm trying to move as much as possible from the paellarc file to
 the default environment in the database.
 (installer) means that the section or option is meaningful only to the installer code.
@@ -1018,8 +779,48 @@ this option was here for.</li>
 </ul>
 </li>
 </ul>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h2><a class="toc-backref" href="#id29" id="uml-machine-configuration-file" name="uml-machine-configuration-file">Uml Machine Configuration File</a></h2>
+<p>This is the structure of the umlmachines.conf configuration file.
+Every section in this configuration file defines a uml machine, using
+the name of the section.</p>
+<ul class="simple">
+<li>Section <strong>DEFAULT</strong><ul>
+<li>The DEFAULT section is used to set defaults for the uml
+machines.</li>
+</ul>
+</li>
+<li>Section <strong>umlmachines</strong><ul>
+<li>This section may be removed, and the options placed in DEFAULT</li>
+</ul>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h2><a class="toc-backref" href="#id30" id="uml-kernel-options-used-by-paella-init-script" name="uml-kernel-options-used-by-paella-init-script">Uml Kernel Options used by paella-init script</a></h2>
+<p>These are the command line options understood by the paella-init for
+the user mode linux kernel.</p>
+<ul class="simple">
+<li><strong>python_path</strong>:  sets the PYTHONPATH</li>
+<li><strong>logfile</strong>:  path to logfile</li>
+<li><strong>LOGFILE</strong>:  another name for logfile</li>
+<li><strong>paella_action</strong>:  action to be performed by paella-init</li>
+<li><strong>umlconfig</strong>:  path to umlmachines.conf</li>
+<li><strong>umlmachine</strong>:  name of the uml machine that being run</li>
+<li><strong>paellaprofile</strong>:  profile to be installed if applicable</li>
+<li><strong>paellasuite</strong>:  suite to be bootstrapped if applicable</li>
+<li><strong>paella_system_tarball</strong>:  a system backup to be restored if applicable</li>
+<li><strong>bootstrap_script</strong>:  path to script to run with debootstrap</li>
+<li><strong>bootstrap_mirror</strong>:  mirror to use with debootstrap</li>
+<li><strong>backup_target</strong>:  option used  before paella-init set the umlmachine, should
+be removed soon.</li>
+</ul>
 <hr class="docutils" />
 <p>This <a class="reference" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
+<p><a class="reference" href="/">home</a></p>
 </div>
 </div>
 </div>

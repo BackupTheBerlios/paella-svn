@@ -2,11 +2,27 @@
 todo for etch:
 --------------------
 
-- use cheetah templates
+.. contents:: :backlinks: entry
+
+---------------------------------
+general todo
+---------------------------------
+
++ use cheetah templates
+
+  - started
+
+  - all cheetah templates will have ##cheetah on the first line
 
 - write a script that converts old type templates to cheetah templates
 
-- rename template files in traits (use md5sum of filepath, instead of numbered order)
+  - there is a function that does the conversion from the database
+
+    - the conversion automatically wraps the file with #raw directive
+
+    - "\$" and "\#" had to be escaped if they were present in the original template
+
++ rename template files in traits (use md5sum of filepath, instead of numbered order)
 
   - not using md5sum of filepath, but replacing '/' with '-slash-'
 
@@ -18,34 +34,40 @@ todo for etch:
 
   - mostly done but untested
 
-- fix problems encountered with importing Packages files into the database
++ fix problems encountered with importing Packages files into the database
 
   - there is a workaround that seems to be working for now
 
-- get umlmachines working again
++ get umlmachines working again
 
-- rename template files instead of using numbers
+  - started
 
-- remove requirement that templates be matched to packages
++ rename template files instead of using numbers
+
++ remove requirement that templates be matched to packages
 	-----done, I should've done this much, much sooner
 
-- use trait.xml conversion script to fix template filenames on exported traits
++ use trait.xml conversion script to fix template filenames on exported traits
 
   - decided not to do this, the export will use the new method by default
 
   - the import will try the new method first then revert to the old
 
-- consider using bcfg2 for live updating of already installed machines
++ consider using bcfg2 for live updating of already installed machines
 
-- remove python2.3 from all scripts
++ remove python2.3 from all scripts
 	-----done, looks like I did this a while ago
 
-- completely deprecate the gtk management client
++ completely deprecate the gtk management client
 	----done, the kde manager does most of what gtk manager did
 
-- fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
++ fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
 	----done, made a conversion script for it
-		
+
++ clean up unused options from paellarc file, look for options to move into default 
+  environment in database.
+
+
 --------
 
 ---------------------
@@ -101,11 +123,23 @@ gtk->kde client todo
 
   - need to make new profiles, missing dialog to do so
 
+  - update window after making new profile
+
+  - need to delete profiles
+
+  - need to import/export profiles
+
+  - don't change suite of profile without checking traits
+
 - family manager
 
   - need to make new families, missing dialog to do so
 
   - need to manage family parents
+
+  - need to delete families
+
+  - need to import/export families
 
 - differs
 
@@ -120,6 +154,10 @@ gtk->kde client todo
 - machines manager
 
   - this area needs a lot of work still
+
+- suite manager
+
+- apt sources manager
 
 
 ------

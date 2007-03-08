@@ -7,6 +7,8 @@ from ConfigParser import ConfigParser, NoOptionError
 from md5 import md5
 import tempfile
 
+rst_command = 'rst2html --stylesheet-path=default.css --link-stylesheet'
+
 BLOCK_SIZE = 1024
 cfg = ConfigParser()
 cfg.read('src/.md5sums')
@@ -54,7 +56,8 @@ def buildpage(fullpath, targetpath='.'):
     outfile = join(targetpath, '%s.html' % basename(fullpath))
     print 'building', page
     t = pipes.Template()
-    t.prepend('rst2html $IN', 'f-')
+    cmd = '%s $IN' % rst_command
+    t.prepend(cmd, 'f-')
     t.copy(infile, outfile)
     os.remove(infile)
     

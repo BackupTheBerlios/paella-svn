@@ -5,293 +5,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
 <title>Paella</title>
-<style type="text/css">
-
-/*
-:Author: David Goodger
-:Contact: goodger@users.sourceforge.net
-:Date: $Date: 2005-12-18 01:56:14 +0100 (Sun, 18 Dec 2005) $
-:Revision: $Revision: 4224 $
-:Copyright: This stylesheet has been placed in the public domain.
-
-Default cascading style sheet for the HTML output of Docutils.
-
-See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
-customize this style sheet.
-*/
-
-/* used to remove borders from tables and images */
-.borderless, table.borderless td, table.borderless th {
-  border: 0 }
-
-table.borderless td, table.borderless th {
-  /* Override padding for "table.docutils td" with "! important".
-     The right padding separates the table cells. */
-  padding: 0 0.5em 0 0 ! important }
-
-.first {
-  /* Override more specific margin styles with "! important". */
-  margin-top: 0 ! important }
-
-.last, .with-subtitle {
-  margin-bottom: 0 ! important }
-
-.hidden {
-  display: none }
-
-a.toc-backref {
-  text-decoration: none ;
-  color: black }
-
-blockquote.epigraph {
-  margin: 2em 5em ; }
-
-dl.docutils dd {
-  margin-bottom: 0.5em }
-
-/* Uncomment (and remove this text!) to get bold-faced definition list terms
-dl.docutils dt {
-  font-weight: bold }
-*/
-
-div.abstract {
-  margin: 2em 5em }
-
-div.abstract p.topic-title {
-  font-weight: bold ;
-  text-align: center }
-
-div.admonition, div.attention, div.caution, div.danger, div.error,
-div.hint, div.important, div.note, div.tip, div.warning {
-  margin: 2em ;
-  border: medium outset ;
-  padding: 1em }
-
-div.admonition p.admonition-title, div.hint p.admonition-title,
-div.important p.admonition-title, div.note p.admonition-title,
-div.tip p.admonition-title {
-  font-weight: bold ;
-  font-family: sans-serif }
-
-div.attention p.admonition-title, div.caution p.admonition-title,
-div.danger p.admonition-title, div.error p.admonition-title,
-div.warning p.admonition-title {
-  color: red ;
-  font-weight: bold ;
-  font-family: sans-serif }
-
-/* Uncomment (and remove this text!) to get reduced vertical space in
-   compound paragraphs.
-div.compound .compound-first, div.compound .compound-middle {
-  margin-bottom: 0.5em }
-
-div.compound .compound-last, div.compound .compound-middle {
-  margin-top: 0.5em }
-*/
-
-div.dedication {
-  margin: 2em 5em ;
-  text-align: center ;
-  font-style: italic }
-
-div.dedication p.topic-title {
-  font-weight: bold ;
-  font-style: normal }
-
-div.figure {
-  margin-left: 2em ;
-  margin-right: 2em }
-
-div.footer, div.header {
-  clear: both;
-  font-size: smaller }
-
-div.line-block {
-  display: block ;
-  margin-top: 1em ;
-  margin-bottom: 1em }
-
-div.line-block div.line-block {
-  margin-top: 0 ;
-  margin-bottom: 0 ;
-  margin-left: 1.5em }
-
-div.sidebar {
-  margin-left: 1em ;
-  border: medium outset ;
-  padding: 1em ;
-  background-color: #ffffee ;
-  width: 40% ;
-  float: right ;
-  clear: right }
-
-div.sidebar p.rubric {
-  font-family: sans-serif ;
-  font-size: medium }
-
-div.system-messages {
-  margin: 5em }
-
-div.system-messages h1 {
-  color: red }
-
-div.system-message {
-  border: medium outset ;
-  padding: 1em }
-
-div.system-message p.system-message-title {
-  color: red ;
-  font-weight: bold }
-
-div.topic {
-  margin: 2em }
-
-h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
-h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
-  margin-top: 0.4em }
-
-h1.title {
-  text-align: center }
-
-h2.subtitle {
-  text-align: center }
-
-hr.docutils {
-  width: 75% }
-
-img.align-left {
-  clear: left }
-
-img.align-right {
-  clear: right }
-
-ol.simple, ul.simple {
-  margin-bottom: 1em }
-
-ol.arabic {
-  list-style: decimal }
-
-ol.loweralpha {
-  list-style: lower-alpha }
-
-ol.upperalpha {
-  list-style: upper-alpha }
-
-ol.lowerroman {
-  list-style: lower-roman }
-
-ol.upperroman {
-  list-style: upper-roman }
-
-p.attribution {
-  text-align: right ;
-  margin-left: 50% }
-
-p.caption {
-  font-style: italic }
-
-p.credits {
-  font-style: italic ;
-  font-size: smaller }
-
-p.label {
-  white-space: nowrap }
-
-p.rubric {
-  font-weight: bold ;
-  font-size: larger ;
-  color: maroon ;
-  text-align: center }
-
-p.sidebar-title {
-  font-family: sans-serif ;
-  font-weight: bold ;
-  font-size: larger }
-
-p.sidebar-subtitle {
-  font-family: sans-serif ;
-  font-weight: bold }
-
-p.topic-title {
-  font-weight: bold }
-
-pre.address {
-  margin-bottom: 0 ;
-  margin-top: 0 ;
-  font-family: serif ;
-  font-size: 100% }
-
-pre.literal-block, pre.doctest-block {
-  margin-left: 2em ;
-  margin-right: 2em ;
-  background-color: #eeeeee }
-
-span.classifier {
-  font-family: sans-serif ;
-  font-style: oblique }
-
-span.classifier-delimiter {
-  font-family: sans-serif ;
-  font-weight: bold }
-
-span.interpreted {
-  font-family: sans-serif }
-
-span.option {
-  white-space: nowrap }
-
-span.pre {
-  white-space: pre }
-
-span.problematic {
-  color: red }
-
-span.section-subtitle {
-  /* font-size relative to parent (h1..h6 element) */
-  font-size: 80% }
-
-table.citation {
-  border-left: solid 1px gray;
-  margin-left: 1px }
-
-table.docinfo {
-  margin: 2em 4em }
-
-table.docutils {
-  margin-top: 0.5em ;
-  margin-bottom: 0.5em }
-
-table.footnote {
-  border-left: solid 1px black;
-  margin-left: 1px }
-
-table.docutils td, table.docutils th,
-table.docinfo td, table.docinfo th {
-  padding-left: 0.5em ;
-  padding-right: 0.5em ;
-  vertical-align: top }
-
-table.docutils th.field-name, table.docinfo th.docinfo-name {
-  font-weight: bold ;
-  text-align: left ;
-  white-space: nowrap ;
-  padding-left: 0 }
-
-h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
-h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
-  font-size: 100% }
-
-tt.docutils {
-  background-color: #eeeeee }
-
-ul.auto-toc {
-  list-style-type: none }
-
-</style>
+<link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
 <div class="document" id="paella">
 <h1 class="title">Paella</h1>
+<p><a class="reference" href="todo_etch.html">todo</a> list for etch</p>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#what-is-paella" id="id4" name="id4">What is Paella?</a></li>
+<li><a class="reference" href="#what-is-paella-not" id="id5" name="id5">What is Paella <strong>Not</strong>?</a></li>
+<li><a class="reference" href="#dependencies" id="id6" name="id6">Dependencies</a></li>
+<li><a class="reference" href="#intended-audience-users" id="id7" name="id7">Intended Audience/Users</a></li>
+<li><a class="reference" href="#download" id="id8" name="id8">Download</a></li>
+<li><a class="reference" href="#project" id="id9" name="id9">Project</a></li>
+<li><a class="reference" href="#todo-list-for-etch" id="id10" name="id10">todo list for etch</a></li>
+<li><a class="reference" href="#documentation" id="id11" name="id11">Documentation</a></li>
+<li><a class="reference" href="#related-links" id="id12" name="id12">Related Links</a></li>
+<li><a class="reference" href="#authors" id="id13" name="id13">Authors</a></li>
+</ul>
+</div>
 <div class="section">
 <h1><a id="what-is-paella" name="what-is-paella">What is <a class="reference" href="http://paella.berlios.de">Paella</a>?</a></h1>
 <p><a class="reference" href="http://paella.berlios.de">Paella</a> is a installation/configuration management system centered on
@@ -315,7 +49,7 @@ to handle cf files for cfengine.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="dependencies" name="dependencies">Dependencies</a></h1>
+<h1><a class="toc-backref" href="#id6" id="dependencies" name="dependencies">Dependencies</a></h1>
 <ul class="simple">
 <li><a class="reference" href="http://debian.org">debian</a><ul>
 <li><a class="reference" href="http://paella.berlios.de">Paella</a> is meant to run on a debian system.</li>
@@ -347,7 +81,7 @@ deb-src ftp://ftp.berlios.de/pub/paella/ sarge/
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="intended-audience-users" name="intended-audience-users">Intended Audience/Users</a></h1>
+<h1><a class="toc-backref" href="#id7" id="intended-audience-users" name="intended-audience-users">Intended Audience/Users</a></h1>
 <p><a class="reference" href="http://paella.berlios.de">Paella</a> is written for system administrators using <a class="reference" href="http://debian.org">debian</a>.  Ultimately it should not
 be required to learn sql or python to competently use paella, but currently this is
 not the case.  The user should, however, feel quite comfortable writing simple shell
@@ -360,7 +94,7 @@ equivalent.  The paella-debrepos package helps with this.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="download" name="download">Download</a></h1>
+<h1><a class="toc-backref" href="#id8" id="download" name="download">Download</a></h1>
 <p>Currently the best way to obtain paella is through subversion:</p>
 <pre class="literal-block">
 svn checkout svn://svn.berlios.de/useless/trunk useless
@@ -373,7 +107,7 @@ to do before a 1.0 release will be made.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="project" name="project">Project</a></h1>
+<h1><a class="toc-backref" href="#id9" id="project" name="project">Project</a></h1>
 <p><a class="reference" href="http://developer.berlios.de/projects/paella">project</a> page</p>
 <p>Currently, paella is going through many changes for the new etch release.  The code
 in the trunk will probably be broken for a while.  The latest stable code is in the sarge branch.</p>
@@ -382,16 +116,16 @@ in the trunk will probably be broken for a while.  The latest stable code is in 
 <h1><a id="todo-list-for-etch" name="todo-list-for-etch"><a class="reference" href="todo_etch.html">todo</a> list for etch</a></h1>
 </div>
 <div class="section">
-<h1><a id="documentation" name="documentation">Documentation</a></h1>
+<h1><a class="toc-backref" href="#id11" id="documentation" name="documentation">Documentation</a></h1>
 <p><a class="reference" href="notes.html">notes</a> about paella</p>
 <p><a class="reference" href="gui.html">gui</a> document</p>
 <p>known <a class="reference" href="problems.html">problems</a> with paella.</p>
-<p>a <a class="reference" href="fai.html">little</a> page on paella and fai.
-how this website is <a class="reference" href="svnwebsite.html">maintained</a>.</p>
+<p>a <a class="reference" href="fai.html">little</a> page on paella and fai.</p>
+<p>how this website is <a class="reference" href="svnwebsite.html">maintained</a>.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="related-links" name="related-links">Related Links</a></h1>
+<h1><a class="toc-backref" href="#id12" id="related-links" name="related-links">Related Links</a></h1>
 <p><a class="reference" href="http://useless.berlios.de">Useless</a> -- My toolkit of python code.</p>
 <dl class="docutils">
 <dt><a class="reference" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> -- Fully Automated Installer for debian</dt>
@@ -411,10 +145,11 @@ to the deficient gui on paella.</dd>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a id="authors" name="authors">Authors</a></h1>
+<h1><a class="toc-backref" href="#id13" id="authors" name="authors">Authors</a></h1>
 <p><a class="reference" href="mailto:umeboshi&#64;gregscomputerservice.com">Joseph Rawson</a> &lt;<a class="reference" href="mailto:umeboshi&#64;gregscomputerservice.com">umeboshi&#64;gregscomputerservice.com</a>&gt;</p>
 <hr class="docutils" />
 <p>This <a class="reference" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
+<p><a class="reference" href="/">home</a></p>
 </div>
 </div>
 </body>

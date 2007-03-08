@@ -16,7 +16,9 @@
 <ul class="simple">
 <li><a class="reference" href="#paella-notes" id="id2" name="id2">Paella Notes</a><ul>
 <li><a class="reference" href="#what-is-paella" id="id3" name="id3">What is Paella</a></li>
-<li><a class="reference" href="#objects-and-definitions" id="id4" name="id4">Objects and Definitions</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#objects-and-definitions" id="id4" name="id4">Objects and Definitions</a><ul>
 <li><a class="reference" href="#apt-source" id="id5" name="id5">Apt Source</a></li>
 <li><a class="reference" href="#suite" id="id6" name="id6">Suite</a></li>
 <li><a class="reference" href="#trait" id="id7" name="id7">Trait</a></li>
@@ -30,21 +32,28 @@
 <li><a class="reference" href="#machine" id="id13" name="id13">Machine</a></li>
 <li><a class="reference" href="#mount" id="id14" name="id14">Mount</a></li>
 <li><a class="reference" href="#filesystem" id="id15" name="id15">Filesystem</a></li>
-<li><a class="reference" href="#installer" id="id16" name="id16">Installer</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#installer" id="id16" name="id16">Installer</a><ul>
 <li><a class="reference" href="#trait-installer" id="id17" name="id17">Trait Installer</a></li>
 <li><a class="reference" href="#profile-installer" id="id18" name="id18">Profile Installer</a></li>
 <li><a class="reference" href="#nfs-installer" id="id19" name="id19">Nfs Installer</a></li>
 <li><a class="reference" href="#installer-toolkit" id="id20" name="id20">Installer Toolkit</a></li>
 <li><a class="reference" href="#automatic-install" id="id21" name="id21">Automatic Install</a></li>
+</ul>
+</li>
 <li><a class="reference" href="#database-schema" id="id22" name="id22">Database Schema</a></li>
-<li><a class="reference" href="#getting-started-with-paella" id="id23" name="id23">Getting started with paella</a></li>
+<li><a class="reference" href="#getting-started-with-paella" id="id23" name="id23">Getting started with paella</a><ul>
 <li><a class="reference" href="#hardware-recommendations" id="id24" name="id24">Hardware Recommendations</a></li>
 <li><a class="reference" href="#local-debian-repository" id="id25" name="id25">Local Debian Repository</a></li>
 <li><a class="reference" href="#using-paella-management" id="id26" name="id26">Using Paella-Management</a></li>
-<li><a class="reference" href="#environment-variables-used-by-paella" id="id27" name="id27">Environment Variables used by Paella</a></li>
-<li><a class="reference" href="#paellarc-configuration-file" id="id28" name="id28">Paellarc Configuration File</a></li>
-<li><a class="reference" href="#uml-machine-configuration-file" id="id29" name="id29">Uml Machine Configuration File</a></li>
-<li><a class="reference" href="#uml-kernel-options-used-by-paella-init-script" id="id30" name="id30">Uml Kernel Options used by paella-init script</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#reserved-word-option-reference" id="id27" name="id27">Reserved Word/Option Reference</a><ul>
+<li><a class="reference" href="#environment-variables-used-by-paella" id="id28" name="id28">Environment Variables used by Paella</a></li>
+<li><a class="reference" href="#paellarc-configuration-file" id="id29" name="id29">Paellarc Configuration File</a></li>
+<li><a class="reference" href="#uml-machine-configuration-file" id="id30" name="id30">Uml Machine Configuration File</a></li>
+<li><a class="reference" href="#uml-kernel-options-used-by-paella-init-script" id="id31" name="id31">Uml Kernel Options used by paella-init script</a></li>
 </ul>
 </li>
 </ul>
@@ -56,10 +65,10 @@
 being able to easily define, configure, maintain and update systems and
 networks.</p>
 </div>
+</div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id4" id="objects-and-definitions" name="objects-and-definitions">Objects and Definitions</a></h2>
-</div>
+<h1><a class="toc-backref" href="#id4" id="objects-and-definitions" name="objects-and-definitions">Objects and Definitions</a></h1>
 <div class="section">
 <h2><a class="toc-backref" href="#id5" id="apt-source" name="apt-source">Apt Source</a></h2>
 <p>An apt source is similar to a line in an /etc/apt/sources.list file.</p>
@@ -314,8 +323,9 @@ skipped for on-site installations.</li>
 <p>this is done on filesystem_mounts</p>
 <p>the target fstab will be completely formed from the filesystem information</p>
 </div>
+</div>
 <div class="section">
-<h2><a class="toc-backref" href="#id16" id="installer" name="installer">Installer</a></h2>
+<h1><a class="toc-backref" href="#id16" id="installer" name="installer">Installer</a></h1>
 <p>The installers in paella are layered.  There is a <a class="reference" href="#trait-installer">trait installer</a>, a <a class="reference" href="#profile-installer">profile installer</a>,
 and a <a class="reference" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
 operation more structured.  The trait installer is the simplest and contains everything
@@ -323,7 +333,6 @@ needed for installing a trait.  The profile installer contains a trait installer
 responsible for installing profiles.  The nfs installer contains a profile installer and is used
 to install a profile on a machine.  There is also a chroot installer that will install a profile
 to a target directory.</p>
-</div>
 <div class="section">
 <h2><a class="toc-backref" href="#id17" id="trait-installer" name="trait-installer">Trait Installer</a></h2>
 <p>The trait installer is responsible for installing a <a class="reference" href="#trait">trait</a> to a target location.
@@ -411,8 +420,9 @@ have to use python interactively, or psql.  There is a script on the nfs
 installer called paella-submit-machine.  You pass it a machine name
 argument</p>
 </div>
+</div>
 <div class="section">
-<h2><a class="toc-backref" href="#id22" id="database-schema" name="database-schema">Database Schema</a></h2>
+<h1><a class="toc-backref" href="#id22" id="database-schema" name="database-schema">Database Schema</a></h1>
 <p>The database schema is not very complicated.</p>
 <p>The primary tables are:</p>
 <ul class="simple">
@@ -579,7 +589,7 @@ the tag markers.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id23" id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h2>
+<h1><a class="toc-backref" href="#id23" id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h1>
 <p>People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
 and you have mostly debian machines on it.  If you only maintain one network with a few
@@ -605,7 +615,6 @@ svn checkout svn://svn.berlios.de/useless/trunk useless</p>
 <p>to get paella:
 svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 <p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
-</div>
 <hr class="docutils" />
 <div class="section">
 <h2><a class="toc-backref" href="#id24" id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
@@ -666,9 +675,12 @@ very much right now, but bugs will be fixed on it.  A good portion of setting up
 configuring the machines is done with the gtk interface, so for the time being, anybody
 using paella will have to bear through using it until the kde interface is ready.</p>
 </div>
+</div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id27" id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
+<h1><a class="toc-backref" href="#id27" id="reserved-word-option-reference" name="reserved-word-option-reference">Reserved Word/Option Reference</a></h1>
+<div class="section">
+<h2><a class="toc-backref" href="#id28" id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
 <ul class="simple">
 <li>these are used to help override a configured db connection:<ul>
 <li><strong>PAELLA_DBHOST</strong> - hostname or ip of host paella database resides</li>
@@ -701,7 +713,7 @@ using paella will have to bear through using it until the kde interface is ready
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id28" id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id29" id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
 <p>I'm trying to move as much as possible from the paellarc file to
 the default environment in the database.
 (installer) means that the section or option is meaningful only to the installer code.
@@ -782,7 +794,7 @@ this option was here for.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id29" id="uml-machine-configuration-file" name="uml-machine-configuration-file">Uml Machine Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id30" id="uml-machine-configuration-file" name="uml-machine-configuration-file">Uml Machine Configuration File</a></h2>
 <p>This is the structure of the umlmachines.conf configuration file.
 Every section in this configuration file defines a uml machine, using
 the name of the section.</p>
@@ -800,7 +812,7 @@ machines.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id30" id="uml-kernel-options-used-by-paella-init-script" name="uml-kernel-options-used-by-paella-init-script">Uml Kernel Options used by paella-init script</a></h2>
+<h2><a class="toc-backref" href="#id31" id="uml-kernel-options-used-by-paella-init-script" name="uml-kernel-options-used-by-paella-init-script">Uml Kernel Options used by paella-init script</a></h2>
 <p>These are the command line options understood by the paella-init for
 the user mode linux kernel.</p>
 <ul class="simple">

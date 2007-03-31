@@ -8,5 +8,6 @@ src/todo_etch = 7b6a3006dfec6a7b6871493bbb7f473a
 src/docs/gui = 025fb79e688afd897e620160358f0bc3
 src/docs/problems = 0cafeac1c2ecb9deaad2783004721cb9
 src/defaultdb = 9353604eccdf31565a6c92baa9a5c4b7
-src/index = 53b72e8e439d0d4e5025809c5743e276
+src/docs/quickstart = c21108223590738786d88e502addf88d
+src/index = 18ac770f276d2d52aed8d5b990c2a2ce
 

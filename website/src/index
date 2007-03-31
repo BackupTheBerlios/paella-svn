@@ -114,6 +114,7 @@ todo_ list for etch
 Documentation
 ---------------------
 
+quickstart_ guide to paella
 
 notes_ about paella
 
@@ -179,3 +180,4 @@ Authors
 .. _tarball: http://download.berlios.de/paella/paella_0.7.31.tar.gz 
 .. _maintained: svnwebsite.html
 .. _little: fai.html
+.. _quickstart: quickstart.html

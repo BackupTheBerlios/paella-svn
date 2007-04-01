@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title></title>
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<div class="section">
+<h1><a class="toc-backref" href="#id1" id="paella-quick-start-guide" name="paella-quick-start-guide">Paella Quick Start Guide</a></h1>
+<div class="contents topic">
+<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<ul class="simple">
+<li><a class="reference" href="#paella-quick-start-guide" id="id1" name="id1">Paella Quick Start Guide</a><ul>
+<li><a class="reference" href="#introduction" id="id2" name="id2">Introduction</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#requirements" id="id3" name="id3">Requirements</a><ul>
+<li><a class="reference" href="#debian-etch" id="id4" name="id4">Debian Etch</a></li>
+<li><a class="reference" href="#hardware" id="id5" name="id5">Hardware</a></li>
+<li><a class="reference" href="#postgresql-database" id="id6" name="id6">Postgresql Database</a></li>
+<li><a class="reference" href="#user-mode-linux" id="id7" name="id7">User Mode Linux</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#setup-paella-from-subversion" id="id8" name="id8">Setup paella from subversion</a><ul>
+<li><a class="reference" href="#install-subversion" id="id9" name="id9">Install Subversion</a></li>
+<li><a class="reference" href="#obtain-the-quick-setup-script" id="id10" name="id10">Obtain the quick setup script</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#setup-database-server" id="id11" name="id11">Setup Database Server</a><ul>
+<li><a class="reference" href="#edit-postgresql-conf" id="id12" name="id12">Edit postgresql.conf</a></li>
+<li><a class="reference" href="#edit-pg-hba-conf" id="id13" name="id13">Edit pg_hba.conf</a></li>
+<li><a class="reference" href="#dbusers" id="id14" name="id14">dbusers</a></li>
+<li><a class="reference" href="#another-section" id="id15" name="id15">another section</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#setup-user-mode-linux" id="id16" name="id16">Setup User Mode Linux</a><ul>
+<li><a class="reference" href="#install-packages" id="id17" name="id17">Install packages</a></li>
+<li><a class="reference" href="#configure-tap-network" id="id18" name="id18">Configure TAP Network</a></li>
+<li><a class="reference" href="#masquerade-tap-network" id="id19" name="id19">Masquerade TAP Network</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#startup-database" id="id20" name="id20">startup database</a><ul>
+<li><a class="reference" href="#section" id="id21" name="id21">section</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#getting-started-with-paella-outdated" id="id22" name="id22">Getting started with paella (outdated)</a><ul>
+<li><a class="reference" href="#hardware-recommendations" id="id23" name="id23">Hardware Recommendations</a></li>
+<li><a class="reference" href="#local-debian-repository" id="id24" name="id24">Local Debian Repository</a></li>
+<li><a class="reference" href="#using-paella-management" id="id25" name="id25">Using Paella-Management</a></li>
+<li><a class="reference" href="#ending-section" id="id26" name="id26">ending section</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id2" id="introduction" name="introduction">Introduction</a></h2>
+<!-- introductory comment -->
+<p>Paella depends on a particular type of setup to operate.  This document details how to
+bootstrap that setup, starting from the bare minimum requirements.</p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h1><a class="toc-backref" href="#id3" id="requirements" name="requirements">Requirements</a></h1>
+<div class="section">
+<h2><a class="toc-backref" href="#id4" id="debian-etch" name="debian-etch">Debian Etch</a></h2>
+<p>It is best to start with a running debian desktop.  The upcoming etch release is
+what is currently supported.  Sarge will probably not work as paella requires python
+2.4 to operate.  Using sid may work also, especially while etch is still in testing, but this
+has not been tested.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id5" id="hardware" name="hardware">Hardware</a></h2>
+<p>This quick start routine was developed and tested using a laptop with 512MB of memory,
+and a 1GB swap partition.  You could probably get by with less which I will try to estimate
+later.  Most of the memory is required to run the user mode linux processes, and this can be
+adjusted by providing more swap for the user mode processes to use.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id6" id="postgresql-database" name="postgresql-database">Postgresql Database</a></h2>
+<p>A postgresql database is required to use paella.  The database server must allow tcp
+access.  A database user named &quot;paella&quot; must be created and allowed access to the paella
+database without authentication.  The paella user has only read access to most tables,
+although there are a couple of tables that are setup specifically for write access.</p>
+<p>More specific instructions on configuring the database server are provided in a later section.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id7" id="user-mode-linux" name="user-mode-linux">User Mode Linux</a></h2>
+<p>User mode linux is used to help test paella installations  in a limited environment where it is
+not feasible to setup a network of machines.  It can be useful when testing a new configuration
+of network services on a test network without interfering with the normal network.</p>
+<p>In order to follow most of the steps in this guide, the user-mode-linux and uml-utilities packages
+are required to be installed.  More specific instructions on configuring user-mode-linux and the
+uml-utilities package are provided in a later section.</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id8" id="setup-paella-from-subversion" name="setup-paella-from-subversion">Setup paella from subversion</a></h1>
+<div class="section">
+<h2><a class="toc-backref" href="#id9" id="install-subversion" name="install-subversion">Install Subversion</a></h2>
+<p>You will need to install subversion to setup the environment necessary to run paella.
+As root:</p>
+<pre class="literal-block">
+apt-get install subversion
+</pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id10" id="obtain-the-quick-setup-script" name="obtain-the-quick-setup-script">Obtain the quick setup script</a></h2>
+<p>type:</p>
+<pre class="literal-block">
+svn export svn://svn.berlios.de/paella/trunk/config/scripts/paella-devel-quick-setup
+</pre>
+<p>This file should already be executable, if not, do chmod +x paella-devel-quick-setup.</p>
+<p>You should edit the file and change the variables at the top to your needs.  When you are
+ready, run the script, install the packages, and make the changes to your .bashrc .  If you
+don't want to make the changes to your .bashrc, you can put the lines in another file that
+you will have to source before running any of the scripts.</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id11" id="setup-database-server" name="setup-database-server">Setup Database Server</a></h1>
+<p>Paella is developed and used with postgresql version 7.x .  It may work with newer versions, but
+it is not tested.  It is recommended that you run the database server on a host on your local
+network instead of the host you'll be using paella on.  This is not necessary, but it does help
+the performance quite a bit.</p>
+<p>If you are new to using postgresql, I suggest reading
+/usr/share/doc/postgresql-7.4/README.Debian.gz first.</p>
+<blockquote>
+<p>Steps to setup paella database:</p>
+<pre class="literal-block">
+apt-get install postgresql
+su postgres
+createuser -a -d adminuser
+createuser -A -D paella
+exit
+su adminuser createdb paella
+createlang plpgsql paella
+</pre>
+</blockquote>
+<p>Next, you will have to edit a couple of configuration files as the postgres user.</p>
+<div class="section">
+<h2><a class="toc-backref" href="#id12" id="edit-postgresql-conf" name="edit-postgresql-conf">Edit postgresql.conf</a></h2>
+<p>You will probably have to edit /etc/postgresql/7.4/main/postgresql.conf , and
+set &quot;tcpip_socket = true&quot; .</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id13" id="edit-pg-hba-conf" name="edit-pg-hba-conf">Edit pg_hba.conf</a></h2>
+<p>You will have to edit /etc/postgresql/7.4/main/pg_hba.conf, and add some lines:</p>
+<p>If your database server is not on your desktop, but on the local network, you
+will have to allow access to the paella database from your machine.
+example:</p>
+<pre class="literal-block">
+#TYPE   DATABASE        USER            IP-ADDRESS      IP-MASK         METHOD
+host    paella          paella          &lt;my ip address&gt; 255.255.255.255 trust
+host    paella          adminuser       &lt;my ip address&gt; 255.255.255.255 ident sameuser
+</pre>
+<p>If your database server is on your desktop, you need to allow access from your uml network.
+example:</p>
+<pre class="literal-block">
+#TYPE   DATABASE        USER            IP-ADDRESS      IP-MASK         METHOD
+host    paella          paella          10.0.1.0                255.255.255.0   trust
+host    paella          adminuser       127.0.0.1               255.255.255.0   trust
+</pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id14" id="dbusers" name="dbusers">dbusers</a></h2>
+<p>talk about admin, paella users</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id15" id="another-section" name="another-section">another section</a></h2>
+<p>something else</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id16" id="setup-user-mode-linux" name="setup-user-mode-linux">Setup User Mode Linux</a></h1>
+<div class="section">
+<h2><a class="toc-backref" href="#id17" id="install-packages" name="install-packages">Install packages</a></h2>
+<p>First off, you will need to get root and install a couple of packages:</p>
+<pre class="literal-block">
+apt-get install user-mode-linux uml-utilities
+</pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id18" id="configure-tap-network" name="configure-tap-network">Configure TAP Network</a></h2>
+<p>Be sure to read /usr/share/doc/uml-utilities/README.Debian, and follow the instructions
+there to setup the tap network.</p>
+<p>This quick start procedure uses the 10.0.1.0 network for the user-mode-linux machines by
+default.  Here is what to add to /etc/network/interfaces:</p>
+<pre class="literal-block">
+auto tap0
+iface tap0 inet static
+      address 10.0.1.1
+      netmask 255.255.255.0
+      tunctl_user uml-net
+</pre>
+<p>You will probably want to add yourself to the uml-net group:</p>
+<pre class="literal-block">
+adduser username uml-net
+</pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id19" id="masquerade-tap-network" name="masquerade-tap-network">Masquerade TAP Network</a></h2>
+<p>You will need to setup iptables to get your uml machines to access the rest of the network.
+As root type:</p>
+<pre class="literal-block">
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+echo '1' &gt; /proc/sys/net/ipv4/ip_forward
+</pre>
+<p>This is assuming that eth0 is your main network interface.  You may want to add these lines
+to your /etc/rc.local script.</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id20" id="startup-database" name="startup-database">startup database</a></h1>
+<div class="section">
+<h2><a class="toc-backref" href="#id21" id="section" name="section">section</a></h2>
+<p>discuss it</p>
+</div>
+</div>
+<div class="section">
+<h1><a class="toc-backref" href="#id22" id="getting-started-with-paella-outdated" name="getting-started-with-paella-outdated">Getting started with paella (outdated)</a></h1>
+<p>People who will get the most benefit out of paella are IT consultants that manage
+multiple disjoint networks.  You may also benefit from it if your network is large enough,
+and you have mostly debian machines on it.  If you only maintain one network with a few
+machines, e.g. a firewall, a server, and a couple of desktops, the time involved it setting up
+paella and maintaining configurations might probably be more than just using more simple
+backup and restore methods.</p>
+<p>There are currently no real releases of paella, because i dislike the file release system at
+berlios, so you will have to check out the code via subversion, or alternately you can grab
+the debian packages from <a class="reference" href="http://gregscomputerservice.com">http://gregscomputerservice.com</a>.  The line for the sources.list
+is 'deb <a class="reference" href="http://gregscomputerservice.com/debian/local">http://gregscomputerservice.com/debian/local</a> common/'.</p>
+<p>A person who uses paella is expected to understand how to perform basic system
+administration on a debian system.  They should also be comfortable with building their
+own debian packages from source, and debianizing a generic source application.  Paella
+makes use of mini-dinstall to maintain a local mini-repository and can install systems that
+reference that repository.  This provides a fairly simple way to add custom packages to the
+systems that you will be designing.</p>
+<p>If you feel that you may benefit out of paella, here is how to get started.  If you don't want to
+use the apt source above, you can check it out from subversion at berlios.  Paella
+depends on Useless.  Useless is a collection of python modules that I use in other database
+applications.</p>
+<p>to get useless:
+svn checkout svn://svn.berlios.de/useless/trunk useless</p>
+<p>to get paella:
+svn checkout svn://svn.berlios.de/paella/trunk paella</p>
+<p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
+<hr class="docutils" />
+<div class="section">
+<h2><a class="toc-backref" href="#id23" id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
+<p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network
+to support this.  Paella works best with at least one dedicated server and a management
+desktop, both running debian.</p>
+<p>Server:</p>
+<p>The server will be responsible for running the nfs-server, the boot-server, the postgresql
+server, and the webserver. It is recommended that you have a local mirror of a debian
+repository on the server, and have it accessible over http.  You should also install the
+paella-debrepos package on this machine to create and maintain your custom debian
+repository.</p>
+<blockquote>
+<p>Database Setup:</p>
+<pre class="literal-block">
+apt-get install postgresql
+su postgres
+createuser -a -d adminuser
+createuser -A -D paella
+createlang plpgsql template1
+exit
+su adminuser createdb paella
+</pre>
+</blockquote>
+<p>You should setup /etc/postgresql/pg_hba.conf to allow access to the database by
+paella from anywhere on the local network, and allow adminuser from your management
+desktop.</p>
+<p>The setup of the boot-server and the nfs-server are beyond the scope of this
+document, but the profiles are defined in the default database provided with paella.  So
+instead of taking the time to setup the boot-server and nfs-server manually, you can use the
+paella-chroot-install script to create the machine and tar it up.</p>
+<p>Desktop:</p>
+<p>The desktop should be about 400MHz Pentium or better with &gt;= 1024x768 resolution,
+capable of running kde.  It is necessary to have access to your database on the server.  You
+should also have your EDITOR environment variable set to something that will pop-up
+a window in X.  On this machine you will want to install the paella-admin and the
+paella-defaultdb packages.  The default config file is located at /etc/paellarc.  You will
+probably want to copy this to ~/.paellarc and edit it.</p>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h2><a class="toc-backref" href="#id24" id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
+<p>Paella is built to make use of you local debian repository.  The paella-debrepos package
+uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review
+the documentation for it.  Install the paella-debrepos package on the server.  The init script
+should fail because you are likely not to have a debrepos user.  This will be fixed later.
+Anyway, in the root of the debian mirror, there needs to be a 'local' directory.  The
+mini-dinstall daemon will be run from here. In the 'local' directory there needs to be a
+directory for each suite you have in paella, plus one called 'common'.</p>
+</div>
+<hr class="docutils" />
+<div class="section">
+<h2><a class="toc-backref" href="#id25" id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
+<p>The management interface is going through changes.  Paella started with a gtk interface,
+and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
+gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do
+very much right now, but bugs will be fixed on it.  A good portion of setting up and
+configuring the machines is done with the gtk interface, so for the time being, anybody
+using paella will have to bear through using it until the kde interface is ready.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id26" id="ending-section" name="ending-section">ending section</a></h2>
+<p>This <a class="reference" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
+<p><a class="reference" href="/">home</a></p>
+</div>
+</div>
+</div>
+</body>
+</html>

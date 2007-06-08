@@ -9,6 +9,7 @@
 </head>
 <body>
 <div class="document">
+<!-- -*- mode: rst -*- -->
 <div class="section">
 <h1><a class="toc-backref" href="#id2" id="paella-notes" name="paella-notes">Paella Notes</a></h1>
 <div class="contents topic">
@@ -40,21 +41,22 @@
 <li><a class="reference" href="#nfs-installer" id="id19" name="id19">Nfs Installer</a></li>
 <li><a class="reference" href="#installer-toolkit" id="id20" name="id20">Installer Toolkit</a></li>
 <li><a class="reference" href="#automatic-install" id="id21" name="id21">Automatic Install</a></li>
+<li><a class="reference" href="#new-installer-outline" id="id22" name="id22">New Installer Outline</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#database-schema" id="id22" name="id22">Database Schema</a></li>
-<li><a class="reference" href="#getting-started-with-paella" id="id23" name="id23">Getting started with paella</a><ul>
-<li><a class="reference" href="#hardware-recommendations" id="id24" name="id24">Hardware Recommendations</a></li>
-<li><a class="reference" href="#local-debian-repository" id="id25" name="id25">Local Debian Repository</a></li>
-<li><a class="reference" href="#using-paella-management" id="id26" name="id26">Using Paella-Management</a></li>
+<li><a class="reference" href="#database-schema" id="id23" name="id23">Database Schema</a></li>
+<li><a class="reference" href="#getting-started-with-paella" id="id24" name="id24">Getting started with paella</a><ul>
+<li><a class="reference" href="#hardware-recommendations" id="id25" name="id25">Hardware Recommendations</a></li>
+<li><a class="reference" href="#local-debian-repository" id="id26" name="id26">Local Debian Repository</a></li>
+<li><a class="reference" href="#using-paella-management" id="id27" name="id27">Using Paella-Management</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#reserved-word-option-reference" id="id27" name="id27">Reserved Word/Option Reference</a><ul>
-<li><a class="reference" href="#environment-variables-used-by-paella" id="id28" name="id28">Environment Variables used by Paella</a></li>
-<li><a class="reference" href="#paellarc-configuration-file" id="id29" name="id29">Paellarc Configuration File</a></li>
-<li><a class="reference" href="#uml-machine-configuration-file" id="id30" name="id30">Uml Machine Configuration File</a></li>
-<li><a class="reference" href="#uml-kernel-options-used-by-paella-init-script" id="id31" name="id31">Uml Kernel Options used by paella-init script</a></li>
-<li><a class="reference" href="#default-environment" id="id32" name="id32">Default Environment</a></li>
+<li><a class="reference" href="#reserved-word-option-reference" id="id28" name="id28">Reserved Word/Option Reference</a><ul>
+<li><a class="reference" href="#environment-variables-used-by-paella" id="id29" name="id29">Environment Variables used by Paella</a></li>
+<li><a class="reference" href="#paellarc-configuration-file" id="id30" name="id30">Paellarc Configuration File</a></li>
+<li><a class="reference" href="#uml-machine-configuration-file" id="id31" name="id31">Uml Machine Configuration File</a></li>
+<li><a class="reference" href="#uml-kernel-options-used-by-paella-init-script" id="id32" name="id32">Uml Kernel Options used by paella-init script</a></li>
+<li><a class="reference" href="#default-environment" id="id33" name="id33">Default Environment</a></li>
 </ul>
 </li>
 </ul>
@@ -421,9 +423,90 @@ have to use python interactively, or psql.  There is a script on the nfs
 installer called paella-submit-machine.  You pass it a machine name
 argument</p>
 </div>
+<div class="section">
+<h2><a class="toc-backref" href="#id22" id="new-installer-outline" name="new-installer-outline">New Installer Outline</a></h2>
+<p>Here is an outline of the new installer system.  It is centered around a
+base processor class.  The base processor class has a list of processes and a map
+that links the processes to methods in the processor class.  The base processor includes
+a logging object and pre/post hooks that can be applied to each process.  A processor can
+have a processor as an attribute, and have it's run_all_processes method invoked as a
+process.  In this manner, processors can be chained together.  Each process can have
+a script attached to it.  This script will be invoked instead of the normal process if it is
+present.  It is up to the subclass to define a make_script method to do this.</p>
+<p>Each installer object will be a subclass of the base processor.</p>
+<p>class hierarchy</p>
+<ul class="simple">
+<li><strong>BaseProcessor(object)</strong></li>
+<li><strong>BaseInstaller(BaseProcessor)</strong><ul>
+<li>properties:<ul>
+<li>has a target, can create target directory</li>
+<li>there is no process list in this class</li>
+<li>process list to be defined in subclass</li>
+<li>logging is setup here</li>
+<li>takes a db connection as init arg</li>
+<li>suite is set here, base_suite is also determined</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>ChrootInstaller(BaseInstaller)</strong><ul>
+<li>properties:<ul>
+<li>process list defined</li>
+<li>has installer attribute (usually ProfileInstaller)</li>
+<li>set profile and target path before processing</li>
+</ul>
+</li>
+<li>processes:<ul>
+<li>ready_target</li>
+<li>bootstrap</li>
+<li>mount_target_proc</li>
+<li>mount_target_sys</li>
+<li>make_device_entries (probably deprecated by udev)</li>
+<li>apt_sources_installer</li>
+<li>ready_base_for_install</li>
+<li>pre_install</li>
+<li>install</li>
+<li>post_install</li>
+<li>apt_sources_final</li>
+<li>umount_target_sys</li>
+<li>umount_target_proc</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>MachineInstaller(ChrootInstaller)</strong><ul>
+<li>processes:<ul>
+<li>pre - MachineInstaller</li>
+<li>setup_disks - MachineInstaller</li>
+<li>set_target - inherit from ChrootInstaller</li>
+<li>ready_target - inherit from ChrootInstaller</li>
+<li>mount_target - MachineInstaller</li>
+<li>bootstrap - inherit from ChrootInstaller</li>
+<li>mount_target_proc - inherit from ChrootInstaller</li>
+<li>mount_target_sys - inherit from ChrootInstaller</li>
+<li>make_device_entries (probably deprecated by udev) - inherit from ChrootInstaller</li>
+<li>apt_sources_installer - inherit from ChrootInstaller</li>
+<li>ready_base_for_install - inherit from ChrootInstaller</li>
+<li>pre_install - inherit from ChrootInstaller</li>
+<li>install - inherit from ChrootInstaller</li>
+<li>post_install - inherit from ChrootInstaller</li>
+<li>install_fstab</li>
+<li>install_modules</li>
+<li>install_kernel</li>
+<li>apt_sources_final</li>
+<li>umount_target_proc</li>
+<li>post</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>TraitInstaller(BaseProcessor)</strong></li>
+<li><strong>ProfileInstaller(BaseProcessor)</strong></li>
+</ul>
+</div>
 </div>
 <div class="section">
-<h1><a class="toc-backref" href="#id22" id="database-schema" name="database-schema">Database Schema</a></h1>
+<h1><a class="toc-backref" href="#id23" id="database-schema" name="database-schema">Database Schema</a></h1>
 <p>The database schema is not very complicated.</p>
 <p>The primary tables are:</p>
 <ul class="simple">
@@ -590,7 +673,7 @@ the tag markers.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a class="toc-backref" href="#id23" id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h1>
+<h1><a class="toc-backref" href="#id24" id="getting-started-with-paella" name="getting-started-with-paella">Getting started with paella</a></h1>
 <p>People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
 and you have mostly debian machines on it.  If you only maintain one network with a few
@@ -618,7 +701,7 @@ svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 <p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id24" id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
+<h2><a class="toc-backref" href="#id25" id="hardware-recommendations" name="hardware-recommendations">Hardware Recommendations</a></h2>
 <p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network
 to support this.  Paella works best with at least one dedicated server and a management
 desktop, both running debian.</p>
@@ -657,7 +740,7 @@ probably want to copy this to ~/.paellarc and edit it.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id25" id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
+<h2><a class="toc-backref" href="#id26" id="local-debian-repository" name="local-debian-repository">Local Debian Repository</a></h2>
 <p>Paella is built to make use of you local debian repository.  The paella-debrepos package
 uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review
 the documentation for it.  Install the paella-debrepos package on the server.  The init script
@@ -668,7 +751,7 @@ directory for each suite you have in paella, plus one called 'common'.</p>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id26" id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
+<h2><a class="toc-backref" href="#id27" id="using-paella-management" name="using-paella-management">Using Paella-Management</a></h2>
 <p>The management interface is going through changes.  Paella started with a gtk interface,
 and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
 gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do
@@ -679,9 +762,9 @@ using paella will have to bear through using it until the kde interface is ready
 </div>
 <hr class="docutils" />
 <div class="section">
-<h1><a class="toc-backref" href="#id27" id="reserved-word-option-reference" name="reserved-word-option-reference">Reserved Word/Option Reference</a></h1>
+<h1><a class="toc-backref" href="#id28" id="reserved-word-option-reference" name="reserved-word-option-reference">Reserved Word/Option Reference</a></h1>
 <div class="section">
-<h2><a class="toc-backref" href="#id28" id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
+<h2><a class="toc-backref" href="#id29" id="environment-variables-used-by-paella" name="environment-variables-used-by-paella">Environment Variables used by Paella</a></h2>
 <ul class="simple">
 <li>these are used to help override a configured db connection:<ul>
 <li><strong>PAELLA_DBHOST</strong> - hostname or ip of host paella database resides</li>
@@ -714,7 +797,7 @@ using paella will have to bear through using it until the kde interface is ready
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id29" id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id30" id="paellarc-configuration-file" name="paellarc-configuration-file">Paellarc Configuration File</a></h2>
 <p>I'm trying to move as much as possible from the paellarc file to
 the default environment in the database.
 (installer) means that the section or option is meaningful only to the installer code.
@@ -795,7 +878,7 @@ this option was here for.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id30" id="uml-machine-configuration-file" name="uml-machine-configuration-file">Uml Machine Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id31" id="uml-machine-configuration-file" name="uml-machine-configuration-file">Uml Machine Configuration File</a></h2>
 <p>This is the structure of the umlmachines.conf configuration file.
 Every section in this configuration file defines a uml machine, using
 the name of the section.</p>
@@ -813,7 +896,7 @@ machines.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id31" id="uml-kernel-options-used-by-paella-init-script" name="uml-kernel-options-used-by-paella-init-script">Uml Kernel Options used by paella-init script</a></h2>
+<h2><a class="toc-backref" href="#id32" id="uml-kernel-options-used-by-paella-init-script" name="uml-kernel-options-used-by-paella-init-script">Uml Kernel Options used by paella-init script</a></h2>
 <p>These are the command line options understood by the paella-init for
 the user mode linux kernel.</p>
 <ul class="simple">
@@ -834,7 +917,7 @@ be removed soon.</li>
 </div>
 <hr class="docutils" />
 <div class="section">
-<h2><a class="toc-backref" href="#id32" id="default-environment" name="default-environment">Default Environment</a></h2>
+<h2><a class="toc-backref" href="#id33" id="default-environment" name="default-environment">Default Environment</a></h2>
 <p>The default environment is a ini type configuration file stored in the database as the
 default_enviroment table.</p>
 <ul class="simple">

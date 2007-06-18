@@ -118,8 +118,6 @@ Documentation
 
 quickstart_ guide to paella
 
-notes_ about paella
-
 gui_ document
 
 known problems_ with paella.
@@ -127,6 +125,16 @@ known problems_ with paella.
 a little_ page on paella and fai.
 
 how this website is maintained_.
+
+installer_
+
+objects_
+
+configuration_
+
+schema_
+
+notes_ about paella
 
 ---------------------------
 
@@ -183,3 +191,7 @@ Authors
 .. _maintained: svnwebsite.html
 .. _little: fai.html
 .. _quickstart: quickstart.html
+.. _objects: objects.html
+.. _configuration: configuration.html
+.. _schema: schema.html
+.. _installer: installer.html

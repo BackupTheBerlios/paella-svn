@@ -70,7 +70,11 @@ def check_page(fullpath):
     
 
 toppages = ['index', 'svnwebsite', 'fai', 'todo_etch', 'defaultdb']
-docpages = ['notes', 'gui', 'problems', 'abstract', 'schema', 'quickstart']
+
+docpages = ['abstract', 'configuration',
+            'gui', 'installer', 'notes', 'objects',
+            'problems', 'quickstart', 'schema'
+            ]
 
 for page in toppages:
     check_page(join('src', page))

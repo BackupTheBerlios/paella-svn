@@ -1,21 +1,37 @@
 #!/bin/bash
 
 echo "modifying /etc/network/interfaces"
-cat <<EOF>>/etc/network/interfaces;
+if ! [ -f /etc/network/interfaces.orig ]; then
+    mv /etc/network/interfaces /etc/network/interfaces.orig
+fi
+cat <<EOF > /etc/network/interfaces;
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
 
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
 iface eth1 inet static
 	address 10.0.1.1
 	netmask 255.255.255.0
 
 EOF
 
-echo "installing postgresql database cluster"
-pg_createcluster 8.3 main --start
-
+if ! [ -f /etc/postgresql/8.3/main/postgresql.conf ]; then
+    echo "installing postgresql database cluster"
+    pg_createcluster 8.3 main --start
+fi
 
 echo "replacing /etc/postgresql/8.3/main/pg_hba.conf"
-mv /etc/postgresql/8.3/main/pg_hba.conf /etc/postgresql/8.3/main/pg_hba.conf.orig
-
+if ! [ -f /etc/postgresql/8.3/main/pg_hba.conf.orig ]; then
+    mv /etc/postgresql/8.3/main/pg_hba.conf /etc/postgresql/8.3/main/pg_hba.conf.orig
+fi
 cat <<EOF > /etc/postgresql/8.3/main/pg_hba.conf
 
 # Database administrative login by UNIX sockets
@@ -28,6 +44,7 @@ local   all         all                               ident sameuser
 # IPv4 local connections:
 host    all         all         127.0.0.0/8          md5
 host	paella	paella	10.0.1.0/24	trust
+host	all	dbadmin	10.0.1.0/24	trust
 host	all	all	10.0.1.0/24	md5
 # IPv6 local connections:
 host    all         all         ::1/128               md5
@@ -35,8 +52,9 @@ host    all         all         ::1/128               md5
 EOF
 
 echo "replacing /etc/postgresql/8.3/main/postgresql.conf"
-mv /etc/postgresql/8.3/main/postgresql.conf /etc/postgresql/8.3/main/postgresql.conf.orig
-
+if ! [ -f /etc/postgresql/8.3/main/postgresql.conf.orig ]; then
+    mv /etc/postgresql/8.3/main/postgresql.conf /etc/postgresql/8.3/main/postgresql.conf.orig
+fi
 cat <<EOF> /etc/postgresql/8.3/main/postgresql.conf
 
 
@@ -113,6 +131,16 @@ pushd /etc/postgresql/8.3/main
 chown postgres:postgres pg_hba.conf postgresql.conf
 popd
 
+echo "Creating postgresql database users"
+su postgres -c "createuser -SDR paella"
+su postgres -c "createuser -sdr dbadmin"
+
+echo "Creating plpgsql language in template1"
+su postgres -c "createlang plpgsql template1"
+echo "Creating empty paella database"
+su postgres -c "createdb paella"
+
+
 
 echo "copying shorewall files from example"
 cp /usr/share/doc/shorewall-common/examples/two-interfaces/* /etc/shorewall
@@ -151,23 +179,23 @@ cat <<EOF > /etc/shorewall/policy
 # If you want to force clients to access the Internet via a proxy server
 # on your firewall, change the loc to net policy to REJECT info.
 loc		net		ACCEPT
-loc		$FW		ACCEPT		info
+loc		\$FW		ACCEPT		info
 loc		all		REJECT		info
 
 #
-# Policies for traffic originating from the firewall ($FW)
+# Policies for traffic originating from the firewall (\$FW)
 #
 # If you want open access to the Internet from your firewall, change the
-# $FW to net policy to ACCEPT and remove the 'info' LOG LEVEL.
+# \$FW to net policy to ACCEPT and remove the 'info' LOG LEVEL.
 # This may be useful if you run a proxy server on the firewall.
-$FW		net		ACCEPT		info
-$FW		loc		REJECT		info
-$FW		all		REJECT		info
+\$FW		net		ACCEPT		info
+\$FW		loc		REJECT		info
+\$FW		all		REJECT		info
 
 #
 # Policies for traffic originating from the Internet zone (net)
 #
-net		$FW		DROP		info
+net		\$FW		DROP		info
 net		loc		DROP		info
 net		all		DROP		info
 
@@ -186,30 +214,30 @@ cat <<EOF> /etc/shorewall/rules
 #
 #	Accept DNS connections from the firewall to the network
 #
-DNS/ACCEPT	$FW		net
+DNS/ACCEPT	\$FW		net
 #
 #	Accept SSH connections from the local network for administration
 #
-SSH/ACCEPT	loc		$FW
+SSH/ACCEPT	loc		\$FW
 #
 # You may want to uncomment these if your using a bridged connection
-#SSH/ACCEPT	net		$FW
-#SMB/ACCEPT	net		$FW
-#PostgreSQL/ACCEPT	net	$FW
+#SSH/ACCEPT	net		\$FW
+#SMB/ACCEPT	net		\$FW
+#PostgreSQL/ACCEPT	net	\$FW
 #VNC/DNAT	net		loc:10.0.1.20
 #
 #	Allow Ping from the local network
 #
-Ping/ACCEPT	loc		$FW
+Ping/ACCEPT	loc		\$FW
 
 #
 # Drop Ping from the "bad" net zone.. and prevent your log from being flooded..
 #
 
-Ping/DROP	net		$FW
+Ping/DROP	net		\$FW
 
-ACCEPT		$FW		loc		icmp
-ACCEPT		$FW		net		icmp
+ACCEPT		\$FW		loc		icmp
+ACCEPT		\$FW		net		icmp
 #
 
 #LAST LINE -- ADD YOUR ENTRIES BEFORE THIS ONE -- DO NOT REMOVE
@@ -217,10 +245,39 @@ ACCEPT		$FW		net		icmp
 
 EOF
 
+mv /etc/default/shorewall /etc/default/shorewall.orig
+cat <<EOF > /etc/default/shorewall
+# prevent startup with default configuration
+# set the following varible to 1 in order to allow Shorewall to start
+
+startup=1
+
+# if your Shorewall configuration requires detection of the ip address of a ppp
+# interface, you must list such interfaces in "wait_interface" to get Shorewall to
+# wait until the interface is configured. Otherwise the script will fail because
+# it won't be able to detect the IP address.
+#
+# Example:
+#    wait_interface="ppp0"
+# or
+#    wait_interface="ppp0 ppp1"
+# or, if you have defined  in /etc/shorewall/params
+#    wait_interface=
+
+#
+# Startup options
+#
+
+OPTIONS=""
+
+EOF
+
 echo "finished with shorewall"
 
 echo "replacing /etc/dhcp3/dhcpd.conf"
-mv /etc/dhcp3/dhcpd.conf /etc/dhcp3/dhcpd.conf.orig
+if ! [ -f /etc/dhcp3/dhcpd.conf.orig ]; then
+    mv /etc/dhcp3/dhcpd.conf /etc/dhcp3/dhcpd.conf.orig
+fi
 cat<<EOF > /etc/dhcp3/dhcpd.conf
 
 ddns-update-style none;
@@ -245,16 +302,88 @@ subnet 10.0.1.0 netmask 255.255.255.0 {
 
 EOF
 
+echo "replacing /etc/X11/xorg.conf"
+if ! [ -f /etc/X11/xorg.conf.orig ]; then
+    mv /etc/X11/xorg.conf /etc/X11/xorg.conf.orig
+fi
+cat <<EOF > /etc/X11/xorg.conf
+# xorg.conf (X.Org X Window System server configuration file)
+#
+# This file was generated by dexconf, the Debian X Configuration tool, using
+# values from the debconf database.
+#
+# Edit this file with caution, and see the xorg.conf manual page.
+# (Type "man xorg.conf" at the shell prompt.)
+#
+# This file is automatically updated on xserver-xorg package upgrades *only*
+# if it has not been modified since the last upgrade of the xserver-xorg
+# package.
+#
+# If you have edited this file but would like it to be automatically updated
+# again, run the following command:
+#   sudo dpkg-reconfigure -phigh xserver-xorg
 
-echo "making paella directories"
-mkdir /freespace
-# for the debian mirror
-mkdir /freespace/debian
-# for the nfsroot
-mkdir /freespace/paella
+Section "InputDevice"
+	Identifier	"Generic Keyboard"
+	Driver		"kbd"
+	Option		"XkbRules"	"xorg"
+	Option		"XkbModel"	"pc105"
+	Option		"XkbLayout"	"us"
+EndSection
 
-echo "linking /freespace/debian to /var/www/debian"
-pushd /var/www
-ln -s /freespace/debian
-popd
+Section "InputDevice"
+	Identifier	"Configured Mouse"
+	Driver		"mouse"
+EndSection
 
+Section "Device"
+	Identifier	"Configured Video Device"
+	Driver		"vesa"
+EndSection
+
+Section "Monitor"
+	Identifier	"Configured Monitor"
+EndSection
+
+Section "Screen"
+	Identifier	"Default Screen"
+	Monitor		"Configured Monitor"
+	SubSection "Display"
+	    Modes  "1024x768"
+	EndSubSection
+EndSection
+
+#Section "ServerFlags"
+#	Option		"DontZap"
+#EndSection
+
+EOF
+
+if ! [ -d /freespace ]; then
+    echo "making paella directories"
+    mkdir /freespace
+    # for the debian mirror
+    mkdir /freespace/debian
+    # for the nfsroot
+    mkdir /freespace/paella
+fi
+
+if ! [ -d /var/www/debian ]; then
+    echo "linking /freespace/debian to /var/www/debian"
+    pushd /var/www
+    ln -s /freespace/debian
+    popd
+fi
+
+echo "restarting services"
+/etc/init.d/networking stop
+/etc/init.d/dhcp3-server restart
+/etc/init.d/postgresql-8.3 restart
+/etc/init.d/shorewall restart
+
+if [ -f /usr/local/bin/setup-paella-server ]; then
+    echo "moving this script to /root , since it's only supposed to run once"
+    mv /usr/local/bin/setup-paella-server /root
+fi
+
+echo "Setup of paella server is complete"

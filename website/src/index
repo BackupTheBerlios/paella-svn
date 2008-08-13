@@ -116,7 +116,9 @@ todo_ list for etch
 Documentation
 ---------------------
 
-quickstart_ guide to paella
+quickstart_ guide to paella (outdated, and may not work)
+
+`Quickstart guide using VirtualBox OSE`_ (unfinished, but probably easier to follow)
 
 gui_ document
 
@@ -191,6 +193,7 @@ Authors
 .. _maintained: svnwebsite.html
 .. _little: fai.html
 .. _quickstart: quickstart.html
+.. _Quickstart guide using VirtualBox OSE: quickstart-vbox.html
 .. _objects: objects.html
 .. _configuration: configuration.html
 .. _schema: schema.html

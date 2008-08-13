@@ -25,57 +25,60 @@ attempted until this paragraph is removed.</p>
 </ul>
 </li>
 <li><a class="reference internal" href="#requirements" id="id5">Requirements</a><ul>
-<li><a class="reference internal" href="#debian-etch" id="id6">Debian Etch</a></li>
+<li><a class="reference internal" href="#debian" id="id6">Debian</a></li>
 <li><a class="reference internal" href="#hardware" id="id7">Hardware</a></li>
-<li><a class="reference internal" href="#postgresql-database" id="id8">Postgresql Database</a></li>
-<li><a class="reference internal" href="#user-mode-linux" id="id9">User Mode Linux</a></li>
+<li><a class="reference internal" href="#virtualbox-ose" id="id8">VirtualBox OSE</a></li>
+<li><a class="reference internal" href="#debian-netinst-cd-image-lennybeta2" id="id9">Debian Netinst CD Image (LennyBeta2)</a></li>
+<li><a class="reference internal" href="#remaster-the-netinst-iso" id="id10">Remaster the netinst iso</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#setup-paella-from-subversion" id="id10">Setup paella from subversion</a><ul>
-<li><a class="reference internal" href="#install-subversion" id="id11">Install Subversion</a></li>
-<li><a class="reference internal" href="#obtain-the-quick-setup-script" id="id12">Obtain the quick setup script</a></li>
+<li><a class="reference internal" href="#setup-the-paella-virtual-machine" id="id11">Setup the paella virtual machine</a></li>
+<li><a class="reference internal" href="#boot-the-paella-virtual-machine" id="id12">Boot the paella virtual machine</a></li>
+<li><a class="reference internal" href="#setup-paella-from-subversion" id="id13">Setup paella from subversion</a><ul>
+<li><a class="reference internal" href="#install-subversion" id="id14">Install Subversion</a></li>
+<li><a class="reference internal" href="#obtain-the-quick-setup-script" id="id15">Obtain the quick setup script</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#build-paella-packages-from-source-tree" id="id13">Build paella packages from source tree</a></li>
-<li><a class="reference internal" href="#setup-database-server" id="id14">Setup Database Server</a><ul>
-<li><a class="reference internal" href="#edit-postgresql-conf" id="id15">Edit postgresql.conf</a></li>
-<li><a class="reference internal" href="#edit-pg-hba-conf" id="id16">Edit pg_hba.conf</a></li>
-<li><a class="reference internal" href="#dbusers" id="id17">dbusers</a></li>
-<li><a class="reference internal" href="#another-section" id="id18">another section</a></li>
+<li><a class="reference internal" href="#build-paella-packages-from-source-tree" id="id16">Build paella packages from source tree</a></li>
+<li><a class="reference internal" href="#setup-database-server" id="id17">Setup Database Server</a><ul>
+<li><a class="reference internal" href="#edit-postgresql-conf" id="id18">Edit postgresql.conf</a></li>
+<li><a class="reference internal" href="#edit-pg-hba-conf" id="id19">Edit pg_hba.conf</a></li>
+<li><a class="reference internal" href="#dbusers" id="id20">dbusers</a></li>
+<li><a class="reference internal" href="#another-section" id="id21">another section</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#setup-user-mode-linux" id="id19">Setup User Mode Linux</a><ul>
-<li><a class="reference internal" href="#install-packages" id="id20">Install packages</a></li>
-<li><a class="reference internal" href="#configure-tap-network" id="id21">Configure TAP Network</a></li>
-<li><a class="reference internal" href="#masquerade-tap-network" id="id22">Masquerade TAP Network</a></li>
+<li><a class="reference internal" href="#setup-user-mode-linux" id="id22">Setup User Mode Linux</a><ul>
+<li><a class="reference internal" href="#install-packages" id="id23">Install packages</a></li>
+<li><a class="reference internal" href="#configure-tap-network" id="id24">Configure TAP Network</a></li>
+<li><a class="reference internal" href="#masquerade-tap-network" id="id25">Masquerade TAP Network</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configuration-files" id="id23">Configuration files</a><ul>
-<li><a class="reference internal" href="#setup-paellarc" id="id24">Setup .paellarc</a></li>
-<li><a class="reference internal" href="#setup-umlmachines-conf" id="id25">Setup .umlmachines.conf</a></li>
+<li><a class="reference internal" href="#configuration-files" id="id26">Configuration files</a><ul>
+<li><a class="reference internal" href="#setup-paellarc" id="id27">Setup .paellarc</a></li>
+<li><a class="reference internal" href="#setup-umlmachines-conf" id="id28">Setup .umlmachines.conf</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-paella-management" id="id26">Using paella-management</a><ul>
-<li><a class="reference internal" href="#start-paella-management" id="id27">Start paella-management</a></li>
-<li><a class="reference internal" href="#import-stage1-database" id="id28">Import stage1 database</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id29">Configure stage1 database</a></li>
+<li><a class="reference internal" href="#using-paella-management" id="id29">Using paella-management</a><ul>
+<li><a class="reference internal" href="#start-paella-management" id="id30">Start paella-management</a></li>
+<li><a class="reference internal" href="#import-stage1-database" id="id31">Import stage1 database</a></li>
+<li><a class="reference internal" href="#configure-stage1-database" id="id32">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id30">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id31">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id32">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id33">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id34">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id35">Install umlbuilder</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id33">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id34">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id35">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id36">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id37">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id38">Run umlbuilder</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#getting-started-with-paella-outdated" id="id36">Getting started with paella (outdated)</a><ul>
-<li><a class="reference internal" href="#hardware-recommendations" id="id37">Hardware Recommendations</a></li>
-<li><a class="reference internal" href="#local-debian-repository" id="id38">Local Debian Repository</a></li>
-<li><a class="reference internal" href="#id2" id="id39">Using Paella-Management</a></li>
-<li><a class="reference internal" href="#ending-section" id="id40">ending section</a></li>
+<li><a class="reference internal" href="#getting-started-with-paella-outdated" id="id39">Getting started with paella (outdated)</a><ul>
+<li><a class="reference internal" href="#hardware-recommendations" id="id40">Hardware Recommendations</a></li>
+<li><a class="reference internal" href="#local-debian-repository" id="id41">Local Debian Repository</a></li>
+<li><a class="reference internal" href="#id2" id="id42">Using Paella-Management</a></li>
+<li><a class="reference internal" href="#ending-section" id="id43">ending section</a></li>
 </ul>
 </li>
 </ul>
@@ -96,43 +99,92 @@ configuration that paella requires.</p>
 <hr class="docutils" />
 <div class="section" id="requirements">
 <h1><a class="toc-backref" href="#id5">Requirements</a></h1>
-<div class="section" id="debian-etch">
-<h2><a class="toc-backref" href="#id6">Debian Etch</a></h2>
-<p>It is best to start with a running debian desktop.  The upcoming etch release is
-what is currently supported.  Sarge will probably not work as paella requires python
-2.4 to operate.  Using sid may work also, especially while etch is still in testing, but this
-has not been tested.</p>
+<div class="section" id="debian">
+<h2><a class="toc-backref" href="#id6">Debian</a></h2>
+<p>You should be running debian to follow this quickstart procedure.  It's technically not
+required, but this document will assume that your running either lenny, sid, or etch
+with VirtualBox running (from backports.org or similar).  This procedure has been tested
+while running sid, although lenny should work just fine.  There also shouldn't really be
+any problem with using etch, save for having to have VirtualBox installed.</p>
 </div>
 <div class="section" id="hardware">
 <h2><a class="toc-backref" href="#id7">Hardware</a></h2>
-<p>This quick start routine was developed and tested using a laptop with 512MB of memory,
-and a 1GB swap partition.  You could probably get by with less which I will try to estimate
-later.  Most of the memory is required to run the user mode linux processes, and this can be
-adjusted by providing more swap for the user mode processes to use.</p>
+<p>This quickstart routine was developed and tested using a laptop with 3GB of memory.
+You could probably get by with less which I will try to estimate later.  Most of the memory
+is required to run the virtual machines.  I estimate that only 2GB of ram will be required.
+Please note that this is only the hardware requirements for following this quickstart
+procedure, and doesn't reflect the actual requirements to run paella in a regular
+environment with a network of machines.</p>
+<p>You will need to run an operating system that can host VirtualBox OSE.</p>
 </div>
-<div class="section" id="postgresql-database">
-<h2><a class="toc-backref" href="#id8">Postgresql Database</a></h2>
-<p>A postgresql database is required to use paella.  The database server must allow tcp
-access.  A database user named &quot;paella&quot; must be created and allowed access to the paella
-database without authentication.  The paella user has only read access to most tables,
-although there are a couple of tables that are setup specifically for write access.</p>
-<p>More specific instructions on configuring the database server are provided in a later section.</p>
+<div class="section" id="virtualbox-ose">
+<h2><a class="toc-backref" href="#id8">VirtualBox OSE</a></h2>
+<p>This quickstart will use VirtualBox OSE to setup the machine that will act as the main
+paella server, and also to test to make machines to test the installs.  The procedure outlined
+below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but
+there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.</p>
 </div>
-<div class="section" id="user-mode-linux">
-<h2><a class="toc-backref" href="#id9">User Mode Linux</a></h2>
-<p>User mode linux is used to help test paella installations  in a limited environment where it is
-not feasible to setup a network of machines.  It can be useful when testing a new configuration
-of network services on a test network without interfering with the normal network.</p>
-<p>In order to follow most of the steps in this guide, the user-mode-linux and uml-utilities packages
-are required to be installed.  More specific instructions on configuring user-mode-linux and the
-uml-utilities package are provided in a later section.</p>
+<div class="section" id="debian-netinst-cd-image-lennybeta2">
+<h2><a class="toc-backref" href="#id9">Debian Netinst CD Image (LennyBeta2)</a></h2>
+<p>The upcoming lenny release is what is currently supported.  You should get the netinst iso,
+which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/cdimage/lenny_di_beta2/i386/iso-cd/debian-LennyBeta2-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
+but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.</p>
+</div>
+<div class="section" id="remaster-the-netinst-iso">
+<h2><a class="toc-backref" href="#id10">Remaster the netinst iso</a></h2>
+<p>This step is optional, but it may be handy, especially if you have an application that can remaster
+an iso image.  This allows you to preseed the debian installer and make an automated install.
+Even though this step is technically optional, it would be a very good idea to get the script below,
+and the files that are obtained through subversion in the script to get an idea of how to proceed
+manually without performing this step.  This step is highly recommended</p>
+<p>If you are running debian, remastering the iso is easy:</p>
+<pre class="literal-block">
+svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
+</pre>
+<p><strong>WARNING!!!</strong>  This script uses sudo to perform the loopback mounting of the iso
+image.  Be sure to look over the script really good before you execute it.  You may want to
+change the ARCH variable near the top of the file.  Be sure that you have rsync, sudo, and
+subversion installed.</p>
+<p>Either download the iso, and enter the filename as the first argument, or just run the script
+without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.</p>
+<p>The script will give you a chance to review and edit the preseed files before you create the
+remastered iso image.  When the script is finished, the iso image will be ./paella-netinst.iso .</p>
 </div>
 </div>
-<hr class="docutils" />
+<div class="section" id="setup-the-paella-virtual-machine">
+<h1><a class="toc-backref" href="#id11">Setup the paella virtual machine</a></h1>
+<p>You need to get the virtualbox frontend up and running.</p>
+<p>Make a new machine using the wizard provided by the virtualbox frontend.  Press next
+and name the machine &quot;paella&quot;.  Select &quot;Debian&quot; for the OS type.  Press next.  Set the base
+memory size to 512MB.  Press next.  Make a new disk image at the default 8GB size (I chose
+dynamically expanding size).  Press finish.</p>
+<p>Select paella from the list of machines on the frontend, and click the settings button.  In the
+configuration dialog, select CD/DVD-ROM on the left hand side.  Click on the Mount CD/DVD
+Drive button at the top.  Select the ISO Image File.  Press the folder on the right to bring up
+the Virtual Disk Manager.  Here you want to add the netinst iso that you downloaded.  Close
+the Virtual Disk Manager, and make sure that the iso is selected as the image file that will
+be mounted.</p>
+<p>Now, select the Network part of the list of the left hand side of the settings dialog.  By default,
+the network adapter should be enabled, and set to NAT.  This is what we want.  We also want
+to add another network interface to this machine, so select the Adapter 1 tab.  Click the
+&quot;Enable Network Adapter&quot; button.  Make sure the &quot;Attached to&quot; selection is set to &quot;Internal
+Network&quot;.  You will need to name the network in the field that says &quot;Network Name&quot;.  Any name
+should do just fine.  I used &quot;lapnet&quot; (no quotes), since I'm on a laptop.  Remember this name,
+since you'll need this for the other machine(s) that you will use paella to install to.</p>
+</div>
+<div class="section" id="boot-the-paella-virtual-machine">
+<h1><a class="toc-backref" href="#id12">Boot the paella virtual machine</a></h1>
+<p>Now you should be ready to boot the virtual machine, and install debian lenny.</p>
+<p>Boot the machine by pressing Start (the green arrow) on the virtualbox frontend (make sure
+the paella virtual machine is the one that's selected).  When the boot screen appears, select
+one of the first two menu options.  Don't bother selecting the second option unless you have
+a local debian mirror, and you have modified the preseed files.</p>
+</div>
 <div class="section" id="setup-paella-from-subversion">
-<h1><a class="toc-backref" href="#id10">Setup paella from subversion</a></h1>
+<h1><a class="toc-backref" href="#id13">Setup paella from subversion</a></h1>
 <div class="section" id="install-subversion">
-<h2><a class="toc-backref" href="#id11">Install Subversion</a></h2>
+<h2><a class="toc-backref" href="#id14">Install Subversion</a></h2>
 <p>You will need to install subversion to setup the environment necessary to run paella.
 As root:</p>
 <pre class="literal-block">
@@ -140,7 +192,7 @@ apt-get install subversion
 </pre>
 </div>
 <div class="section" id="obtain-the-quick-setup-script">
-<h2><a class="toc-backref" href="#id12">Obtain the quick setup script</a></h2>
+<h2><a class="toc-backref" href="#id15">Obtain the quick setup script</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 svn export svn://svn.berlios.de/paella/trunk/config/scripts/paella-devel-quick-setup
@@ -157,38 +209,38 @@ this guide I will be referencing things according to the default configuration p
 </div>
 <hr class="docutils" />
 <div class="section" id="build-paella-packages-from-source-tree">
-<h1><a class="toc-backref" href="#id13">Build paella packages from source tree</a></h1>
+<h1><a class="toc-backref" href="#id16">Build paella packages from source tree</a></h1>
 <p>You may wish to go ahead and build debian packages from the source tree.  If you do this, you
 will also have to build the <a class="reference external" href="http://useless.berlios.de/">useless</a> packages.  Going this route has the advantage of keeping
 you from having possibly modify your PATH and PYTHONPATH environment variables</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="setup-database-server">
-<h1><a class="toc-backref" href="#id14">Setup Database Server</a></h1>
-<p>Paella is developed and used with postgresql version 7.x .  It may work with newer versions, but
+<h1><a class="toc-backref" href="#id17">Setup Database Server</a></h1>
+<p>Paella is developed and used with postgresql version 8.3.  It may work with newer versions, but
 it is not tested.  It is recommended that you run the database server on a host on your local
 network instead of the host you'll be using paella on.  This is not necessary, but it does help
 the performance quite a bit.</p>
 <p>If you are new to using postgresql, I suggest reading
-/usr/share/doc/postgresql-7.4/README.Debian.gz first.</p>
+/usr/share/doc/postgresql-8.3/README.Debian.gz first.</p>
 <blockquote>
 <p>Steps to setup paella database:</p>
 <pre class="literal-block">
 apt-get install postgresql
 su postgres
-createuser -a -d adminuser
-createuser -A -D paella
+createuser -sdr dbadmin
+createuser -SDR paella
 exit
 </pre>
 </blockquote>
 <p>Next, you will have to edit a couple of configuration files as the postgres user.</p>
 <div class="section" id="edit-postgresql-conf">
-<h2><a class="toc-backref" href="#id15">Edit postgresql.conf</a></h2>
+<h2><a class="toc-backref" href="#id18">Edit postgresql.conf</a></h2>
 <p>You will probably have to edit /etc/postgresql/7.4/main/postgresql.conf , and
 set &quot;tcpip_socket = true&quot; .</p>
 </div>
 <div class="section" id="edit-pg-hba-conf">
-<h2><a class="toc-backref" href="#id16">Edit pg_hba.conf</a></h2>
+<h2><a class="toc-backref" href="#id19">Edit pg_hba.conf</a></h2>
 <p>You will have to edit /etc/postgresql/7.4/main/pg_hba.conf, and add some lines:</p>
 <p>If your database server is not on your desktop, but on the local network, you
 will have to allow access to the paella database from your machine.
@@ -210,7 +262,7 @@ been enough reason to pursue this yet, as the database is always either develope
 a trusted environment.</p>
 </div>
 <div class="section" id="dbusers">
-<h2><a class="toc-backref" href="#id17">dbusers</a></h2>
+<h2><a class="toc-backref" href="#id20">dbusers</a></h2>
 <p>talk about admin, paella users</p>
 <p>create the database:</p>
 <pre class="literal-block">
@@ -219,22 +271,22 @@ createlang plpgsql paella
 </pre>
 </div>
 <div class="section" id="another-section">
-<h2><a class="toc-backref" href="#id18">another section</a></h2>
+<h2><a class="toc-backref" href="#id21">another section</a></h2>
 <p>something else</p>
 </div>
 </div>
 <hr class="docutils" />
 <div class="section" id="setup-user-mode-linux">
-<h1><a class="toc-backref" href="#id19">Setup User Mode Linux</a></h1>
+<h1><a class="toc-backref" href="#id22">Setup User Mode Linux</a></h1>
 <div class="section" id="install-packages">
-<h2><a class="toc-backref" href="#id20">Install packages</a></h2>
+<h2><a class="toc-backref" href="#id23">Install packages</a></h2>
 <p>First off, you will need to get root and install a couple of packages:</p>
 <pre class="literal-block">
 apt-get install user-mode-linux uml-utilities
 </pre>
 </div>
 <div class="section" id="configure-tap-network">
-<h2><a class="toc-backref" href="#id21">Configure TAP Network</a></h2>
+<h2><a class="toc-backref" href="#id24">Configure TAP Network</a></h2>
 <p>Be sure to read /usr/share/doc/uml-utilities/README.Debian, and follow the instructions
 there to setup the tap network.</p>
 <p>This quick start procedure uses the 10.0.1.0 network for the user-mode-linux machines by
@@ -252,7 +304,7 @@ adduser username uml-net
 </pre>
 </div>
 <div class="section" id="masquerade-tap-network">
-<h2><a class="toc-backref" href="#id22">Masquerade TAP Network</a></h2>
+<h2><a class="toc-backref" href="#id25">Masquerade TAP Network</a></h2>
 <p>You will need to setup iptables to get your uml machines to access the rest of the network.
 As root type:</p>
 <pre class="literal-block">
@@ -265,9 +317,9 @@ to your /etc/rc.local script.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="configuration-files">
-<h1><a class="toc-backref" href="#id23">Configuration files</a></h1>
+<h1><a class="toc-backref" href="#id26">Configuration files</a></h1>
 <div class="section" id="setup-paellarc">
-<h2><a class="toc-backref" href="#id24">Setup .paellarc</a></h2>
+<h2><a class="toc-backref" href="#id27">Setup .paellarc</a></h2>
 <p>If you used the quick setup script above, the example paellarc file will be here,
 ~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
 If you are not familiar with the file format, you can read about it <a class="reference external" href="http://docs.python.org/lib/module-ConfigParser.html">here</a> .  Options that are
@@ -289,7 +341,7 @@ x_differ LeftFile RightFile
 <p>You should not need to change any other options.</p>
 </div>
 <div class="section" id="setup-umlmachines-conf">
-<h2><a class="toc-backref" href="#id25">Setup .umlmachines.conf</a></h2>
+<h2><a class="toc-backref" href="#id28">Setup .umlmachines.conf</a></h2>
 <p>If you used the quick setup script above, the example umlmachines config file will be here,
 ~/workspace/paella/config/share/umlmachines.  If you built packages, install the
 paella-uml-admin package, and you will find the file at
@@ -299,22 +351,25 @@ Reading through this file can give you a good idea of how the paella uml system 
 <p>The top of the file is where most of the paths are defined.  You shouldn't have to change these
 if you are using the quick setup script, although you will probably need to modify the
 <strong>uml_initscript</strong> option to point to the correct location of the paella-init file.  This
-is the option with the value &quot;%(_script_path)s/paella-init&quot; .</p>
+is the option with the value &quot;%(_script_path)s/paella-init&quot; , and has a comment above it for
+working from the source tree.  Simply uncomment this option, and comment out the option
+for the default location right below it.</p>
 <p>If you are not using the default tap network described above, you will have to modify the uml
 network options accordingly.</p>
 <p>You may want to modify the <strong>bootstrap_debmirror</strong> option in the
-<cite>umlmachines</cite> section.</p>
+<cite>umlmachines</cite> section, if you already have a debian mirror that you can run
+debootstrap from.</p>
 </div>
 </div>
 <hr class="docutils" />
 <div class="section" id="using-paella-management">
-<h1><a class="toc-backref" href="#id26">Using paella-management</a></h1>
+<h1><a class="toc-backref" href="#id29">Using paella-management</a></h1>
 <p>You should be ready to use the paella-management PyKDE interface now.  Before running
 the application, check the <strong>management_gui</strong> section of your ~/.paellarc file,
 and make sure that both the <strong>text_editor</strong> and <strong>x_differ</strong> options
 are set to applications that exist on your system and work in X windows.</p>
 <div class="section" id="start-paella-management">
-<h2><a class="toc-backref" href="#id27">Start paella-management</a></h2>
+<h2><a class="toc-backref" href="#id30">Start paella-management</a></h2>
 <p>Run the paella-management script to start the management interface.  The first thing that you
 will want to do is to connect to the database.  There is a connect button on the toolbar for you
 to press.  The connection dialog entries are taken from your ~/.paellarc file.</p>
@@ -324,7 +379,7 @@ this, the database import procedure will create these tables for you, but you wo
 use the paella-management interface until you do this.</p>
 </div>
 <div class="section" id="import-stage1-database">
-<h2><a class="toc-backref" href="#id28">Import stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id31">Import stage1 database</a></h2>
 <p>Now we are going to import the startup database.  You will need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
@@ -351,7 +406,7 @@ freed after the import process.  Fixing this has not been a major goal, as impor
 rare during the normal use of paella-management.</p>
 </div>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id29">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id32">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -360,20 +415,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id30">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id33">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id31">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id34">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id32">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id35">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -381,10 +436,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id33">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id36">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id34">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id37">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -400,7 +455,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id35">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id38">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder
@@ -425,7 +480,7 @@ the uml_head machine, and placed in the debian mirror.</p>
 </div>
 </div>
 <div class="section" id="getting-started-with-paella-outdated">
-<h1><a class="toc-backref" href="#id36">Getting started with paella (outdated)</a></h1>
+<h1><a class="toc-backref" href="#id39">Getting started with paella (outdated)</a></h1>
 <p>People who will get the most benefit out of paella are IT consultants that manage
 multiple disjoint networks.  You may also benefit from it if your network is large enough,
 and you have mostly debian machines on it.  If you only maintain one network with a few
@@ -453,7 +508,7 @@ svn checkout svn://svn.berlios.de/paella/trunk paella</p>
 <p>You can build the packages with debuild, or fakeroot debian/rules binary.</p>
 <hr class="docutils" />
 <div class="section" id="hardware-recommendations">
-<h2><a class="toc-backref" href="#id37">Hardware Recommendations</a></h2>
+<h2><a class="toc-backref" href="#id40">Hardware Recommendations</a></h2>
 <p>Since the paella-nfsinstaller runs on a nfsroot, it is necessary to have some sort of network
 to support this.  Paella works best with at least one dedicated server and a management
 desktop, both running debian.</p>
@@ -492,7 +547,7 @@ probably want to copy this to ~/.paellarc and edit it.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="local-debian-repository">
-<h2><a class="toc-backref" href="#id38">Local Debian Repository</a></h2>
+<h2><a class="toc-backref" href="#id41">Local Debian Repository</a></h2>
 <p>Paella is built to make use of you local debian repository.  The paella-debrepos package
 uses (and depends on) mini-dinstall.  If you haven't used mini-dinstall, you should review
 the documentation for it.  Install the paella-debrepos package on the server.  The init script
@@ -503,7 +558,7 @@ directory for each suite you have in paella, plus one called 'common'.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="id2">
-<h2><a class="toc-backref" href="#id39">Using Paella-Management</a></h2>
+<h2><a class="toc-backref" href="#id42">Using Paella-Management</a></h2>
 <p>The management interface is going through changes.  Paella started with a gtk interface,
 and as time passed, the qt/kde toolkit started looking more appealing.  As a result, the
 gtk interface works, but it is sloppy, and not going to be fixed.  The kde interface won't do
@@ -512,7 +567,7 @@ configuring the machines is done with the gtk interface, so for the time being, 
 using paella will have to bear through using it until the kde interface is ready.</p>
 </div>
 <div class="section" id="ending-section">
-<h2><a class="toc-backref" href="#id40">ending section</a></h2>
+<h2><a class="toc-backref" href="#id43">ending section</a></h2>
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>
 </div>

@@ -3,45 +3,47 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title></title>
 <link rel="stylesheet" href="default.css" type="text/css" />
 </head>
 <body>
 <div class="document">
+
+
 <!-- -*- mode: rst -*- -->
-<div class="section">
-<h1><a class="toc-backref" href="#id1" id="paella-installer" name="paella-installer">Paella Installer</a></h1>
-<div class="contents topic">
-<p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
+<div class="section" id="paella-installer">
+<h1><a class="toc-backref" href="#id1">Paella Installer</a></h1>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference" href="#paella-installer" id="id1" name="id1">Paella Installer</a></li>
-<li><a class="reference" href="#installer" id="id2" name="id2">Installer</a><ul>
-<li><a class="reference" href="#trait-installer" id="id3" name="id3">Trait Installer</a></li>
-<li><a class="reference" href="#profile-installer" id="id4" name="id4">Profile Installer</a></li>
-<li><a class="reference" href="#nfs-installer" id="id5" name="id5">Nfs Installer</a></li>
-<li><a class="reference" href="#installer-toolkit" id="id6" name="id6">Installer Toolkit</a></li>
-<li><a class="reference" href="#automatic-install" id="id7" name="id7">Automatic Install</a></li>
-<li><a class="reference" href="#new-installer-outline" id="id8" name="id8">New Installer Outline</a></li>
+<li><a class="reference internal" href="#paella-installer" id="id1">Paella Installer</a></li>
+<li><a class="reference internal" href="#installer" id="id2">Installer</a><ul>
+<li><a class="reference internal" href="#trait-installer" id="id3">Trait Installer</a></li>
+<li><a class="reference internal" href="#profile-installer" id="id4">Profile Installer</a></li>
+<li><a class="reference internal" href="#nfs-installer" id="id5">Nfs Installer</a></li>
+<li><a class="reference internal" href="#installer-toolkit" id="id6">Installer Toolkit</a></li>
+<li><a class="reference internal" href="#automatic-install" id="id7">Automatic Install</a></li>
+<li><a class="reference internal" href="#new-installer-outline" id="id8">New Installer Outline</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div class="section">
-<h1><a class="toc-backref" href="#id2" id="installer" name="installer">Installer</a></h1>
-<p>The installers in paella are layered.  There is a <a class="reference" href="#trait-installer">trait installer</a>, a <a class="reference" href="#profile-installer">profile installer</a>,
-and a <a class="reference" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
+<div class="section" id="installer">
+<h1><a class="toc-backref" href="#id2">Installer</a></h1>
+<p>The installers in paella are layered.  There is a <a class="reference internal" href="#trait-installer">trait installer</a>, a <a class="reference internal" href="#profile-installer">profile installer</a>,
+and a <a class="reference internal" href="#nfs-installer">nfs installer</a>.  The installers are layered to make the whole installing
 operation more structured.  The trait installer is the simplest and contains everything
 needed for installing a trait.  The profile installer contains a trait installer, and it is
 responsible for installing profiles.  The nfs installer contains a profile installer and is used
 to install a profile on a machine.  There is also a chroot installer that will install a profile
 to a target directory.</p>
-<div class="section">
-<h2><a class="toc-backref" href="#id3" id="trait-installer" name="trait-installer">Trait Installer</a></h2>
+<div class="section" id="trait-installer">
+<h2><a class="toc-backref" href="#id3">Trait Installer</a></h2>
 <p>The trait installer is responsible for installing a trait to a target location.
 It is pretty dumb as it doesn't check to see if a parent has been installed or not.
-This class should only be instantiated as a member of the <a class="reference" href="#profile-installer">profile installer</a> class,
+This class should only be instantiated as a member of the <a class="reference internal" href="#profile-installer">profile installer</a> class,
 or a similiar class because the profiledata and familydata members start out empty.</p>
 <ul class="simple">
 <li>default trait install processes (in order)<ul>
@@ -90,8 +92,8 @@ under the section, <strong>installer</strong>, and the option <strong>trait_proc
 </li>
 </ul>
 </div>
-<div class="section">
-<h2><a class="toc-backref" href="#id4" id="profile-installer" name="profile-installer">Profile Installer</a></h2>
+<div class="section" id="profile-installer">
+<h2><a class="toc-backref" href="#id4">Profile Installer</a></h2>
 <p>The profile installer can be instantiated by itself.  It contains a trait installer.
 It is responsible for installing a profile to a target location.  A profile is the minimum
 install-able object, you can't install a trait alone, but you can have a profile with one trait
@@ -100,32 +102,32 @@ installed.  The list is composed of the traits listed in the profile itself, and
 parents, ordered for install.  The profile installer then calls its trait installer for each trait
 in the list.</p>
 </div>
-<div class="section">
-<h2><a class="toc-backref" href="#id5" id="nfs-installer" name="nfs-installer">Nfs Installer</a></h2>
+<div class="section" id="nfs-installer">
+<h2><a class="toc-backref" href="#id5">Nfs Installer</a></h2>
 <p>The nfs installer is responsible for installing a machine to a target location.  This is the
 installer that will be run on a machine to be installed.  This installer contains a profile
 installer.  The nfs installer will do all of the hardware related functions that are necessary
 to setup a target location for its profile installer.  The nfs installer will also setup the fstab,
 apt sources, and kernel for the machine.</p>
 </div>
-<div class="section">
-<h2><a class="toc-backref" href="#id6" id="installer-toolkit" name="installer-toolkit">Installer Toolkit</a></h2>
+<div class="section" id="installer-toolkit">
+<h2><a class="toc-backref" href="#id6">Installer Toolkit</a></h2>
 <p>The installer toolkit is made to be used in the trait scripts.  It can't be
 used for the chroot script, unless you have paella configured on the
 target system.  It is the job of the installer toolkit to provide you with a
 good set of tools contained within the toolkit object, so that your scripts
 contain a minimum of boilerplate type code.</p>
 </div>
-<div class="section">
-<h2><a class="toc-backref" href="#id7" id="automatic-install" name="automatic-install">Automatic Install</a></h2>
+<div class="section" id="automatic-install">
+<h2><a class="toc-backref" href="#id7">Automatic Install</a></h2>
 <p>Automatic installation is supported.  The setup if fairly simple.  There
 is no gui wrapper around parts of it yet, so to really use it, you will
 have to use python interactively, or psql.  There is a script on the nfs
 installer called paella-submit-machine.  You pass it a machine name
 argument</p>
 </div>
-<div class="section">
-<h2><a class="toc-backref" href="#id8" id="new-installer-outline" name="new-installer-outline">New Installer Outline</a></h2>
+<div class="section" id="new-installer-outline">
+<h2><a class="toc-backref" href="#id8">New Installer Outline</a></h2>
 <p>Here is an outline of the new installer system.  It is centered around a
 base processor class.  The base processor class has a list of processes and a map
 that links the processes to methods in the processor class.  The base processor includes
@@ -229,8 +231,8 @@ installed for the process.</li>
 </li>
 </ul>
 <hr class="docutils" />
-<p>This <a class="reference" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
-<p><a class="reference" href="/">home</a></p>
+<p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
+<p><a class="reference external" href="/">home</a></p>
 </div>
 </div>
 </div>

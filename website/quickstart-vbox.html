@@ -36,28 +36,29 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#boot-the-paella-virtual-machine" id="id11">Boot the paella virtual machine</a><ul>
 <li><a class="reference internal" href="#install-the-paella-virtual-machine" id="id12">Install the paella virtual machine</a></li>
 <li><a class="reference internal" href="#first-boot-on-the-paella-virtual-machine" id="id13">First boot on the paella virtual machine</a></li>
-<li><a class="reference internal" href="#build-paella-packages-from-source-tree-optional" id="id14">Build paella packages from source tree (optional)</a></li>
+<li><a class="reference internal" href="#make-a-gpg-key" id="id14">Make a gpg key</a></li>
+<li><a class="reference internal" href="#setup-initial-debian-mirror" id="id15">Setup initial debian mirror</a></li>
+<li><a class="reference internal" href="#build-paella-packages-from-source-tree-optional" id="id16">Build paella packages from source tree (optional)</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configuration-files" id="id15">Configuration files</a><ul>
-<li><a class="reference internal" href="#setup-paellarc" id="id16">Setup .paellarc</a></li>
-<li><a class="reference internal" href="#setup-umlmachines-conf" id="id17">Setup .umlmachines.conf</a></li>
+<li><a class="reference internal" href="#configuration-files" id="id17">Configuration files</a><ul>
+<li><a class="reference internal" href="#setup-paellarc" id="id18">Setup .paellarc</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-paella-management" id="id18">Using paella-management</a><ul>
-<li><a class="reference internal" href="#start-paella-management" id="id19">Start paella-management</a></li>
-<li><a class="reference internal" href="#import-stage1-database" id="id20">Import stage1 database</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id21">Configure stage1 database</a></li>
+<li><a class="reference internal" href="#using-paella-management" id="id19">Using paella-management</a><ul>
+<li><a class="reference internal" href="#start-paella-management" id="id20">Start paella-management</a></li>
+<li><a class="reference internal" href="#import-stage1-database" id="id21">Import stage1 database</a></li>
+<li><a class="reference internal" href="#configure-stage1-database" id="id22">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id22">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id23">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id24">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id23">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id24">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id25">Install umlbuilder</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id25">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id26">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id27">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id26">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id27">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id28">Run umlbuilder</a></li>
 </ul>
 </li>
 </ul>
@@ -228,28 +229,138 @@ cat paella_environment &gt;&gt; .bashrc
 the script.  The list of packages is likely not accurate, and you really need to read the preseed
 files for a reference.</p>
 </div>
+<div class="section" id="make-a-gpg-key">
+<h2><a class="toc-backref" href="#id14">Make a gpg key</a></h2>
+<p>You'll need a gpg key to sign the Release files of the local debian repository.  This is important,
+since debian has spent a great deal of time making it possible to verify the authenticity of the
+packages being installed on your system.  Full instructions on how to generate a key and use it
+properly are beyond the scope of this docuement.  You can find more detailed
+at <a class="reference external" href="http://www.gnupg.org/">http://www.gnupg.org/</a> .</p>
+<p>If you just want to get up and running, you can follow these quick and <strong>potentially insecure</strong> instructions.
+Type:</p>
+<pre class="literal-block">
+echo $USER&#64;`cat /etc/mailname`
+</pre>
+<p>This will be the default email address used to search for the key that signs the packages you build.  We will also use this key to sign the Release file in the locally generated mirror.</p>
+<p>Now type:</p>
+<pre class="literal-block">
+getent passwd | grep $USER | cut -f5 -d: | cut -f1 -d,
+</pre>
+<p>This will be the &quot;Real Name&quot; that you will use for the key.  Either remember the email and &quot;Real
+Name&quot;, or use another terminal to generate the key.</p>
+<p>Now type:</p>
+<pre class="literal-block">
+gpg --gen-key
+</pre>
+<p>Answer the questions in the dialog.  It should be ok to answer the defaults, until you get to
+the question asking &quot;Is this correct?&quot;.  After this, you'll need to enter the &quot;Real Name&quot; and
+email address that you obtained from the steps above.  You can enter an empty passphrase,
+but remember that you can't use this key for anything more serious than working with paella
+in a testing environment.  If you do want a passphrase, you'll also need to know how to use
+gpg-agent, which is also beyond the scope of this document.</p>
+<p>You'll need to know the fingerprint of the gpg key for the steps below. Here, I'm assuming
+that the &quot;Real Name&quot; you entered above is &quot;Paella User&quot;.  To obtain it, type:</p>
+<pre class="literal-block">
+gpg --fingerprint &quot;Paella User&quot; | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+</pre>
+<p>You should get an eight digit hexadecimal fingerprint, which you'll need to remember.  From
+here on, I'll just refer to it as your gpg fingerprint.</p>
+</div>
+<div class="section" id="setup-initial-debian-mirror">
+<h2><a class="toc-backref" href="#id15">Setup initial debian mirror</a></h2>
+<p>If you already have a local debian mirror, you can probably skip this step.</p>
+<p>type:</p>
+<pre class="literal-block">
+sudo apt-move update
+sudo rm /freespace/debian/.apt-move -fr
+sudo chown -R paella:staff /freespace/debian/*
+</pre>
+<p>This will move all the packages installed on the virtual machine to /freespace/debian .  This will
+be the last that apt-move will be used, since we just needed it to move the installed packages
+and setup the initial repository structure.</p>
+<p>Now type:</p>
+<pre class="literal-block">
+mkdir /freespace/debian/conf
+dpkg --get-selections &gt; /freespace/debian/conf/paella-startup-packages
+</pre>
+<p>This will be the configuration directory for reprepro.  We will be using reprepro to generate
+and maintain the local debian mirror for here on.</p>
+<p>Now type:</p>
+<pre class="literal-block">
+editor /freespace/debian/conf/distributions
+</pre>
+<p>In the editor you want to type something similar to this:</p>
+<pre class="literal-block">
+Origin: Debian
+Label: Debian
+Suite: testing
+Version: 4.0
+Codename: lenny
+Architectures: i386
+Components: main contrib non-free
+UDebComponents: main non-free
+Description: Debian x.y Testing - Not Yet Released
+Log: logfile
+Update: lenny lenny-di security-testing
+SignWith: &lt;your gpg fingerprint&gt;
+</pre>
+<p>and save it.</p>
+<p>Now we want to use the editor again:</p>
+<pre class="literal-block">
+editor /freespace/debian/conf/updates
+</pre>
+<p>In the editor you want to type  something similar to this:</p>
+<pre class="literal-block">
+Name: lenny
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Architectures: i386
+Components: main contrib non-free
+UDebComponents: main non-free
+FilterList: deinstall paella-startup-packages
+
+Name: lenny-di
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Architectures: i386
+Components: none
+UDebComponents: main non-free
+
+Name: security-testing
+Method: http://security.debian.org/debian-security
+VerifyRelease: 6070D3A1
+Suite: testing/updates
+Architectures: i386
+Components: main contrib non-free
+UDebComponents: none
+FilterList: deinstall paella-startup-packages
+</pre>
+<p>In order to verify the release files, you'll need to import the debian archive signing key:</p>
+<pre class="literal-block">
+gpg --recv-keys 6070D3A1
+</pre>
+</div>
 <div class="section" id="build-paella-packages-from-source-tree-optional">
-<h2><a class="toc-backref" href="#id14">Build paella packages from source tree (optional)</a></h2>
+<h2><a class="toc-backref" href="#id16">Build paella packages from source tree (optional)</a></h2>
 <p>You may wish to go ahead and build debian packages from the source tree.  If you do this, you
 will also have to build the <a class="reference external" href="http://useless.berlios.de/">useless</a> packages.  Going this route has the advantage of keeping
 you from having possibly modify your PATH and PYTHONPATH environment variables</p>
 </div>
 </div>
 <div class="section" id="configuration-files">
-<h1><a class="toc-backref" href="#id15">Configuration files</a></h1>
+<h1><a class="toc-backref" href="#id17">Configuration files</a></h1>
 <div class="section" id="setup-paellarc">
-<h2><a class="toc-backref" href="#id16">Setup .paellarc</a></h2>
+<h2><a class="toc-backref" href="#id18">Setup .paellarc</a></h2>
 <p>If you used the quick setup script above, the example paellarc file will be here,
 ~/workspace/paella/config/share/paellarc .  You can copy this file to ~/.paellarc and edit it.
 If you are not familiar with the file format, you can read about it <a class="reference external" href="http://docs.python.org/lib/module-ConfigParser.html">here</a> .  Options that are
 prefixed by an underscore are not referenced in the code.  You can make your own if you
 wish.</p>
-<p>In the database section, the dbhost option should be the ip address of the tap interface you
-created in the section above.  You will probably want to change the dbusername option to
-the database admin user that you created above.</p>
-<p>You can either ignore or completely remove the installer section.  It is only needed for the
-paella machine installer.  It is not needed for the user-mode-linux installer which we are
-using here.</p>
+<p>In the database section, the dbhost option should be the ip address of the eth1 interface,
+which should be 10.0.1.1 .  You will also probably need to change the dbusername option to
+the database admin user (dbadmin).</p>
 <p>The management_gui section has options for the paella-management application.  The options
 that you may want to change here are &quot;text_editor&quot;, and &quot;x_differ&quot;.  Both of these commands
 should display an X window.  For the x_differ, I highly recommend xxdiff.  The x_differ command
@@ -259,36 +370,15 @@ x_differ LeftFile RightFile
 </pre>
 <p>You should not need to change any other options.</p>
 </div>
-<div class="section" id="setup-umlmachines-conf">
-<h2><a class="toc-backref" href="#id17">Setup .umlmachines.conf</a></h2>
-<p>If you used the quick setup script above, the example umlmachines config file will be here,
-~/workspace/paella/config/share/umlmachines.  If you built packages, install the
-paella-uml-admin package, and you will find the file at
-/usr/share/doc/paella-uml-admin/examples/umlmachines.conf .  You can copy this
-file to ~/.umlmachines.conf and edit it.  The file format is the same as the paellarc file.
-Reading through this file can give you a good idea of how the paella uml system works.</p>
-<p>The top of the file is where most of the paths are defined.  You shouldn't have to change these
-if you are using the quick setup script, although you will probably need to modify the
-<strong>uml_initscript</strong> option to point to the correct location of the paella-init file.  This
-is the option with the value &quot;%(_script_path)s/paella-init&quot; , and has a comment above it for
-working from the source tree.  Simply uncomment this option, and comment out the option
-for the default location right below it.</p>
-<p>If you are not using the default tap network described above, you will have to modify the uml
-network options accordingly.</p>
-<p>You may want to modify the <strong>bootstrap_debmirror</strong> option in the
-<cite>umlmachines</cite> section, if you already have a debian mirror that you can run
-debootstrap from.</p>
 </div>
-</div>
-<hr class="docutils" />
 <div class="section" id="using-paella-management">
-<h1><a class="toc-backref" href="#id18">Using paella-management</a></h1>
+<h1><a class="toc-backref" href="#id19">Using paella-management</a></h1>
 <p>You should be ready to use the paella-management PyKDE interface now.  Before running
 the application, check the <strong>management_gui</strong> section of your ~/.paellarc file,
 and make sure that both the <strong>text_editor</strong> and <strong>x_differ</strong> options
 are set to applications that exist on your system and work in X windows.</p>
 <div class="section" id="start-paella-management">
-<h2><a class="toc-backref" href="#id19">Start paella-management</a></h2>
+<h2><a class="toc-backref" href="#id20">Start paella-management</a></h2>
 <p>Run the paella-management script to start the management interface.  The first thing that you
 will want to do is to connect to the database.  There is a connect button on the toolbar for you
 to press.  The connection dialog entries are taken from your ~/.paellarc file.</p>
@@ -298,7 +388,7 @@ this, the database import procedure will create these tables for you, but you wo
 use the paella-management interface until you do this.</p>
 </div>
 <div class="section" id="import-stage1-database">
-<h2><a class="toc-backref" href="#id20">Import stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id21">Import stage1 database</a></h2>
 <p>Now we are going to import the startup database.  You will need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
@@ -325,7 +415,7 @@ freed after the import process.  Fixing this has not been a major goal, as impor
 rare during the normal use of paella-management.</p>
 </div>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id21">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id22">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -334,20 +424,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id22">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id23">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id23">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id24">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id24">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id25">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -355,10 +445,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id25">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id26">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id26">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id27">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -374,7 +464,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id27">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id28">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder

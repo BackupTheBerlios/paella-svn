@@ -1,0 +1,13 @@
+Origin: Debian
+Label: Debian
+Suite: testing
+Version: 4.0
+Codename: lenny
+Architectures: i386
+Components: main contrib non-free
+UDebComponents: main non-free
+Description: Debian x.y Testing - Not Yet Released
+Log: logfile
+Update: lenny lenny-di security-testing
+SignWith: <your gpg fingerprint>
+

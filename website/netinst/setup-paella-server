@@ -45,6 +45,8 @@ local   all         all                               ident sameuser
 host    all         all         127.0.0.0/8          md5
 host	paella	paella	10.0.1.0/24	trust
 host	all	dbadmin	10.0.1.0/24	trust
+# wide open
+#host	all	dbadmin	0.0.0.0/0  	trust
 host	all	all	10.0.1.0/24	md5
 # IPv6 local connections:
 host    all         all         ::1/128               md5
@@ -72,7 +74,8 @@ external_pid_file = '/var/run/postgresql/8.3-main.pid'		# write an extra PID fil
 # - Connection Settings -
 listen_addresses = '10.0.1.1,127.0.0.1'
 #listen_addresses = 'localhost'		# what IP address(es) to listen on;
-					# comma-separated list of addresses;
+# wide open
+#listen_addresses = '*'			# comma-separated list of addresses;
 					# defaults to 'localhost', '*' = all
 					# (change requires restart)
 port = 5432				# (change requires restart)
@@ -196,6 +199,8 @@ loc		all		REJECT		info
 # Policies for traffic originating from the Internet zone (net)
 #
 net		\$FW		DROP		info
+# wide open
+#net		\$FW		ACCEPT
 net		loc		DROP		info
 net		all		DROP		info
 
@@ -359,11 +364,74 @@ EndSection
 
 EOF
 
+if ! [ -f /etc/apt-move.conf.orig ]; then
+    echo "replacing /etc/apt-move.conf"
+    mv /etc/apt-move.conf /etc/apt-move.conf.orig
+fi
+
+cat <<EOF > /etc/apt-move.conf
+#  Configuration file for the apt-move script.
+#
+#  You should modify the following configuration to suit your system.
+#  See the apt-move(8) manpage for information about these settings.
+#
+#  The defaults for this file are simply the settings I currently use.
+
+# Configuration for apt-move script --------------------------------------
+
+# The sites in ``/etc/apt/sources.list'' that you wish to mirror.
+APTSITES="/all/"
+
+# The absolute path to your debian directory (top of your local mirror).
+# This MUST appear as the first entry of your sources.list if you use
+# sync or mirror.
+LOCALDIR=/freespace/debian
+
+# The default distribution (see the apt-move(8) manpage for details) 
+DIST=lenny
+
+# The package types you want to mirror. 
+# Possible values are: binary, source, and both (use only one).
+PKGTYPE=binary
+
+# The full (absolute) path to your local cache of package files. The default
+# will work for the apt-get packages, unless you've reconfigured apt.
+FILECACHE=/var/cache/apt/archives
+
+# The full (absolute) path to your local cache of Packages files.  The
+# default will work for the apt-get Packages, unless you've reconfigured apt.
+LISTSTATE=/var/lib/apt/lists
+
+# Do you want apt-move to delete obsolete files from your mirror? (yes/no)
+DELETE=yes
+
+
+# Maximum percentage of files to delete during a normal run.
+MAXDELETE=20
+
+# Set this to yes if you wish to keep the originals for move/movefile.
+COPYONLY=no
+
+# Set this to 'none gzip' to get uncompressed Packages/Sources files.
+PKGCOMP='none gzip bzip2'
+
+# Set this to yes to make apt-move generate Contents files.
+CONTENTS=no
+
+# Set this to key name to be used for signing Release files.
+GPGKEY=
+
+# End Configuration ------------------------------------------------------
+
+EOF
+
 if ! [ -d /freespace ]; then
     echo "making paella directories"
     mkdir /freespace
     # for the debian mirror
     mkdir /freespace/debian
+    chgrp staff /freespace/debian
+    chmod g+sw /freespace/debian
     # for the nfsroot
     mkdir /freespace/paella
 fi

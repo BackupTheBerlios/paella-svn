@@ -38,7 +38,7 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#first-boot-on-the-paella-virtual-machine" id="id13">First boot on the paella virtual machine</a></li>
 <li><a class="reference internal" href="#make-a-gpg-key" id="id14">Make a gpg key</a></li>
 <li><a class="reference internal" href="#setup-initial-debian-mirror" id="id15">Setup initial debian mirror</a></li>
-<li><a class="reference internal" href="#build-paella-packages-from-source-tree-optional" id="id16">Build paella packages from source tree (optional)</a></li>
+<li><a class="reference internal" href="#build-paella-packages-from-source-tree" id="id16">Build paella packages from source tree</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#configuration-files" id="id17">Configuration files</a><ul>
@@ -206,6 +206,7 @@ feel like rebooting, restart these services:</p>
 sudo /etc/init.d/networking restart
 sudo /etc/init.d/postgresql-8.3 restart
 sudo /etc/init.d/shorewall restart
+sudo /etc/init.d/apache2 restart
 </pre>
 <p>In the xorg.conf file, the screen resolution is set to 1024x768.  This is because the default
 screen size for VESA is 1280x1024, which is too big for my laptop.  Feel free to edit this file,
@@ -241,7 +242,8 @@ Type:</p>
 <pre class="literal-block">
 echo $USER&#64;`cat /etc/mailname`
 </pre>
-<p>This will be the default email address used to search for the key that signs the packages you build.  We will also use this key to sign the Release file in the locally generated mirror.</p>
+<p>This will be the default email address used to search for the key that signs the packages
+you build.  We will also use this key to sign the Release file in the locally generated mirror.</p>
 <p>Now type:</p>
 <pre class="literal-block">
 getent passwd | grep $USER | cut -f5 -d: | cut -f1 -d,
@@ -264,7 +266,11 @@ that the &quot;Real Name&quot; you entered above is &quot;Paella User&quot;.  To
 gpg --fingerprint &quot;Paella User&quot; | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
 </pre>
 <p>You should get an eight digit hexadecimal fingerprint, which you'll need to remember.  From
-here on, I'll just refer to it as your gpg fingerprint.</p>
+here on, I'll just refer to it as your gpg fingerprint.  If you need more random bytes, type this
+in another window:</p>
+<pre class="literal-block">
+find /usr/share | xargs sha1sum
+</pre>
 </div>
 <div class="section" id="setup-initial-debian-mirror">
 <h2><a class="toc-backref" href="#id15">Setup initial debian mirror</a></h2>
@@ -302,6 +308,18 @@ UDebComponents: main non-free
 Description: Debian x.y Testing - Not Yet Released
 Log: logfile
 Update: lenny lenny-di security-testing
+SignWith: &lt;your gpg fingerprint&gt;
+
+Origin: Paella
+Label: Paella
+Suite: paella
+Version: 4.0
+Codename: paella
+Architectures: i386 source
+Components: main contrib non-free
+UDebComponents: main non-free
+Description: Paella local repository
+Log: logfile
 SignWith: &lt;your gpg fingerprint&gt;
 </pre>
 <p>and save it.</p>
@@ -341,12 +359,65 @@ FilterList: deinstall paella-startup-packages
 <pre class="literal-block">
 gpg --recv-keys 6070D3A1
 </pre>
+<p>Now would also be a good time to export the public key you made above:</p>
+<pre class="literal-block">
+gpg --export -a &gt; /freespace/debian/paella.key
+</pre>
+<p>Let apt on paella know about it too:</p>
+<pre class="literal-block">
+sudo apt-key add /freespace/debian/paella.key
+</pre>
+<p>To make sure apt got the key:</p>
+<pre class="literal-block">
+sudo apt-key list
+</pre>
+<p>Make sure the key is on the list</p>
+<p>Now we're ready to use reprepro to manage the repository:</p>
+<pre class="literal-block">
+reprepro -b /freespace/debian/  -VV update
+reprepro -b /freespace/debian/  -VV export
+</pre>
+<p>The -VV options sets the verbosity of reprepro to 10, which will help determine if anything
+goes wrong, and where it does go wrong.</p>
+<p>Since reprepro doesn't make verbatim mirrors, when you update from security.debian.org,
+the updated packages are added to the main package list for the suite, instead of
+&lt;suite&gt;/updates .  This is generally a good thing, since when you use a local mirror generated
+by reprepro, you only need one apt source line.  Paella, however was developed before
+reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work
+better with this, the workaround is to trick paella into thinking
+Hopefully things went well.</p>
 </div>
-<div class="section" id="build-paella-packages-from-source-tree-optional">
-<h2><a class="toc-backref" href="#id16">Build paella packages from source tree (optional)</a></h2>
-<p>You may wish to go ahead and build debian packages from the source tree.  If you do this, you
-will also have to build the <a class="reference external" href="http://useless.berlios.de/">useless</a> packages.  Going this route has the advantage of keeping
-you from having possibly modify your PATH and PYTHONPATH environment variables</p>
+<div class="section" id="build-paella-packages-from-source-tree">
+<h2><a class="toc-backref" href="#id16">Build paella packages from source tree</a></h2>
+<p>Now it's time to build the useless and paella packages.  First we're going to start with the
+useless package.  Pay attention to the lines below, as you won't be able to just cut-n-paste
+these lines:</p>
+<pre class="literal-block">
+cd ~/workspace/useless
+dch -n  # This will create and NMU (Non-maintainer upload)
+# save the file in the text editor
+debuild
+reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_&lt;version&gt;_i386.changes
+</pre>
+<p>Repeat this process for paella:</p>
+<pre class="literal-block">
+cd ~/workspace/paella
+dch -n  # This will create and NMU (Non-maintainer upload)
+# save the file in the text editor
+debuild
+reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_&lt;version&gt;_i386.changes
+</pre>
+<p>Let's test our new mirror.  Add these lines to /etc/apt/sources.list</p>
+<pre class="literal-block">
+deb http://paella/debian lenny main contrib non-free
+deb http://paella/debian paella main contrib non-free
+deb-src http://paella/debian paella main contrib non-free
+</pre>
+<p>And now type:</p>
+<pre class="literal-block">
+sudo apt-get update
+</pre>
+<p>Hopefully you won't get any errors.</p>
 </div>
 </div>
 <div class="section" id="configuration-files">

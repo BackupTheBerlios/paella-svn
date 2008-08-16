@@ -425,6 +425,20 @@ GPGKEY=
 
 EOF
 
+# taken from reprepro howto
+# added +FollowSymLinks
+cat <<EOF > /etc/apache2/conf.d/reprepro.conf
+Alias /debian /freespace/debian
+<Directory /freespace/debian>
+        Options +Indexes +FollowSymLinks
+        AllowOverride None
+        order allow,deny
+        allow from all
+</Directory>
+
+EOF
+
+
 if ! [ -d /freespace ]; then
     echo "making paella directories"
     mkdir /freespace
@@ -436,18 +450,16 @@ if ! [ -d /freespace ]; then
     mkdir /freespace/paella
 fi
 
-if ! [ -d /var/www/debian ]; then
-    echo "linking /freespace/debian to /var/www/debian"
-    pushd /var/www
-    ln -s /freespace/debian
-    popd
-fi
 
 echo "restarting services"
 /etc/init.d/networking stop
+echo "sleeping for 3 seconds"
+sleep 3
+/etc/init.d/networking start
 /etc/init.d/dhcp3-server restart
 /etc/init.d/postgresql-8.3 restart
 /etc/init.d/shorewall restart
+/etc/init.d/apache2 restart
 
 if [ -f /usr/local/bin/setup-paella-server ]; then
     echo "moving this script to /root , since it's only supposed to run once"

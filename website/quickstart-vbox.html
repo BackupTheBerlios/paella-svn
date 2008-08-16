@@ -191,7 +191,10 @@ an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf qu
 <p>After the debian installer is finished, the virtual machine should reboot .  You should take
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else
 the iso will boot everytime you boot the virtual machine.</p>
-<p>When the sytem boots up for the first time, login as paella (password paella), and type:</p>
+<p>When the sytem boots up for the first time, login as paella (password paella).  You may
+want to load this webpage in a web browser in the virtual machine, so you can more easily
+cut and paste from this page.  We need to start configuring the server. Start a terminal
+and type:</p>
 <pre class="literal-block">
 sudo setup-paella-server
 </pre>
@@ -384,8 +387,14 @@ the updated packages are added to the main package list for the suite, instead o
 &lt;suite&gt;/updates .  This is generally a good thing, since when you use a local mirror generated
 by reprepro, you only need one apt source line.  Paella, however was developed before
 reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work
-better with this, the workaround is to trick paella into thinking
-Hopefully things went well.</p>
+better with this, the workaround is to trick paella into thinking it's looking at &lt;suite&gt;/updates .
+To do this, type:</p>
+<pre class="literal-block">
+pushd /freespace/debian/dists/lenny
+ln -s . updates
+popd
+</pre>
+<p>Hopefully things went well.</p>
 </div>
 <div class="section" id="build-paella-packages-from-source-tree">
 <h2><a class="toc-backref" href="#id16">Build paella packages from source tree</a></h2>

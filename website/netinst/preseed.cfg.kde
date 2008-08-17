@@ -214,7 +214,7 @@ d-i apt-setup/contrib boolean true
 tasksel tasksel/first multiselect standard, database-server, desktop
 # If the desktop task is selected, install the kde and xfce desktops
 # instead of the default gnome desktop.
-tasksel tasksel/desktop multiselect xfce
+tasksel tasksel/desktop multiselect kde
 
 # Individual additional packages to install
 # for some reason postgresql isn't installing right

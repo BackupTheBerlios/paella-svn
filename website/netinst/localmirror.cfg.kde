@@ -58,7 +58,7 @@ d-i netcfg/wireless_wep string
 # If you select ftp, the mirror/country string does not need to be set.
 #d-i mirror/protocol string ftp
 d-i mirror/country string manual
-d-i mirror/http/hostname string http.us.debian.org
+d-i mirror/http/hostname string 10.0.2.2
 d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 
@@ -187,22 +187,28 @@ d-i apt-setup/non-free boolean true
 d-i apt-setup/contrib boolean true
 # Uncomment this if you don't want to use a network mirror.
 #d-i apt-setup/use_mirror boolean false
+d-i apt-setup/use_mirror boolean false
 # Select which update services to use; define the mirrors to be used.
 # Values shown below are the normal defaults.
-#d-i apt-setup/services-select multiselect security, volatile
-#d-i apt-setup/security_host string security.debian.org
-#d-i apt-setup/volatile_host string volatile.debian.org
+d-i apt-setup/services-select multiselect 
+d-i apt-setup/security_host string
+d-i apt-setup/volatile_host string
 
 # Additional repositories, local[0-9] available
 #d-i apt-setup/local0/repository string \
 #       http://local.server/debian stable main
 #d-i apt-setup/local0/comment string local server
+d-i apt-setup/local0/repository string \
+	http://10.0.2.2/debian lenny main contrib non-free
 # Enable deb-src lines
 #d-i apt-setup/local0/source boolean true
 # URL to the public key of the local repository; you must provide a key or
 # apt will complain about the unauthenticated repository and so the
 # sources.list line will be left commented out
 #d-i apt-setup/local0/key string http://local.server/key
+d-i apt-setup/local0/key string http://10.0.2.2/debian/jrawson.key
+#d-i apt-setup/local0/key string file:///cdrom/jrawson.key
+
 
 # By default the installer requires that repositories be authenticated
 # using a known gpg key. This setting can be used to disable that
@@ -214,7 +220,7 @@ d-i apt-setup/contrib boolean true
 tasksel tasksel/first multiselect standard, database-server, desktop
 # If the desktop task is selected, install the kde and xfce desktops
 # instead of the default gnome desktop.
-tasksel tasksel/desktop multiselect xfce
+tasksel tasksel/desktop multiselect kde
 
 # Individual additional packages to install
 # for some reason postgresql isn't installing right

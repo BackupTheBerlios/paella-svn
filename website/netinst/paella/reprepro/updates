@@ -5,7 +5,7 @@ VerifyRelease: 6070D3A1
 Architectures: i386
 Components: main contrib non-free
 UDebComponents: none
-FilterList: deinstall paella-startup-packages paella-extra-packages
+FilterList: deinstall startup-packages extra-packages local-packages
 
 Name: security-testing
 Method: http://security.debian.org/debian-security
@@ -14,6 +14,6 @@ Suite: testing/updates
 Architectures: i386
 Components: main contrib non-free
 UDebComponents: none
-FilterList: deinstall paella-startup-packages paella-extra-packages
+FilterList: deinstall startup-packages extra-packages local-packages
 
 

@@ -21,7 +21,7 @@ build_deps="cdbs devscripts python-dev python-docutils python-all-dev"
 
 umlpackages=""
 # if you already have these packages comment them out
-umlpackages="user-mode-linux uml-utilities debootstrap"
+#umlpackages="user-mode-linux uml-utilities debootstrap"
 
 
 postgresql_packages=""
@@ -69,8 +69,12 @@ if ! [ -L useless ]; then
 fi
 popd
 
+
+# here is how you can add the scripts to your path
+# if you need to work from the working copy
 pushd $binpath
-scripts="paella-management paella-make-base paella-kde-umlmanager"
+#scripts="paella-management paella-make-base paella-kde-umlmanager"
+scripts=""
 for script in $scripts
   do
   echo checking script $script

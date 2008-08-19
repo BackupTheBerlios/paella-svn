@@ -225,10 +225,12 @@ DNS/ACCEPT	\$FW		net
 #
 SSH/ACCEPT	loc		\$FW
 #
-# You may want to uncomment these if your using a bridged connection
-#SSH/ACCEPT	net		\$FW
+# You may want to comment these two lines out if your using a bridged connection
+# I recommend leaving the SSH line open, but the postgresql database on the
+# virtual machine is configured for a testing environment, and isn't secure.
+SSH/ACCEPT	net		\$FW
+PostgreSQL/ACCEPT	net	\$FW
 #SMB/ACCEPT	net		\$FW
-#PostgreSQL/ACCEPT	net	\$FW
 #VNC/DNAT	net		loc:10.0.1.20
 #
 #	Allow Ping from the local network
@@ -303,6 +305,7 @@ subnet 10.0.1.0 netmask 255.255.255.0 {
        option domain-name "lapnet";
        option domain-name-servers 10.0.1.1;
        option routers 10.0.1.1;
+       filename "pxelinux.0";
 }
 
 EOF
@@ -448,6 +451,10 @@ if ! [ -d /freespace ]; then
     chmod g+sw /freespace/debian
     # for the nfsroot
     mkdir /freespace/paella
+    # to build the nfsroot
+    mkdir /freespace/live
+    chgrp staff /freespace/live
+    chmod g+sw /freespace/live
 fi
 
 

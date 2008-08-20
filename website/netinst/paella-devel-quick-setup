@@ -35,6 +35,7 @@ postgresql_packages=""
 #mkisofs gawk xxdiff xemacs21 kernel-package apache"
 extra=""
 
+debianlive="live-helper dosfstools memtest86+ parted squashfs-tools genext2fs mtd-tools syslinux uuid-runtime"
 
 # you should not need to change anything below here
 
@@ -86,8 +87,8 @@ for script in $scripts
 popd
 
 
-PACKAGES="$depends $build_deps $umlpackages $postgresql_packages $extra"
-
+#PACKAGES="$depends $build_deps $umlpackages $postgresql_packages $extra"
+PACKAGES="$build_deps $debianlive"
 echo "Cut and paste this command into the terminal to install the packages:"
 echo
 

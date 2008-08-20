@@ -15,8 +15,9 @@ depends="python-xml python-pycurl python-sqlite python-pgsql python-kde3
 python-qtext libqt3-mt-psql python-apt python-pyparsing
 python-cheetah python-kjbuckets"
 
+depends=""
 # you will need these if you wish to build paella debian packages
-build_deps="cdbs devscripts python-dev python-docutils python-all-dev"
+build_deps="build-essential cdbs devscripts python-docutils python-all-dev"
 
 
 umlpackages=""

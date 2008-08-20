@@ -3,6 +3,7 @@ acpid						install
 adduser						install
 apache2						install
 apache2-mpm-prefork				install
+apache2-mpm-worker				install
 apache2-utils					install
 apache2.2-common				install
 apt						install
@@ -30,10 +31,12 @@ bsdmainutils					install
 bsdutils					install
 build-essential					install
 busybox						install
+bwidget						install
 bzip2						install
 ca-certificates					install
 cdbs						install
 cdebootstrap					install
+checkpolicy					install
 console-common					install
 console-data					install
 console-tools					install
@@ -106,6 +109,7 @@ fontconfig-config				install
 fortune-mod					install
 fortunes-min					install
 ftp-ssl						install
+ftp						install
 g++						install
 g++-4.3						install
 gawk						install
@@ -604,7 +608,8 @@ samba						install
 samba-common					install
 screen						install
 sed						install
-selinux-policy-refpolicy-targeted		deinstall
+selinux-policy-refpolicy-targeted		install
+setools						install
 shared-mime-info				install
 sharutils					install
 shorewall					install
@@ -645,6 +650,7 @@ tftpd-hpa					install
 thunar						install
 thunar-data					install
 time						install
+tk8.4						install
 traceroute					install
 ttf-dejavu					install
 ttf-dejavu-core					install
@@ -730,6 +736,7 @@ xserver-xorg-video-mga				install
 xserver-xorg-video-neomagic			install
 xserver-xorg-video-nsc				install
 xserver-xorg-video-nv				install
+xserver-xorg-video-openchrome			install
 xserver-xorg-video-r128				install
 xserver-xorg-video-radeon			install
 xserver-xorg-video-radeonhd			install

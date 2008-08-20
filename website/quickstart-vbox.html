@@ -417,7 +417,7 @@ sudo apt-get update
 <p>Now you're ready to get the source code from subversion.  To do this, type</p>
 <pre class="literal-block">
 cd
-paella-devel-quick-setup
+paella-user-quick-setup
 </pre>
 <p>This will setup the directories, and download the source code from the berlios subversion
 repository.  If you plan on working on the code in the working copy, you'll need to either source
@@ -454,6 +454,10 @@ dch -n  # This will create an NMU (Non-maintainer upload)
 debuild
 reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_&lt;version&gt;_i386.changes
 </pre>
+<p>Normally, you'd export the working copy before building the packages, but we'll just be sloppy
+here, because we're almost ready to install the packages that were just built.  There's no
+need to build them correctly until you're sure that paella is the right type of program for your
+needs.</p>
 <p>Let's test our new mirror:</p>
 <pre class="literal-block">
 sudo apt-get update
@@ -520,7 +524,7 @@ one if you use paella in a production environment.</p>
 tables.  You should click yes here to setup an empty database structure.  If you don't do
 this, the database import procedure will create these tables for you, but you won't be able to
 use the paella-management interface until you do this.</p>
-<p>The information below is outdated.  To be continued ....</p>
+<p><strong>The information below is outdated.  To be continued ....</strong></p>
 </div>
 <div class="section" id="import-the-database">
 <h2><a class="toc-backref" href="#id23">Import the database</a></h2>

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+lapnet_address=10.0.1.1
+lapnet_netmask=255.255.255.0
+lapnet_netcidr=10.0.1.0/24
+lapnet_network=10.0.1.0
+lapnet_dhcpstart=10.0.1.20
+lapnet_dhcpend=10.0.1.253
+
 echo "modifying /etc/network/interfaces"
 if ! [ -f /etc/network/interfaces.orig ]; then
     mv /etc/network/interfaces /etc/network/interfaces.orig
@@ -451,6 +458,8 @@ if ! [ -d /freespace ]; then
     chmod g+sw /freespace/debian
     # for the nfsroot
     mkdir /freespace/paella
+    # for the installer logs
+    mkdir /freespace/paellalog
     # to build the nfsroot
     mkdir /freespace/live
     chgrp staff /freespace/live
@@ -474,6 +483,7 @@ cat <<EOF > /etc/exports
 # /srv/nfs4/homes  gss/krb5i(rw,sync,no_subtree_check)
 #
 /freespace/paella	*(rw,sync,no_subtree_check,no_root_squash,no_subtree_check)
+/freespace/paellalog	*(rw,sync,no_subtree_check,no_root_squash,no_subtree_check)
 
 EOF
 

@@ -6,6 +6,8 @@ lapnet_netcidr=10.0.1.0/24
 lapnet_network=10.0.1.0
 lapnet_dhcpstart=10.0.1.20
 lapnet_dhcpend=10.0.1.253
+xserver_resolution=1024x768
+
 
 echo "modifying /etc/network/interfaces"
 if ! [ -f /etc/network/interfaces.orig ]; then
@@ -25,8 +27,8 @@ iface eth0 inet dhcp
 
 auto eth1
 iface eth1 inet static
-	address 10.0.1.1
-	netmask 255.255.255.0
+	address $lapnet_address
+	netmask $lapnet_netmask
 
 EOF
 
@@ -50,11 +52,11 @@ local   all         postgres                          ident sameuser
 local   all         all                               ident sameuser
 # IPv4 local connections:
 host    all         all         127.0.0.0/8          md5
-host	paella	paella	10.0.1.0/24	trust
-host	all	dbadmin	10.0.1.0/24	trust
+host	paella	paella	$lapnet_netcidr	trust
+host	all	dbadmin	$lapnet_netcidr	trust
 # wide open
 #host	all	dbadmin	0.0.0.0/0  	trust
-host	all	all	10.0.1.0/24	md5
+host	all	all	$lapnet_netcidr	md5
 # IPv6 local connections:
 host    all         all         ::1/128               md5
 
@@ -79,7 +81,7 @@ external_pid_file = '/var/run/postgresql/8.3-main.pid'		# write an extra PID fil
 					# (change requires restart)
 
 # - Connection Settings -
-listen_addresses = '10.0.1.1,127.0.0.1'
+listen_addresses = '$lapnet_address,127.0.0.1'
 #listen_addresses = 'localhost'		# what IP address(es) to listen on;
 # wide open
 #listen_addresses = '*'			# comma-separated list of addresses;
@@ -307,11 +309,11 @@ authoritative;
 # have to hack syslog.conf to complete the redirection).
 log-facility local7;
 
-subnet 10.0.1.0 netmask 255.255.255.0 {
-       range 10.0.1.20 10.0.1.253;
+subnet $lapnet_network netmask $lapnet_netmask {
+       range $lapnet_dhcpstart $lapnet_dhcpend;
        option domain-name "lapnet";
-       option domain-name-servers 10.0.1.1;
-       option routers 10.0.1.1;
+       option domain-name-servers $lapnet_address;
+       option routers $lapnet_address;
        filename "pxelinux.0";
 }
 
@@ -364,7 +366,7 @@ Section "Screen"
 	Identifier	"Default Screen"
 	Monitor		"Configured Monitor"
 	SubSection "Display"
-	    Modes  "1024x768"
+	    Modes  "$xserver_resolution"
 	EndSubSection
 EndSection
 

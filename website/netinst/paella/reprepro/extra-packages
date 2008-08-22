@@ -2,3 +2,6 @@ kbd				install
 smbfs				install
 resolvconf			install
 tora				install
+kate				install
+kregexpeditor			install
+

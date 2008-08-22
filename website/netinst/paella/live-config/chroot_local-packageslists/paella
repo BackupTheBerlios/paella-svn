@@ -2,5 +2,16 @@ eject file sudo vim-tiny
 
 console-common locales
 
+postgresql-client 
+xemacs21
+most
+nfs-common
+grub
+syslinux
+memtest86+
+squashfs-tools
+
+
 paella-machine-installer
+paella-nfs-installer
 

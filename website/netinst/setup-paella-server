@@ -595,6 +595,7 @@ echo "sleeping for 3 seconds"
 sleep 3
 /etc/init.d/networking start
 /etc/init.d/dhcp3-server restart
+/etc/init.d/bind9 restart
 /etc/init.d/postgresql-8.3 restart
 /etc/init.d/shorewall restart
 /etc/init.d/apache2 restart

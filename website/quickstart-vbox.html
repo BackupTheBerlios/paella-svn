@@ -48,17 +48,18 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#setup-paellarc" id="id21">Setup ~/.paellarc</a></li>
 <li><a class="reference internal" href="#start-paella-management" id="id22">Start paella-management</a></li>
 <li><a class="reference internal" href="#import-the-database" id="id23">Import the database</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id24">Configure stage1 database</a></li>
+<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id24">Configure quickstart-vbox database</a></li>
+<li><a class="reference internal" href="#configure-stage1-database" id="id25">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id25">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id26">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id27">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id26">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id27">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id28">Install umlbuilder</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id28">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id29">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id30">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id29">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id30">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id31">Run umlbuilder</a></li>
 </ul>
 </li>
 </ul>
@@ -270,6 +271,7 @@ have the code corrected after I'm sure that this quickstart routine is fully fun
 <pre class="literal-block">
 sudo apt-move update
 sudo rm /freespace/debian/.apt-move -fr
+sudo rm /freespace/debian/dists -fr
 sudo chown -R paella:staff /freespace/debian/*
 </pre>
 <p>This will move all the packages installed on the virtual machine to /freespace/debian .  This will
@@ -429,8 +431,8 @@ cat paella_environment &gt;&gt; .bashrc
 </pre>
 <p>This is optional, as it's only needed to work with the code, and possibly fix bugs that you
 encounter.</p>
-<p>You need to cut and paste the apt-get command from the output of the script, to build all of
-the paella and python-useless-* packages.</p>
+<p><strong>Important:</strong>  You need to cut and paste the apt-get command from the output
+of the script, to build all of the paella and python-useless-* packages.</p>
 </div>
 <div class="section" id="build-paella-packages-from-source-tree">
 <h2><a class="toc-backref" href="#id18">Build paella packages from source tree</a></h2>
@@ -528,33 +530,36 @@ use the paella-management interface until you do this.</p>
 </div>
 <div class="section" id="import-the-database">
 <h2><a class="toc-backref" href="#id23">Import the database</a></h2>
-<p>Now we are going to import the startup database.  You will need an internet connection to
+<p>Now we are going to import the startup database.  You may need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
-database menu, select &quot;import database&quot;.  A directory selection dialog will appear.  You
-need to select the &quot;stage1&quot; directory.  Note that the default debian mirror is
-<a class="reference external" href="http://ftp.us.debian.org/debian">http://ftp.us.debian.org/debian</a> .  If you need to change this, edit the database.xml file
-in the stage1 directory, and alter the uri attribute to the aptsource xml element at the
-top of the file.  You can change this to a local mirror if you already have one.  Paella has only
-been tested with http apt sources, it's behaviour on other methods is unknown.</p>
-<blockquote>
-If you are working from a subversion copy from the quick setup script, the directory
-you will want to select is here, ~/workspace/paella/config/share/databases/stage1/ .</blockquote>
+database menu, select &quot;import database&quot;.  A directory selection dialog will appear.  The
+database directory will be at:</p>
+<pre class="literal-block">
+~/workspace/paella/config/share/databases/quickstart-vbox/
+</pre>
+<p>Note that the default debian mirror is  <a class="reference external" href="http://ftp.us.debian.org/debian">http://ftp.us.debian.org/debian</a> .  If you need to
+change this, edit the database.xml file in the quickstart-vbox  directory, and alter the uri
+attribute to the aptsource xml element at the top of the file.  You can change this to a local
+mirror if you already have one.  I recommend against using the local mirror that you just
+created in this quickstart routine, as you would likely want to make new traits with packages
+that aren't available in that mirror.  Paella has only been tested with http apt sources, it's
+behaviour on other methods is unknown.</p>
 <p>If everything is working, you should be seeing an ugly little progress dialog displaying
-something resembling what it should be doing.  The packages will probably take a little
-while to insert.  The apt_source_packages table can take a lot of space that could be
-better saved.  In the future, it will probably default to only holding package names rather
-than the other attributes in the Packages file.  The reason they are there is to help keep the
-automated installations from bombing due to unavailable or misspelled packages.</p>
-<p>After importing the database, you will have to disconnect and then reconnect to the
-database to refresh the available widgets in the paella-management application.  You may
-wish to restart the application instead, as when an import occurs, a lot of memory is used
-to parse the Packages file, and insert the packages into the database.  This memory is not
-freed after the import process.  Fixing this has not been a major goal, as imports are fairly
-rare during the normal use of paella-management.</p>
+something resembling what it should be doing.  I need to fix this dialog to make it more
+accurate, but at least you'll see it working while it inserts the information into the
+database.  The packages will probably take a little while to insert.  The apt_source_packages
+table can take a lot of space that could be better saved.  In the future, it will probably default
+to only holding package names rather than the other attributes in the Packages file.  The
+reason they are there is to help keep the automated installations from bombing due to
+unavailable or misspelled packages.  It would also be nice to have a little package browser
+to help when creating traits, but that's in the future.</p>
+</div>
+<div class="section" id="configure-quickstart-vbox-database">
+<h2><a class="toc-backref" href="#id24">Configure quickstart-vbox database</a></h2>
 </div>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id24">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id25">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -563,20 +568,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id25">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id26">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id26">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id27">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id27">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id28">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -584,10 +589,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id28">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id29">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id29">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id30">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -603,7 +608,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id30">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id31">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder

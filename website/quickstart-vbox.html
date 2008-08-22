@@ -43,23 +43,36 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#build-paella-packages-from-source-tree" id="id18">Build paella packages from source tree</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-paella-management-interface" id="id19">Using Paella Management Interface</a><ul>
-<li><a class="reference internal" href="#install-the-admin-package" id="id20">Install the Admin Package</a></li>
-<li><a class="reference internal" href="#setup-paellarc" id="id21">Setup ~/.paellarc</a></li>
-<li><a class="reference internal" href="#start-paella-management" id="id22">Start paella-management</a></li>
-<li><a class="reference internal" href="#import-the-database" id="id23">Import the database</a></li>
-<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id24">Configure quickstart-vbox database</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id25">Configure stage1 database</a></li>
+<li><a class="reference internal" href="#debian-live" id="id19">Debian Live</a><ul>
+<li><a class="reference internal" href="#why-debian-live" id="id20">Why Debian Live?</a></li>
+<li><a class="reference internal" href="#starting-with-debianlive" id="id21">Starting with DebianLive</a></li>
+<li><a class="reference internal" href="#copy-debianlive-config-from-cd" id="id22">Copy DebianLive config from CD</a></li>
+<li><a class="reference internal" href="#modify-the-debianlive-configuration" id="id23">Modify the DebianLive Configuration</a></li>
+<li><a class="reference internal" href="#copy-the-archive-key" id="id24">Copy the Archive Key</a></li>
+<li><a class="reference internal" href="#build-the-debianlive-nfsroot" id="id25">Build the DebianLive nfsroot</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id26">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id27">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id28">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#using-paella-management-interface" id="id26">Using Paella Management Interface</a><ul>
+<li><a class="reference internal" href="#install-the-admin-package" id="id27">Install the Admin Package</a></li>
+<li><a class="reference internal" href="#setup-paellarc" id="id28">Setup ~/.paellarc</a></li>
+<li><a class="reference internal" href="#start-paella-management" id="id29">Start paella-management</a></li>
+<li><a class="reference internal" href="#import-the-database" id="id30">Import the database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id29">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id30">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id31">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id31">Configure quickstart-vbox database</a><ul>
+<li><a class="reference internal" href="#add-the-archive-key" id="id32">Add the archive key</a></li>
+<li><a class="reference internal" href="#edit-the-default-environment" id="id33">Edit the Default Environment</a></li>
+<li><a class="reference internal" href="#configure-stage1-database" id="id34">Configure stage1 database</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id35">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id36">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id37">Install umlbuilder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id38">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id39">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id40">Run umlbuilder</a></li>
 </ul>
 </li>
 </ul>
@@ -477,10 +490,86 @@ the time to investigate the problem further, I'll find a better solution, but th
 work just fine for our purposes here.</p>
 </div>
 </div>
+<div class="section" id="debian-live">
+<h1><a class="toc-backref" href="#id19">Debian Live</a></h1>
+<div class="section" id="why-debian-live">
+<h2><a class="toc-backref" href="#id20">Why Debian Live?</a></h2>
+<p>Now you're ready to make the live nfsroot installer.  In the past, I had done this with paella,
+and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to
+compile a special kernel to allow me to mount an nfsroot, and have the network drivers
+compiled right into the kernel image.  Later, the work on the initrd filesystem allowed me to
+use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky an limited
+at best.  These days, there's <a class="reference external" href="http://wiki.debian.org/DebianLive">DebianLive</a> to help do much of the dirty work here.  It's even
+possible to use DebianLive to make a live iso with the paella installer on it, for machines
+that won't boot off of the network.  I actually had to do this with the older livecd package in
+the past, but DebianLive is much better.  Now I can leave the management of a good live
+system in somebody else's hands, and just concentrate on using that live system as an
+installer for paella.</p>
+</div>
+<div class="section" id="starting-with-debianlive">
+<h2><a class="toc-backref" href="#id21">Starting with DebianLive</a></h2>
+<p>To begin making the nfsroot installer, we need to change directories to the place I've setup
+for you to build the installer:</p>
+<pre class="literal-block">
+cd /freespace/live
+</pre>
+<p>You'll need to stay in this directory for the rest of the instructions on building the DebianLive
+nfsroot installer.</p>
+</div>
+<div class="section" id="copy-debianlive-config-from-cd">
+<h2><a class="toc-backref" href="#id22">Copy DebianLive config from CD</a></h2>
+<p>If you haven't yet mounted the netinst cdrom image, do so now:</p>
+<pre class="literal-block">
+mount /media/cdrom
+</pre>
+<p>You need to copy the DebianLive configuration files from the cd:</p>
+<pre class="literal-block">
+cp -a /media/cdrom/paella/live-config/ config
+chmod +w -R config/
+</pre>
+</div>
+<div class="section" id="modify-the-debianlive-configuration">
+<h2><a class="toc-backref" href="#id23">Modify the DebianLive Configuration</a></h2>
+<p>If you had to change the network ip's from the defaults, you'll need to perform the steps
+mentioned in the list below.  If the ip of the eth1 interface is 10.0.1.1, you can probably
+skip this step.</p>
+<ul class="simple">
+<li>edit config/bootstrap and set LH_MIRROR_BOOTSTAP with the ip of your eth1 interface.</li>
+<li>edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.</li>
+<li>edit config/chroot_sources/paella.chroot and set the ip address there to the address
+of your eth1 interface.</li>
+<li>edit config/chroot_local-includes/etc/rc.local and set the ip address in that file to the
+address of your eth1 interface.</li>
+</ul>
+</div>
+<div class="section" id="copy-the-archive-key">
+<h2><a class="toc-backref" href="#id24">Copy the Archive Key</a></h2>
+<p>Now, copy the archive key to the DebianLive config:</p>
+<pre class="literal-block">
+cp /freespace/debian/paella.gpg config/chroot_sources/paella.chroot.gpg
+</pre>
+</div>
+<div class="section" id="build-the-debianlive-nfsroot">
+<h2><a class="toc-backref" href="#id25">Build the DebianLive nfsroot</a></h2>
+<p>Now type:</p>
+<pre class="literal-block">
+sudo lh_clean
+sudo lh_build  #(this will take a while)
+</pre>
+<p>If the lh_build ended without raising an error, you can move the result to it's proper
+resting places:</p>
+<pre class="literal-block">
+sudo mv tftpboot/* /var/lib/tftpboot/
+sudo mv binary/* /freespace/paella/
+</pre>
+<p>Now you'll be able to boot machines off the local internal VM network, but it won't be
+useful without a database prepared for paella to use.</p>
+</div>
+</div>
 <div class="section" id="using-paella-management-interface">
-<h1><a class="toc-backref" href="#id19">Using Paella Management Interface</a></h1>
+<h1><a class="toc-backref" href="#id26">Using Paella Management Interface</a></h1>
 <div class="section" id="install-the-admin-package">
-<h2><a class="toc-backref" href="#id20">Install the Admin Package</a></h2>
+<h2><a class="toc-backref" href="#id27">Install the Admin Package</a></h2>
 <p>Now we're almost ready to use the management interface.  To install it, type:</p>
 <pre class="literal-block">
 sudo apt-get install paella-admin
@@ -490,18 +579,18 @@ terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't r
 should set up the configuration file first.</p>
 </div>
 <div class="section" id="setup-paellarc">
-<h2><a class="toc-backref" href="#id21">Setup ~/.paellarc</a></h2>
+<h2><a class="toc-backref" href="#id28">Setup ~/.paellarc</a></h2>
 <p>The master config file will be found at /etc/paellarc .  The master config file is the one that
 the installer will use.  You can copy this file to ~/.paellarc and edit it.  The paella-management
 program will read the master config file, then the local one at ~/.paellarc .  The local file will
 override options in the master file.  If you are not familiar with the file format, you can read
 about it <a class="reference external" href="http://docs.python.org/lib/module-ConfigParser.html">here</a> .  Options that are prefixed by an underscore are not referenced in the code.
 You can make your own underscored options, if you wish, to make it easier to edit.</p>
-<dl class="docutils">
-<dt>Type::</dt>
-<dd>cd
-cp /etc/paellarc .paellarc</dd>
-</dl>
+<p>Type:</p>
+<pre class="literal-block">
+cd
+cp /etc/paellarc .paellarc
+</pre>
 <p>In the database section, the dbhost option should be the ip address of the eth1 interface,
 which should be 10.0.1.1 .  You will also need to change the dbusername option to the database
 admin user (dbadmin).  The dbusername in the master config file should  always be &quot;paella&quot;.</p>
@@ -516,20 +605,25 @@ x_differ LeftFile RightFile
 <p>You should not need to change any other options.</p>
 </div>
 <div class="section" id="start-paella-management">
-<h2><a class="toc-backref" href="#id22">Start paella-management</a></h2>
-<p>Run the paella-management script to start the management interface.  The first thing that you
-will want to do is to connect to the database.  There is a connect button on the toolbar for you
-to press.  The connection dialog entries are taken from your ~/.paellarc file.  The settings
-for postgresql in this quickstart don't require a password for dbadmin, but you'll want to use
-one if you use paella in a production environment.</p>
+<h2><a class="toc-backref" href="#id29">Start paella-management</a></h2>
+<p>Run the paella-management script to start the management interface.  The little window that
+pops up is the main menu for paella.  From here on, I'll refer it as the &quot;main paella window&quot;.
+There are two menu systems on the &quot;main paella window&quot;.  One of them is the standard
+menu bar at the top.  The other one is the list right below the menu bar.  This is the list that
+contains &quot;differs, environ, familes, ...&quot;.  This is the part of the interface that has so far
+defied any conformance to standards that you might be used to.  I'm going to be calling
+this part of the interface the &quot;list menu&quot;.</p>
+<p>The first thing that you will want to do is to connect to the database.  There is a connect button
+on the toolbar for you to press.  The connection dialog entries are taken from your ~/.paellarc
+file.  The settings for postgresql in this quickstart don't require a password for dbadmin, but
+you'll want to use one if you use paella in a production environment.</p>
 <p>Once you connect to the database, you should get a dialog asking to create the primary
 tables.  You should click yes here to setup an empty database structure.  If you don't do
 this, the database import procedure will create these tables for you, but you won't be able to
 use the paella-management interface until you do this.</p>
-<p><strong>The information below is outdated.  To be continued ....</strong></p>
 </div>
 <div class="section" id="import-the-database">
-<h2><a class="toc-backref" href="#id23">Import the database</a></h2>
+<h2><a class="toc-backref" href="#id30">Import the database</a></h2>
 <p>Now we are going to import the startup database.  You may need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
@@ -555,11 +649,35 @@ reason they are there is to help keep the automated installations from bombing d
 unavailable or misspelled packages.  It would also be nice to have a little package browser
 to help when creating traits, but that's in the future.</p>
 </div>
+</div>
 <div class="section" id="configure-quickstart-vbox-database">
-<h2><a class="toc-backref" href="#id24">Configure quickstart-vbox database</a></h2>
+<h1><a class="toc-backref" href="#id31">Configure quickstart-vbox database</a></h1>
+<div class="section" id="add-the-archive-key">
+<h2><a class="toc-backref" href="#id32">Add the archive key</a></h2>
+<p>Now you'll need to add the gpg key you made above to paella, so that paella can install
+the packages from the new mirror.  This is a rather new part of the gui, so the interface
+is far from complete.  At the moment you can only add keys, not remove them.  The apt
+key manager can be reached from the &quot;main paella window&quot; Main menu on the menu
+bar.</p>
+<p>This will make a child window appear that lists all of the apt keys in the database.  At the
+moment, there shouldn't be anything there.  Each key needs a unique name that you must
+create.  This will help you to know which key is which, instead of having to memorize key
+ID's.  To make a new key, press the &quot;new&quot; icon on the toolbar.  You'll be presented with a
+dialog window.  Enter the name of the key in the top entry (use paella for the name).  In the
+space below, you need to enter in the ascii gpg block for your public key.  I'll make a file
+dialog to select the key from in the future, but for now, you'll have to cut and paste the
+key.  This operation isn't going to be done very much for the lifetime of the database, so
+a better interface isn't a high priority for me.  If you've been following the instructions
+you can open the web browser to <a class="reference external" href="http://paella/debian/paella.gpg">http://paella/debian/paella.gpg</a> and cut and paste
+the key from there.</p>
+<p>If you did this right, you should see paella and the key id in the left hand column.</p>
+</div>
+<div class="section" id="edit-the-default-environment">
+<h2><a class="toc-backref" href="#id33">Edit the Default Environment</a></h2>
+<p><strong>The information below is outdated.  To be continued ....</strong></p>
 </div>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id25">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id34">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -568,20 +686,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id26">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id35">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id27">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id36">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id28">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id37">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -589,10 +707,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id29">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id38">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id30">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id39">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -608,7 +726,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id31">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id40">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder

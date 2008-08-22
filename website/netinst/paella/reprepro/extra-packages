@@ -1,2 +1,4 @@
 kbd				install
 smbfs				install
+resolvconf			install
+tora				install

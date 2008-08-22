@@ -2,12 +2,37 @@
 
 lapnet_address=10.0.1.1
 lapnet_netmask=255.255.255.0
-lapnet_netcidr=10.0.1.0/24
 lapnet_network=10.0.1.0
+lapnet_netcidr=$lapnet_network/24
+#lapnet_netcidr=10.0.1.0/24
+
+# These are here for bind9, but they only effect
+# the reverse lookup.  The forward lookup uses
+# the variables set above here.
+lapnet_firstoctet=10
+lapnet_bindrev=1.1.0
+
+# These variables help define the range of ip's
+# that the dhcp server hands out to the machines
+# on the lapnet network.
 lapnet_dhcpstart=10.0.1.20
 lapnet_dhcpend=10.0.1.253
+
+# here is a variable to help set the resolution 
+# on the X server.
 xserver_resolution=1024x768
 
+#####################################################
+#####################################################
+#   You shouldn't need to set anything below here, but take a look           
+#  anyway.  There are some places in the shorewall configuration, and   
+#  in the postgresql configuration that have "# wide open" comments.    
+#  These parts are commented out by default, but since script should    
+#  be running on a virtual machine, you may want to adjust those parts  
+#  of the script and have easier access to the virtual machine from the 
+#  host machine.
+#####################################################
+#####################################################
 
 echo "modifying /etc/network/interfaces"
 if ! [ -f /etc/network/interfaces.orig ]; then
@@ -436,6 +461,81 @@ GPGKEY=
 # End Configuration ------------------------------------------------------
 
 EOF
+
+# configure bind to run the lapnet network
+if ! [ -f /etc/bind/named.conf.local.orig ]; then
+    echo "replacing /etc/bind/named.conf.local"
+    mv /etc/bind/named.conf.local /etc/bind/named.conf.local.orig
+fi
+
+
+cat <<EOF > /etc/bind/named.conf.local
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "lapnet" {
+	type master;
+	file "/etc/bind/db.lapnet";
+};
+
+zone "10.in-addr.arpa" {
+	type master;
+	file "/etc/bind/db.10";
+};
+
+
+EOF
+
+if ! [ -f /etc/bind/db.lapnet.orig ]; then
+    echo "replacing /etc/bind/db.lapnet"
+    mv /etc/bind/db.lapnet /etc/bind/db.lapnet.orig
+fi
+
+cat <<EOF > /etc/bind/db.lapnet
+;
+; BIND data file for local loopback interface
+;
+\$TTL	604800
+lapnet.	IN	SOA	paella. root.paella. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+lapnet.	IN	NS	paella.
+paella.lapnet.	IN	A	$lapnet_address
+@	IN	AAAA	::1
+
+EOF
+
+if ! [ -f /etc/bind/db.10.orig ]; then
+    echo "replacing /etc/bind/db.10"
+    mv /etc/bind/db.10 /etc/bind/db.10.orig
+fi
+
+cat <<EOF > /etc/bind/db.10
+;
+; BIND reverse data file for local loopback interface
+;
+\$TTL	604800
+@	IN	SOA	paella. root.paella. (
+			      1		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@	IN	NS	paella.
+$lapnet_bindrev	IN	PTR	paella.
+
+EOF
+
 
 # taken from reprepro howto
 # added +FollowSymLinks

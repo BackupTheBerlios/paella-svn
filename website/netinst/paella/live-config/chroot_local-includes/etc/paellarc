@@ -1,0 +1,93 @@
+# configuration file for paella
+[DEFAULT]
+# these options are only referenced in this config file
+__myhome:		~
+__paelladir:		%(__myhome)s/workspace/paella
+
+[database]
+# regular database info
+dbhost:			10.0.1.1
+dbname:			paella
+#dbusername:		dbadmin
+dbusername:		paella
+dbpassword:		apassword
+
+# this path is used to import and export information
+# in the database.  These paths are used as hints in the
+# gui and aren't needed for the command line.
+default_path:		%(__paelladir)s/config/share/databases
+
+# the installer section is only needed on the installer system
+# it is not needed for paella-management
+[installer]
+
+# this is to enable ugly stuff in the paella installers
+enable_bad_hacks:	false
+
+# a directory for storing generated files that would be needed later
+# I put this in usr because it's mainly used on the nfsinstaller, and
+# /var on the nfsinstaller uses tmpfs instead of nfs
+paella_storage:		/usr/share/paella/storage
+
+# use this one for machines other than the nfsinstaller
+#paella_storage:		/var/cache/paella
+
+# the directory that will hold tarfiles of clean bootstrapped suites
+suite_storage:		%(paella_storage)s/suites
+
+# this is a list of suites that will be bootstrapped and tarred
+bootstrap_suites:		sarge, etch
+
+# the default is not to have the installer bootstrap,
+# but extract tar files in suite_storage (quicker)
+bootstrap_target:		false
+
+# this is the location of the devices tarball that can be used
+# in place of makedev
+devices_tarball:		%(paella_storage)s/devices.tar
+
+# we default to using the devices tarball because it is quicker
+# than running MAKEDEV
+use_devices_tarball:	true
+
+# the management_gui section is only needed for paella-management,
+# it is not needed for the paella installer
+[management_gui]
+
+# this is the template that profiles will be created from
+template_profile:		skeleton
+
+# this is the path used to import and export client
+# information and the paella database
+# client information should be kept on a separate device
+# for general security reasons
+# the client information should be able to sit nicely
+# on top of the base paella database
+client_path:		%(__myhome)s/clients
+
+# only listbox_select is supported now
+manager_type:		listbox_select
+
+# The text editor must make an X window
+text_editor:		kate
+
+# The x_differ must make an X window
+# the command must take these args -> x_differ left_file right_file
+x_differ:			xxdiff
+#x_differ:			kompare
+
+
+# document colors
+#traitdoc_bgcolor:			LightSkyBlue4
+#traitdoc_section_title_color:		IndianRed
+#traitdoc_package_table_color:	SkyBlue3
+#traitdoc_template_table_color:	DarkSeaGreen3
+#traitdoc_variables_table_color:	MistyRose3
+
+_basecolor:			SkyBlue
+traitdoc_bgcolor:			%(_basecolor)s
+traitdoc_section_title_color:		%(_basecolor)s4
+traitdoc_section_title_font_color:	%(_basecolor)s1
+traitdoc_package_table_color:	%(_basecolor)s3
+traitdoc_template_table_color:	%(_basecolor)s3
+traitdoc_variables_table_color:	%(_basecolor)s3

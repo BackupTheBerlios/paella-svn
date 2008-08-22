@@ -119,7 +119,7 @@ LH_SYSLINUX_SPLASH=""
 
 # $LH_SYSLINUX_TIMEOUT: set custom syslinux timeout in seconds
 # (Default: 0)
-LH_SYSLINUX_TIMEOUT="0"
+LH_SYSLINUX_TIMEOUT="10"
 
 # $LH_SYSLINUX_CFG: set custom syslinux configuration file
 # (Default: empty)

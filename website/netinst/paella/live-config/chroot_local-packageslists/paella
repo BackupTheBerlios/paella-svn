@@ -10,6 +10,7 @@ grub
 syslinux
 memtest86+
 squashfs-tools
+resolvconf
 
 
 paella-machine-installer

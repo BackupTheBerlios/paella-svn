@@ -30,7 +30,7 @@ LH_DISTRIBUTION="lenny"
 
 # $LH_MIRROR_BOOTSTRAP: set mirror to bootstrap from
 # (Default: http://10.0.1.1/debian)
-LH_MIRROR_BOOTSTRAP="http://10.0.1.1/debian"
+LH_MIRROR_BOOTSTRAP="http://paella.lapnet/debian"
 
 # $LH_MIRROR_CHROOT: set mirror to fetch packages from
 # (Default: http://10.0.1.1/debian)

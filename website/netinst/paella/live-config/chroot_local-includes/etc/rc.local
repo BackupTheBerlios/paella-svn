@@ -18,7 +18,7 @@ fi
 
 if [ -z `cat /proc/mounts | grep /paellalog` ]; then
     echo "mounting /paellalog"
-    mount -t nfs 10.0.1.1:/freespace/paellalog /paellalog
+    mount -t nfs paella.lapnet:/freespace/paellalog /paellalog
 fi
 
 

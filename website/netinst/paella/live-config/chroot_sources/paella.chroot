@@ -1,1 +1,1 @@
-deb http://10.0.1.1/debian paella main contrib non-free
+deb http://paella.lapnet/debian paella main contrib non-free

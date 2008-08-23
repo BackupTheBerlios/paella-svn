@@ -91,7 +91,7 @@ LH_NET_ROOT_PATH="/freespace/paella"
 
 # $LH_NET_ROOT_SERVER: set netboot server address
 # (Default: 10.0.1.1)
-LH_NET_ROOT_SERVER="paella.lapnet"
+LH_NET_ROOT_SERVER="10.0.1.1"
 
 # $LH_NET_COW_FILESYSTEM: set net client cow filesystem
 # (Default: nfs)

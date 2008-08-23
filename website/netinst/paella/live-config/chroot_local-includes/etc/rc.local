@@ -16,10 +16,17 @@ if ! [ -d /paellalog ]; then
     mkdir /paellalog
 fi
 
+# run the dhclient to get an appropriate /etc/resolv.conf
+dhclient
+
+
 if [ -z `cat /proc/mounts | grep /paellalog` ]; then
     echo "mounting /paellalog"
     mount -t nfs paella.lapnet:/freespace/paellalog /paellalog
 fi
 
+# finally, run the paella nfs installer in the background
+
+paella-init-nfsinstaller  &
 
 exit 0

@@ -63,17 +63,20 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id32">Configure quickstart-vbox database</a><ul>
 <li><a class="reference internal" href="#add-the-archive-key" id="id33">Add the archive key</a></li>
 <li><a class="reference internal" href="#edit-the-default-environment" id="id34">Edit the Default Environment</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id35">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id36">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id37">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id38">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#create-a-machine-to-install" id="id35">Create A Machine to Install</a><ul>
+<li><a class="reference internal" href="#configure-stage1-database" id="id36">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id39">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id40">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id41">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id37">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id38">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id39">Install umlbuilder</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id40">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id41">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id42">Run umlbuilder</a></li>
 </ul>
 </li>
 </ul>
@@ -550,20 +553,11 @@ chmod +w -R config/
 </div>
 <div class="section" id="modify-the-debianlive-configuration">
 <h2><a class="toc-backref" href="#id24">Modify the DebianLive Configuration</a></h2>
-<p>If you had to change the network ip's from the defaults, you'll need to perform the steps
-mentioned in the list below.  If the ip of the eth1 interface is 10.0.1.1, you can probably
-skip this step.</p>
-<ul class="simple">
-<li>edit config/bootstrap and set LH_MIRROR_BOOTSTAP with the ip of your eth1 interface.</li>
-<li>edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.</li>
-<li>edit config/chroot_sources/paella.chroot and set the ip address there to the address
-of your eth1 interface.</li>
-<li>edit config/chroot_local-includes/etc/rc.local and set the ip address in that file to the
-address of your eth1 interface.</li>
-<li>edit config/chroot_local-includes/etc/paellarc and set the dbhost option to the address
-of your eth1 interface.</li>
-</ul>
-<p>This should be all the files that you have to edit in the DebianLive configuration.</p>
+<p><strong>Important</strong> If you had to change the network ip's from the defaults, you'll need to
+edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.  If the ip
+of the eth1 interface is 10.0.1.1, you can probably skip this step.  This should be the only file
+that you have to edit in the DebianLive configuration.  If this variable isn't set properly, the
+live system will boot, but the root filesystem will never be mounted.</p>
 </div>
 <div class="section" id="copy-the-archive-key">
 <h2><a class="toc-backref" href="#id25">Copy the Archive Key</a></h2>
@@ -619,13 +613,22 @@ which should be 10.0.1.1 .  You will also need to change the dbusername option t
 admin user (dbadmin).  The dbusername in the master config file should  always be &quot;paella&quot;.</p>
 <p>The management_gui section has options for the paella-management application.  The options
 that you may want to change here are &quot;text_editor&quot;, and &quot;x_differ&quot;.  Both of these commands
-should display an X window.  For the x_differ, I highly recommend xxdiff.  The x_differ command
-line conform to this:</p>
+should display an X window.  For the x_differ, I highly recommend xxdiff.  I have a config file that
+makes it easier to use xxdiff, located at /usr/share/doc/paella-admin/xxdiffrc .  You'll want to
+copy this file to ~/.xxdiffrc .  The x_differ command line in the paellarc file conforms
+to this:</p>
 <pre class="literal-block">
 x_differ LeftFile RightFile
 </pre>
 <p>If your differ needs options on the command line, please write a wrapper for it, and use that.</p>
+<p>There are only two text editors that I included with this quickstart routine.  They are
+kate (the default) and xemacs.  If you wish to use another one, go ahead and install it and
+put the command in the ~/.paellarc file.</p>
 <p>You should not need to change any other options.</p>
+<p>The paellarc configuration file is used by two distinct users, the database admin, and the
+paella installer.  Much of the configuration in the paellarc file is used for the database admin.
+The paella installer user only needs the database section of the paellarc file, as this user
+uses the paella database for the rest of his configuration.</p>
 </div>
 <div class="section" id="start-paella-management">
 <h2><a class="toc-backref" href="#id30">Start paella-management</a></h2>
@@ -650,8 +653,9 @@ use the paella-management interface until you do this.</p>
 <p>Now we are going to import the startup database.  You may need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
-database menu, select &quot;import database&quot;.  A directory selection dialog will appear.  The
-database directory will be at:</p>
+database menu, select &quot;import database&quot;.  A directory selection dialog will appear.  On the
+VM I tested, this window was a little bit too skinny, so you'll probably need to make it bigger
+with your mouse.  The database directory will be at:</p>
 <pre class="literal-block">
 ~/workspace/paella/config/share/databases/quickstart-vbox/
 </pre>
@@ -670,7 +674,8 @@ table can take a lot of space that could be better saved.  In the future, it wil
 to only holding package names rather than the other attributes in the Packages file.  The
 reason they are there is to help keep the automated installations from bombing due to
 unavailable or misspelled packages.  It would also be nice to have a little package browser
-to help when creating traits, but that's in the future.</p>
+to help when creating traits, but that's in the future, and it would need the full record of each
+package to be stored in the database.</p>
 </div>
 </div>
 <div class="section" id="configure-quickstart-vbox-database">
@@ -697,10 +702,26 @@ the key from there.</p>
 </div>
 <div class="section" id="edit-the-default-environment">
 <h2><a class="toc-backref" href="#id34">Edit the Default Environment</a></h2>
-<p><strong>The information below is outdated.  To be continued ....</strong></p>
+<p>Access to the default environment is provided on the &quot;list menu&quot; in the &quot;main paella
+window&quot;, under the &quot;environ&quot; item in the list.  Click on the &quot;+&quot; to the left of the &quot;environ&quot;
+list item, and two list items will be displayed below the environ item, named &quot;current&quot; and
+&quot;default&quot;.  You will want to click on &quot;default&quot;.  This will bring up the &quot;Default Environment&quot;
+manager.  To edit the default environment, press the &quot;edit&quot; button in the toolbar.  This will
+bring up a text editor (if you're using kate, you'll have to select the session first).  The file
+format is the same as the paellarc config file.</p>
+<p>There are only two options that you will probably want to change.  The &quot;archive_keys&quot;
+option is a comma separated list of key names that will be used for the installer.  The key,
+&quot;paella&quot;, should already be here.  If you named your key something else, or have other keys
+that you want to use, you need to list them here.  The other option is &quot;http_mirror&quot;, and you
+will want to either set this to &quot;<a class="reference external" href="http://paella.lapnet/debian">http://paella.lapnet/debian</a>&quot; .  You must save the file and
+exit the text editor for paella to save the information to the database.</p>
 </div>
+</div>
+<div class="section" id="create-a-machine-to-install">
+<h1><a class="toc-backref" href="#id35">Create A Machine to Install</a></h1>
+<p><strong>The information below is outdated.  To be continued ....</strong></p>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id35">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id36">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -709,20 +730,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id36">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id37">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id37">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id38">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id38">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id39">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -730,10 +751,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id39">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id40">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id40">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id41">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -749,7 +770,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id41">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id42">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder

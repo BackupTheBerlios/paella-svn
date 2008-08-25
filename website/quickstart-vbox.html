@@ -68,17 +68,18 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#create-a-machine-to-install" id="id35">Create A Machine to Install</a><ul>
 <li><a class="reference internal" href="#side-salad-to-a-paella" id="id36">Side Salad to a Paella</a></li>
 <li><a class="reference internal" href="#boot-the-new-machine" id="id37">Boot the new machine</a></li>
-<li><a class="reference internal" href="#configure-stage1-database" id="id38">Configure stage1 database</a></li>
+<li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id38">Tell Paella about the new machine</a></li>
+<li><a class="reference internal" href="#configure-stage1-database" id="id39">Configure stage1 database</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#install-the-uml-machines" id="id39">Install the UML Machines</a><ul>
-<li><a class="reference internal" href="#install-uml-head" id="id40">Install uml_head</a></li>
-<li><a class="reference internal" href="#install-umlbuilder" id="id41">Install umlbuilder</a></li>
+<li><a class="reference internal" href="#install-the-uml-machines" id="id40">Install the UML Machines</a><ul>
+<li><a class="reference internal" href="#install-uml-head" id="id41">Install uml_head</a></li>
+<li><a class="reference internal" href="#install-umlbuilder" id="id42">Install umlbuilder</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#running-the-uml-machines" id="id42">Running the UML Machines</a><ul>
-<li><a class="reference internal" href="#run-uml-head" id="id43">Run uml_head</a></li>
-<li><a class="reference internal" href="#run-umlbuilder" id="id44">Run umlbuilder</a></li>
+<li><a class="reference internal" href="#running-the-uml-machines" id="id43">Running the UML Machines</a><ul>
+<li><a class="reference internal" href="#run-uml-head" id="id44">Run uml_head</a></li>
+<li><a class="reference internal" href="#run-umlbuilder" id="id45">Run umlbuilder</a></li>
 </ul>
 </li>
 </ul>
@@ -752,11 +753,41 @@ but it's possible that I forgot something somewhere.  If you are absolutely sure
 followed this quickstart step by step and haven't got the new machine to boot from the network,
 I'd really like to know about it, so we can figure out what went wrong, and how to adjust this
 document to be prepared for that possibility.</p>
+</div>
+<div class="section" id="tell-paella-about-the-new-machine">
+<h2><a class="toc-backref" href="#id38">Tell Paella about the new machine</a></h2>
+<p>If sidesalad booted from the network correctly, at the end of the boot process, there should
+be a message explaining that this is an unknown machine, and to use paella-submit-machine
+to tell paella about it.  This is what we're going to do now.  Type:</p>
+<pre class="literal-block">
+paella-submit-machine sidesalad
+</pre>
+<p>This will insert the mac addresses of all the ethernet interfaces into the database, tied to the
+name &quot;sidesalad&quot;.  These addresses are inserted into the current_environment table, which
+is the only table that the paella database user has write access to.  This means that paella
+still doesn't know about this machine yet, since the installer determines the machine from the
+default_environment table.  So, what we have to do is take the relevant information from the
+current_environment table and insert it into the default_environment table.</p>
+<p>Run psql:</p>
+<pre class="literal-block">
+psql -h paella.lapnet -U dbadmin paella
+</pre>
+<p>at the <strong>paella=#</strong> prompt, type:</p>
+<pre class="literal-block">
+insert into default_environment (SELECT 'machines' as section ,
+name as option , value from current_environment where name like 'hwaddr%'
+and value='sidesalad') ;
+</pre>
+<p>I haven't made anything in the gui to do this specifically yet, as it's generally been easier to
+just use either sql, or cut and paste from editing the environments with the enviroment
+editors.  I'm considering placing some sort of widget in the gui, but until then, this operation
+has to be done outside of the gui.  Please understand that the gui was originally designed to
+assist, not replace, the tools that are already available.  I apologize if this is an inconvenience.</p>
 <p><strong>If you've made it this far, and the &quot;unfinished&quot; disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.</strong></p>
 <p><strong>The information below is outdated.  To be continued ....</strong></p>
 </div>
 <div class="section" id="configure-stage1-database">
-<h2><a class="toc-backref" href="#id38">Configure stage1 database</a></h2>
+<h2><a class="toc-backref" href="#id39">Configure stage1 database</a></h2>
 <p>There should be very little effort needed to configure the stage1 database.
 Check default environment.
 Check tap_network family.
@@ -765,20 +796,20 @@ Check uml_startup family.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="install-the-uml-machines">
-<h1><a class="toc-backref" href="#id39">Install the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id40">Install the UML Machines</a></h1>
 <p>Now we should be ready to install the uml machines.  The uml installer is currently limited to
 installing one machine at a time.  This is due to the default configuration for this quickstart
 guide using a static ip.  This can be easily changed later if you wish to use the uml installer
 for testing purposes.</p>
 <div class="section" id="install-uml-head">
-<h2><a class="toc-backref" href="#id40">Install uml_head</a></h2>
+<h2><a class="toc-backref" href="#id41">Install uml_head</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install uml_head
 </pre>
 </div>
 <div class="section" id="install-umlbuilder">
-<h2><a class="toc-backref" href="#id41">Install umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id42">Install umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner install umlbuilder
@@ -786,10 +817,10 @@ paella-umlrunner install umlbuilder
 </div>
 </div>
 <div class="section" id="running-the-uml-machines">
-<h1><a class="toc-backref" href="#id42">Running the UML Machines</a></h1>
+<h1><a class="toc-backref" href="#id43">Running the UML Machines</a></h1>
 <p>Now we should be ready to start running the uml machines.</p>
 <div class="section" id="run-uml-head">
-<h2><a class="toc-backref" href="#id43">Run uml_head</a></h2>
+<h2><a class="toc-backref" href="#id44">Run uml_head</a></h2>
 <p>Make sure your umask is set to 022.</p>
 <p>type:</p>
 <pre class="literal-block">
@@ -805,7 +836,7 @@ having to use a full debian mirror, that used to be required previously to use p
 partial mirror should be under 400MB in size.</p>
 </div>
 <div class="section" id="run-umlbuilder">
-<h2><a class="toc-backref" href="#id44">Run umlbuilder</a></h2>
+<h2><a class="toc-backref" href="#id45">Run umlbuilder</a></h2>
 <p>type:</p>
 <pre class="literal-block">
 paella-umlrunner run umlbuilder

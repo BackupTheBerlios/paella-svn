@@ -10,37 +10,88 @@
 <body>
 <div class="document" id="default-environment">
 <h1 class="title">Default Environment</h1>
-<h2 class="subtitle" id="introduction">Introduction</h2>
 
 <!-- -*- mode: rst -*- -->
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#introduction" id="id1">Introduction</a><ul>
+<li><a class="reference internal" href="#installer-section" id="id2">Installer Section</a></li>
+<li><a class="reference internal" href="#machines-section" id="id3">Machines Section</a></li>
+<li><a class="reference internal" href="#auto-install-section" id="id4">Auto Install Section</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h1><a class="toc-backref" href="#id1">Introduction</a></h1>
 <p>This document will explain the sections and options in the default environment.</p>
 <div class="section" id="installer-section">
-<h1>Installer Section</h1>
+<h2><a class="toc-backref" href="#id2">Installer Section</a></h2>
+<p>[installer]</p>
 <ul class="simple">
-<li>allow_unauthenticated_packages:  This option tells apt to refrain from authenticating
-the Release file from the debian mirror.</li>
-<li>archive_keys:  This is a comma separated list of key names that paella will feed to
-apt-key during installation in order to authenticate locally generated debian mirrors.</li>
-<li>bootstrap_target:  This option, when set to True, will call debootstrap to bootstrap
+<li><strong>allow_unauthenticated_packages</strong>:  This option tells apt to refrain from authenticating
+the Release file from the debian mirror.  It's highly recommended that you leave this option
+set to False and sign your mirrors with a key.  This option is here just in case all else fails.</li>
+<li><strong>archive_keys</strong>:  This is a comma separated list of key names that paella will feed to
+apt-key during installation in order to authenticate locally generated debian mirrors.  These
+are the names of the keys that are stored in the apt-key manager in the paella database.</li>
+<li><strong>bootstrap_target</strong>:  This option, when set to True, will call debootstrap to bootstrap
 the target system.  When this option is False, the base system will be extracted from
-a premade tarball.</li>
-<li>bootstrap_suites:  This is a comma separated list of suites that will be bootstrapped,
-and tarred up for later extraction.</li>
-<li>devices_tarball:  This option provides the location of the devices tarball on the installer.
+a premade tarball.  If you extract from a premade tarball, you'll have to create a
+/etc/resolv.conf file that will work early in the install process.  The code in paella may do
+this for you one day, but until then, it's the responsibility of the paella database to run
+the code required to build the /etc/resolv.conf (probably by copying it from the nfsroot
+system).</li>
+<li><strong>bootstrap_suites</strong>:  This is a comma separated list of suites that will be bootstrapped,
+and tarred up for later extraction.  This option is used by the paella-setup-nfsinstaller script,
+and can be ignored if you use your own method to make the tarballs.</li>
+<li><strong>devices_tarball</strong>:  This option provides the location of the devices tarball on the installer.
 This tarball is created with &quot;MAKEDEV generic&quot;, and the resulting device nodes are tarred
 up for extraction later.  This is done as a time saver, since the MAKEDEV script can take
 a good bit of time to run.</li>
-<li>http_mirror:  This is the url to the debian mirror that will be used to install the target
+<li><strong>http_mirror</strong>:  This is the url to the debian mirror that will be used to install the target
 system.</li>
-<li>keep_installed_packages:  This option, when set to True, will keep the downloaded
+<li><strong>keep_installed_packages</strong>:  This option, when set to True, will keep the downloaded
 packages in /var/cache/apt/archives .  When the option is False, the packages will be
 deleted at the end of each trait process.</li>
-<li>suite_storage:  This option provides the location of the suite tarballs.</li>
-<li>use_devices_tarball:  This option is meaningless now, but in case it isn't, it should
-be set to False</li>
+<li><strong>suite_storage</strong>:  This option provides the location of the debootstrapped suite tarballs.</li>
+<li><strong>use_devices_tarball</strong>:  This option is meaningless now, but in case it isn't, it should
+be set to False.  The udev package (and kernels) have improved a lot since sarge, and
+this option may never have to be used again.</li>
 </ul>
+</div>
+<div class="section" id="machines-section">
+<h2><a class="toc-backref" href="#id3">Machines Section</a></h2>
+<p>[machines]</p>
+<p>All the options in this section are of the form:</p>
+<pre class="literal-block">
+hwaddr_11_22_33_44_55_66:     machinename
+</pre>
+<p>The option is and encoded representation of a mac address, and the value is
+the name of a machine.  The paella installer uses this section to figure out
+which machine to install.</p>
+</div>
+<div class="section" id="auto-install-section">
+<h2><a class="toc-backref" href="#id4">Auto Install Section</a></h2>
+<p>[autoinstall]</p>
+<p>All the options in this section are of the form:</p>
+<pre class="literal-block">
+machinename:   True (or False)
+</pre>
+<p>Once the paella installer identifies the machine from the entry in the
+machines section, it uses the autoinstall section to decide whether to
+install or not.  You can always install the machine manually by typing
+(as root):</p>
+<pre class="literal-block">
+paella-machine-installer install machinename /tmp/target
+</pre>
+<p>I've historically used /tmp/target as the target directory since the paella
+installer used to run from a read-only nfs mount.  With debianlive this
+is not necessary anymore.</p>
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>
+</div>
 </div>
 </div>
 </body>

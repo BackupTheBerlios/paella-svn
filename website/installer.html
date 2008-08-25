@@ -139,7 +139,12 @@ present.  It is up to the subclass to define a make_script method to do this.</p
 <p>Each installer object will be a subclass of the base processor.</p>
 <p>class hierarchy</p>
 <ul class="simple">
-<li><strong>BaseProcessor(object)</strong></li>
+<li><strong>BaseProcessor(object)</strong><ul>
+<li>This class is not meant to be instantiated, but to be subclassed.  It
+won't work on it's own.  It expects the subclass to provide a python
+logger at self.log .</li>
+</ul>
+</li>
 <li><strong>BaseInstaller(BaseProcessor)</strong><ul>
 <li>properties:<ul>
 <li>has a target, can create target directory</li>

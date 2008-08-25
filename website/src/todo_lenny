@@ -1,0 +1,225 @@
+.. -*- mode: rst -*-
+
+todo for etch:
+--------------------
+
+.. contents:: :backlinks: entry
+
+---------------------------------
+general todo
+---------------------------------
+
++ use cheetah templates
+
+  - started
+
+  - all cheetah templates will have ##cheetah on the first line
+
+- write a script that converts old type templates to cheetah templates
+
+  - there is a function that does the conversion from the database
+
+    - the conversion automatically wraps the file with #raw directive
+
+    - "\$" and "\#" had to be escaped if they were present in the original template
+
++ rename template files in traits (use md5sum of filepath, instead of numbered order)
+
+  - not using md5sum of filepath, but replacing '/' with '-slash-'
+
+  - there is no need to determine template name from filename
+
+  - as it's in the xml, so it will be easier to see which template is which
+
+  - in the exported version.
+
+  - mostly done but untested
+
++ fix problems encountered with importing Packages files into the database
+
+  - there is a workaround that seems to be working for now
+
++ get umlmachines working again
+
+  - started
+
++ rename template files instead of using numbers
+
++ remove requirement that templates be matched to packages
+	-----done, I should've done this much, much sooner
+
++ use trait.xml conversion script to fix template filenames on exported traits
+
+  - decided not to do this, the export will use the new method by default
+
+  - the import will try the new method first then revert to the old
+
++ consider using bcfg2 for live updating of already installed machines
+
++ remove python2.3 from all scripts
+	-----done, looks like I did this a while ago
+
++ completely deprecate the gtk management client
+	----done, the kde manager does most of what gtk manager did
+
++ fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
+	----done, made a conversion script for it
+
++ clean up unused options from paellarc file, look for options to move into default 
+  environment in database.
+
+
+--------
+
+---------------------
+gtk->kde client todo
+---------------------
+
+- main manager
+
+ - need client manager for kde
+
+   - just started
+
+ - need database import/export for kde
+
+   - mostly done
+
+ - make family differ
+
+   - this is done
+
+ - deprecate commands 
+
+  - paella-management becomes paella-gtk-management
+  - paella-kde-management becomes paella-management
+
+- suite-trait manager
+
+  - need to make new traits, missing dialog to do so **done**
+
+  - need to handle parents, fix edit, edit2 links **done**
+
+  - need to be able to edit packages and actions
+
+    - need a table header for packages table
+
+  - need to handle variables
+
+  - need to make new scripts **done**
+
+  - need to delete scripts
+
+  - need to view scripts **done**
+
+  - need to edit scripts **done**
+
+  - need to view templates **done**
+
+  - need to edit templates **done**
+
+  - need to edit template data **done**
+
+- profile manager
+
+  - need to make new profiles, missing dialog to do so
+
+  - update window after making new profile
+
+  - need to delete profiles
+
+  - need to import/export profiles
+
+  - don't change suite of profile without checking traits
+
+- family manager
+
+  - need to make new families, missing dialog to do so
+
+  - need to manage family parents
+
+  - need to delete families
+
+  - need to import/export families
+
+- differs
+
+  - mostly done
+
+  - alphabetize trait comboboxes **done**
+
+- environment editors
+
+  - appears to be done
+
+- machines manager
+
+  - this area needs a lot of work still
+  
+  - machines part
+
+    - new machine
+
+    - edit machine
+
+  
+
+- suite manager
+
+- apt sources manager
+
+
+------
+
+---------------------------------
+general kde client todo
+---------------------------------
+
+- cleanup present code
+
+ - quit passing "app" around and use KApplication.kApplication() call
+
+ - use forgetHTML instead of xmlgen in text browsers
+
+   - This seems to be done
+
+- need to make widgets out of different managers and keep them in
+  one window.
+
+
+--------------------------------------------------
+things done to database for testing
+--------------------------------------------------
+
+- stuff to fix later, when more code is up to date
+
+removed kudzu, only test with sarge and desksarge
+	put kudzu back in teporarily to fix missing trait problems
+
+problems with importing Packages files into the database
+	problem seems to be blank lines in description field -NOT-
+	problem seems to be character encoding
+	decode to utf-8 seems to work ok	
+	traits to fix when the problem is solved:
+	- pyca - default trait - sarge, desksarge
+		
+	- fcmp - hqgames trait - sarge, desksarge
+		
+	- fcmp - xgames trait - sarge, desksarge, kudzu
+
+	- freecraft - xgames trait - kudzu
+		
+	- cantus - media_tools - kudzu
+
+problems with missing traits that are present in kudzu
+	 
+- families
+	  
+ - removed admin_password variable from insecure 
+
+ - trait webmin only in kudzu
+	    
+- profiles
+ 
+ - ume_graphics only in kudzu
+	  

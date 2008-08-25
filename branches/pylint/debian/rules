@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+include /usr/share/cdbs/1/rules/debhelper.mk
+DEB_PYTHON_SYSTEM=pysupport
+include /usr/share/cdbs/1/class/python-distutils.mk
+
+DEB_CLEAN_EXCLUDE := *.orig */*.orig
+install/paella-base::
+	python setup.py base install --prefix=$(CURDIR)/debian/paella-base/usr
+	rm -r build/
+install/paella-debian::
+	python setup.py debian install --prefix=$(CURDIR)/debian/paella-debian/usr
+	rm -r build/
+install/paella-db::
+	python setup.py db install --prefix=$(CURDIR)/debian/paella-db/usr
+	rm -r build/	
+install/paella-dbgtk::
+	python setup.py dbgtk install --prefix=$(CURDIR)/debian/paella-dbgtk/usr
+	rm -r build/
+install/paella-installer::
+	python setup.py installer install --prefix=$(CURDIR)/debian/paella-installer/usr
+	rm -r build/	
+install/paella-admin::
+	python setup.py admin install --prefix=$(CURDIR)/debian/paella-admin/usr
+	rm -r build/	
+install/paella-uml-admin::
+	python setup.py uml-admin install --prefix=$(CURDIR)/debian/paella-uml-admin/usr
+	rm -r build/
+build/paella-doc:: 
+	echo "building paella-doc"
+	python setup.py doc install --prefix=$(CURDIR)/debian/paella-doc/usr/share/doc/paella-doc
+
+clean::
+	dh_clean -X*.orig configure-stamp notes.html docs/*.html

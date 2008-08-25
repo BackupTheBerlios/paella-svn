@@ -1,0 +1,67 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join, dirname
+from optparse import OptionParser
+
+from useless.base import Error
+from useless.base.util import makepaths
+
+from paella.base import PaellaConfig
+from paella.db import DefaultEnvironment
+from paella.db.machine import MachineHandler
+from paella.installer.base import InstallerConnection
+from paella.installer.util.misc import get_mac_addresses
+
+parser = OptionParser()
+parser.add_option('--mirror', action='store', type='string', dest='remote',
+                  default='http://paella/debian')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+config = PaellaConfig()
+conn = InstallerConnection(config)
+env = DefaultEnvironment(conn)
+if env.has_option('installer', 'default_target'):
+    target = env.get('installer', 'default_target')
+else:
+    target = '/tmp/target'
+    
+# identify the machine
+macs = get_mac_addresses()
+machine = None
+for mac in macs:
+    if machine is None:
+        if env.has_option('machines', mac):
+            machine = env.get('machines', mac)
+
+known = False
+if machine is not None:
+    section = 'autoinstall'
+    has_it =  env.has_section(section) and env.has_option(section, machine)
+    if has_it:
+        known = True
+        retval = None
+        auto = env.is_it_true('autoinstall', machine)
+        if auto:
+            print 'auto installing machine %s' % machine
+            retval = os.system('paella-machine-installer install %s %s' % (machine, target))
+        else:
+            print 'skipping auto installation of machine %s' % machine
+    else:
+        msg = "Machine is %s but has no entry in " % machine
+        msg += "autoinstall section of default environment."
+        print msg
+else:
+    msg = 'This is an unknown machine, use paella-submit-machine '
+    msg += 'to tell paella about it.'
+    print msg
+
+if known:
+    if retval is not None:
+        if retval:
+            print "paella-machine-installer returned %d" % retval
+        else:
+            print "paella-init-nfsinstaller has finished successfully!"
+
+    
+        

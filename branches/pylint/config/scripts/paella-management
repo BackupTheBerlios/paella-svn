@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+import os, sys
+from qt import SIGNAL, SLOT
+
+from kdecore import KCmdLineArgs
+
+from useless.kdebase.error import excepthook
+
+from paella.kde.base.about import AboutData
+from paella.kde.application import PaellaMainApplication
+
+# these imports will stay like this until the kdenew is ready to be tested
+from paella.kde.main import PaellaMainWindow
+from paella.kde.main import PaellaMainWindowSmall
+
+if __name__ == '__main__':
+    aboutData = AboutData()
+    KCmdLineArgs.init(sys.argv, aboutData)
+
+    # setup error handling
+    sys.excepthook = excepthook
+    # setup application instance
+    app = PaellaMainApplication()
+    app.connect(app, SIGNAL('lastWindowClosed()'), app.quit)
+
+    # register with dcop
+    dcop = app.dcopClient()
+    appid = dcop.registerAs('paella')
+
+    # setup text editor
+    if not os.environ.has_key('EDITOR'):
+        text_editor = app.cfg.get('management_gui', 'text_editor')
+        os.environ['EDITOR'] = text_editor
+    #print 'EDITOR is ', os.environ['EDITOR']
+
+    # setup x differ
+    if not os.environ.has_key('X_DIFFER'):
+        x_differ = app.cfg.get('management_gui', 'x_differ')
+        os.environ['X_DIFFER'] = x_differ
+    #print 'X_DIFFER is', os.environ['X_DIFFER']
+    
+
+    # create main window
+    manager_type = app.cfg.get('management_gui', 'manager_type')
+    print 'using manager type', manager_type
+    # determine which type of windows will be used
+    if manager_type == 'listbox_select':
+        win = PaellaMainWindowSmall()
+    else:
+        # default to regular window if bad option value
+        win = PaellaMainWindow()
+
+    win.show()
+
+    # set main window in application
+    app.setMainWidget(win)
+
+    # a hack to auto connect to the database
+    if os.environ.has_key('PAELLA_DB_AUTOCONNECT'):
+        win.slotConnectDatabase()
+        children = win.children()
+        dlg = [c for c in children if c.__class__.__name__ == "PaellaConnectionDialog"][0]
+        dlg.slotConnectDatabase()
+        dlg.close()
+
+    
+
+    # start application loop
+    #import profile
+    #profile.run('app.exec_loop()')
+    app.exec_loop()
+    

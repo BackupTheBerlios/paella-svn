@@ -1,0 +1,13 @@
+Document: paella
+Title: Debian Paella Manual
+Author: Joseph Rawson
+Abstract: This manual describes what paella is
+ and how it can be used to
+ manage online manuals on Debian systems.
+Section: Debian/Installation
+
+Format: HTML
+Index: /usr/share/doc/paella-doc/html/index.html
+Files: /usr/share/doc/paella-doc/html/*.html
+
+  

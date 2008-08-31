@@ -15,8 +15,8 @@ aspell-en					install
 at						install
 aufs-modules-2.6-486				install
 aufs-modules-2.6-686				install
-aufs-modules-2.6.25-2-486			install
-aufs-modules-2.6.25-2-686			install
+aufs-modules-2.6.26-1-486			install
+aufs-modules-2.6.26-1-686			install
 base-files					install
 base-passwd					install
 bash						install
@@ -460,8 +460,8 @@ lintian						install
 linux-image-2.6-486				install
 linux-image-2.6-686				install
 linux-image-2.6.24-1-686			install
-linux-image-2.6.25-2-486			install
-linux-image-2.6.25-2-686			install
+linux-image-2.6.26-1-486			install
+linux-image-2.6.26-1-686			install
 linux-libc-dev					install
 live-helper					install
 live-initramfs					install
@@ -618,8 +618,8 @@ shorewall-shell					install
 slay						install
 squashfs-modules-2.6-486			install
 squashfs-modules-2.6-686			install
-squashfs-modules-2.6.25-2-486			install
-squashfs-modules-2.6.25-2-686			install
+squashfs-modules-2.6.26-1-486			install
+squashfs-modules-2.6.26-1-686			install
 squashfs-tools					install
 ssl-cert					install
 strace						install

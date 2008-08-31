@@ -73,7 +73,7 @@ toppages = ['index', 'svnwebsite', 'fai', 'todo_etch', 'defaultdb']
 
 docpages = ['abstract', 'configuration',
             'gui', 'installer', 'notes', 'objects',
-            'problems', 'quickstart', 'schema', 'quickstart-vbox',
+            'problems', 'schema', 'quickstart-vbox',
             'default-environment'
             ]
 

@@ -116,9 +116,7 @@ todo_ list for etch
 Documentation
 ---------------------
 
-quickstart_ guide to paella (outdated, and may not work)
-
-`Quickstart guide using VirtualBox OSE`_ (unfinished, but probably easier to follow)
+`Quickstart guide using VirtualBox OSE`_ (unfinished)
 
 gui_ document
 
@@ -192,7 +190,6 @@ Authors
 .. _tarball: http://download.berlios.de/paella/paella_0.7.31.tar.gz 
 .. _maintained: svnwebsite.html
 .. _little: fai.html
-.. _quickstart: quickstart.html
 .. _Quickstart guide using VirtualBox OSE: quickstart-vbox.html
 .. _objects: objects.html
 .. _configuration: configuration.html

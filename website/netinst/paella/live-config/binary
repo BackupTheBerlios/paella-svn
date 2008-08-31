@@ -18,7 +18,7 @@ LH_BOOTAPPEND_LIVE=""
 
 # $LH_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)
-LH_BOOTAPPEND_INSTALL="-- "
+LH_BOOTAPPEND_INSTALL=" -- ${LH_BOOTAPPEND_LIVE}"
 
 # $LH_BOOTLOADER: set bootloader
 # (Default: syslinux)
@@ -37,11 +37,15 @@ LH_CHROOT_BUILD="enabled"
 # (Default: disabled)
 LH_DEBIAN_INSTALLER="disabled"
 
-# $LH_DEBIAN_INSTALLER_DAILY: set daily images
-# (Default: disabled)
-LH_DEBIAN_INSTALLER_DAILY="disabled"
+# $LH_DEBIAN_INSTALLER_DISTRIBUTION: set debian-installer suite
+# (Default: empty)
+LH_DEBIAN_INSTALLER_DISTRIBUTION="lenny"
 
-# $LH_ENCRYPTION: set encrytion
+# $LH_DEBIAN_INSTALLER_PRESEEDFILE: set debian-installer preseed filename/url
+# (Default: )
+LH_DEBIAN_INSTALLER_PRESEEDFILE=""
+
+# $LH_ENCRYPTION: set encryption
 # (Default: disabled)
 LH_ENCRYPTION="disabled"
 
@@ -58,16 +62,16 @@ LH_HOSTNAME="installer"
 LH_ISO_APPLICATION="Debian Live"
 
 # $LH_ISO_PREPARER: set iso preparer
-# (Default: live-helper 1.0~a48; http://packages.qa.debian.org/live-helper)
-LH_ISO_PREPARER="live-helper 1.0~a48; http://packages.qa.debian.org/live-helper"
+# (Default: live-helper $VERSION; http://packages.qa.debian.org/live-helper)
+LH_ISO_PREPARER="live-helper $VERSION; http://packages.qa.debian.org/live-helper"
 
 # $LH_ISO_PUBLISHER: set iso publisher
 # (Default: Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org)
 LH_ISO_PUBLISHER="Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org"
 
 # $LH_ISO_VOLUME: set iso volume (max 32 chars)
-# (Default: Debian Live 20080816-23:45)
-LH_ISO_VOLUME="Debian Live 20080816-23:45"
+# (Default: Debian Live $(date +%Y%m%d-%H:%M))
+LH_ISO_VOLUME="Debian Live $(date +%Y%m%d-%H:%M)"
 
 # $LH_JFFS2_ERASEBLOCK: set jffs2 eraseblock size
 # (Default: unset)
@@ -76,6 +80,10 @@ LH_JFFS2_ERASEBLOCK=""
 # $LH_MEMTEST: set memtest
 # (Default: memtest86+)
 LH_MEMTEST="memtest86+"
+
+# $LH_WIN32_LOADER: set win32-loader
+# (Default: enabled)
+LH_WIN32_LOADER="enabled"
 
 # $LH_NET_ROOT_FILESYSTEM: set netboot filesystem
 # (Default: nfs)

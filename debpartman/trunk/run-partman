@@ -1,0 +1,32 @@
+#!/bin/sh -e
+
+# set vars here 
+#TFTPHOST=10.0.1.1
+#DI_DIRECTORY=/d-i
+#export DEBCONF_DB_REPLACE=File{/tmp/debconf/config.dat}
+export DEBCONF_DEBUG=developer
+export DEBIAN_FRONTEND=readline
+export DEBCONF_SYSTEMRC=/paellalog/installer/debconf.conf
+
+mkdir -p /paellalog/installer/debconf
+#mkdir -p /tmp/debconf
+pushd /usr/share/partman/templates
+for template in `ls *.templates` ; do
+    owner=`echo $template | cut -f1 -d .`
+    #echo owner is $owner
+    #echo debconf-loadtemplate $owner $template
+    debconf-loadtemplate $owner $template
+    #cat $template >> /tmp/debconf/templates.dat
+done
+
+
+
+#debconf-loadtemplate /usr/share/partman/templates/*.templates
+
+
+partman
+
+
+
+
+

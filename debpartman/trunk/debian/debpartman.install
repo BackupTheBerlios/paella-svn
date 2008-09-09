@@ -1,3 +1,4 @@
 partman/bin/*	bin
 partman/lib/*	lib
 partman/usr/*	usr
+run-partman	usr/sbin

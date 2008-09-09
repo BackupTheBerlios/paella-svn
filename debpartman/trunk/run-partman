@@ -3,29 +3,78 @@
 # set vars here 
 #TFTPHOST=10.0.1.1
 #DI_DIRECTORY=/d-i
-#export DEBCONF_DB_REPLACE=File{/tmp/debconf/config.dat}
-export DEBCONF_DEBUG=developer
-export DEBIAN_FRONTEND=readline
-export DEBCONF_SYSTEMRC=/paellalog/installer/debconf.conf
 
-mkdir -p /paellalog/installer/debconf
-#mkdir -p /tmp/debconf
+tmpdir=/tmp/debpartman
+#export DEBCONF_DB_REPLACE=File{/tmp/debconf/config.dat}
+#export DEBCONF_DEBUG=developer
+#export DEBIAN_FRONTEND=readline
+export DEBIAN_FRONTEND=dialog
+export DEBCONF_SYSTEMRC=$tmpdir/debconf.conf
+
+cat <<EOF > $tmpdir/debconf.conf
+# this was taken from default /etc/debconf.conf
+
+# Debconf will use this database to store the data you enter into it,
+# and some other dynamic data.
+Config: configdb
+# Debconf will use this database to store static template data.
+Templates: templatedb
+
+# World-readable, and accepts everything but passwords.
+Name: config
+Driver: File
+Mode: 644
+Reject-Type: password
+Filename: $tmpdir/debconf/config.dat
+
+# Not world readable (the default), and accepts only passwords.
+Name: passwords
+Driver: File
+Mode: 600
+Backup: false
+Required: false
+Accept-Type: password
+Filename: $tmpdir/debconf/passwords.dat
+
+# Set up the configdb database. By default, it consists of a stack of two
+# databases, one to hold passwords and one for everything else.
+Name: configdb
+Driver: Stack
+Stack: config, passwords
+
+# Set up the templatedb database, which is a single flat text file
+# by default.
+Name: templatedb
+Driver: File
+Mode: 644
+Filename: $tmpdir/debconf/templates.dat
+
+EOF
+
+if [ -e $tmpdir/debconf ]; then
+    rm -fr $tmpdir/debconf
+fi
+
+mkdir $tmpdir/debconf
+
+rm /var/lib/partman/* -fr
+#mkdir /var/lib/partman/devices
+
 pushd /usr/share/partman/templates
 for template in `ls *.templates` ; do
     owner=`echo $template | cut -f1 -d .`
     #echo owner is $owner
     #echo debconf-loadtemplate $owner $template
-    debconf-loadtemplate $owner $template
-    #cat $template >> /tmp/debconf/templates.dat
+    #env | grep DEB
+    if ! [ $owner = partman-efi ]; then
+	debconf-loadtemplate $owner $template
+    else
+	echo $owner has bad templates
+    fi
 done
-
-
-
-#debconf-loadtemplate /usr/share/partman/templates/*.templates
-
+popd
 
 partman
-
 
 
 

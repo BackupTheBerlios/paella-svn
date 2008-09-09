@@ -1,0 +1,39 @@
+#!/usr/bin/python
+import os
+import subprocess
+
+
+
+toplevel="""Copyright:
+
+All code written by the author is in the public domain.
+
+The copyrights to the partman packages are detailed below:
+
+
+"""
+
+if not os.path.isdir('debian'):
+    raise RuntimeError , "Run this script from the top level source directory."
+
+partman_packages = os.listdir('partman.wc')
+copyright_files  =[]
+
+for package in partman_packages:
+    copyright_filename = os.path.join('partman.wc', package, 'debian', 'copyright')
+    if os.path.isfile(copyright_filename):
+        #print copyright_filename
+        copyright_files.append(copyright_filename)
+
+copyright = file('debian/copyright', 'w')
+copyright.write(toplevel)
+copyright.write('%s\n' % ('-'*40))
+
+for filename in copyright_files:
+    package = filename.split('/')[1]
+    copyright.write('Copyright for %s:\n' % package)
+    copyright.write(file(filename).read())
+    copyright.write('%s\n' % ('-'*40))
+
+copyright.close()
+

@@ -1,6 +1,195 @@
 Copyright:
 
 All code written by the author is in the public domain.
-The code to partman is probably gpl.
+
+The copyrights to the partman packages are detailed below:
 
 
+----------------------------------------
+Copyright for partman-auto-lvm:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-multipath:
+Authors: Guido Guenther
+
+Copyright 2007 Guido Guenther <agx@sigxcpu.org>
+
+based on partman-dmraid by Frans Pop
+
+This package is under the GNU General Public License, version 2, which can
+usually be found in /usr/share/common-licenses/GPL-2 on Debian systems.
+----------------------------------------
+Copyright for partman-md:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-base:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-auto:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-ext3:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-partitioning:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-palo:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-prep:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-crypto:
+Copyright 2005-2006 by Max Vozeler <xam@debian.org>, based on work by
+Anton Zinoviev.
+
+base64/base64.c is derived from http://base64.sf.net/b64.c
+Copyright (c) 2001 Bob Trower, Trantor Standard Systems Inc.
+Licensed under the MIT license.
+
+blockdev-wipe/blockdev-wipe.c is
+Copyright (C) 2006 David Härdeman <david@2gen.com>
+
+This package is licensed under the GNU General Public License version 2,
+or any later version at your option. On Debian systems, the GPL is
+available in /usr/share/common-licenses/GPL.
+
+----------------------------------------
+Copyright for partman-dmraid:
+Authors: Frans Pop
+
+Copyright 2007 Frans Pop <elendil@planet.nl>
+
+This package is under the GNU General Public License, version 2, which can
+usually be found in /usr/share/common-licenses/GPL-2 on Debian systems.
+----------------------------------------
+Copyright for partman-ext2r0:
+This is partman-ext2r0, written and maintained by the following authors:
+        Anton Zinoviev <zinoviev@debian.org>
+        Martin Michlmayr <tbm@cyrius.com>
+
+partman-ext2r0 is written for the debian-installer (d-i).
+
+The original source can always be found at:
+        ftp://ftp.debian.org/dists/unstable/main/source/
+
+Copyright (C) 2003, 2004  Anton Zinoviev <zinoviev@debian.org>
+Copyright (C) 2004  Martin Michlmayr <tbm@cyrius.com>
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License with
+  the Debian GNU/Linux distribution in file /usr/share/common-licenses/GPL;
+  if not, write to the Free Software Foundation, Inc., 51 Franklin St,
+  Fifth Floor, Boston, MA  02110-1301  USA
+
+----------------------------------------
+Copyright for partman-auto-raid:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+
+partman-auto-raid was mostly based on existing code from partman-auto,
+partman-auto-md and mdcfg. The package was created and combining code
+was written by Simon Huggins <huggie@earth.li>.
+----------------------------------------
+Copyright for partman-newworld:
+Copyright (C) 2004 Colin Watson <cjwatson@debian.org>, based on work by
+Anton Zinoviev.
+
+This package is licensed under the GNU General Public License version 2,
+or any later version at your option. On Debian systems, the GPL is
+available in /usr/share/common-licenses/GPL.
+----------------------------------------
+Copyright for partman-basicmethods:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-target:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-auto-crypto:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+
+partman-auto-crypto mostly uses shared code from partman-auto-lvm and
+partman-crypto. The only file with some substantial additional code is
+autopartition-crypto written by David Härdeman <david@hardeman.nu>.
+----------------------------------------
+Copyright for partman-basicfilesystems:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-reiserfs:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-efi:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-jfs:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-lvm:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------
+Copyright for partman-xfs:
+This package is under the GNU GPL version 2, or any later
+version at your option.
+On Debian system, the GPL is available in 
+/usr/share/common-licenses/GPL-2
+----------------------------------------

@@ -1,0 +1,28 @@
+Source: debpartman
+Section: misc
+Priority: optional
+Maintainer: Joseph Rawson <umeboshi3@gmail.com>
+Build-Depends: debhelper (>> 4.2.0), python, cdbs, libparted1.8-dev, subversion
+Standards-Version: 3.6.1
+
+Package: debpartman
+Section: admin
+Priority: extra
+Architecture: any
+Depends: libparted1.8-10
+Description:  a deb for partman
+ If this works, you can use partman to automatically
+ partition the drives, and create filesystems.  The Depends 
+ field needs to be updated to match the real dependencies
+ of partman.  The builddeps of paella also needs to be updated.
+
+Package: debpartman-src
+Section: devel
+Priority: extra
+Architecture: all
+Description: sources for debpartman
+ Due to the way debpartman is built, this package
+ is present to make the sources easy to distribute.
+ If the sources have been patched, these source 
+ packages will contain that.
+

@@ -5,6 +5,7 @@ import shutil
 
 SVNURL = "svn://svn.debian.org/d-i/trunk/packages/partman"
 SVNREV = 55436
+
 PPC_IGNORE = ['partman-palo', 'partman-prep', 'partman-newworld']
 ARM_IGNORE = ['partman-ext2r0']
 
@@ -28,7 +29,7 @@ def export(workingcopy='partman.wc', dirname='partman.build'):
 
 def clean():
     cmd = ['rm', '-fr', 'partman', 'partman.build',
-           'partman.wc', 'udebs', 'partman-sources']
+           'udebs', 'partman-sources']
     run(cmd)
     
 def build(dirname='partman.build'):
@@ -45,7 +46,6 @@ def build(dirname='partman.build'):
     for package in ls:
         if package not in IGNORE:
             os.chdir(package)
-            #run(['debuild'])
             run(['dpkg-buildpackage', '-rfakeroot', '-D', '-us', '-uc'])
             os.chdir(parent)
     udebs = glob.glob('*.udeb')
@@ -91,14 +91,16 @@ def install():
 
 command = sys.argv[1]
 # ugly hack to check for stamp
-if os.path.isfile('paella-partman-build-stamp'):
+if os.path.isfile('partman-build-stamp'):
     if command != 'clean':
-        print "paella-partman-build-stamp is present, not running", command
+        print "partman-build-stamp is present, not running", command
         sys.exit(0)
         
 if command == 'configure':
     if not os.path.isdir('partman.wc'):
-        checkout()
+        #checkout()
+        #run(['svn', 'update', 'partman.wc'])
+        print "nothing to do"
 elif command == 'build':
     run(['rm', '-fr', 'partman.build'])
     export()

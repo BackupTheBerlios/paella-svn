@@ -14,7 +14,7 @@ Description:  a deb for partman
  If this works, you can use partman to automatically
  partition the drives, and create filesystems.  The Depends 
  field needs to be updated to match the real dependencies
- of partman.  The builddeps of paella also needs to be updated.
+ of partman.  The builddeps also needs to be updated.
 
 Package: debpartman-src
 Section: devel

@@ -7,12 +7,12 @@ build/debpartman::
 	python build-partman.py configure
 	python build-partman.py build
 	python build-partman.py install
-	touch paella-partman-build-stamp
-install/debpartman:: paella-partman-build-stamp
+	touch partman-build-stamp
+install/debpartman:: partman-build-stamp
 	echo "hi, installing debpartman"
-install/debpartman-src:: paella-partman-build-stamp
+install/debpartman-src:: partman-build-stamp
 	echo "hey, installing debpartman-src"
 clean::
 	python build-partman.py clean
-	dh_clean -X*.orig paella-partman-build-stamp
+	dh_clean -X*.orig partman-build-stamp
 	dh_clean -X*.orig configure-stamp docs/html/*.html 

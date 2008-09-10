@@ -5,19 +5,24 @@
 #DI_DIRECTORY=/d-i
 
 tmpdir=/tmp/debpartman
+if ! [ -d $tmpdir ]; then
+    mkdir -p $tmpdir
+fi
+rm $tmpdir/* -fr
+
 #export DEBCONF_DB_REPLACE=File{/tmp/debconf/config.dat}
 #export DEBCONF_DEBUG=developer
 #export DEBIAN_FRONTEND=readline
-export DEBIAN_FRONTEND=dialog
+if [ -z $DEBIAN_FRONTEND ]; then
+    export DEBIAN_FRONTEND=dialog
+fi
+
 export DEBCONF_SYSTEMRC=$tmpdir/debconf.conf
 
 cat <<EOF > $tmpdir/debconf.conf
 # this was taken from default /etc/debconf.conf
 
-# Debconf will use this database to store the data you enter into it,
-# and some other dynamic data.
 Config: configdb
-# Debconf will use this database to store static template data.
 Templates: templatedb
 
 # World-readable, and accepts everything but passwords.

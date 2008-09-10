@@ -8,9 +8,13 @@ build/debpartman::
 	python build-partman.py build
 	python build-partman.py install
 	touch partman-build-stamp
-install/debpartman:: partman-build-stamp
+build/debpartman-src:: partman-sources
+	echo "build/debpartman-src"
+partman-sources: build/debpartman
+	echo "partman-sources"
+install/debpartman:: 
 	echo "hi, installing debpartman"
-install/debpartman-src:: partman-build-stamp
+install/debpartman-src:: 
 	echo "hey, installing debpartman-src"
 clean::
 	python build-partman.py clean

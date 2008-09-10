@@ -9,7 +9,7 @@ Package: debpartman
 Section: admin
 Priority: extra
 Architecture: any
-Depends: libparted1.8-10
+Depends: libparted1.8-10, debconf-utils
 Description:  a deb for partman
  If this works, you can use partman to automatically
  partition the drives, and create filesystems.  The Depends 

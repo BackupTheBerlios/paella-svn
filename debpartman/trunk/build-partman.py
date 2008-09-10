@@ -46,7 +46,14 @@ def build(dirname='partman.build'):
     for package in ls:
         if package not in IGNORE:
             os.chdir(package)
-            run(['dpkg-buildpackage', '-rfakeroot', '-D', '-us', '-uc'])
+            cmd = ['dpkg-buildpackage', '-D', '-us', '-uc']
+            # by default we're assuming that this is being
+            # built as root (or fakeroot), but in case we're
+            # not building from debian/rules we need to
+            # add the -rfakeroot option
+            if os.getuid():
+                cmd.append('-rfakeroot')
+            run(cmd)
             os.chdir(parent)
     udebs = glob.glob('*.udeb')
     for udeb in udebs:

@@ -2,7 +2,7 @@ Source: debpartman
 Section: misc
 Priority: optional
 Maintainer: Joseph Rawson <umeboshi3@gmail.com>
-Build-Depends: debhelper (>> 4.2.0), python, cdbs, libparted1.8-dev, subversion
+Build-Depends: debhelper (>> 4.2.0), python, cdbs, libparted1.8-dev, subversion, dpatch
 Standards-Version: 3.6.1
 
 Package: debpartman

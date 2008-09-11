@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/rules/dpatch.mk
+include /usr/share/dpatch/dpatch.make
 
 DEB_CLEAN_EXCLUDE := *.orig */*.orig
 
@@ -12,10 +14,7 @@ build/debpartman-src:: partman-sources
 	echo "build/debpartman-src"
 partman-sources: build/debpartman
 	echo "partman-sources"
-install/debpartman:: 
-	echo "hi, installing debpartman"
-install/debpartman-src:: 
-	echo "hey, installing debpartman-src"
+
 clean::
 	python build-partman.py clean
 	dh_clean -X*.orig partman-build-stamp

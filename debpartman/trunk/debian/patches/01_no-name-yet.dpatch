@@ -1,0 +1,25 @@
+#! /bin/sh /usr/share/dpatch/dpatch-run
+## no-name-yet.dpatch by  <Joseph Rawson <umeboshi3@gmail.com>>
+##
+## All lines beginning with `## DP:' are a description of the patch.
+## DP: No description.
+
+@DPATCH@
+diff -urNad debpartman~/partman.wc/partman-base/lib/base.sh debpartman/partman.wc/partman-base/lib/base.sh
+--- debpartman~/partman.wc/partman-base/lib/base.sh	2008-09-09 16:54:57.000000000 -0500
++++ debpartman/partman.wc/partman-base/lib/base.sh	2008-09-10 17:54:52.000000000 -0500
+@@ -158,12 +158,14 @@
+ }
+ 
+ menudir_default_choice () {
++                   echo "in base.sh menudir_default_choice \$1 is $1"
+ 	printf "%s__________%s\n" "$(basename $1/??$2)" "$3" > $1/default_choice
+ }
+ 
+ ask_user () {
+ 	local IFS dir template priority default choices plugin name option
+ 	dir="$1"; shift
++	echo "in base.sh ask_user \$dir is $dir"
+ 	template=$(cat $dir/question)
+ 	priority=$(cat $dir/priority)
+ 	if [ -f $dir/default_choice ]; then

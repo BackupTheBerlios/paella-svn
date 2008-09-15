@@ -19,5 +19,6 @@ Architectures: i386 source
 Components: main contrib non-free
 Description: Paella local repository
 Log: logfile
+Update: sid-fai
 SignWith: <your gpg key ID>
 

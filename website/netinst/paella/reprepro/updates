@@ -16,4 +16,15 @@ Components: main contrib non-free
 UDebComponents: none
 FilterList: deinstall startup-packages extra-packages local-packages
 
+Name: sid-fai
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Suite: unstable
+Architectures: i386
+Components: main contrib non-free
+UDebComponents: none
+FilterList: deinstall sid-fai
+
+
 

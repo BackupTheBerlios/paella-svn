@@ -14,6 +14,8 @@
 <!-- -*- mode: rst -*- -->
 <div class="section" id="paella-quick-start-guide">
 <h1><a class="toc-backref" href="#id2">Paella Quick Start Guide</a></h1>
+<p><strong>IMPORTANT: The code in the subversion repository is broken and is undergoing major
+changes.  Please don't bother using it until this statement is removed from this guide.</strong></p>
 <p>This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
 accurate.  This guide will not be ready to read, and the steps outlined should not be
 attempted until this paragraph is removed.</p>
@@ -69,6 +71,7 @@ attempted until this paragraph is removed.</p>
 <li><a class="reference internal" href="#side-salad-to-a-paella" id="id36">Side Salad to a Paella</a></li>
 <li><a class="reference internal" href="#boot-the-new-machine" id="id37">Boot the new machine</a></li>
 <li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id38">Tell Paella about the new machine</a></li>
+<li><a class="reference internal" href="#manage-the-database-again" id="id39">Manage the database again</a></li>
 </ul>
 </li>
 </ul>
@@ -758,7 +761,20 @@ If there are matching addresses already present in the table, the inserts will n
 This could mean that the addresses have already been matched to another machine (this
 shouldn't happen in this quickstart, but it's something that the admin needs to be aware of).
 The only table that the paella database user has full write access to is the current_environment
-table.</p>
+table.  All other tables are read-only to the paella database user.</p>
+<p>There's nothing else to be done with the sidesalad machine at this moment, so go ahead and
+shut it down:</p>
+<pre class="literal-block">
+sudo poweroff
+</pre>
+</div>
+<div class="section" id="manage-the-database-again">
+<h2><a class="toc-backref" href="#id39">Manage the database again</a></h2>
+<p>Now we need to go back to the paella VM.  Edit the default environment, and set the
+sidesalad option to 'True' in the autoinstall section.  This will tell the paella-init-nfsinstaller
+script to install the machine, once it boots.  The admin should be aware about this part of
+the default environment, since when the autoinstall value is set to 'True', the machine will
+install each time it's booted from the network.</p>
 <p><strong>If you've made it this far, and the &quot;unfinished&quot; disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.</strong></p>
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>

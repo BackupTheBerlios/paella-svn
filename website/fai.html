@@ -13,28 +13,28 @@
 
 <!-- -*- mode: rst -*- -->
 <div class="section" id="a-brief-history-on-my-experience-with-fai-and-the-birth-of-paella">
-<h1>A brief history on my experience with <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">fai</a> and the birth of <a class="reference external" href="http://paella.berlios.de">paella</a>.</h1>
-<p>I first looked at <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">fai</a> back when potato was stable.  I had just moved
+<h1>A brief history on my experience with <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> and the birth of <a class="reference external" href="http://paella.berlios.de">paella</a>.</h1>
+<p>I first looked at <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> back when potato was stable.  I had just moved
 all of the machines on a network to debian, and I was looking for an
 easy way to quickly install systems.  After looking it over, I decided not
 to use it due to not having enough time to devote to setting everything
 up.  There are many steps required to setup a network to be capable
 of fully automatic installation.  Making default system configurations
 and testing them can take quite a bit of time too.  Any sort of system
-that performs network functions like fai or paella can take
+that performs network functions like FAI or paella can take
 more time to setup and configure than doing a quick install/restore.</p>
-<p>I started using <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">fai</a> later on when I had time and reason to do so.  By this
+<p>I started using <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> later on when I had time and reason to do so.  By this
 time woody was the stable release.  Before too long, I had a system up
 and running.  I started by modifying the sample configuration and testing
-the system.  Soon, the whole network was installed with fai.  Knowing that
+the system.  Soon, the whole network was installed with FAI.  Knowing that
 I would be using a system like this for a long term to manage system/network
 configurations, I started concentrating on developing default configurations.</p>
 <p>During this time, I started using subversion for revision control.  I didn't feel
 like keeping a cvs repository for my systems.  I also don't care much for perl,
-and prefer python.  So paella was born from wanting to extend fai without having
-to dig into perl.  Paella started as a set of &quot;hook&quot; scripts in fai that connected to
+and prefer python.  So paella was born from wanting to extend FAI without having
+to dig into perl.  Paella started as a set of &quot;hook&quot; scripts in FAI that connected to
 a postgresql database to get its configuration.  It eventually grew into it's own
-system, and now only (optionally) uses the setup_hardisks script from fai.  The
+system, and now only (optionally) uses the setup_hardisks script from FAI.  The
 setup_hardisks script is generally more reliable than the code I made to setup
 hardrives.  Most of my concentration on paella has been on the logical system
 configuration and network integration.</p>
@@ -44,11 +44,11 @@ configuration and network integration.</p>
 <h1>Differences between <a class="reference external" href="http://www.informatik.uni-koeln.de/fai/">FAI</a> and <a class="reference external" href="http://paella.berlios.de">Paella</a></h1>
 <ul>
 <li><p class="first">Development Environment</p>
-<p>First of all, paella is written in python, with a little bash.  Fai is written
+<p>First of all, paella is written in python, with a little bash.  FAI is written
 with perl and bash.</p>
 </li>
 <li><p class="first">Configuration Storage</p>
-<p>Fai uses an exported nfs filesystem to read configuration data from.  Paella
+<p>FAI uses an exported nfs filesystem to read configuration data from.  Paella
 uses a postgresql database to read/write configuration data.  The tables
 are generally read only for the installer user, with the exception of a couple
 tables reserved just for the installer to write to.</p>
@@ -63,7 +63,7 @@ small data values and relationships are easier to track and modify in a database
 distinction between logical and physical systems.  This distinction allows an
 administrator to update/change the hardware of a particular system without
 having to mess with the logical part of the system at all.  While this is possible
-in fai, it can be difficult to manange.</p>
+in FAI, it can be difficult to manage.</p>
 </li>
 <li><p class="first">Installer Design</p>
 <p>A consequence of the configuration design allows the distinction in the design

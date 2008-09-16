@@ -4,35 +4,35 @@ FAI_ and Paella_
 ====================
 
 
-A brief history on my experience with fai_ and the birth of paella_.
+A brief history on my experience with FAI_ and the birth of paella_.
 ----------------------------------------------------------------------------------------------
 
 
-I first looked at fai_ back when potato was stable.  I had just moved
+I first looked at FAI_ back when potato was stable.  I had just moved
 all of the machines on a network to debian, and I was looking for an
 easy way to quickly install systems.  After looking it over, I decided not 
 to use it due to not having enough time to devote to setting everything 
 up.  There are many steps required to setup a network to be capable
 of fully automatic installation.  Making default system configurations
 and testing them can take quite a bit of time too.  Any sort of system 
-that performs network functions like fai or paella can take
+that performs network functions like FAI or paella can take
 more time to setup and configure than doing a quick install/restore.
 
 
-I started using fai_ later on when I had time and reason to do so.  By this
+I started using FAI_ later on when I had time and reason to do so.  By this
 time woody was the stable release.  Before too long, I had a system up
 and running.  I started by modifying the sample configuration and testing
-the system.  Soon, the whole network was installed with fai.  Knowing that
+the system.  Soon, the whole network was installed with FAI.  Knowing that
 I would be using a system like this for a long term to manage system/network 
 configurations, I started concentrating on developing default configurations.
 
 
 During this time, I started using subversion for revision control.  I didn't feel
 like keeping a cvs repository for my systems.  I also don't care much for perl,
-and prefer python.  So paella was born from wanting to extend fai without having
-to dig into perl.  Paella started as a set of "hook" scripts in fai that connected to
+and prefer python.  So paella was born from wanting to extend FAI without having
+to dig into perl.  Paella started as a set of "hook" scripts in FAI that connected to
 a postgresql database to get its configuration.  It eventually grew into it's own 
-system, and now only (optionally) uses the setup_hardisks script from fai.  The
+system, and now only (optionally) uses the setup_hardisks script from FAI.  The
 setup_hardisks script is generally more reliable than the code I made to setup 
 hardrives.  Most of my concentration on paella has been on the logical system 
 configuration and network integration.
@@ -44,12 +44,12 @@ Differences between FAI_ and Paella_
 
 + Development Environment
 
-  First of all, paella is written in python, with a little bash.  Fai is written
+  First of all, paella is written in python, with a little bash.  FAI is written
   with perl and bash.
 
 + Configuration Storage
   
-  Fai uses an exported nfs filesystem to read configuration data from.  Paella
+  FAI uses an exported nfs filesystem to read configuration data from.  Paella
   uses a postgresql database to read/write configuration data.  The tables
   are generally read only for the installer user, with the exception of a couple
   tables reserved just for the installer to write to.
@@ -67,7 +67,7 @@ Differences between FAI_ and Paella_
   distinction between logical and physical systems.  This distinction allows an
   administrator to update/change the hardware of a particular system without
   having to mess with the logical part of the system at all.  While this is possible
-  in fai, it can be difficult to manange.
+  in FAI, it can be difficult to manage.
 
 + Installer Design
 
@@ -97,7 +97,7 @@ This document is unfinished.
 .. _gui:   gui.html
 .. _debian: http://debian.org
 .. _useless: http://useless.berlios.de
-.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _FAI: http://www.informatik.uni-koeln.de/fai/
 .. _python: http://python.org
 .. _postgresql: http://www.postgresql.org
 .. _pygtk: http://pygtk.org

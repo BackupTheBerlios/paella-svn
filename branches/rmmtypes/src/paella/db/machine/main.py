@@ -1,33 +1,55 @@
-from os.path import basename, dirname, join
+from os.path import join
 from xml.dom.minidom import parseString
 
 from useless.base import NoExistError
+from useless.base.path import path
+
 from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
+from paella.db.family import Family
+
 from base import DiskConfigHandler
 from base import BaseMachineHandler
+from relations import MachineRelations
 from xmlparse import MachineDatabaseParser
 from xmlgen import MachineDatabaseElement
 
 class MachineHandler(BaseMachineHandler):
-    def add_new_kernel(self, kernel):
-        self.kernels.insert(data=dict(kernel=kernel))
-
-    def make_a_machine(self, machine, mtype, profile, kernel):
-        self.cursor.insert(table='machines',
-                           data=dict(machine=machine,
-                                     machine_type=mtype,
-                                     profile=profile,
-                                     kernel=kernel))
-
-    def update_a_machine(self, machine, mtype, profile, kernel):
-        clause = Eq('machine', machine)
-        data = dict(machine_type=mtype, profile=profile,
-                    kernel=kernel)
-        self.cursor.update(table='machines', data=data, clause=clause)
+    def __init__(self, conn):
+        BaseMachineHandler.__init__(self, conn)
+        self.rel = MachineRelations(self.conn)
+        self.family = Family(self.conn)
+        self.parent = None
+        self.diskconfig = None
+        self.kernel = None
         
+    def set_machine(self, machine):
+        BaseMachineHandler.set_machine(self, machine)
+        self.rel.set_machine(machine)
+        
+    def add_new_kernel(self, kernel):
+        if self._check_kernel_exists(kernel):
+            self.rel.kernels.insert(data=dict(kernel=kernel))
+        else:
+            msg = "There's no kernel named %s in the package list" % kernel
+            raise RuntimeError , msg
+            
+    def make_a_machine(self, machine):
+        data = dict(machine=machine)
+        self.cursor.insert(table='machines', data=data)
+    
+
+    ############################
+    # old methods below --
+    # either replace or rework
+    ############################
     def insert_parsed_element(self, element):
+        for kernel in element.kernels:
+            self.add_new_kernel(kernel)
+        return None
+
+    def old_insert_parsed_element(self, element):
         map(self.add_new_kernel, element.kernels)
         for mtype in element.mtypes:
             print 'mtype is', mtype
@@ -41,50 +63,38 @@ class MachineHandler(BaseMachineHandler):
             data['machine'] = machine['name']
             self.cursor.insert(table='machines', data=data)
 
-    def parse_xmlfile(self, path):
-        element = parseString(file(path).read())
-        return MachineDatabaseParser(dirname(path), element.firstChild)
+    def parse_xmlfile(self, filename):
+        filename = path(filename).abspath()
+        element = parseString(file(filename).read())
+        dirname = filename.dirname()
+        return MachineDatabaseParser(dirname, element.firstChild)
     
-    def restore_machine_database(self, path):
-        mdbfile = join(path, 'machine_database.xml')
-        parsed = self.parse_xmlfile(mdbfile)
+    def restore_machine_database(self, dirname):
+        mdbfilename = path(dirname) /  'machine_database.xml'
+        parsed = self.parse_xmlfile(mdbfilename)
         self.insert_parsed_element(parsed)
         
-    def export_machine_database(self, path):
+    def export_machine_database(self, dirname):
         me = MachineDatabaseElement(self.conn)
-        mdfile = file(join(path, 'machine_database.xml'), 'w')
-        mtypepath = join(path, 'machine_types')
+        mdfilename = path(dirname) / 'machine_database.xml'
+        mdfile = file(mdfilename, 'w')
+        machine_dirname = dirname / 'machines'
         mdfile.write(me.toprettyxml())
         mdfile.close()
-        for mtype in me.mtypes.machine_types:
-            name = mtype.getAttribute('name')
-            self.mtype.set_machine_type(name)
-            self.mtype.export_machine_type(name, mtypepath)
+        for machine in me.machines:
+            name = machine.getAttribute('name')
+            self.set_machine(name)
+            self.export_machine(name, machine_dirname)
             
-    def get_modules(self, machine_type=None):
-        return self.mtype.get_modules()
-
-    def append_modules(self, modules, machine_type=None):
-        self.mtype.append_modules(modules)
-
-    def get_script(self, name):
-        return self.mtype.get_script(name)
-
-    def list_all_machine_types(self):
-        rows = self.cursor.select(table='machine_types')
-        return [r.machine_type for r in rows]
-    
     def list_all_kernels(self):
         return [r.kernel for r in self.kernels.select()]
 
     def list_all_profiles(self):
+        """convenience method for helping select a profile
+        for a machine in the gui"""
         rows = self.cursor.select(table='profiles')
         return [r.profile for r in rows]
 
-    def get_diskconfig(self):
-        #mtype = self.current.machine_type
-        return self.mtype.get_diskconfig()
-            
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

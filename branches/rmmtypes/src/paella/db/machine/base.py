@@ -83,6 +83,12 @@ class BaseMachineDbObject(object):
             self.cursor.set_table(table)
             
     def set_machine(self, machine):
+        clause = Eq('machine', machine)
+        try:
+            row = self.cursor.select_row(table='machines', clause=clause)
+        except NoExistError:
+            msg = "There's no machine named %s" % machine
+            raise NoExistError , msg
         self.current_machine = machine
 
     def _check_machine_set(self):
@@ -102,16 +108,6 @@ class BaseMachineHandler(BaseMachineDbObject):
         self.kernels = Table_cursor(self.conn, 'kernels')
         self.diskconfig = DiskConfigHandler(self.conn)
         
-    def approve_machine_ids(self):
-        self._check_machine_set()
-        machine = self.current_machine
-        table = 'current_environment'
-        clause = "name like 'hwaddr_%'" + " and value='%s'" % machine
-        fields = ["'machines' as section", 'name as option', 'value']
-        rows = self.cursor.select(fields=fields, table=table, clause=clause)
-        for row in rows:
-            self.cursor.insert(table='default_environment', data=row)
-
     def set_autoinstall(self, auto=True):
         self._check_machine_set()
         if auto:
@@ -140,11 +136,24 @@ class BaseMachineHandler(BaseMachineDbObject):
         data = dict(profile=profile)
         self._update_row(data)
 
+    def _check_kernel_exists(self, kernel):
+            clause = Eq('package', kernel)
+            return self.cursor.select(table='apt_source_packages', clause=clause)
+            
     def set_kernel(self, kernel):
+        # This list of kernels should be rather small
+        # else we need to use a clause to determine
+        # if the kernel is already present.
+        # FIXME: Adding a fixme here to make sure
+        # we use a clause to do this properly.
         kernels = [r.kernel for r in self.kernels.select()]
         data = dict(kernel=kernel)
         if kernel not in kernels:
-            self.kernels.insert(data=data)
+            if self._check_kernel_exists(kernel):
+                self.kernels.insert(data=data)
+            else:
+                msg = "There's no kernel named %s in the package list" % kernel
+                raise RuntimeError , msg
         self._update_row(data)
 
     def set_diskconfig(self, diskconfig):

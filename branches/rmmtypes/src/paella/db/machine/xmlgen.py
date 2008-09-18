@@ -11,12 +11,6 @@ from useless.sqlgen.clause import Eq, In
 
 from paella.db.xmlgen import BaseVariableElement
 
-class MachineModuleElement(TextElement):
-    def __init__(self, mtype, module, order):
-        TextElement.__init__(self, 'module', module)
-        self.setAttribute('machine_type', mtype)
-        self.setAttribute('order', order)
-        
 class MachineScriptElement(Element):
     def __init__(self, name):
         Element.__init__(self, 'script')
@@ -37,18 +31,14 @@ class MachineElement(Element):
         self.conn = conn
         self.cursor = StatementCursor(self.conn)
         self.setAttribute('name', name)
-        self.modules = []
         self.scripts = []
         self.families = []
         self.variables = []
         self.machine_type = name
         clause = Eq('machine', name)
-        #self.set_parent(clause)
         self.set_attributes(clause)
-        self._append_modules(clause)
         self._append_scripts(clause)
         self._append_families(clause)
-        # FIXME - we're not using variables yet
         self._append_variables(clause)
 
     def set_attributes(self, clause):
@@ -72,20 +62,8 @@ class MachineElement(Element):
         if parent is not None:
             self.setAttribute('parent', parent)
             
-    def append_module(self, module, order):
-        mod_element = MachineModuleElement(self.machine_type,
-                                           module, order)
-        self.modules.append(mod_element)
-        self.appendChild(mod_element)
-
-    def _append_modules(self, clause):
-        table = 'machine_modules'
-        mods = self.cursor.select(table=table, clause=clause, order='ord')
-        for row in mods:
-            self.append_module(row.module, str(row.ord))
-    
     def append_family(self, family):
-        fam_element = MachineTypeFamilyElement(family)
+        fam_element = MachineFamilyElement(family)
         self.families.append(fam_element)
         self.appendChild(fam_element)
 
@@ -107,7 +85,7 @@ class MachineElement(Element):
             self.append_script(row.script)
     
     def append_variable(self, trait, name, value):
-        variable_element = MachineVariableElement(name, value)
+        variable_element = MachineVariableElement(trait, name, value)
         self.variables.append(variable_element)
         self.appendChild(variable_element)
 
@@ -159,26 +137,23 @@ class MachineDatabaseElement(Element):
     def __init__(self, conn):
         Element.__init__(self, 'machine_database')
         self.conn = conn
-        self.mtypes = MachineTypesElement(conn)
         self.kernels = KernelsElement(conn)
-        self.machines = MachinesElement(conn)
+        self.machines = MachineListElement(conn)
 
-        for e in [self.machines, self.mtypes, self.kernels]:
+        for e in [self.machines, self.kernels]:
             self.appendChild(e)
             
 class ClientMachineDatabaseElement(Element):
     def __init__(self, conn, mtypes=None, machines=None):
+        raise RuntimeError , "ClientMachineDatabaseElement isn't working"
         Element.__init__(self, 'machine_database')
         self.conn = conn
-        if mtypes is not None:
-            self.mtypes = MachineTypesElement(conn, mtypes)
-            self.appendChild(self.mtypes)
         if machines is not None:
             self.machines = MachinesElement(conn, machines)
             self.appendChild(self.machines)
             
 
 if __name__ == '__main__':
-    from paella.profile.base import PaellaConfig, PaellaConnection
+    from paella.db import PaellaConfig, PaellaConnection
     cfg = PaellaConfig()
-    conn = PaellaConnection(cfg)
+    conn = PaellaConnection()

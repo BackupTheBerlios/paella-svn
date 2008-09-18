@@ -8,17 +8,17 @@ from kdeui import KMessageBox
 
 from useless.kdebase.dialogs import VboxDialog
 
-from paella.db.schema.tables import MTSCRIPTS
+from paella.db.schema.tables import MACHINE_SCRIPTS
 
 # this is inconsistent from the way the
 # the trait scripts are selected
 # we should probably use the database
-# here instead of the hardcoded MTSCRIPTS
+# here instead of the hardcoded MACHINE_SCRIPTS
 # list.
 class MTScriptComboBox(KComboBox):
     def __init__(self, parent):
         KComboBox.__init__(self, parent, 'MTScriptComboBox')
-        self.insertStrList(MTSCRIPTS)
+        self.insertStrList(MACHINE_SCRIPTS)
 
 class NewMTScriptDialog(VboxDialog):
     def __init__(self, parent):

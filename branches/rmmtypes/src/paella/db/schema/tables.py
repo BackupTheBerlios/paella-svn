@@ -13,15 +13,15 @@ SUITES = ['sid', 'woody']
 #SCRIPTS = ['chroot', 'pre', 'post', 'config']
 SCRIPTS = ['pre', 'preseed', 'remove', 'install',
            'templates', 'config', 'chroot', 'reconfig', 'post']
-MTSCRIPTS = ['pre', 'setup_disks', 'mount_target',
-             'bootstrap', 'make_device_entries',
-             'apt_sources_installer', 'ready_base',
-             'mount_target_proc',
-             'pre_install', 'install', 'post_install',
-             'install_modules', 'install_kernel',
-             'prepare_bootloader', 'apt_sources_final',
-             'install_fstab', 'umount_target_proc', 'post'
-             ]
+MACHINE_SCRIPTS = ['pre', 'setup_disks', 'mount_target',
+                   'bootstrap', 'make_device_entries',
+                   'apt_sources_installer', 'ready_base',
+                   'mount_target_proc',
+                   'pre_install', 'install', 'post_install',
+                   'install_modules', 'install_kernel',
+                   'prepare_bootloader', 'apt_sources_final',
+                   'install_fstab', 'umount_target_proc', 'post'
+                   ]
 
 def getcolumn(name, columns):
     ncols = [column for column in columns if column.name == name]
@@ -61,13 +61,6 @@ class ArchiveKeyTable(Table):
         columns = [idcol, keyid, data]
         Table.__init__(self, 'archive_keys', columns)
         
-def family_env_columns():
-    return [
-        PkName('family'),
-        PkName('trait'),
-        PkBigname('name'),
-        Text('value')]
-
 class SuitesTable(Table):
     def __init__(self):
         columns = [
@@ -117,7 +110,15 @@ class AptSourcePackagesTable(Table):
         pkg_columns = packages_columns()
         Table.__init__(self, 'apt_source_packages', [apt_id] + pkg_columns)
         
-#family table
+class PackagesTable(Table):
+    def __init__(self, suite):
+        tablename = ujoin(suite, 'packages')
+        Table.__init__(self, tablename, packages_columns())
+
+##############
+# family tables
+##############
+
 class FamilyTable(Table):
     def __init__(self):
         columns = [PkName('family'),
@@ -132,6 +133,13 @@ class FamilyParentsTable(Table):
         pcol.set_fk('families')
         Table.__init__(self, 'family_parent', [fcol, pcol])
 
+def family_env_columns():
+    return [
+        PkName('family'),
+        PkName('trait'),
+        PkBigname('name'),
+        Text('value')]
+
 class FamilyEnviromentTable(Table):
     def __init__(self):
         columns = family_env_columns()
@@ -139,7 +147,17 @@ class FamilyEnviromentTable(Table):
         columns[1].set_fk('traits')
         Table.__init__(self, 'family_environment', columns)
         
-#profiles_table
+##############
+
+##############
+# profile tables
+##############
+
+class _ProfileRelation(RelationalTable):
+    def __init__(self, profiles_table, tablename, other_columns):
+        RelationalTable.__init__(self, tablename, profiles_table, PkName('profile'),
+                                 other_columns)
+
 def profile_columns():
     return [
         PkName('profile'),
@@ -161,8 +179,36 @@ class ProfileFamilyTable(Table):
         fcol = PkName('family')
         fcol.set_fk('families')
         Table.__init__(self, 'profile_family', [pcol, fcol])
-        
-#traits
+
+class ProfileEnvironment(Table):
+    def __init__(self, profiles_table):
+        profile_col = PkName('profile')
+        profile_col.set_fk(profiles_table)
+        trait_col = PkName('trait')
+        name_col = PkBigname('name')
+        value_col = Text('value')
+        cols = [profile_col, trait_col, name_col, value_col]
+        tablename = ujoin('profile', 'variables')
+        Table.__init__(self, tablename, cols)
+
+class ProfileTrait(Table):
+    def __init__(self, profiles_table, traits_table):
+        profile_col = PkName('profile')
+        profile_col.set_fk(profiles_table)
+        trait_col = PkName('trait')
+        trait_col.set_fk(traits_table)
+        ord_col = Num('ord')
+        Table.__init__(self, 'profile_trait', [profile_col, trait_col, ord_col])
+
+##############
+# trait tables
+##############
+
+class _TraitRelation(RelationalTable):
+    def __init__(self, traits_table, tablename, other_columns):
+        RelationalTable.__init__(self, tablename, traits_table, PkName('trait'),
+                                 other_columns)
+
 def trait_columns():
     return [
         PkName('trait'),
@@ -176,23 +222,6 @@ class TraitTable(Table):
         trait.set_fk(traits_table)
         Table.__init__(self, tablename, columns)
 
-class PackagesTable(Table):
-    def __init__(self, suite):
-        tablename = ujoin(suite, 'packages')
-        Table.__init__(self, tablename, packages_columns())
-
-
-#relations
-class _ProfileRelation(RelationalTable):
-    def __init__(self, profiles_table, tablename, other_columns):
-        RelationalTable.__init__(self, tablename, profiles_table, PkName('profile'),
-                                 other_columns)
-
-class _TraitRelation(RelationalTable):
-    def __init__(self, traits_table, tablename, other_columns):
-        RelationalTable.__init__(self, tablename, traits_table, PkName('trait'),
-                                 other_columns)
-    
 class TraitPackage(_TraitRelation):
     def __init__(self, suite, traits_table, packages_table):
         packs_column = PkBigname('package')
@@ -243,26 +272,8 @@ class TraitScript(_TraitRelation):
         script_columns = [script_column, sfile_column]
         _TraitRelation.__init__(self, traits_table, tablename, script_columns)
 
-class ProfileEnvironment(Table):
-    def __init__(self, profiles_table):
-        profile_col = PkName('profile')
-        profile_col.set_fk(profiles_table)
-        trait_col = PkName('trait')
-        name_col = PkBigname('name')
-        value_col = Text('value')
-        cols = [profile_col, trait_col, name_col, value_col]
-        tablename = ujoin('profile', 'variables')
-        Table.__init__(self, tablename, cols)
 
-class ProfileTrait(Table):
-    def __init__(self, profiles_table, traits_table):
-        profile_col = PkName('profile')
-        profile_col.set_fk(profiles_table)
-        trait_col = PkName('trait')
-        trait_col.set_fk(traits_table)
-        ord_col = Num('ord')
-        Table.__init__(self, 'profile_trait', [profile_col, trait_col, ord_col])
-
+    
 class DiskConfigTable(Table):
     def __init__(self):
         idcol = PkName('name')

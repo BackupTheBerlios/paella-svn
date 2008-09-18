@@ -110,11 +110,6 @@ class AptSourcePackagesTable(Table):
         pkg_columns = packages_columns()
         Table.__init__(self, 'apt_source_packages', [apt_id] + pkg_columns)
         
-class PackagesTable(Table):
-    def __init__(self, suite):
-        tablename = ujoin(suite, 'packages')
-        Table.__init__(self, tablename, packages_columns())
-
 ##############
 # family tables
 ##############
@@ -201,8 +196,13 @@ class ProfileTrait(Table):
         Table.__init__(self, 'profile_trait', [profile_col, trait_col, ord_col])
 
 ##############
-# trait tables
+# suite tables
 ##############
+
+class PackagesTable(Table):
+    def __init__(self, suite):
+        tablename = ujoin(suite, 'packages')
+        Table.__init__(self, tablename, packages_columns())
 
 class _TraitRelation(RelationalTable):
     def __init__(self, traits_table, tablename, other_columns):
@@ -284,76 +284,75 @@ class DiskConfigTable(Table):
         
 class KernelsTable(Table):
     def __init__(self, name='kernels'):
-        Table.__init__(self, name, [PkName('kernel')])
-        
-class MachineTypesTable(Table):
-    def __init__(self, diskconfig_table):
-        name = 'machine_types'
-        idcol = PkName('machine_type')
-        diskconfig_col = Name('diskconfig')
-        diskconfig_col.set_fk(diskconfig_table)
-        columns = [idcol, diskconfig_col]
+        kernel_column = PkName('kernel')
+        columns = [kernel_column]
         Table.__init__(self, name, columns)
 
-class MachineTypeParentsTable(Table):
-    def __init__(self, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        pcol = PkName('parent')
-        pcol.set_fk(mach_types_table)
-        Table.__init__(self, 'machine_type_parent', [mtype_col, pcol])
-
-class MachineTypeFamilyTable(Table):
-    def __init__(self, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        fcol = PkName('family')
-        fcol.set_fk('families')
-        Table.__init__(self, 'machine_type_family', [mtype_col, fcol])
-        
-class MachineTypeEnvironment(Table):
-    def __init__(self, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        name_col = PkBigname('name')
-        value_col = Text('value')
-        cols = [mtype_col, name_col, value_col]
-        tablename = ujoin('machine_type', 'variables')
-        Table.__init__(self, tablename, cols)
-
-class MachineTypeScript(Table):
-    def __init__(self, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        tablename = ujoin('machine_type', 'scripts')
-        script_column = PkName('script')
-        script_column.set_fk('scriptnames')
-        sfile_column = Num('scriptfile')
-        sfile_column.set_fk('textfiles')
-        script_columns = [mtype_col, script_column, sfile_column]
-        Table.__init__(self, tablename, script_columns)
-
-class MachineModulesTable(Table):
-    def __init__(self, name, mach_types_table):
-        mtype_col = PkName('machine_type')
-        mtype_col.set_fk(mach_types_table)
-        columns = [mtype_col, PkName('module'), Num('ord')]
-        Table.__init__(self, name, columns)
-    
 
 class MachinesTable(Table):
-    def __init__(self, mach_types_table, kernels_table, profiles_table):
+    def __init__(self, kernels_table, profiles_table, diskconfig_table):
         machine_col = PkName('machine')
-        mtype_col = Name('machine_type')
-        mtype_col.set_fk(mach_types_table)
         kernel_col = Name('kernel')
         kernel_col.set_fk(kernels_table)
         profile_col = Name('profile')
         profile_col.set_fk(profiles_table)
-        columns = [machine_col, mtype_col, kernel_col, profile_col]
+        diskconfig_col = Name('diskconfig')
+        diskconfig_col.set_fk(diskconfig_table)
+        columns = [machine_col, kernel_col, profile_col, diskconfig_col]
         Table.__init__(self, 'machines', columns)
         
 
+class MachineParentsTable(Table):
+    def __init__(self, machines_table):
+        machine_col = PkName('machine')
+        machine_col.set_fk(machines_table)
+        parent_col = PkName('parent')
+        parent_col.set_fk(machines_table)
+        columns = [machine_col, parent_col]
+        Table.__init__(self, 'machine_parent', columns)
+
+class MachineFamilyTable(Table):
+    def __init__(self, machines_table):
+        machine_col = PkName('machine')
+        machine_col.set_fk(machines_table)
+        family_col = PkName('family')
+        family_col.set_fk('families')
+        columns = [machine_col, family_col]
+        Table.__init__(self, 'machine_family', columns)
+        
+class MachineEnvironment(Table):
+    def __init__(self, machines_table):
+        machine_col = PkName('machine')
+        machine_col.set_fk(machines_table)
+        trait_col = PkName('trait')
+        trait_col.set_fk('traits')
+        name_col = PkBigname('name')
+        value_col = Text('value')
+        columns = [machine_col, trait_col, name_col, value_col]
+        tablename = ujoin('machine', 'variables')
+        Table.__init__(self, tablename, columns)
+
+class MachineScript(Table):
+    def __init__(self, machines_table):
+        machine_col = PkName('machine')
+        machine_col.set_fk(machines_table)
+        tablename = ujoin('machine', 'scripts')
+        script_column = PkName('script')
+        script_column.set_fk('scriptnames')
+        sfile_column = Num('scriptfile')
+        sfile_column.set_fk('textfiles')
+        columns = [machine_col, script_column, sfile_column]
+        Table.__init__(self, tablename, columns)
+
+# we don't know if we're going to
+# use this table or not.
+class MachineModulesTable(Table):
+    def __init__(self, name, machines_table):
+        machine_col = PkName('machine')
+        machine_col.set_fk(machines_table)
+        columns = [mtype_col, PkName('module'), Num('ord')]
+        Table.__init__(self, name, columns)
+    
 def suite_tables(suite):
     pack_table = PackagesTable(suite)
     trait_table = TraitTable(suite, 'traits')
@@ -410,7 +409,6 @@ def primary_tables():
     profiles = ProfileTable('suites')
     tables.append(profiles)
     # All Script Names
-    #scripts = PkNameTable('scriptnames', 'script')
     scripts = ScriptNames()
     tables.append(scripts)
     # Profile - Trait relation
@@ -431,30 +429,17 @@ def primary_tables():
     tables.append(DiskConfigTable())
     # Kernels
     tables.append(KernelsTable())
-    # Machine Types
-    tables.append(MachineTypesTable('diskconfig'))
-    # MachineTypesTables
-    mtparent = MachineTypeParentsTable('machine_types')
-    tables.append(mtparent)
-    mtfamily = MachineTypeFamilyTable('machine_types')
-    tables.append(mtfamily)
-    mtenviron = MachineTypeEnvironment('machine_types')
-    tables.append(mtenviron)
-    mtscript = MachineTypeScript('machine_types')
-    tables.append(mtscript)
-    # Machine Modules
-    machine_modules = MachineModulesTable('machine_modules', 'machine_types')
-    tables.append(machine_modules)
     # Machines
-    machines = MachinesTable('machine_types', 'kernels', 'profiles')
-    tables.append(machines)
-
+    tables.append(MachinesTable('kernels', 'profiles', 'diskconfig'))
+    # Machine Parents
+    tables.append(MachineParentsTable('machines'))
+    # Machine Family
+    tables.append(MachineFamilyTable('machines'))
+    # Machine Environment
+    tables.append(MachineEnvironment('machines'))
+    # Machine Scripts
+    tables.append(MachineScript('machines'))
     return tables, dict([(t.name, t) for t in tables])
-
-    
-    
-    
-
 
 
 if __name__ == '__main__':

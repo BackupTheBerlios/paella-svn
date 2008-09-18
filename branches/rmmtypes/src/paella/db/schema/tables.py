@@ -273,6 +273,9 @@ class TraitScript(_TraitRelation):
         _TraitRelation.__init__(self, traits_table, tablename, script_columns)
 
 
+##############
+# machine tables
+##############
     
 class DiskConfigTable(Table):
     def __init__(self):
@@ -353,6 +356,10 @@ class MachineModulesTable(Table):
         columns = [mtype_col, PkName('module'), Num('ord')]
         Table.__init__(self, name, columns)
     
+##############
+##############
+
+
 def suite_tables(suite):
     pack_table = PackagesTable(suite)
     trait_table = TraitTable(suite, 'traits')

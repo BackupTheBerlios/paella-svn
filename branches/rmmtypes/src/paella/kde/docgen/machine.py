@@ -8,7 +8,6 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq
 
 from paella.db.machine import MachineHandler
-from paella.db.machine.mtype import MachineTypeHandler
 from paella.db.machine.base import DiskConfigHandler
 
 from base import color_header

@@ -1,0 +1,226 @@
+.. -*- mode: rst -*-
+
+Paella Notes
+===========================
+
+.. contents:: :backlinks: entry
+
+
+Reserved Word/Option Reference
+===================================
+
+Environment Variables used by Paella
+------------------------------------------------------
+
++ these are used to help override a configured db connection:
+
+  - **PAELLA_DBHOST** - hostname or ip of host paella database resides
+
+  - **PAELLA_DBNAME** - the name of the paella database
+
+  - **PAELLA_DBPORT** - the port of the paella database (this currently
+    can't be set in the gui)
+
+  - **PAELLA_DBUSER** - the name of the database user
+
+  - **PAELLA_DBPASSWD** - the password to the paella database.
+
++ These environment variables are set by the installers, and can be used
+  in the scripts:
+
+  - **PAELLA_TRAIT** - name of the trait currently being processed
+
+  - **PAELLA_TARGET** - path to target system (/tmp/target by default)
+
+  - **PAELLA_MACHINE** - name of the machine currently being processed
+
+  - **PAELLA_PROFILE** - name of the profile currently being installed
+
+  - **PAELLA_LOGFILE** - absolute name of logfile
+
+  - **LOGFILE** -- this needs to be deprecated
+
+  - **FAKE_START_STOP_DAEMON** - This was used in the old installer to make
+    and remove the start-stop-daemon in a manner similar to debootstrap.  While the
+    environment variable isn't checked anymore, the code to make and remove the
+    fake start-stop-daemon is still there, and can be used in the pre and post scripts 
+    of the traits that will need them most.
+
+  - **DEBIAN_FRONTEND** - This is usually set to noninteractive by the paella 
+    installer, but it is never read from the environment by paella.
+
+
++ These are used in scripts and are mostly unimportant:
+
+  - **SUITES**
+
+  - **USER**
+
+  - **PATH**
+
+
+------------------------------------------------
+
+
+Paellarc Configuration File
+------------------------------------------------
+
+I'm trying to move as much as possible from the paellarc file to
+the default environment in the database.
+(installer) means that the section or option is meaningful only to the installer code.
+(manager) means that the section or option is meaningful only to the db manager code.
+Otherwise the section or option is applicable to both the installer and manager parts of 
+paella.
+
++ Section **database**
+
+  - **dbhost**:  hostname or ip of host where paella database resides
+
+  - **dbname**:  name of paella database
+
+  - **dbusername**:  username to connect to database with
+
+  - **dbpassword**:  password to use for authentication (if necessary)
+
+  - **default_path**:  default path for import and export of database data
+
++ Section **installer** 
+
+  - **IMPORTANT** - this whole section is now vestigial, and the documentation
+    is only being left here as a reference, in case I forget to mention something
+    on the `default-environment`_ page.  Now, the installer only reads the paellarc 
+    file at /etc/paellarc for the database connection.  All other information is provided 
+    by the default_environment table.
+
+  - **suite_storage**:  
+
+    - default /var/cache/paella/suites - where the base
+      tarballs are stored.
+
+  - **bootstrap_suites**:  
+
+    - a comma separated list of suites that will be debootstrapped and 
+      tarred for later extraction during installs..
+
+  - **use_devices_tarball**:  
+
+    - This used to be handy as the MAKEDEV script used
+      to take a long time to run.  We can now use udev to do most of the work that
+      this option was here for.  This option is also vestigial, as it's now located
+      in the default environment.
+
++ Section **management_gui** (manager)
+
+  - This section is for using the management gui interface.
+
+  - **template_profile**:  This is the name of the profile that will be used as a
+    "template" when creating an new profile.  Default is "skeleton"
+
+  - **client_path**:  This is the path that's used to import and export client 
+    information.  At the moment, the client widget isn't functional, so
+    this option is useless for the time being.
+
+  - **client_widget**:  This option enables (or disables) the client widget.
+    Default: False
+
+  - **manager_type**:  This option is used to determine the type of manager
+    widget that will be used for the management gui.  At the moment, only
+    listbox_select is supported.  This is the widget that uses a listbox, instead
+    of a menu to display widget options.  This is not how most user interfaces 
+    work, but it works just fine anyway.
+
+  - **text_editor**:  This is the text editor that's used with the management gui.  
+    This command either needs to be in your PATH, or the full path to the file 
+    must be used.  This command doesn't handle options, if you need to pass
+    options to the editor, please use a wrapper.  The default is kate, but I really
+    recommend xemacs.
+
+  - **x_differ**:  This is the graphical differ that's used with the management gui.
+    This command has all the requirements of the **text_editor** option above.
+    I recommend using xxdiff, which is the default.  This command must use these 
+    arguments::
+
+	x_differ leftfile rightfile
+
+------------------------------------------------
+
+User Mode Linux
+======================
+
+User mode linux is a great tool to help test paella, and installing configurations.  
+However, since VT technology has come around and VM's run reasonably fast, 
+maintainence of the uml related code will be a very low priority.
+
+Uml Machine Configuration File
+------------------------------------------------
+
+This is the structure of the umlmachines.conf configuration file.
+Every section in this configuration file defines a uml machine, using
+the name of the section.
+
++ Section **DEFAULT**
+
+  - The DEFAULT section is used to set defaults for the uml
+    machines.
+
++ Section **umlmachines**
+
+  - This section may be removed, and the options placed in DEFAULT
+
+---------------------------------------------------------------------
+
+Uml Kernel Options used by paella-init script
+----------------------------------------------------------------------
+
+These are the command line options understood by the paella-init for
+the user mode linux kernel.
+
+- **python_path**:  sets the PYTHONPATH
+
+- **logfile**:  path to logfile
+
+- **LOGFILE**:  another name for logfile
+
+- **paella_action**:  action to be performed by paella-init
+
+- **umlconfig**:  path to umlmachines.conf
+
+- **umlmachine**:  name of the uml machine that being run
+
+- **paellaprofile**:  profile to be installed if applicable
+
+- **paellasuite**:  suite to be bootstrapped if applicable
+
+- **paella_system_tarball**:  a system backup to be restored if applicable
+
+- **bootstrap_script**:  path to script to run with debootstrap
+
+- **bootstrap_mirror**:  mirror to use with debootstrap
+
+- **backup_target**:  option used  before paella-init set the umlmachine, should
+  be removed soon.
+
+------------------------------------------------
+
+
+Default Environment
+======================================
+
+.. _here: default-environment.html
+
+The default environment is a ini type configuration file stored in the database as the
+default_enviroment table.  A page describing the default enviroment can be found here_ .
+
+
+
+------------------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
+.. _default-environment:  default-environment.html

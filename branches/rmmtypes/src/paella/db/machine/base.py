@@ -106,7 +106,14 @@ class BaseMachineHandler(BaseMachineDbObject):
     def __init__(self, conn):
         BaseMachineDbObject.__init__(self, conn, table='machines')
         self.kernels = Table_cursor(self.conn, 'kernels')
-        self.diskconfig = DiskConfigHandler(self.conn)
+
+    def set_machine(self, machine):
+        BaseMachineDbObject.set_machine(self, machine)
+        clause = self._machine_clause_()
+        row = self.cursor.select_row(clause=clause)
+        self.diskconfig = row.diskconfig
+        self.kernel = row.kernel
+        self.profile = row.profile
         
     def set_autoinstall(self, auto=True):
         self._check_machine_set()
@@ -133,14 +140,22 @@ class BaseMachineHandler(BaseMachineDbObject):
         self.cursor.update(data=data, clause=self._machine_clause_())
         
     def set_profile(self, profile):
+        if profile is None:
+            self._clear_attribute('profile')
+            return
         data = dict(profile=profile)
         self._update_row(data)
+        # reset this object's attributes
+        self.set_machine(self.current_machine)
 
     def _check_kernel_exists(self, kernel):
             clause = Eq('package', kernel)
             return self.cursor.select(table='apt_source_packages', clause=clause)
             
     def set_kernel(self, kernel):
+        if kernel is None:
+            self._clear_attribute('kernel')
+            return
         # This list of kernels should be rather small
         # else we need to use a clause to determine
         # if the kernel is already present.
@@ -155,10 +170,24 @@ class BaseMachineHandler(BaseMachineDbObject):
                 msg = "There's no kernel named %s in the package list" % kernel
                 raise RuntimeError , msg
         self._update_row(data)
+        # reset this object's attributes
+        self.set_machine(self.current_machine)
 
     def set_diskconfig(self, diskconfig):
+        if diskconfig is None:
+            self._clear_attribute('diskconfig')
+            return
         data = dict(diskconfig=diskconfig)
         self._update_row(data)
+        # reset this object's attributes
+        self.set_machine(self.current_machine)
+
+    def _clear_attribute(self, attribute):
+        self._check_machine_set()
+        data = {attribute : None}
+        self._update_row(data)
+        # reset this object's attributes
+        self.set_machine(self.current_machine)
         
 
 if __name__ == '__main__':

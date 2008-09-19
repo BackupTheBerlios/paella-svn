@@ -57,11 +57,11 @@ class MachineParents(BaseMachineDbObject):
             # if there's not already a parent we
             # insert a new one
             data['machine'] = machine
-            self.insert(data=data)
+            self.cursor.insert(data=data)
         else:
             # else we update it
             clause = Eq('machine', machine)
-            self.update(data=data, clause=clause)
+            self.cursor.update(data=data, clause=clause)
 
     def get_parent_list(self, childfirst=True, machine=None):
         if machine is None:
@@ -79,7 +79,7 @@ class MachineParents(BaseMachineDbObject):
             
 class MachineScripts(ScriptCursor, BaseMachineDbObject):
     def __init__(self, conn):
-        msg = "MachineScripts is really ready yet"
+        msg = "MachineScripts is not really ready yet"
         warnings.warn(msg, NotReadyYetWarning, stacklevel=3)
         ScriptCursor.__init__(self, conn, 'machine_scripts', 'machine')
         # we need this from BaseMachineDbObject
@@ -92,18 +92,19 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
         # a subclass of object and including a cursor
         # member.
         self.cursor = conn.cursor(statement=True)
-        self._parents = MachineParents(conn)
+        #self._parents = MachineParents(conn)
         
 
     def set_machine(self, machine):
         BaseMachineDbObject.set_machine(self, machine)
-        self._parents.set_machine(machine)
+        #self._parents.set_machine(machine)
         
     def _clause(self, name, machine=None):
         if machine is None:
             self._check_machine_set()
             machine = self.current_machine
         clause = Eq(self._keyfield, machine) & Eq('script', name)
+        return clause
 
     def insert_script(self, name, scriptfile, machine=None):
         if machine is None:
@@ -118,14 +119,59 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
         clause  = Eq('machine', machine)
         return self.select(clause=clause)
 
+    # Note that this method talks to the
+    # database more often then is actually
+    # necessary.  We override this method
+    # from ScriptCursor so that we can pass
+    # the machine argument, in order to the
+    # script from the machine parents.
+    def get(self, name, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        clause = self._clause(name, machine=machine)
+        print clause
+        rows = self.select(clause=clause)
+        if len(rows) == 1:
+            print rows
+            return self.scriptfile(name, machine=machine)
+        else:
+            return None
+
+    # override this method to allow for passing
+    # the machine argument.  All the methods
+    # being overridden, as well as the other
+    # problems with ScriptCursor is a good
+    # indication that it needs to be rewritten
+    # entirely.
+    def _script_row(self, name, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        clause = self._clause(name, machine=machine)
+        table = self._jtable
+        return self.select_row(fields=['*'], table=table, clause=clause)
+
+    def scriptdata(self, name, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        return self._script_row(name, machine=machine)
+
+    def scriptfile(self, name, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        return strfile(self.scriptdata(name, machine=machine))
+    
 class MachineFamily(BaseMachineDbObject):
     def __init__(self, conn):
         BaseMachineDbObject.__init__(self, conn, table='machine_family')
-        self._parents = MachineParents(self.conn)
+        #self._parents = MachineParents(self.conn)
         
     def set_machine(self, machine):
         BaseMachineDbObject.set_machine(self, machine)
-        self._parents.set_machine(machine)
+        #self._parents.set_machine(machine)
         
     def family_rows(self, machine=None):
         if machine is None:
@@ -155,9 +201,35 @@ class MachineFamily(BaseMachineDbObject):
 class MachineEnvironment(BaseMachineDbObject, Environment):
     def __init__(self, conn):
         BaseMachineDbObject.__init__(self, conn, table='machine_variables')
-        Environment.__init__(self, conn, 'machine_variables', 'machine')
+        Environment.__init__(self, conn, 'machine_variables', 'trait')
         self._parents = MachineParents(self.conn)
 
+    def __repr__(self):
+        return "<MachineEnvironment: %s>" % self.current_machine
+
+    def _make_superdict_(self):
+        msg = "_make_superdict_ is not really ready yet"
+        warnings.warn(msg, NotReadyYetWarning, stacklevel=3)
+        clause = self._machine_clause_()
+        return Environment._make_superdict_(self, clause)
+
+    def make_superdict(self, machine=None):
+        msg = 'make_superdict is not really ready yet'
+        warnings.warn(msg, NotReadyYetWarning, stacklevel=3)
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        clause = self._machine_clause_(machine=machine)
+        # due to limitations in the Environment class
+        # we need to temporarily set the machine
+        # to the value of the machine argument, then
+        # set it back before returning the superdict
+        current_machine = self.current_machine
+        self.set_machine(machine)
+        superdict = Environment._make_superdict_(self, clause)
+        self.set_machine(current_machine)
+        return  superdict
+        
     def set_machine(self, machine):
         BaseMachineDbObject.set_machine(self, machine)
         self._parents.set_machine(machine)
@@ -165,17 +237,6 @@ class MachineEnvironment(BaseMachineDbObject, Environment):
     def _single_clause_(self):
         return Eq('machine', self.current_machine) & Eq('trait', self.__main_value__)
 
-    def _make_superdict_(self):
-        self._check_machine_set()
-        parents = self._parents.get_parent_list(childfirst=False)
-        env = {}
-        for parent in parents:
-            clause = Eq('machine', parent)
-            env.update(Environment._make_superdict_(self, clause))
-        clause = self._mtype_clause()
-        env.update(Environment._make_superdict_(self, clause))
-        return env
-    
 class MachineRelations(BaseMachineDbObject):
     "Class to hold the relations"
     def __init__(self, conn):
@@ -192,17 +253,98 @@ class MachineRelations(BaseMachineDbObject):
         # class.
         self.diskconfig = DiskConfigHandler(self.conn)
         self.kernels = Table_cursor(self.conn, 'kernels')
+        # This is the main family class
+        self.mainfamily = Family(self.conn)
         
     def set_machine(self, machine):
         BaseMachineDbObject.set_machine(self, machine)
         self.parents.set_machine(machine)
         self.scripts.set_machine(machine)
         self.family.set_machine(machine)
-        self.diskconfig.set_machine(machine)
         self.environment.set_machine(machine)
         self.config = MachineVariablesConfig(self.conn, machine)
 
-        
+    def get_families(self, inherited=False, show_inheritance=False, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        families = self.family.get_families(machine=machine)
+        if inherited:
+            famlist = []
+            parents = self.parents.get_parent_list(childfirst=False)
+            for parent in parents:
+                pfam = self.family.get_families(parent)
+                if pfam:
+                    famlist.append((parent, pfam))
+            if show_inheritance:
+                return families, famlist
+            else:
+                for parent, pfam in famlist:
+                    for family in pfam:
+                        if family not in families:
+                            families.append(family)
+        return families
+
+    def get_script(self, name, inherited=False, show_inheritance=False):
+        scriptfile = self.scripts.get(name)
+        if not inherited:
+            return scriptfile
+        else:
+            parents = self.parents.get_parent_list(childfirst=True)
+            for parent in parents:
+                scriptfile = self.scripts.get(name, parent)
+                if scriptfile is not None:
+                    if show_inheritance:
+                        return scriptfile, parent
+                    else:
+                        return scriptfile
+            # if we didn't find a script above, there isn't one
+            # and we return None
+            return None
+
+    def _get_row(self, machine):
+        clause = self._machine_clause_(machine)
+        return self.cursor.select_row(clause=clause)
+
+    # this is the helper function for determining
+    # the diskconfig, kernel, or profile
+    def get_attribute(self, attribute, show_inheritance=False):
+        parents = self.parents.get_parent_list(childfirst=True)
+        for parent in parents:
+            row = self._get_row(parent)
+            if row[attribute] is not None:
+                if show_inheritance:
+                    return row[attribute], parent
+                else:
+                    return row[attribute]
+        # there's a probem if the for loop completes without
+        # finding the attribute.
+        msg = "%s must be set somewhere in the hierarchy of machines" % attribute
+        raise RuntimeError , msg
+
+    # we may require the machine to be set later
+    # but for now, we can get the superdict with
+    # an optional machine argument.
+    # FIXME: we need to include families here.
+    def get_superdict(self, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        # childfirst is False because we go from top down
+        # here, to get the child to override the parent
+        parents = self.parents.get_parent_list(childfirst=False, machine=machine)
+        superdict = dict()
+        for parent in parents:
+            parent_families = self.get_families(machine=parent)
+            famdata = self.mainfamily.FamilyData(families=parent_families)
+            superdict.update(famdata)
+            superdict.update(self.environment.make_superdict(machine=parent))
+        families = self.get_families(machine=machine)
+        famdata = self.mainfamily.FamilyData(families=families)
+        superdict.update(famdata)
+        superdict.update(self.environment.make_superdict(machine=machine))
+        return superdict
+    
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

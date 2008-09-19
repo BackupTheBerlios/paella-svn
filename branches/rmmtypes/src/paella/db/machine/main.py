@@ -18,7 +18,7 @@ from xmlgen import MachineDatabaseElement
 class MachineHandler(BaseMachineHandler):
     def __init__(self, conn):
         BaseMachineHandler.__init__(self, conn)
-        self.rel = MachineRelations(self.conn)
+        self.relation = MachineRelations(self.conn)
         self.family = Family(self.conn)
         self.parent = None
         self.diskconfig = None
@@ -26,11 +26,12 @@ class MachineHandler(BaseMachineHandler):
         
     def set_machine(self, machine):
         BaseMachineHandler.set_machine(self, machine)
-        self.rel.set_machine(machine)
+        self.relation.set_machine(machine)
+        self.parent = self.relation.parents.get_parent()
         
     def add_new_kernel(self, kernel):
         if self._check_kernel_exists(kernel):
-            self.rel.kernels.insert(data=dict(kernel=kernel))
+            self.relation.kernels.insert(data=dict(kernel=kernel))
         else:
             msg = "There's no kernel named %s in the package list" % kernel
             raise RuntimeError , msg
@@ -38,8 +39,47 @@ class MachineHandler(BaseMachineHandler):
     def make_a_machine(self, machine):
         data = dict(machine=machine)
         self.cursor.insert(table='machines', data=data)
-    
 
+    def set_parent(self, parent):
+        self._check_machine_set()
+        self.relation.parents.set_parent(parent)
+        # reset the attributes here
+        self.set_machine(self.current_machine)
+
+    def _get_attribute(self, attribute, show_inheritance=False):
+        self._check_machine_set()
+        attribute_value = getattr(self, attribute)
+        if attribute_value is None:
+            return self.relation.get_attribute(attribute, show_inheritance=show_inheritance)
+        if show_inheritance:
+            return attribute_value, None
+        else:
+            return attribute_value
+
+    #########################
+    # for these methods, inheritance
+    # is presumed, if you only need
+    # the values set for the current
+    # machine, just use the attribute
+    # values -> self.attribute
+    #########################
+    def get_diskconfig(self, show_inheritance=False):
+        return self._get_attribute('diskconfig', show_inheritance=show_inheritance)
+
+    def get_kernel(self, show_inheritance=False):
+        return self._get_attribute('kernel', show_inheritance=show_inheritance)
+
+    def get_profile(self, show_inheritance=False):
+        return self._get_attribute('profile', show_inheritance=show_inheritance)
+
+    #########################
+    #########################
+    
+    def get_diskconfig_content(self):
+        diskconfig = self.get_diskconfig()
+        content = self.relation.diskconfig.get(diskconfig).content
+        return content
+    
     ############################
     # old methods below --
     # either replace or rework
@@ -95,6 +135,8 @@ class MachineHandler(BaseMachineHandler):
         rows = self.cursor.select(table='profiles')
         return [r.profile for r in rows]
 
+
+            
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

@@ -30,13 +30,13 @@ def start_schema(conn, installuser='paella'):
         map(cursor.create_table, tables)
         both = [s for s in MACHINE_SCRIPTS if s in SCRIPTS]
         traitscripts = [s for s in SCRIPTS if s not in both]
-        mtypescripts = [s for s in MACHINE_SCRIPTS if s not in both]
+        machinescripts = [s for s in MACHINE_SCRIPTS if s not in both]
         for script in both:
             cursor.insert(table='scriptnames', data=dict(script=script, type='both'))
         for script in traitscripts:
             cursor.insert(table='scriptnames', data=dict(script=script, type='trait'))
-        for script in mtypescripts:
-            cursor.insert(table='scriptnames', data=dict(script=script, type='mtype'))
+        for script in machinescripts:
+            cursor.insert(table='scriptnames', data=dict(script=script, type='machine'))
             
         paella_select = grant_user('SELECT', [x.name for x in tables], installuser)
         paella_full = grant_user('ALL',

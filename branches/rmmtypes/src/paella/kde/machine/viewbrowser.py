@@ -16,7 +16,7 @@ from paella.kde.docgen.machine import DiskConfigDoc
 
 from base import NewMachineDialog
 from base import EditMachineDIalog
-from base import NewMTScriptDialog
+from base import NewMachineScriptDialog
 from base import NewDiskConfigDialog
 
 
@@ -50,39 +50,76 @@ class DiskConfigView(ViewBrowser):
 class MachineView(ViewBrowser):
     def __init__(self, parent):
         ViewBrowser.__init__(self, parent, MachineDoc)
+        self._context_methods = dict(Scripts=self._script_context,
+                                     Variables=self._variable_context,
+                                     Families=self._family_context,
+                                     machine=self._machine_context)
 
     def set_machine(self, machine):
         self.doc.set_machine(machine)
         self.setText(self.doc.output())
 
+    def resetView(self):
+        machine = self.doc.machine.current_machine
+        if machine is None:
+            self.setText('')
+        else:
+            self.set_machine(machine)
+            
     def setSource(self, url):
         action, context, ident = split_url(url)
-        if action == 'new':
-            if context == 'machine':
-                handler = self.doc.machine
-                dialog = NewMachineDialog(self, handler)
-                dialog.show()
-                self._dialog = dialog
-            else:
-                KMessageBox.error(self, '%s not supported' % url)
-        elif action == 'edit':
-            if context == 'machine':
-                handler = self.doc.machine
-                dialog = EditMachineDIalog(self, handler, ident)
-                dialog.show()
-                self._dialog = dialog
-                print 'edit machine', dialog.machine
+        print "in setSource, context is", context
+        if context in self._context_methods:
+            self._context_methods[context](action, ident)
         else:
-            KMessageBox.error(self, '%s not supported' % url)
+            KMessageBox.information(self, "unable to handle %s context" % context)
+        return
+        
+    def _unhandled_action(self, action, context):
+        msg = 'unable to handle %s action for %s' % (action, context)
+        KMessageBox.information(self, msg)
+            
+    def _script_context(self, action, ident):
+        print "context is script", action, ident
+        if action == 'new':
+            dialog = NewMachineScriptDialog(self)
+            dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewScript)
+            self._dialog = dialog
+        else:
+            self._unhandled_action(action, 'scripts')
+            
+    def _variable_context(self, action, ident):
+        print "context is variable", action, ident
+        self._unhandled_action(action, 'variables')
+
+    def _family_context(self, action, ident):
+        print "context is family", action, ident
+        self._unhandled_action(action, 'families')
+        
+    def _machine_context(self, action, ident):
+        if action == 'new':
+            handler = self.doc.machine
+            dialog = NewMachineDialog(self, handler)
+            dialog.show()
+            self._dialog = dialog
+        elif action == 'edit':
+            handler = self.doc.machine
+            dialog = EditMachineDIalog(self, handler, ident)
+            dialog.show()
+            self._dialog = dialog
+        else:
+            self._unhandled_action(action, 'machines')
+
+        print "context is machine", action, ident
+
+    def _attribute_context(self, attribute, action, ident):
+        print "context is attribute", attribute, action, ident
+        self._unhandled_action(action)
 
 class MachineTypeView(ViewBrowser):
     def __init__(self, parent):
         ViewBrowser.__init__(self, parent, MachineTypeDoc)
         self._dialog = None
-
-    def set_machine_type(self, machine_type):
-        self.doc.set_machine_type(machine_type)
-        self.setText(self.doc.output())
 
     def resetView(self):
         self.set_machine_type(self.doc.mtype.current)
@@ -102,9 +139,7 @@ class MachineTypeView(ViewBrowser):
             dialog_message = 'Add a new machine type.'
         if action == 'new':
             if context == 'Scripts':
-                dialog = NewMTScriptDialog(self)
-                dialog.connect(dialog, SIGNAL('okClicked()'), self.insertNewScript)
-                self._dialog = dialog
+                pass
             elif fields:
                 dialog = BaseRecordDialog(self, fields)
                 dialog.context = context

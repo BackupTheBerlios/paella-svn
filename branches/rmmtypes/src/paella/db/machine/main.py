@@ -69,6 +69,11 @@ class MachineHandler(BaseMachineHandler):
         else:
             return attribute_value
 
+    def get_attribute(self, attribute, show_inheritance=True):
+        """This method should be used from the gui, so
+        show_inheritance is implied as True."""
+        return self._get_attribute(attribute, show_inheritance=show_inheritance)
+    
     #########################
     # for these methods, inheritance
     # is presumed, if you only need
@@ -254,6 +259,8 @@ class MachineHandler(BaseMachineHandler):
     # the gui
     #########################
     def list_all_kernels(self):
+        """convenience method for helping select a kernel
+        for a machine in the gui"""
         return [r.kernel for r in self.kernels.select()]
 
     def list_all_profiles(self):
@@ -262,7 +269,12 @@ class MachineHandler(BaseMachineHandler):
         rows = self.cursor.select(table='profiles')
         return [r.profile for r in rows]
 
-            
+    def list_all_diskconfigs(self):
+        """convenience method for helping select a diskconfig
+        for a machine in the gui"""
+        rows = self.cursor.select(fields=['name'], table='diskconfig')
+        return [row.name for row in rows]
+    
 if __name__ == '__main__':
     from os.path import join
     from paella.db import PaellaConnection

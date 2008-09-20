@@ -5,7 +5,7 @@ from useless import deprecated
 from useless.base.util import strfile
 from useless.base import NoExistError
 from useless.db.midlevel import StatementCursor, Environment
-from useless.sqlgen.clause import Eq
+from useless.sqlgen.clause import Eq, In
 
 from paella.base.util import edit_dbfile
 from paella.base.objects import VariablesConfig
@@ -22,6 +22,11 @@ class NotReadyYetWarning(Warning):
     pass
 
 warnings.simplefilter('always', NotReadyYetWarning)
+
+class AttributeUnsetInAncestryError(RuntimeError):
+    """Error to declare that the attribute isn't set
+    anywhere in the ancestry."""
+    pass
 
 class MachineVariablesConfig(VariablesConfig):
     def __init__(self, conn, machine):
@@ -94,6 +99,20 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
         self.cursor = conn.cursor(statement=True)
         #self._parents = MachineParents(conn)
         
+        # we don't expect to change any of the
+        # scriptnames during the life of this object
+        # so we make a static list to keep from
+        # talking to the database everytime we
+        # need this list.  If we ever make code to
+        # mess with the script list, we'll need an
+        # "update_scriptnames" method to update
+        # this list.  This list is being used to help
+        # the gui determine what scripts to look
+        # for in the machine parents.  The installer
+        # won't need this, since each step in the
+        # installer will look for a script, but the
+        # gui doesn't do that.
+        self.scriptnames = self._list_scriptnames()
 
     def set_machine(self, machine):
         BaseMachineDbObject.set_machine(self, machine)
@@ -130,10 +149,10 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
             self._check_machine_set()
             machine = self.current_machine
         clause = self._clause(name, machine=machine)
-        print clause
+        #print clause
         rows = self.select(clause=clause)
         if len(rows) == 1:
-            print rows
+            #print rows
             return self.scriptfile(name, machine=machine)
         else:
             return None
@@ -163,6 +182,13 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
             self._check_machine_set()
             machine = self.current_machine
         return strfile(self.scriptdata(name, machine=machine))
+
+    def _list_scriptnames(self):
+        table = 'scriptnames'
+        clause = In('type', ['both', 'machine'])
+        rows = self.cursor.select(fields=['script'], table=table, clause=clause)
+        return [row.script for row in rows]
+    
     
 class MachineFamily(BaseMachineDbObject):
     def __init__(self, conn):
@@ -242,6 +268,19 @@ class MachineEnvironment(BaseMachineDbObject, Environment):
         data = dict(machine=self.current_machine,
                     trait=trait, name=name, value=value)
         self.cursor.insert(data=data)
+
+    def delete_variable(self, trait, name):
+        self._check_machine_set()
+        clause = Eq('machine', self.current_machine) & Eq('trait', trait) \
+                 & Eq('name', name)
+        self.cursor.delete(clause=clause)
+
+    def update_variable(self, trait, name, value):
+        self._check_machine_set()
+        clause = Eq('machine', self.current_machine) & Eq('trait', trait) \
+                 & Eq('name', name)
+        data = dict(value=value)
+        self.cursor.update(data=data, clause=clause)
         
 class MachineRelations(BaseMachineDbObject):
     "Class to hold the relations"
@@ -274,6 +313,8 @@ class MachineRelations(BaseMachineDbObject):
         if machine is None:
             self._check_machine_set()
             machine = self.current_machine
+        if show_inheritance:
+            inherited = True
         families = self.family.get_families(machine=machine)
         if inherited:
             famlist = []
@@ -293,12 +334,29 @@ class MachineRelations(BaseMachineDbObject):
 
     def get_script(self, name, inherited=False, show_inheritance=False):
         scriptfile = self.scripts.get(name)
+        if show_inheritance:
+            inherited = True
+        # if we get the scriptfile without checking
+        # through the parents, we go ahead and return
+        # it
+        if scriptfile is not None:
+            if show_inheritance:
+                return scriptfile, None
+            else:
+                return scriptfile
+        # if we get here, the scriptfile is None
+        # so we need to check through the parents.
         if not inherited:
+            # if we're not asking for inheritance, we
+            # go ahead and return the scriptfile
             return scriptfile
         else:
+            # otherwise, we traverse the parents looking
+            # for the script
             parents = self.parents.get_parent_list(childfirst=True)
             for parent in parents:
                 scriptfile = self.scripts.get(name, parent)
+                #print parent, scriptfile
                 if scriptfile is not None:
                     if show_inheritance:
                         return scriptfile, parent
@@ -326,7 +384,7 @@ class MachineRelations(BaseMachineDbObject):
         # there's a probem if the for loop completes without
         # finding the attribute.
         msg = "%s must be set somewhere in the hierarchy of machines" % attribute
-        raise RuntimeError , msg
+        raise AttributeUnsetInAncestryError, msg
 
     # we may require the machine to be set later
     # but for now, we can get the superdict with

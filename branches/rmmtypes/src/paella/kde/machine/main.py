@@ -10,7 +10,6 @@ from paella.kde.base.widgets import PaellaManagerWidget
 from paella.kde.base.mainwin import BasePaellaWindow
 
 from viewbrowser import MachineView
-from viewbrowser import MachineTypeView
 from viewbrowser import DiskConfigView
 
 from actions import ManageActions, ManageActionsOrder
@@ -87,7 +86,7 @@ class MachineMainWindow(BasePaellaWindow):
         self.initMenus()
         self.initToolbar()
         self.mainView = None
-        self.resize(400, 300)
+        self.resize(500, 600)
         self.setCaption('Machine Manager')
         self.statusbar = self.statusBar()
         self._managing = None
@@ -105,7 +104,7 @@ class MachineMainWindow(BasePaellaWindow):
         manager.show()
         self.mainView = manager
         if hasattr(self.mainView, 'setSizes'):
-            self.mainView.setSizes([100, 300])
+            self.mainView.setSizes([75, 425])
         
     def initActions(self):
         collection = self.actionCollection()
@@ -169,8 +168,6 @@ class MachineMainWindow(BasePaellaWindow):
             KMessageBox.information(self, 'Select something to manage first.')
         elif self._managing == 'machine':
             self.mainView.mainView.setSource('new.machine.foo')
-        elif self._managing == 'mtype':
-            self.mainView.mainView.setSource('new.machine_type.foo')
         elif self._managing == 'diskconfig':
             self.mainView.mainView.setSource('new.diskconfig.foo')
         else:

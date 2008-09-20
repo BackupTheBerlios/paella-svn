@@ -156,7 +156,7 @@ class MachineScripts(ScriptCursor, BaseMachineDbObject):
         if machine is None:
             self._check_machine_set()
             machine = self.current_machine
-        return self._script_row(name, machine=machine)
+        return self._script_row(name, machine=machine).data
 
     def scriptfile(self, name, machine=None):
         if machine is None:
@@ -237,6 +237,12 @@ class MachineEnvironment(BaseMachineDbObject, Environment):
     def _single_clause_(self):
         return Eq('machine', self.current_machine) & Eq('trait', self.__main_value__)
 
+    def append_variable(self, trait, name, value):
+        self._check_machine_set()
+        data = dict(machine=self.current_machine,
+                    trait=trait, name=name, value=value)
+        self.cursor.insert(data=data)
+        
 class MachineRelations(BaseMachineDbObject):
     "Class to hold the relations"
     def __init__(self, conn):

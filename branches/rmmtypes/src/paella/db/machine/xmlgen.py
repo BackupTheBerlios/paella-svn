@@ -34,7 +34,7 @@ class MachineElement(Element):
         self.scripts = []
         self.families = []
         self.variables = []
-        self.machine_type = name
+        self.machine = name
         clause = Eq('machine', name)
         self.set_attributes(clause)
         self._append_scripts(clause)
@@ -94,10 +94,14 @@ class MachineElement(Element):
         vlist = self.cursor.select(table=table, clause=clause, order=['name'])
         for row in vlist:
             self.append_variable(row.trait, row.name, row.value)
-        
-    def export(self, machinetopdir):
+
+    def export_directory(self, machinetopdir):
         machine = self.getAttribute('name')
-        dirname = machinetopdir / machine
+        dirname = path(machinetopdir) / machine
+        return dirname
+
+    def export(self, machinetopdir):
+        dirname = self.export_directory(machinetopdir)
         makepaths(dirname)
         xmlfile = dirname / 'machine.xml'
         xmlfile.write_text(self.toprettyxml())

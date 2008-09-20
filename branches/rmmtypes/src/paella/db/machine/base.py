@@ -10,6 +10,9 @@ def Table_cursor(conn, table):
     return cursor
 
 class Machine(object):
+    """This class is used to hold information about
+    a machine from the xml parser."""
+    
     def __init__(self, name):
         object.__init__(self)
         self.name = name
@@ -26,8 +29,8 @@ class Machine(object):
     def append_modules(self, modules):
         self.modules = modules
 
-    def append_script(self, name, data):
-        self.scripts.append((name, data))
+    def append_script(self, name):
+        self.scripts.append(name)
 
     def append_family(self, family):
         self.families.append(family)

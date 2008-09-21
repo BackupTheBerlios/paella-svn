@@ -3,6 +3,8 @@ from useless.sqlgen.clause import Eq
 
 from paella.base.util import edit_dbfile
 
+class NoSuchKernelError(NoExistError):
+    pass
 
 def Table_cursor(conn, table):
     cursor = conn.cursor(statement=True)
@@ -171,7 +173,7 @@ class BaseMachineHandler(BaseMachineDbObject):
                 self.kernels.insert(data=data)
             else:
                 msg = "There's no kernel named %s in the package list" % kernel
-                raise RuntimeError , msg
+                raise NoSuchKernelError , msg
         self._update_row(data)
         # reset this object's attributes
         self.set_machine(self.current_machine)

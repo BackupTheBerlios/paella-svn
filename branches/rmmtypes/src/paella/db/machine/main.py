@@ -59,6 +59,12 @@ class MachineHandler(BaseMachineHandler):
         # reset the attributes here
         self.set_machine(self.current_machine)
 
+    def delete_parent(self):
+        self._check_machine_set()
+        self.relation.parents.delete_parent()
+        self.set_machine(self.current_machine)
+        
+
     def _get_attribute(self, attribute, show_inheritance=False):
         self._check_machine_set()
         attribute_value = getattr(self, attribute)
@@ -73,7 +79,18 @@ class MachineHandler(BaseMachineHandler):
         """This method should be used from the gui, so
         show_inheritance is implied as True."""
         return self._get_attribute(attribute, show_inheritance=show_inheritance)
-    
+
+    def set_attribute(self, attribute, value):
+        self._check_machine_set()
+        if attribute == 'kernel':
+            self.set_kernel(value)
+        elif attribute == 'profile':
+            self.set_profile(value)
+        elif attribute == 'diskconfig':
+            self.set_diskconfig(value)
+        else:
+            raise RuntimeError , "unknown attribute %s in set_attribute" % attribute
+        
     #########################
     # for these methods, inheritance
     # is presumed, if you only need
@@ -91,6 +108,7 @@ class MachineHandler(BaseMachineHandler):
         return self._get_attribute('profile', show_inheritance=show_inheritance)
 
     #########################
+    # convenience methods for installer
     #########################
     
     def get_diskconfig_content(self):
@@ -98,6 +116,10 @@ class MachineHandler(BaseMachineHandler):
         content = self.relation.diskconfig.get(diskconfig).content
         return content
 
+    def get_machine_data(self):
+        self._check_machine_set()
+        return self.relation.get_superdict()
+    
     #########################
     # Import/Export methods
     #########################

@@ -68,6 +68,21 @@ class MachineParents(BaseMachineDbObject):
             clause = Eq('machine', machine)
             self.cursor.update(data=data, clause=clause)
 
+    def delete_parent(self, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        clause = Eq('machine', machine)
+        self.cursor.delete(clause=clause)
+
+    def has_children(self, machine=None):
+        if machine is None:
+            self._check_machine_set()
+            machine = self.current_machine
+        clause = Eq('parent', machine)
+        rows = self.cursor.select(clause=clause)
+        return len(rows)
+    
     def get_parent_list(self, childfirst=True, machine=None):
         if machine is None:
             self._check_machine_set()
@@ -84,8 +99,6 @@ class MachineParents(BaseMachineDbObject):
             
 class MachineScripts(ScriptCursor, BaseMachineDbObject):
     def __init__(self, conn):
-        msg = "MachineScripts is not really ready yet"
-        warnings.warn(msg, NotReadyYetWarning, stacklevel=3)
         ScriptCursor.__init__(self, conn, 'machine_scripts', 'machine')
         # we need this from BaseMachineDbObject
         # but we can't call BaseMachineDbObject.__init__
@@ -365,6 +378,14 @@ class MachineRelations(BaseMachineDbObject):
             # if we didn't find a script above, there isn't one
             # and we return None
             return None
+
+    def edit_script(self, name):
+        self._check_machine_set()
+        scriptfile = self.get_script(name, inherited=False)
+        if scriptfile is not None:
+            content = edit_dbfile(name, scriptfile.read(), 'script')
+            if content is not None:
+                self.scripts.save_script(name, strfile(content))
 
     def _get_row(self, machine):
         clause = self._machine_clause_(machine)

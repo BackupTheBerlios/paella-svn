@@ -124,7 +124,7 @@ class KernelHelper(BaseHelper):
         if extra_modules:
             self.log.info('Checking if extra packages are required before kernel install.')
             self.install_packages_for_extra_modules(extra_modules)
-        kernel = self.machine.current.kernel
+        kernel = self.machine.get_kernel()
         cmd = self.chroot_precommand + self.aptinstall + [kernel]
         self.log.info('install cmd is: %s' % ' '.join(cmd))
         kimgconf = self.target / 'etc' / 'kernel-img.conf'
@@ -304,10 +304,10 @@ class MachineInstallerHelper(BaseHelper):
         self._setup_storage_fai()
         
     def _setup_storage_fai(self):
-        row = self.machine.get_diskconfig()
-        diskconfig = row.content
+        diskconfig = self.machine.get_diskconfig_content()
         self.diskconfig = diskconfig
-        disklist = row.disklist
+        # FIXME:  disklist is hardcoded here
+        disklist = None
         if disklist is None:
             disklist = []
             cmd = ['/usr/lib/fai/disk-info']

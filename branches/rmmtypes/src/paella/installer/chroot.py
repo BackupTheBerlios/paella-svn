@@ -134,7 +134,7 @@ class ChrootInstaller(BaseChrootInstaller):
                                  umount_target_devpts=self.umount_target_devpts
                                  )
         # this is only used in the machine installer
-        self.mtypedata = {}
+        self.machine_data = {}
     
     # the default script for the chroot installer is None
     def make_script(self, procname):
@@ -151,10 +151,10 @@ class ChrootInstaller(BaseChrootInstaller):
         self.check_target_set()
         self.installer = ProfileInstaller(self)
         if os.environ.has_key('DEBUG'):
-            self.log.info("ChrootInstaller.mtypedata: %s" % self.mtypedata)
-        self.installer.mtypedata.update(self.mtypedata)
+            self.log.info("ChrootInstaller.machine_data: %s" % self.machine_data)
+        self.installer.machine_data.update(self.machine_data)
         if os.environ.has_key('DEBUG'):
-            self.log.info("ProfileInstaller.mtypedata: %s" % self.installer.mtypedata)
+            self.log.info("ProfileInstaller.machine_data: %s" % self.installer.machine_data)
         self.installer.set_profile(profile)
         self.set_suite(self.installer.suite)
     

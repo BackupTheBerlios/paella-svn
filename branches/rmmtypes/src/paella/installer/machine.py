@@ -67,7 +67,7 @@ DEFAULT_PROCESSES = [
 
 class BaseMachineInstaller(ChrootInstaller):
     def check_machine_set(self):
-        if self.machine.current is None:
+        if self.machine.current_machine is None:
             raise UnsatisfiedRequirementsError, "need to set machine first"
 
     def check_disks_setup(self):
@@ -139,7 +139,12 @@ class MachineInstaller(BaseMachineInstaller):
         
     def install_modules(self):
         self.check_install_complete()
-        self.helper.install_modules()
+        self.log.info("install_modules isn't being used anymore.")
+        msg = "This step is still here, in case you need to use a script"
+        msg += " to add modules to /etc/modules ."
+        self.log.info(msg)
+        if False:
+            self.helper.install_modules()
 
     def install_kernel(self):
         self.check_install_complete()

@@ -58,9 +58,12 @@ class DiskConfigManager(PaellaManagerWidget):
         self.mainView.set_diskconfig(str(item.text(0)))
 
     def resetView(self):
+        item = self.listView.currentItem()
+        diskconfig = str(item.text(0))
         self.refreshListView()
-        self.selectionChanged()
-    
+        #self.selectionChanged()
+        self.mainView.set_diskconfig(diskconfig)
+        
         
 class MachineMainWindow(BasePaellaWindow):
     def __init__(self, parent):

@@ -148,7 +148,7 @@ class MachineDatabaseElement(Element):
             self.appendChild(e)
             
 class ClientMachineDatabaseElement(Element):
-    def __init__(self, conn, mtypes=None, machines=None):
+    def __init__(self, conn, machines=None):
         raise RuntimeError , "ClientMachineDatabaseElement isn't working"
         Element.__init__(self, 'machine_database')
         self.conn = conn

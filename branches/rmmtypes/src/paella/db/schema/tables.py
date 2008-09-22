@@ -10,18 +10,26 @@ from useless.sqlgen.statement import Statement
 
 PRIORITIES = ['first', 'high', 'pertinent', 'none', 'postinstall', 'last']
 SUITES = ['sid', 'woody'] 
-#SCRIPTS = ['chroot', 'pre', 'post', 'config']
-SCRIPTS = ['pre', 'preseed', 'remove', 'install',
-           'templates', 'config', 'chroot', 'reconfig', 'post']
+
+# These scripts are only here to fill the scriptnames
+# table with the default values.
+MOUNT_SCRIPTS = ['proc', 'sys', 'devpts']
+MOUNT_SCRIPTS = ['mount_target_%s' % script for script in MOUNT_SCRIPTS]
+MOUNT_SCRIPTS += ['u%s' % script for script in MOUNT_SCRIPTS]
+
+TRAIT_SCRIPTS = ['pre', 'preseed', 'remove', 'install',
+                 'templates', 'config', 'chroot', 'reconfig', 'post']
+
 MACHINE_SCRIPTS = ['pre', 'setup_disks', 'mount_target',
                    'bootstrap', 'make_device_entries',
-                   'apt_sources_installer', 'ready_base',
-                   'mount_target_proc',
+                   'apt_sources_installer',
+                   'ready_base_for_install',
                    'pre_install', 'install', 'post_install',
                    'install_modules', 'install_kernel',
                    'prepare_bootloader', 'apt_sources_final',
-                   'install_fstab', 'umount_target_proc', 'post'
-                   ]
+                   'install_fstab', 'post'
+                   ] + MOUNT_SCRIPTS
+
 
 def getcolumn(name, columns):
     ncols = [column for column in columns if column.name == name]
@@ -347,15 +355,6 @@ class MachineScript(Table):
         columns = [machine_col, script_column, sfile_column]
         Table.__init__(self, tablename, columns)
 
-# we don't know if we're going to
-# use this table or not.
-class MachineModulesTable(Table):
-    def __init__(self, name, machines_table):
-        machine_col = PkName('machine')
-        machine_col.set_fk(machines_table)
-        columns = [mtype_col, PkName('module'), Num('ord')]
-        Table.__init__(self, name, columns)
-    
 ##############
 ##############
 

@@ -7,7 +7,7 @@ from useless.db.midlevel import StatementCursor
 from useless.sqlgen.clause import Eq, Gt
 
 
-from paella.db.aptkey import AptKeyHandler
+from paella.db.aptkey import AptKeyHandler, NoAptKeyError
 
 from base import BaseInstaller
 from base import runlog
@@ -28,6 +28,8 @@ class UnsatisfiedRequirementsError(BaseInstallError):
 
 class InstallTargetError(BaseInstallError):
     pass
+
+
 
 
 # the arch argument is ignored
@@ -218,7 +220,12 @@ class ChrootInstaller(BaseChrootInstaller):
         aptkeys = AptKeyHandler(self.conn)
         keys = self.defenv.get_list('archive_keys', 'installer')
         for key in keys:
-            row = aptkeys.get_row(key)
+            try:
+                row = aptkeys.get_row(key)
+            except NoAptKeyError:
+                msg = "There's no apt key named %s in the database" % key
+                self.log.error(msg)
+                raise UnsatisfiedRequirementsError , msg
             filename = self.target / ('%s.key' % key)
             if filename.exists():
                 raise RuntimeError , "%s already exists" % filename
@@ -294,6 +301,12 @@ class ChrootInstaller(BaseChrootInstaller):
                 self.log.info('Unmounting /proc/sys/fs/binfmt_misc in chroot')
                 #cmd = 'umount %s' % binfmt
                 cmd = ['umount', str(binfmt_misc)]
+                runlog(cmd)
+            # hack to stop mdadm on target
+            mdstat = self.target / 'proc/mdstat'
+            if mdstat.isfile():
+                self.log.info("Stopping mdadm from running on target.")
+                cmd = ['chroot', self.target, '/etc/init.d/mdadm', 'stop']
                 runlog(cmd)
         if fs == 'devpts':
             target = self.target / 'dev' / 'pts'

@@ -152,17 +152,68 @@ and the family environment</li>
 <p>This section describes the machine database part of paella.  Profile, traits, and families
 should not be machine specific.  The Machine database trying to be design to hold
 information about physical systems to install logical systems from.</p>
-<div class="section" id="machine-type">
-<h2>Machine Type</h2>
-<p>A machine type is going to be the main identifier of a particular type of machine.
-This currently includes disks and kernel modules.  The disks of a machine type are a
-list of tuples in the database (machine_type, diskname, device) .  The current policy is
-to treat all devices of a certain  diskname as a raid1 array if there is more than one
-device.  Machine Types will have parents soon.</p>
+<div class="section" id="machine">
+<h2>Machine</h2>
+<p>a machine contains</p>
+<ul class="simple">
+<li>a <strong>name</strong></li>
+<li>a <strong>parent</strong> - This is a parent machine that current machine is based from.<ul>
+<li>Unlike traits and families, a machine can only have one parent.</li>
+<li>This is an optional field.</li>
+</ul>
+</li>
+<li>a <strong>kernel</strong><ul>
+<li>A kernel is simply the name of a kernel image package (for example,
+linux-image-2.6-686).</li>
+<li>The package must be install-able by apt, in a chroot environment, on the target system.</li>
+<li>This attribute must be set somewhere in the machine's ancestry.</li>
+</ul>
+</li>
+<li>a <strong>diskconfig</strong><ul>
+<li>a diskconfig is the name of a diskconfig file that will be used by setup-storage when
+during the setup_disks part of the install.</li>
+<li>This attribute must be set somewhere in the machine's ancestry.</li>
+</ul>
+</li>
+<li>a <strong>profile</strong> - This is the profile that will be installed on the machine.<ul>
+<li>This attribute must be set somewhere in the machine's ancestry.</li>
+</ul>
+</li>
+<li><strong>families</strong> - These are the normal families in the paella database.  These families
+override the families in the profile.</li>
+<li><strong>scripts</strong> - These are &quot;hook&quot; scripts to override steps in the install process.</li>
+<li><strong>variables</strong> - These are variables that will override the variables defined in the
+traits, families, profile, and families for the machine.  In other words, these are the
+variables that override all other variables.</li>
+</ul>
 </div>
-<div class="section" id="machine-type-scripts">
-<h2>Machine Type Scripts</h2>
-<p>Machine type scripts are steps in the install process for machines.  These steps
+<div class="section" id="machine-inheritance">
+<h2>Machine Inheritance</h2>
+<p>Since machines can have parents, it's important to know how a parent affects the
+machine.  There are three main attributes that each machine has.  These are the
+kernel, profile, and diskconfig attributes.  If the child machine doesn't have one of
+these attributes set, it is resolved by going up the ancestral chain until the attribute
+is found.  So a kernel set on a parent machine will be installed on all the child machines,
+unless one of the child machines has their kernel attribute set, which will override the
+parent machine's kernel.  This allows the administrator to make groups of machines
+by using a parent, setting the attributes on the parent, and leaving them as NULL on the
+children.</p>
+<p>Machine scripts are treated similarly to the attributes mentioned above.  A script set
+on a parent machine will be run on each of the child machines, unless the child has
+that script set itself.  There is currently not a way to tell a child machine to ignore a
+parent's script and perform the regular step in the paella installer.</p>
+<p>Families and variables are done differently.  Here, the variables are resolved from
+&quot;oldest&quot; to &quot;youngest&quot;.  Each machine updates the variables with its families, then
+its own variables.  If there is a parent family on a child machine that has a child family
+on a parent machine, the parent family on the child machine will override the child
+family on the parent machine.  This is because the variables are updated one machine
+at a time from &quot;oldest&quot; to &quot;youngest&quot;, families first, then variables.</p>
+<p>I'll put some examples here later, since this section is hard to write, and probably
+even harder to read.</p>
+</div>
+<div class="section" id="machine-scripts">
+<h2>Machine Scripts</h2>
+<p>Machine scripts correspond to steps in the install process for machines.  These steps
 will be treated similiar to the trait scripts. The default steps/scripts are:</p>
 <ul class="simple">
 <li>pre<ul>
@@ -212,7 +263,9 @@ password, a simple /etc/network/interfaces file, and a fstab.</li>
 </li>
 <li>install_modules<ul>
 <li>this step should create a $target/etc/modules file appropriate for
-the machine type.</li>
+the machine type.  This step isn't implemented anymore.  I'm leaving
+the step here as a step that does nothing now, in case a script is
+needed to perform this function.</li>
 </ul>
 </li>
 <li>install_kernel<ul>
@@ -236,37 +289,6 @@ skipped for on-site installations.</li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="machine">
-<h2>Machine</h2>
-<p>a machine contains</p>
-<ul class="simple">
-<li>a <strong>name</strong></li>
-<li>a <strong>machine_type</strong><ul>
-<li>this is one of the machine types that are already defined</li>
-</ul>
-</li>
-<li>a <strong>kernel</strong><ul>
-<li>a kernel is simply the name of a kernel image package</li>
-<li>the package must be install-able by apt, in a chroot environment, on the target system.</li>
-</ul>
-</li>
-<li>a <strong>filesystem</strong><ul>
-<li>a <a class="reference internal" href="#filesystem">filesystem</a> is a named ordered map of <a class="reference external" href="#mount">mounts</a> to partition numbers</li>
-</ul>
-</li>
-<li>a <strong>profile</strong></li>
-</ul>
-</div>
-<div class="section" id="mount">
-<h2>Mount</h2>
-<p>a <a class="reference internal" href="#mount">mount</a> is named</p>
-<p>a mount describes filesystem type, mount option, dump, pass and the mount point</p>
-</div>
-<div class="section" id="filesystem">
-<h2>Filesystem</h2>
-<p>this is done on filesystem_mounts</p>
-<p>the target fstab will be completely formed from the filesystem information</p>
 <hr class="docutils" />
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>

@@ -69,7 +69,7 @@ def check_page(fullpath):
         store_page_md5sum(fullpath, md5)
     
 
-toppages = ['index', 'svnwebsite', 'fai', 'todo_etch', 'defaultdb']
+toppages = ['index', 'svnwebsite', 'fai', 'todo', 'defaultdb']
 
 docpages = ['abstract', 'configuration',
             'gui', 'installer', 'notes', 'objects',

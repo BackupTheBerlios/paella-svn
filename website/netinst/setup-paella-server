@@ -791,11 +791,18 @@ echo "restarting services"
 echo "sleeping for 3 seconds"
 sleep 3
 /etc/init.d/networking start
+echo "restarting dhcp server"
 /etc/init.d/dhcp3-server restart
+echo "restarting name server"
 /etc/init.d/bind9 restart
+echo "restarting postgresql server"
 /etc/init.d/postgresql-8.3 restart
+echo "restarting shorewall"
 /etc/init.d/shorewall restart
+echo "restarting apache2"
 /etc/init.d/apache2 restart
+echo "restarting nfs server"
+/etc/init.d/nfs-kernel-server restart
 
 if [ -f /usr/local/bin/setup-paella-server ]; then
     echo "moving this script to /root , since it's only supposed to run once"

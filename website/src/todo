@@ -121,11 +121,11 @@ gtk->kde client todo
 
 - profile manager
 
-  - need to make new profiles, missing dialog to do so
+  - need to make new profiles, missing dialog to do so **done**
 
-  - update window after making new profile
+  - update window after making new profile **done**
 
-  - need to delete profiles
+  - need to delete profiles **done**
 
   - need to import/export profiles
 
@@ -133,11 +133,11 @@ gtk->kde client todo
 
 - family manager
 
-  - need to make new families, missing dialog to do so
+  - need to make new families, missing dialog to do so **done**
 
-  - need to manage family parents
+  - need to manage family parents **done** 
 
-  - need to delete families
+  - need to delete families **done**
 
   - need to import/export families
 

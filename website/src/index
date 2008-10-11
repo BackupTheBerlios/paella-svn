@@ -12,25 +12,30 @@ What is Paella_?
 
 Paella_ is a installation/configuration management system centered on 
 being able to easily define, configure, maintain and update systems and 
-networks.
+networks.  The define, configure and install parts are working well.  The 
+update and maintain portions still have yet to be realized.
+
+Paella is not a fully extensible installer that can work in a variety of 
+environments.  The debian-installer works much better for a generic
+installer.  The paella installer is designed to be run from a live system 
+(preferably built with DebianLive_) with access to a postgresql database, 
+and a debian mirror.  It's mainly tested and used with a "net" live image, but 
+it can be used from cdrom, or external usb.  It can also install a system in 
+a chroot environment,  although not all the features are supported in this case.
 
 -----------------
 
 What is Paella_ **Not**?
 -------------------------------------
 
-Paella is not a fully extensible installer that can work in a variety of 
-environments.  The debian-installer works much better for a generic
-installer.  Paella is meant to run on an nfsroot system, with access to
-a postgresql database.  It can also install a system in a chroot environment.
-
 Paella is not a full-fledged configuration system (yet), so far I have been mostly 
 concerned with installation.  There is technically nothing preventing this.  With a good
 design of traits and their scripts, it may be possible to just do a chroot reinstall on
 the target system, and call it reconfigured.  The scripts in the default database are 
 not written for that yet, but there is nothing in the paella framework keeping 
-reconfiguration from happening with a reinstall.  Paella does provide a good way 
-to handle cf files for cfengine.
+reconfiguration from happening with a reinstall.  In the near future, I may be looking 
+into using the paella database to create a configuration that bcfg2 can use, and use 
+that method to update the machines that have been installed with paella.
 
 --------------------------
 
@@ -39,34 +44,21 @@ Dependencies
 
 + debian_  
 
-  - Paella_ is meant to run on a debian system.  
+  - Paella_ is meant to run on a debian system.  At the moment, only debian linux is 
+    supported, but the kfreebsd port may be supported in the near future.
 
-  - Currently only i386 is able to be tested.
+  - Currently only i386 is able to be tested, but it should be able to run on any 
+    architecture.
 
-  - most of paella can run on sarge, with the exception of the kde management
-    interface.
+  - most of paella can run on lenny, with the exception fai-client, which must be 
+    backported from sid.  (at the moment, even this is insufficient, and if you're
+    reading this statement, you'll have to use some experimental packages from
+    http://fai.alioth.debian.org/ )
 
 + useless_
 
   - useless_ is a set of python packages that provide a common set of code 
     for python applications I write.
-
-+ python-kde3 and python-qtext
-
-  - only the management interface depends on these.
-
-  - both of these should be easy to backport from sid.
-
-  - parts of useless_ depend on this, and not paell-kde directly, but useless is split 
-    to be able to use only what is needed.
-
-I have placed backports of the needed dependencies on the website.  These 
-packages should be enough to run paella on sarge.  Add these lines to your 
-/etc/apt/sources.list::
-
-	deb ftp://ftp.berlios.de/pub/paella/ sarge/
-	deb-src ftp://ftp.berlios.de/pub/paella/ sarge/
-
 
 -----------------------------
 
@@ -76,20 +68,21 @@ Intended Audience/Users
 Paella_ is written for system administrators using debian_.  Ultimately it should not 
 be required to learn sql or python to competently use paella, but currently this is
 not the case.  The user should, however, feel quite comfortable writing simple shell 
-scripts.
+scripts, and possibly some simple python scripts.  The better that the administrator 
+is with coding in python, the more he/she can get out of paella.
 
 The traits in paella are not meant to be replacements for packages.  A local repository 
 with self-made/backported packages will greatly enhance the amount of customization 
 that can be performed on systems.  People using paella should be able to make simple 
-packages, and upload them to their local repository using mini-dinstall or something 
-equivalent.  The paella-debrepos package helps with this.
+packages, and upload them to their local repository using reprepro or something 
+equivalent.
 
 ----------------------
 
 Download
 --------------
 
-Currently the best way to obtain paella is through subversion::
+Currently, the best way to obtain paella is through subversion::
 
 	  svn checkout svn://svn.berlios.de/useless/trunk useless
 	  svn checkout svn://svn.berlios.de/paella/trunk paella
@@ -98,7 +91,11 @@ Have the build-deps installed on your system, and the packages should build
 without problems.
 
 There is a tarball_ available, but it is likely to be out of date.  There is still a lot
-to do before a 1.0 release will be made.
+to do before a 1.0 release will be made.  Heck, there's still a lot to be done before 
+I release 0.8.0 . ;)
+
+Probably, the best way to get started using paella is to read the quickstart guide 
+that's mentioned in the documentation section below.
 
 ------------------
 
@@ -107,15 +104,11 @@ Project
 
 project_ page
 
-Currently, paella is going through many changes for the new etch release.  The code
-in the trunk will probably be broken for a while.  The latest stable code is in the sarge branch.
-
-
 
 Documentation
 ---------------------
 
-`Quickstart guide using VirtualBox OSE`_ (unfinished)
+`Quickstart guide using VirtualBox OSE`_ (almost finished)
 
 gui_ document
 
@@ -152,14 +145,19 @@ Python_ -- Except for a few shell scripts, paella is written
 	entirely in python.
 
 Postgresql_ -- High quality SQL Database Server
-	    Paella uses a postgresql database.
+	    Paella uses a postgresql database.  Paella makes 
+	    extensive use of foreign keys, and uses some plsql
+	    procedures, so porting it to another database backend 
+	    wouldn't be an easy task.
 
 PyKDE_ -- Graphical Tool Kit for python
        Paella also uses pykde for its newer graphical interface.
 
 TOra_ -- ToolKit for Oracle
       Also works very well with postgresql.  Highly recommended companion
-      to the deficient gui on paella.
+      to the deficient gui on paella.  Even when the gui is "full featured" there 
+      are still things that can be done with pure sql access that will probably 
+      never be supported in the gui.
 
 -------------------
 
@@ -194,3 +192,4 @@ Authors
 .. _schema: schema.html
 .. _installer: installer.html
 .. _default-environment: default-environment.html
+.. _DebianLive: http://debian-live.alioth.debian.org/

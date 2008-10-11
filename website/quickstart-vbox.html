@@ -161,8 +161,8 @@ svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
 </pre>
 <p><strong>WARNING!!!</strong>  This script uses sudo to perform the loopback mounting of the iso
 image.  Be sure to look over the script really good before you execute it.  You may want to
-change the ARCH variable near the top of the file.  Be sure that you have rsync, sudo, and
-subversion installed.</p>
+change the ARCH variable near the top of the file (note: only i386 is tested at the moment).
+Be sure that you have rsync, sudo, and subversion installed.</p>
 <p>Either download the iso, and enter the filename as the first argument, or just run the script
 without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.</p>
 <p>The script will give you a chance to review and edit the preseed files before you create the

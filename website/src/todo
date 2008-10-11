@@ -15,14 +15,6 @@ general todo
 
   - all cheetah templates will have ##cheetah on the first line
 
-- write a script that converts old type templates to cheetah templates
-
-  - there is a function that does the conversion from the database
-
-    - the conversion automatically wraps the file with #raw directive
-
-    - "\$" and "\#" had to be escaped if they were present in the original template
-
 + **done** rename template files in traits (use md5sum of filepath, instead of numbered order)
 
   - not using md5sum of filepath, but replacing '/' with '-slash-'
@@ -33,14 +25,12 @@ general todo
 
   - in the exported version.
 
-
 + fix problems encountered with importing Packages files into the database
 
-  - there is a workaround that seems to be working for now
+  - there is a workaround that seems to be working for now **done**
 
-+ get umlmachines working again
+  - start using debian-python package and deprecate my debian code
 
-  - started
 
 + **done** rename template files instead of using numbers
 
@@ -48,10 +38,6 @@ general todo
 	-----done, I should've done this much, much sooner
 
 + **done** use trait.xml conversion script to fix template filenames on exported traits
-
-  - decided not to do this, the export will use the new method by default
-
-  - the import will try the new method first then revert to the old
 
 + consider using bcfg2 for live updating of already installed machines
 
@@ -80,18 +66,15 @@ gtk->kde client todo
 
    - just started
 
- - need database import/export for kde
+ - need database import/export for kde 
 
-   - mostly done
+   - **done** for the full database
+
+   - import/export database objects separately with the gui
 
  - make family differ **done**
 
-   - this is done
-
  - deprecate commands **done**
-
-  - paella-management becomes paella-gtk-management
-  - paella-kde-management becomes paella-management
 
 - suite-trait manager
 
@@ -147,9 +130,11 @@ gtk->kde client todo
 
   - alphabetize trait comboboxes **done**
 
-- environment editors **done**
+  - make differs for machine scripts and variables
 
-  - appears to be done
+  - make sure temp files are deleted
+
+- environment editors **done**
 
 - machines manager
 
@@ -157,9 +142,11 @@ gtk->kde client todo
   
   - machines part
 
-    - new machine
+    - new machine **done**
 
-    - edit machine
+      - update machine list when making new machine
+
+    - edit machine **done**
 
   
 
@@ -176,11 +163,9 @@ general kde client todo
 
 - cleanup present code
 
- - quit passing "app" around and use KApplication.kApplication() call
+ - quit passing "app" around and use KApplication.kApplication() call **done**
 
- - use forgetHTML instead of xmlgen in text browsers
-
-   - This seems to be done
+ - use forgetHTML instead of xmlgen in text browsers **done**
 
 - need to make widgets out of different managers and keep them in
   one window.

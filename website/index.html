@@ -31,32 +31,41 @@
 <h1>What is <a class="reference external" href="http://paella.berlios.de">Paella</a>?</h1>
 <p><a class="reference external" href="http://paella.berlios.de">Paella</a> is a installation/configuration management system centered on
 being able to easily define, configure, maintain and update systems and
-networks.</p>
+networks.  The define, configure and install parts are working well.  The
+update and maintain portions still have yet to be realized.</p>
+<p>Paella is not a fully extensible installer that can work in a variety of
+environments.  The debian-installer works much better for a generic
+installer.  The paella installer is designed to be run from a live system
+(preferably built with <a class="reference external" href="http://debian-live.alioth.debian.org/">DebianLive</a>) with access to a postgresql database,
+and a debian mirror.  It's mainly tested and used with a &quot;net&quot; live image, but
+it can be used from cdrom, or external usb.  It can also install a system in
+a chroot environment,  although not all the features are supported in this case.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="what-is-paella-not">
 <h1>What is <a class="reference external" href="http://paella.berlios.de">Paella</a> <strong>Not</strong>?</h1>
-<p>Paella is not a fully extensible installer that can work in a variety of
-environments.  The debian-installer works much better for a generic
-installer.  Paella is meant to run on an nfsroot system, with access to
-a postgresql database.  It can also install a system in a chroot environment.</p>
 <p>Paella is not a full-fledged configuration system (yet), so far I have been mostly
 concerned with installation.  There is technically nothing preventing this.  With a good
 design of traits and their scripts, it may be possible to just do a chroot reinstall on
 the target system, and call it reconfigured.  The scripts in the default database are
 not written for that yet, but there is nothing in the paella framework keeping
-reconfiguration from happening with a reinstall.  Paella does provide a good way
-to handle cf files for cfengine.</p>
+reconfiguration from happening with a reinstall.  In the near future, I may be looking
+into using the paella database to create a configuration that bcfg2 can use, and use
+that method to update the machines that have been installed with paella.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="dependencies">
 <h1><a class="toc-backref" href="#id6">Dependencies</a></h1>
 <ul class="simple">
 <li><a class="reference external" href="http://debian.org">debian</a><ul>
-<li><a class="reference external" href="http://paella.berlios.de">Paella</a> is meant to run on a debian system.</li>
-<li>Currently only i386 is able to be tested.</li>
-<li>most of paella can run on sarge, with the exception of the kde management
-interface.</li>
+<li><a class="reference external" href="http://paella.berlios.de">Paella</a> is meant to run on a debian system.  At the moment, only debian linux is
+supported, but the kfreebsd port may be supported in the near future.</li>
+<li>Currently only i386 is able to be tested, but it should be able to run on any
+architecture.</li>
+<li>most of paella can run on lenny, with the exception fai-client, which must be
+backported from sid.  (at the moment, even this is insufficient, and if you're
+reading this statement, you'll have to use some experimental packages from
+<a class="reference external" href="http://fai.alioth.debian.org/">http://fai.alioth.debian.org/</a> )</li>
 </ul>
 </li>
 <li><a class="reference external" href="http://useless.berlios.de">useless</a><ul>
@@ -64,21 +73,7 @@ interface.</li>
 for python applications I write.</li>
 </ul>
 </li>
-<li>python-kde3 and python-qtext<ul>
-<li>only the management interface depends on these.</li>
-<li>both of these should be easy to backport from sid.</li>
-<li>parts of <a class="reference external" href="http://useless.berlios.de">useless</a> depend on this, and not paell-kde directly, but useless is split
-to be able to use only what is needed.</li>
 </ul>
-</li>
-</ul>
-<p>I have placed backports of the needed dependencies on the website.  These
-packages should be enough to run paella on sarge.  Add these lines to your
-/etc/apt/sources.list:</p>
-<pre class="literal-block">
-deb ftp://ftp.berlios.de/pub/paella/ sarge/
-deb-src ftp://ftp.berlios.de/pub/paella/ sarge/
-</pre>
 </div>
 <hr class="docutils" />
 <div class="section" id="intended-audience-users">
@@ -86,17 +81,18 @@ deb-src ftp://ftp.berlios.de/pub/paella/ sarge/
 <p><a class="reference external" href="http://paella.berlios.de">Paella</a> is written for system administrators using <a class="reference external" href="http://debian.org">debian</a>.  Ultimately it should not
 be required to learn sql or python to competently use paella, but currently this is
 not the case.  The user should, however, feel quite comfortable writing simple shell
-scripts.</p>
+scripts, and possibly some simple python scripts.  The better that the administrator
+is with coding in python, the more he/she can get out of paella.</p>
 <p>The traits in paella are not meant to be replacements for packages.  A local repository
 with self-made/backported packages will greatly enhance the amount of customization
 that can be performed on systems.  People using paella should be able to make simple
-packages, and upload them to their local repository using mini-dinstall or something
-equivalent.  The paella-debrepos package helps with this.</p>
+packages, and upload them to their local repository using reprepro or something
+equivalent.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="download">
 <h1><a class="toc-backref" href="#id8">Download</a></h1>
-<p>Currently the best way to obtain paella is through subversion:</p>
+<p>Currently, the best way to obtain paella is through subversion:</p>
 <pre class="literal-block">
 svn checkout svn://svn.berlios.de/useless/trunk useless
 svn checkout svn://svn.berlios.de/paella/trunk paella
@@ -104,18 +100,19 @@ svn checkout svn://svn.berlios.de/paella/trunk paella
 <p>Have the build-deps installed on your system, and the packages should build
 without problems.</p>
 <p>There is a <a class="reference external" href="http://download.berlios.de/paella/paella_0.7.31.tar.gz">tarball</a> available, but it is likely to be out of date.  There is still a lot
-to do before a 1.0 release will be made.</p>
+to do before a 1.0 release will be made.  Heck, there's still a lot to be done before
+I release 0.8.0 . ;)</p>
+<p>Probably, the best way to get started using paella is to read the quickstart guide
+that's mentioned in the documentation section below.</p>
 </div>
 <hr class="docutils" />
 <div class="section" id="project">
 <h1><a class="toc-backref" href="#id9">Project</a></h1>
 <p><a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> page</p>
-<p>Currently, paella is going through many changes for the new etch release.  The code
-in the trunk will probably be broken for a while.  The latest stable code is in the sarge branch.</p>
 </div>
 <div class="section" id="documentation">
 <h1><a class="toc-backref" href="#id10">Documentation</a></h1>
-<p><a class="reference external" href="quickstart-vbox.html">Quickstart guide using VirtualBox OSE</a> (unfinished)</p>
+<p><a class="reference external" href="quickstart-vbox.html">Quickstart guide using VirtualBox OSE</a> (almost finished)</p>
 <p><a class="reference external" href="gui.html">gui</a> document</p>
 <p>known <a class="reference external" href="problems.html">problems</a> with paella.</p>
 <p>a <a class="reference external" href="fai.html">little</a> page on paella and FAI.</p>
@@ -138,12 +135,17 @@ uses FAI to setup the disks.</dd>
 <dt><a class="reference external" href="http://python.org">Python</a> -- Except for a few shell scripts, paella is written</dt>
 <dd>entirely in python.</dd>
 <dt><a class="reference external" href="http://www.postgresql.org">Postgresql</a> -- High quality SQL Database Server</dt>
-<dd>Paella uses a postgresql database.</dd>
+<dd>Paella uses a postgresql database.  Paella makes
+extensive use of foreign keys, and uses some plsql
+procedures, so porting it to another database backend
+wouldn't be an easy task.</dd>
 <dt><a class="reference external" href="http://www.riverbankcomputing.co.uk/pykde/index.php">PyKDE</a> -- Graphical Tool Kit for python</dt>
 <dd>Paella also uses pykde for its newer graphical interface.</dd>
 <dt><a class="reference external" href="http://tora.sourceforge.net/">TOra</a> -- ToolKit for Oracle</dt>
 <dd>Also works very well with postgresql.  Highly recommended companion
-to the deficient gui on paella.</dd>
+to the deficient gui on paella.  Even when the gui is &quot;full featured&quot; there
+are still things that can be done with pure sql access that will probably
+never be supported in the gui.</dd>
 </dl>
 </div>
 <hr class="docutils" />

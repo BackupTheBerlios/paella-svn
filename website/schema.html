@@ -32,6 +32,7 @@ processes.</li>
 <li>suites</li>
 <li>default_environment</li>
 <li>current_environment</li>
+<li>archive_keys</li>
 </ul>
 <p>Other tables are in related sets:</p>
 <ul>
@@ -81,7 +82,7 @@ and file mode.</p>
 </li>
 <li><p class="first">template tags have the form:</p>
 <pre class="literal-block">
-&lt;--|trait_name|--&gt;
+&lt;--|trait:name|--&gt;
 </pre>
 </li>
 </ul>
@@ -90,7 +91,7 @@ and file mode.</p>
 and name is the name of the variable
 for example:</p>
 <pre class="literal-block">
-&lt;--|xwindow_driver|--&gt;
+&lt;--|xwindow:driver|--&gt;
 </pre>
 </blockquote>
 <ul class="simple">
@@ -99,13 +100,26 @@ template will be root:root and system umask</li>
 </ul>
 </li>
 <li><p class="first">sarge_variables</p>
-<ul class="simple">
-<li>relates traits to name, value pairs</li>
-<li>a dictionary is made from this table and is used
-in the templates and in the scripts</li>
-<li>the keys in the dictionary are in the form
+<ul>
+<li><p class="first">relates traits to name, value pairs</p>
+</li>
+<li><p class="first">a dictionary is made from this table and is used
+in the templates and in the scripts</p>
+</li>
+<li><p class="first">the keys in the dictionary are in the form
 as the template tags mentioned above, without
-the tag markers.</li>
+the tag markers.  For example:</p>
+<pre class="literal-block">
+global:timezone
+</pre>
+</li>
+<li><p class="first">the values in the dictionary are in the form of
+templates, tags and all.  This lets you substitute
+other variables in parts of the value. For example:</p>
+<pre class="literal-block">
+global:timezone = &lt;--|global:area|--&gt;/&lt;--|global:zone|--&gt;
+</pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -129,51 +143,23 @@ the tag markers.</li>
 <ul class="simple">
 <li>machines<ul>
 <li>list of <a class="reference external" href="#machine">machines</a></li>
-<li>relates to machine_types, profiles, filesystems, kernels</li>
+<li>has columns for diskconfig, kernel and profile</li>
 </ul>
 </li>
-<li>machine_types<ul>
-<li>list of <a class="reference external" href="#machine-type">machine_types</a></li>
-</ul>
-</li>
-<li>machine_disks<ul>
-<li>relates machine_types to disks and device name</li>
-</ul>
-</li>
-<li>machine_modules<ul>
-<li>ordered lists of modules</li>
-<li>relates to <a class="reference external" href="#machine-type">machine_types</a></li>
-</ul>
-</li>
-<li>disks<ul>
-<li>list of disknames</li>
-</ul>
-</li>
-<li>filesystem_mounts<ul>
-<li>an ordered list of mounts for a filesystem</li>
-<li>relates to <a class="reference external" href="#filesystem">filesystems</a></li>
-<li>size corresponds to fai diskconfig</li>
-<li>partition number for hard drive</li>
-</ul>
-</li>
-<li>filesystems<ul>
-<li>a list of <a class="reference external" href="#filesystem">filesystems</a></li>
+<li>diskconfig<ul>
+<li>a list of disk config files to be used with setup-storage
+for the machine installer.  These should be integrated into
+the textfiles table in the future.</li>
 </ul>
 </li>
 <li>kernels<ul>
-<li>a list of kernel package names</li>
+<li>a list of kernel package names for the machine installer</li>
 </ul>
 </li>
-<li>mounts<ul>
-<li>a list of <a class="reference external" href="#mount">mounts</a> and options</li>
-</ul>
-</li>
-<li>partitions<ul>
-<li>a list of partition numbers and sfdisk info</li>
-<li>relates to disks</li>
-<li>use this info to dump with sfdisk</li>
-</ul>
-</li>
+<li>machine_parent</li>
+<li>machine_family</li>
+<li>machine_variables</li>
+<li>machine_script</li>
 </ul>
 </li>
 </ul>

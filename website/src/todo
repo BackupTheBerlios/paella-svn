@@ -133,6 +133,9 @@ gtk->kde client todo
   - make differs for machine scripts and variables
 
   - make sure temp files are deleted
+  
+  - The code for the trait differ needs to be updated to allow all the 
+    traits to be shown on the list views, instead of a particular trait.
 
 - environment editors **done**
 

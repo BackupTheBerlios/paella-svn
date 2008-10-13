@@ -19,23 +19,43 @@
 <ul class="simple">
 <li><a class="reference internal" href="#paella-notes" id="id2">Paella Notes</a></li>
 <li><a class="reference internal" href="#reserved-word-option-reference" id="id3">Reserved Word/Option Reference</a><ul>
-<li><a class="reference internal" href="#environment-variables-used-by-paella" id="id4">Environment Variables used by Paella</a></li>
-<li><a class="reference internal" href="#paellarc-configuration-file" id="id5">Paellarc Configuration File</a></li>
+<li><a class="reference internal" href="#object-names" id="id4">Object Names</a></li>
+<li><a class="reference internal" href="#environment-variables-used-by-paella" id="id5">Environment Variables used by Paella</a></li>
+<li><a class="reference internal" href="#paellarc-configuration-file" id="id6">Paellarc Configuration File</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#user-mode-linux" id="id6">User Mode Linux</a><ul>
-<li><a class="reference internal" href="#uml-machine-configuration-file" id="id7">Uml Machine Configuration File</a></li>
-<li><a class="reference internal" href="#uml-kernel-options-used-by-paella-init-script" id="id8">Uml Kernel Options used by paella-init script</a></li>
+<li><a class="reference internal" href="#user-mode-linux" id="id7">User Mode Linux</a><ul>
+<li><a class="reference internal" href="#uml-machine-configuration-file" id="id8">Uml Machine Configuration File</a></li>
+<li><a class="reference internal" href="#uml-kernel-options-used-by-paella-init-script" id="id9">Uml Kernel Options used by paella-init script</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#default-environment" id="id9">Default Environment</a></li>
+<li><a class="reference internal" href="#default-environment" id="id10">Default Environment</a></li>
 </ul>
 </div>
 </div>
 <div class="section" id="reserved-word-option-reference">
 <h1><a class="toc-backref" href="#id3">Reserved Word/Option Reference</a></h1>
+<div class="section" id="object-names">
+<h2><a class="toc-backref" href="#id4">Object Names</a></h2>
+<p>Generally, there are no capital letters in the names of any of the objects.  It
+is possibly ok to use capital letters, but has never been tested.  More specifically,
+all object names <strong>should</strong> be able to be used as python identifiers.  This means
+that they must not start with a number, or have a dash (-) in them.  This is not
+strictly enforced, and you may be able to get away with this in most circumstances.
+Even if you wish to use dashes in the names of traits, and families, you must not
+use them in variable names.  Also, you must not use colons (:) in the variable names
+either, as they are used to separate trait names and variable names in the templates
+and in the environment dictionaries.  As long as you stick to names that would be
+appropriate as python identifiers, you should be fine.</p>
+<p>A suite cannot be named &quot;diskconfig&quot;, &quot;families&quot;, &quot;machines&quot;, or &quot;profiles&quot;.
+These names are used as directories to import and export those objects.  It's
+recommended that a suite be a one word &quot;codename&quot; with all lowercase letters, like
+sid, sarge, or woody, but you can also use underscores in the name.  Every suite will
+have tables in the database prefixed by the name of the suite, so this must be taken
+into account, if you want to diverge from this naming convention.</p>
+</div>
 <div class="section" id="environment-variables-used-by-paella">
-<h2><a class="toc-backref" href="#id4">Environment Variables used by Paella</a></h2>
+<h2><a class="toc-backref" href="#id5">Environment Variables used by Paella</a></h2>
 <ul class="simple">
 <li>these are used to help override a configured db connection:<ul>
 <li><strong>PAELLA_DBHOST</strong> - hostname or ip of host paella database resides</li>
@@ -73,7 +93,7 @@ installer, but it is never read from the environment by paella.</li>
 </div>
 <hr class="docutils" />
 <div class="section" id="paellarc-configuration-file">
-<h2><a class="toc-backref" href="#id5">Paellarc Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id6">Paellarc Configuration File</a></h2>
 <p>I'm trying to move as much as possible from the paellarc file to
 the default environment in the database.
 (installer) means that the section or option is meaningful only to the installer code.
@@ -157,12 +177,12 @@ x_differ leftfile rightfile
 </div>
 <hr class="docutils" />
 <div class="section" id="user-mode-linux">
-<h1><a class="toc-backref" href="#id6">User Mode Linux</a></h1>
+<h1><a class="toc-backref" href="#id7">User Mode Linux</a></h1>
 <p>User mode linux is a great tool to help test paella, and installing configurations.
 However, since VT technology has come around and VM's run reasonably fast,
 maintainence of the uml related code will be a very low priority.</p>
 <div class="section" id="uml-machine-configuration-file">
-<h2><a class="toc-backref" href="#id7">Uml Machine Configuration File</a></h2>
+<h2><a class="toc-backref" href="#id8">Uml Machine Configuration File</a></h2>
 <p>This is the structure of the umlmachines.conf configuration file.
 Every section in this configuration file defines a uml machine, using
 the name of the section.</p>
@@ -180,7 +200,7 @@ machines.</li>
 </div>
 <hr class="docutils" />
 <div class="section" id="uml-kernel-options-used-by-paella-init-script">
-<h2><a class="toc-backref" href="#id8">Uml Kernel Options used by paella-init script</a></h2>
+<h2><a class="toc-backref" href="#id9">Uml Kernel Options used by paella-init script</a></h2>
 <p>These are the command line options understood by the paella-init for
 the user mode linux kernel.</p>
 <ul class="simple">
@@ -202,7 +222,7 @@ be removed soon.</li>
 </div>
 <hr class="docutils" />
 <div class="section" id="default-environment">
-<h1><a class="toc-backref" href="#id9">Default Environment</a></h1>
+<h1><a class="toc-backref" href="#id10">Default Environment</a></h1>
 <p>The default environment is a ini type configuration file stored in the database as the
 default_enviroment table.  A page describing the default enviroment can be found <a class="reference external" href="default-environment.html">here</a> .</p>
 <hr class="docutils" />

@@ -119,6 +119,7 @@ The rest of the widgets can be opened with the menubar at the top of the window.
 on the top menu bar.</p>
 <div class="section" id="manage-apt-sources">
 <h2><a class="toc-backref" href="#id6">Manage Apt Sources</a></h2>
+<img alt="images/apt_sources_widget.png" src="images/apt_sources_widget.png" />
 <p>This widget will let you add new apt sources to the database, to be used
 in the suites.  To add a new apt source, select an apt source from the
 list on the left, and press the &quot;New&quot; button on the toolbar.  The dialog
@@ -128,10 +129,10 @@ use this new apt source when you make a new suite.</p>
 <p>At the moment, there is no ability to update the apt sources, remove
 apt sources, or to change the apt sources for a suite.  Some of this
 functionality is planned for the future, but at a moderate to low priority.</p>
-<img alt="images/apt_sources_widget.png" src="images/apt_sources_widget.png" />
 </div>
 <div class="section" id="open-suite-manager">
 <h2><a class="toc-backref" href="#id7">Open Suite Manager</a></h2>
+<img alt="images/suite_manager_widget.png" src="images/suite_manager_widget.png" />
 <p>This widget will allow you to make new suites.  Use the new button on the
 toolbar to create a new suite.  A dialog window will appear, where the name
 of the new suite should be placed.  Once the name is set, another dialog will
@@ -139,7 +140,6 @@ appear that will let you select the apt sources for that suite.  The apt sources
 are listed by name in the dialog, and the order of the selected apt sources will
 be the order that they will appear in the /etc/apt/sources.list file on installed
 systems.</p>
-<img alt="images/suite_manager_widget.png" src="images/suite_manager_widget.png" />
 </div>
 <div class="section" id="manage-apt-keys">
 <h2><a class="toc-backref" href="#id8">Manage Apt Keys</a></h2>
@@ -196,15 +196,16 @@ Each of the sections in this file correspond to traits.</p>
 </div>
 <div class="section" id="trait-differ">
 <h3><a class="toc-backref" href="#id15">Trait Differ</a></h3>
+<img alt="images/trait_differ_widget.png" src="images/trait_differ_widget.png" />
 <p>The trait differ will let you diff either scripts or templates from any trait
 in any suite.  You will be presented two list views with combo boxes right
 below them.  The update buttons on the bottom will update the corresponding
 list view with the selections from the combo boxes.</p>
-<img alt="images/trait_differ_widget.png" src="images/trait_differ_widget.png" />
 </div>
 </div>
 <div class="section" id="environ">
 <h2><a class="toc-backref" href="#id16">Environ</a></h2>
+<img alt="images/default_environment_widget.png" src="images/default_environment_widget.png" />
 <p>This item has children and doesn't open a widget.  There are two
 environments that can be edited, the current environment, and the
 default environment.  The widgets simply display the rows in the
@@ -214,10 +215,10 @@ external editor will present the table in the form of a config file.</p>
 editors.  They correspond to the standard open and save actions
 that are found on most standard guis.  The file format for import
 and export is that of a config file.</p>
-<img alt="images/default_environment_widget.png" src="images/default_environment_widget.png" />
 </div>
 <div class="section" id="families">
 <h2><a class="toc-backref" href="#id17">Families</a></h2>
+<img alt="images/families_widget.png" src="images/families_widget.png" />
 <p>The families manager is a simple widget to help manage the
 families in the database.  You can create a new family by selecting
 &quot;New&quot; from the menu or toolbar.  To manage a family, you can select
@@ -230,7 +231,6 @@ assign parents to this family.  The &quot;Variables&quot; link will let you edit
 the variables for the family.</p>
 <p>Editing the variables is done in an external editor, and it uses
 a config file format, where all the sections are traits.</p>
-<img alt="images/families_widget.png" src="images/families_widget.png" />
 </div>
 <div class="section" id="machines">
 <h2><a class="toc-backref" href="#id18">Machines</a></h2>
@@ -248,6 +248,7 @@ a config file format, where all the sections are traits.</p>
 </div>
 <div class="section" id="profiles">
 <h2><a class="toc-backref" href="#id22">Profiles</a></h2>
+<img alt="images/profiles_widget.png" src="images/profiles_widget.png" />
 <p>The profile manager is a widget to help manage the profiles in the database.  The
 widget is a split window with a list of profiles on the lefthand side and an html
 view on the righthand side.  To create a new profile, select the &quot;New&quot; action from
@@ -273,7 +274,6 @@ file, where all of the sections are traits.</p>
 families won't be applied in any specific order, but parent families will be applied
 before the child families.</p>
 <p>At the bottom of the html view is a delete link that you can use to delete the profile.</p>
-<img alt="images/profiles_widget.png" src="images/profiles_widget.png" />
 </div>
 <div class="section" id="suites">
 <h2><a class="toc-backref" href="#id23">Suites</a></h2>
@@ -282,6 +282,7 @@ the names of suites and selecting one of them will open up a trait manager
 widget for that suite.</p>
 <div class="section" id="trait-manager">
 <h3><a class="toc-backref" href="#id24">Trait Manager</a></h3>
+<img alt="images/traits_widget.png" src="images/traits_widget.png" />
 <p>The trait manager is one of the widgets that will be used often, as it's the
 primary place where most of the important configuring will happen.  The widget
 is a split window with a list of traits on the lefthand side and an html view on the
@@ -387,7 +388,6 @@ window showing the contents of the script.  You can't edit the script with this 
 The second column is the &quot;(edit)&quot; link, and clicking on this will spawn the external
 editor and allow you to edit the script.  The last column is the &quot;(delete)&quot; link, and
 clicking on this will delete the script.</p>
-<img alt="images/traits_widget.png" src="images/traits_widget.png" />
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>
 </div>

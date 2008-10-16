@@ -117,7 +117,9 @@ how this website is maintained_.
 
 + Documentation_ for Paella.
 
-  - gui_ document
+  - gui_ document (very outdated)
+
+  - guide_ to using the paella-managment gui
 
   - known problems_ with paella.
 
@@ -197,3 +199,4 @@ Authors
 .. _installer: docs/installer.html
 .. _default-environment: docs/default-environment.html
 .. _Documentation: docs/index.html
+.. _guide: docs/gui-guide.html

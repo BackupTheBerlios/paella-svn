@@ -15,7 +15,7 @@
 <div class="section" id="database-schema">
 <h1>Database Schema</h1>
 <p>The database schema is not very complicated.</p>
-<p>The primary tables are:</p>
+<p>The <strong>primary tables</strong> are:</p>
 <ul class="simple">
 <li>textfiles<ul>
 <li>a table containing an id, md5sum, size, and
@@ -25,11 +25,25 @@ database.</li>
 </li>
 <li>scriptnames<ul>
 <li>a list of names for the scripts</li>
-<li>right now this defaults to the steps of the trait
-processes.</li>
 </ul>
 </li>
-<li>suites</li>
+<li>suites<ul>
+<li>just a list of suite names, the other columns are
+deprecated.</li>
+</ul>
+</li>
+<li>apt_sources<ul>
+<li>these are similar to the lines in /etc/apt/sources.list</li>
+</ul>
+</li>
+<li>suite_apt_sources<ul>
+<li>this table links apt sources to suites</li>
+</ul>
+</li>
+<li>apt_source_packages<ul>
+<li>a list of packages available for an apt-source</li>
+</ul>
+</li>
 <li>default_environment</li>
 <li>current_environment</li>
 <li>archive_keys</li>
@@ -135,7 +149,11 @@ global:timezone = &lt;--|global:area|--&gt;/&lt;--|global:zone|--&gt;
 <li><p class="first"><strong>family tables</strong></p>
 <ul class="simple">
 <li><a class="reference external" href="#family">families</a></li>
-<li>family_environment</li>
+<li>family_environment<ul>
+<li>this should be renamed to family_variables to match
+the naming of the other tables</li>
+</ul>
+</li>
 <li>family_parent</li>
 </ul>
 </li>

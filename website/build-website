@@ -54,7 +54,7 @@ def append_berlios_footer(fullpath):
 def buildpage(fullpath, targetpath='.'):
     infile = append_berlios_footer(fullpath)
     outfile = join(targetpath, '%s.html' % basename(fullpath))
-    print 'building', page
+    print 'building', page, outfile
     t = pipes.Template()
     cmd = '%s $IN' % rst_command
     t.prepend(cmd, 'f-')
@@ -66,6 +66,13 @@ def check_page(fullpath):
     smd5 = get_stored_md5sum(fullpath)
     if md5 != smd5:
         buildpage(fullpath)
+        store_page_md5sum(fullpath, md5)
+
+def check_doc_page(fullpath):
+    md5 = md5sum(file(fullpath))
+    smd5 = get_stored_md5sum(fullpath)
+    if md5 != smd5:
+        buildpage(fullpath, 'docs')
         store_page_md5sum(fullpath, md5)
     
 
@@ -82,5 +89,6 @@ for page in toppages:
 
 for page in docpages:
     check_page(join('src/docs', page))
-
+    #check_doc_page(join('src/docs', page))
+    
     

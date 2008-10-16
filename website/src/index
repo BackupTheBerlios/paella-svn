@@ -1,5 +1,6 @@
 .. -*- mode: rst -*-
 
+========
 Paella
 ========
 
@@ -110,25 +111,27 @@ Documentation
 
 `Quickstart guide using VirtualBox OSE`_ (almost finished)
 
-gui_ document
-
-known problems_ with paella.
-
 a little_ page on paella and FAI.
 
 how this website is maintained_.
 
-installer_
++ Documentation_ for Paella.
 
-objects_
+  - gui_ document
 
-configuration_
+  - known problems_ with paella.
 
-schema_
+  - installer_
 
-notes_ about paella
+  - objects_
 
-todo_ list for paella
+  - configuration_
+
+  - schema_
+
+  - notes_ about paella
+
+  - todo_ list for paella
 
 ---------------------------
 
@@ -170,9 +173,6 @@ Authors
 
 .. _paella: http://paella.berlios.de
 .. _project: http://developer.berlios.de/projects/paella
-.. _notes: notes.html
-.. _gui:   gui.html
-.. _todo:  todo.html
 .. _debian: http://debian.org
 .. _useless: http://useless.berlios.de
 .. _fai: http://www.informatik.uni-koeln.de/fai/
@@ -182,14 +182,18 @@ Authors
 .. _dfsg: http://www.debian.org/social_contract.html#guidelines
 .. _TOra: http://tora.sourceforge.net/
 .. _Joseph Rawson:  mailto:umeboshi3@gmail.com
-.. _problems: problems.html
 .. _tarball: http://download.berlios.de/paella/paella_0.7.31.tar.gz 
+.. _DebianLive: http://debian-live.alioth.debian.org/
+.. _todo:  todo.html
 .. _maintained: svnwebsite.html
 .. _little: fai.html
-.. _Quickstart guide using VirtualBox OSE: quickstart-vbox.html
-.. _objects: objects.html
-.. _configuration: configuration.html
-.. _schema: schema.html
-.. _installer: installer.html
-.. _default-environment: default-environment.html
-.. _DebianLive: http://debian-live.alioth.debian.org/
+.. _gui:   docs/gui.html
+.. _notes: docs/notes.html
+.. _problems: docs/problems.html
+.. _Quickstart guide using VirtualBox OSE: docs/quickstart-vbox.html
+.. _objects: docs/objects.html
+.. _configuration: docs/configuration.html
+.. _schema: docs/schema.html
+.. _installer: docs/installer.html
+.. _default-environment: docs/default-environment.html
+.. _Documentation: docs/index.html

@@ -1,15 +1,15 @@
 [md5sums]
-src/docs/index = 6ebc7e3d9eae447852e97c35f26337a6
+src/docs/installer = a810f1b11e2376346738c45e63eaa4a3
 src/todo = 99b03be95d31618c42f5478b59202040
 src/docs/abstract = cc9234a174ab328767edb91a015ad133
-src/docs/configuration = 856110b2c75a43500fb5e1b4bd3767e0
+src/docs/configuration = aaec33da0b9d29811b77223983ac6abd
 src/fai = 8f17188d1bfc703dafd7ba259fae96af
 src/svnwebsite = 24e5a5a2dc8354a5d64c749235a6e806
 src/docs/objects = 96c50ea844dd5328a5ac3ac948f6ea7a
 src/docs/gui = e5bdab166a4aeced537c1935e0c7b974
 src/docs/quickstart-vbox = c5f03383a822d147bccb91f17c223212
 src/docs/problems = b7c16ea3ab755dafa917de4a9c514900
-src/docs/installer = a810f1b11e2376346738c45e63eaa4a3
+src/docs/index = 6ebc7e3d9eae447852e97c35f26337a6
 src/docs/notes = d5a56242dd810edfc91268a00e622451
 src/defaultdb = 08862e2d7a2474272bea89b4075bc1c4
 src/docs/schema = 2fa92cbfb063a57e014f090d82311013

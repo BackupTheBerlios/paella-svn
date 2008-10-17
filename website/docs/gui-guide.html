@@ -38,24 +38,24 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#environ" id="id16">Environ</a></li>
-<li><a class="reference internal" href="#families" id="id17">Families</a></li>
-<li><a class="reference internal" href="#machines" id="id18">Machines</a><ul>
-<li><a class="reference internal" href="#manage-machines" id="id19">Manage Machines</a></li>
-<li><a class="reference internal" href="#manage-disk-configs" id="id20">Manage Disk Configs</a></li>
-<li><a class="reference internal" href="#manage-kernels" id="id21">Manage Kernels</a></li>
+<li><a class="reference internal" href="#suites" id="id17">Suites</a><ul>
+<li><a class="reference internal" href="#trait-manager" id="id18">Trait Manager</a><ul>
+<li><a class="reference internal" href="#description" id="id19">Description</a></li>
+<li><a class="reference internal" href="#parents" id="id20">Parents</a></li>
+<li><a class="reference internal" href="#packages" id="id21">Packages</a></li>
+<li><a class="reference internal" href="#templates" id="id22">Templates</a></li>
+<li><a class="reference internal" href="#variables" id="id23">Variables</a></li>
+<li><a class="reference internal" href="#scripts" id="id24">Scripts</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#profiles" id="id22">Profiles</a></li>
-<li><a class="reference internal" href="#suites" id="id23">Suites</a><ul>
-<li><a class="reference internal" href="#trait-manager" id="id24">Trait Manager</a><ul>
-<li><a class="reference internal" href="#description" id="id25">Description</a></li>
-<li><a class="reference internal" href="#parents" id="id26">Parents</a></li>
-<li><a class="reference internal" href="#packages" id="id27">Packages</a></li>
-<li><a class="reference internal" href="#templates" id="id28">Templates</a></li>
-<li><a class="reference internal" href="#variables" id="id29">Variables</a></li>
-<li><a class="reference internal" href="#scripts" id="id30">Scripts</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#profiles" id="id25">Profiles</a></li>
+<li><a class="reference internal" href="#families" id="id26">Families</a></li>
+<li><a class="reference internal" href="#machines" id="id27">Machines</a><ul>
+<li><a class="reference internal" href="#manage-machines" id="id28">Manage Machines</a></li>
+<li><a class="reference internal" href="#manage-disk-configs" id="id29">Manage Disk Configs</a></li>
+<li><a class="reference internal" href="#manage-kernels" id="id30">Manage Kernels</a></li>
 </ul>
 </li>
 </ul>
@@ -107,6 +107,7 @@ my_url:      http://&lt;--|another_trait:hostname|--&gt;.&lt;--|another_trait:do
 </div>
 <div class="section" id="paella-main-menu-window">
 <h1><a class="toc-backref" href="#id4">Paella Main Menu Window</a></h1>
+<img alt="images/main_menu_widget.png" src="images/main_menu_widget.png" />
 <p>The main menu window is a small window that is used to access the other widgets in
 the manager.  The main view is a list view that lists some of the available  widgets.
 Simply selecting one of the list items will open up one of the widgets, unless the item
@@ -216,72 +217,13 @@ editors.  They correspond to the standard open and save actions
 that are found on most standard guis.  The file format for import
 and export is that of a config file.</p>
 </div>
-<div class="section" id="families">
-<h2><a class="toc-backref" href="#id17">Families</a></h2>
-<img alt="images/families_widget.png" src="images/families_widget.png" />
-<p>The families manager is a simple widget to help manage the
-families in the database.  You can create a new family by selecting
-&quot;New&quot; from the menu or toolbar.  To manage a family, you can select
-one from the list on the left side of the widget.</p>
-<p>When a family is selected from the list, an html interface to the family
-will be presented on the right side.  At the bottom of the page is a
-&quot;delete&quot; link, which will let you delete the family.  There are two more
-links on this page, on table headers.  The &quot;Parents&quot; link will let you
-assign parents to this family.  The &quot;Variables&quot; link will let you edit
-the variables for the family.</p>
-<p>Editing the variables is done in an external editor, and it uses
-a config file format, where all the sections are traits.</p>
-</div>
-<div class="section" id="machines">
-<h2><a class="toc-backref" href="#id18">Machines</a></h2>
-<div class="section" id="manage-machines">
-<h3><a class="toc-backref" href="#id19">Manage Machines</a></h3>
-<img alt="images/machines_widget.png" src="images/machines_widget.png" />
-</div>
-<div class="section" id="manage-disk-configs">
-<h3><a class="toc-backref" href="#id20">Manage Disk Configs</a></h3>
-<img alt="images/diskconfig_widget.png" src="images/diskconfig_widget.png" />
-</div>
-<div class="section" id="manage-kernels">
-<h3><a class="toc-backref" href="#id21">Manage Kernels</a></h3>
-</div>
-</div>
-<div class="section" id="profiles">
-<h2><a class="toc-backref" href="#id22">Profiles</a></h2>
-<img alt="images/profiles_widget.png" src="images/profiles_widget.png" />
-<p>The profile manager is a widget to help manage the profiles in the database.  The
-widget is a split window with a list of profiles on the lefthand side and an html
-view on the righthand side.  To create a new profile, select the &quot;New&quot; action from
-the toolbar.  All new profiles will be based on the &quot;skeleton&quot; profile.  The skeleton
-profile can be configured in the ~/.paellarc file.</p>
-<p>When a profile is selected, information about the profile is presented on the right
-hand side of the window, in an html view.  At the top of the html view, the name of
-the profile is displayed, along with the suite it belongs to.  Clicking on the suite will
-display a dialog where you can change the suite that the profile belongs to.  Be
-careful that all the traits listed in the profile are in the suite that you select, or the
-profile won't be able to be installed.  At the moment, the application doesn't check
-to make sure that the traits listed in the profile are in the suite, but this is planned
-to be fixed in the future.</p>
-<p>You can click the &quot;Traits&quot; link to adjust the list of traits to be installed in the profile.
-It is not necesary to list every trait, since the parents of the traits that are listed will
-also be installed with the profile.  The installer will attempt to install the traits in the
-order that they are listed in, unless a parent trait is listed after its child.  In that case
-the parent will be installed before the child.</p>
-<p>You can click on the &quot;Variables&quot; link to add, remove, and alter variables for the profile.
-Clicking on this will spawn the external text editor, and the form will be as a config
-file, where all of the sections are traits.</p>
-<p>You can click on the &quot;Families&quot; link to add or remove families from the profile.  The
-families won't be applied in any specific order, but parent families will be applied
-before the child families.</p>
-<p>At the bottom of the html view is a delete link that you can use to delete the profile.</p>
-</div>
 <div class="section" id="suites">
-<h2><a class="toc-backref" href="#id23">Suites</a></h2>
+<h2><a class="toc-backref" href="#id17">Suites</a></h2>
 <p>This item has children and doesn't open a widget.  The children to this item are
 the names of suites and selecting one of them will open up a trait manager
 widget for that suite.</p>
 <div class="section" id="trait-manager">
-<h3><a class="toc-backref" href="#id24">Trait Manager</a></h3>
+<h3><a class="toc-backref" href="#id18">Trait Manager</a></h3>
 <img alt="images/traits_widget.png" src="images/traits_widget.png" />
 <p>The trait manager is one of the widgets that will be used often, as it's the
 primary place where most of the important configuring will happen.  The widget
@@ -291,7 +233,7 @@ the name of the new trait in the dialog that appears.  When you select a trait f
 the list on the lefthand side, the information for the trait will appear in the view on
 the righthand side.</p>
 <div class="section" id="description">
-<h4><a class="toc-backref" href="#id25">Description</a></h4>
+<h4><a class="toc-backref" href="#id19">Description</a></h4>
 <p>There are a lot of options in the trait view.  At the top of the view is the name of the
 trait.  Just below this are a couple of links for the description of the trait.  Selecting
 the &quot;(description)&quot; link will bring up an internal text editor where you can edit the
@@ -303,7 +245,7 @@ for every trait that is selected from the list on the lefthand side, until the &
 link is clicked.</p>
 </div>
 <div class="section" id="parents">
-<h4><a class="toc-backref" href="#id26">Parents</a></h4>
+<h4><a class="toc-backref" href="#id20">Parents</a></h4>
 <p>Below the description is the parents section.  There is an &quot;edit&quot; link on the right
 of the section header.  Selecting the &quot;edit&quot; link will allow you to assign parents
 to this trait.  Be careful when selecting the parents, as there are no guards against
@@ -312,7 +254,7 @@ Clicking on one of the parents will bring up a new trait manager widget with tha
 trait selected.</p>
 </div>
 <div class="section" id="packages">
-<h4><a class="toc-backref" href="#id27">Packages</a></h4>
+<h4><a class="toc-backref" href="#id21">Packages</a></h4>
 <p>Below the parents section is the packages section.  Here you can add and remove
 packages, and define actions for them.  On the right side of the packages header
 is a &quot;(new)&quot; link.  Selecting this will bring up a dialog where you enter the name of
@@ -323,7 +265,7 @@ time.  The delete link to the right of a package in the list of package will del
 package, and <em>all</em> of it's associated actions.</p>
 </div>
 <div class="section" id="templates">
-<h4><a class="toc-backref" href="#id28">Templates</a></h4>
+<h4><a class="toc-backref" href="#id22">Templates</a></h4>
 <p>Below the packages section is the templates section.  The templates section
 displays a list of templates to be installed on the target system.  Selecting the
 &quot;Templates&quot; link in the section will allow you to add templates to the trait.  When
@@ -366,7 +308,7 @@ variable will override this option.  The <strong>VISUAL</strong> variable isn't 
 link will allow you to delete the template from the database.</p>
 </div>
 <div class="section" id="variables">
-<h4><a class="toc-backref" href="#id29">Variables</a></h4>
+<h4><a class="toc-backref" href="#id23">Variables</a></h4>
 <p>Below the templates is the variables section.  Clicking on the &quot;Variables&quot; link in the
 section header will bring up the variable editor widget.  This is a very simple widget,
 and not fully functional.  You can only add and edit variables here, and not delete
@@ -374,7 +316,7 @@ them.  In the future this widget will probably be replaced by using an external 
 with the variables displayed in the form of a config file.</p>
 </div>
 <div class="section" id="scripts">
-<h4><a class="toc-backref" href="#id30">Scripts</a></h4>
+<h4><a class="toc-backref" href="#id24">Scripts</a></h4>
 <p>Below the variables section is the scripts section.  There is a &quot;new&quot; link on the right
 side of the section header.  Clicking this link will allow you to add a new script to the
 trait.  A dialog will appear, where you can select the name of the script.  The names
@@ -388,9 +330,143 @@ window showing the contents of the script.  You can't edit the script with this 
 The second column is the &quot;(edit)&quot; link, and clicking on this will spawn the external
 editor and allow you to edit the script.  The last column is the &quot;(delete)&quot; link, and
 clicking on this will delete the script.</p>
+</div>
+</div>
+</div>
+<div class="section" id="profiles">
+<h2><a class="toc-backref" href="#id25">Profiles</a></h2>
+<img alt="images/profiles_widget.png" src="images/profiles_widget.png" />
+<p>The profile manager is a widget to help manage the profiles in the database.  The
+widget is a split window with a list of profiles on the lefthand side and an html
+view on the righthand side.  To create a new profile, select the &quot;New&quot; action from
+the toolbar.  All new profiles will be based on the &quot;skeleton&quot; profile.  The skeleton
+profile can be configured in the ~/.paellarc file.</p>
+<p>When a profile is selected, information about the profile is presented on the right
+hand side of the window, in an html view.  At the top of the html view, the name of
+the profile is displayed, along with the suite it belongs to.  Clicking on the suite will
+display a dialog where you can change the suite that the profile belongs to.  Be
+careful that all the traits listed in the profile are in the suite that you select, or the
+profile won't be able to be installed.  At the moment, the application doesn't check
+to make sure that the traits listed in the profile are in the suite, but this is planned
+to be fixed in the future.</p>
+<p>You can click the &quot;Traits&quot; link to adjust the list of traits to be installed in the profile.
+It is not necesary to list every trait, since the parents of the traits that are listed will
+also be installed with the profile.  The installer will attempt to install the traits in the
+order that they are listed in, unless a parent trait is listed after its child.  In that case
+the parent will be installed before the child.</p>
+<p>You can click on the &quot;Variables&quot; link to add, remove, and alter variables for the profile.
+Clicking on this will spawn the external text editor, and the form will be as a config
+file, where all of the sections are traits.</p>
+<p>You can click on the &quot;Families&quot; link to add or remove families from the profile.  The
+families won't be applied in any specific order, but parent families will be applied
+before the child families.</p>
+<p>At the bottom of the html view is a delete link that you can use to delete the profile.</p>
+</div>
+<div class="section" id="families">
+<h2><a class="toc-backref" href="#id26">Families</a></h2>
+<img alt="images/families_widget.png" src="images/families_widget.png" />
+<p>The families manager is a simple widget to help manage the
+families in the database.  You can create a new family by selecting
+&quot;New&quot; from the menu or toolbar.  To manage a family, you can select
+one from the list on the left side of the widget.</p>
+<p>When a family is selected from the list, an html interface to the family
+will be presented on the right side.  At the bottom of the page is a
+&quot;delete&quot; link, which will let you delete the family.  There are two more
+links on this page, on table headers.  The &quot;Parents&quot; link will let you
+assign parents to this family.  The &quot;Variables&quot; link will let you edit
+the variables for the family.</p>
+<p>Editing the variables is done in an external editor, and it uses
+a config file format, where all the sections are traits.</p>
+</div>
+<div class="section" id="machines">
+<h2><a class="toc-backref" href="#id27">Machines</a></h2>
+<p>The machine management widget is actually three different widgets in a single
+&quot;shell&quot;.  The objects that will be managed can be selected by clicking on one of
+the icons on the toolbar, or by selecting it from the menu.  The &quot;New&quot; icon on the
+toolbar is used to add a new object, the type of which will depend on the manager
+that's currently being used.  With this widget, you can manage machines,
+diskconfigs, and kernels.</p>
+<div class="section" id="manage-machines">
+<h3><a class="toc-backref" href="#id28">Manage Machines</a></h3>
+<img alt="images/machines_widget.png" src="images/machines_widget.png" />
+<p>The machine manager is a split window with a list of machines on the lefthand
+side and an html view on the righthand side.  You can create a new machine by
+clicking on the &quot;New&quot; icon on the toolbar at the top. Selecting a machine from the
+list will display information about the machine in the view.  There are a lot of options
+that can be set for the machine.</p>
+<p>At the top, just below the name of the machine is where the parent for the machine
+is set.  Unlike traits and families, a machine can only have one parent.  Here you can
+either select a parent by clicking on the &quot;select&quot; link, or delete a parent from clicking
+on the &quot;delete&quot; link.</p>
+<p>Right below the table that displays the parent is the table that holds the main
+attributes of the machine.  These attributes are kernel, profile, and diskconfig.  If any
+of these attributes aren't set, the corresponding attribute of the parent will be used.
+If you click on one of the links for the attribute in the leftmost column, a dialog will
+appear where you can enter in the attribute.  The value column will display the value
+for the attribute.  If an attribute is not set for the machine, the value will be obtained
+from the closest parent machine.  The &quot;Inherited From&quot; column will display the name
+of the machine where the attribute is set.  If the attribute is set for the machine you're
+manipulating, the column will display &quot;(set here)&quot;, and in the &quot;Command&quot; column, a
+link will be present allowing you to clear the value.  If an attribute is not set in the
+machine you're managing, or anywhere in its ancestry, you will see a warning displayed
+in the value and &quot;Inherited From&quot; columns.  This is a warning, as the machine will
+probably fail to be installed if these attributes aren't set anywhere, but it's possible to
+install a machine if these are unset by having scripts set for the machine that manage
+installing the kernel, diskconfig, or profile, instead of relying on the default behaviour
+of paella.  The machine name links in the &quot;Inherited From&quot; column are meant to open
+an new machine manager with that machine selected, in a manner similar to selecting
+parent traits in the trait manager.  This is not implemented yet.</p>
+<p>Below the attributes table is the section for families.  You can add a new family to the
+machine by clicking the &quot;new&quot; link in the &quot;Families&quot; header on the right.  A dialog will
+appear where you can enter the name of a family to add to the machine.  In the table
+of familie, each row has an &quot;edit&quot; and &quot;delete&quot; link.  Clicking on the edit link will do
+nothing but display a dialog that this operation is not supported yet.  Clicking on the
+delete link will remove the family from the machine.  In the future, the families will be
+assigned in a manner similar to how they are assigned to the profiles.</p>
+<p>Just below the Families section is the Scripts section.  You can add a new script by
+selecting the &quot;new&quot; link on the right side of the section header.  The names of the
+scripts correspond to steps in the machine installer process.  The table of scripts
+will show the scripts that will be run by the machine installer, and the machine that
+the script is inherited from.  A script that is set for the machine will have &quot;(defined
+here)&quot; in the inherited column, and there will be &quot;edit&quot; and &quot;delete&quot; links in the
+command column on the right side of the table.  Clicking on the edit link will spawn an
+external editor where you can edit the script.  Clicking on the delete link will delete
+the script from the machine.</p>
+<p>Below the Scripts section is the Variables section.  Here you can set variables for the
+machine.  You can click on the &quot;new&quot; link to add a new variable.  This will display a
+dialog where you can enter the trait, name and value for the variable.  In the table of
+variables, in the command column exist &quot;edit&quot; and &quot;delete&quot; links.  You can click on the
+delete link to remove a variable from a machine.  Clicking on the edit link will spawn
+an external editor where you can edit the variables.  The form of the file in the editor
+will be a config file where the sections correspond to traits.</p>
+</div>
+<div class="section" id="manage-disk-configs">
+<h3><a class="toc-backref" href="#id29">Manage Disk Configs</a></h3>
+<img alt="images/diskconfig_widget.png" src="images/diskconfig_widget.png" />
+<p>The diskconfig manager is a split window with a list of diskconfigs on the lefthand
+side and an html view on the righthand side.  You can create a new diskconfig by
+clicking on the &quot;New&quot; icon on the toolbar at the top.  Selecting a diskconfig from the
+list will display the diskconfig in the view on the right.</p>
+<p>There are two links in the diskconfig view, &quot;edit&quot; and &quot;delete&quot;.  You can click on the
+delete link to delete the diskconfig.  Clicking on the edit link will spawn an external
+editor, where you can edit the diskconfig.</p>
+<p>The diskconfig manager is a very new widget.  This functionality was &quot;shoe-horned&quot;
+into the database, and while it's fully functional, it's still bare and basic.  I have not
+made too many plans on how to make better use of this yet, but I've decided that
+just having bare simple text files is insufficient.  It's possible that the templates
+could be made out of the diskconfigs, but the variables for the template tags won't
+be coming from the traits.  It's also possible that I may create new tables that can
+be used to generate a diskconfig.  I'm still up in the air on exactly which direction I
+want to take with how this will be implemented.  I do plan to always support a basic
+hardcoded diskconfig, but it would be nice to have a more flexible method of making
+diskconfigs.</p>
+<!-- make a link to the diskconfig document when it's ready -->
+</div>
+<div class="section" id="manage-kernels">
+<h3><a class="toc-backref" href="#id30">Manage Kernels</a></h3>
+<img alt="images/kernels_widget.png" src="images/kernels_widget.png" />
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>
 <p><a class="reference external" href="/">home</a></p>
-</div>
 </div>
 </div>
 </div>

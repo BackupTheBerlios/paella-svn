@@ -102,6 +102,8 @@ gtk->kde client todo
 
   - need to edit template data **done**
 
+  - need to be able to delete traits
+
 - profile manager
 
   - need to make new profiles, missing dialog to do so **done**
@@ -153,9 +155,9 @@ gtk->kde client todo
 
 - kernels widget
 
-  - need to add kernels
+  - need to add kernels **done**
 
-  - need to remove kernels
+  - need to remove kernels **done**
 
   
 

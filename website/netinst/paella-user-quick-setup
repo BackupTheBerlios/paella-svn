@@ -103,3 +103,25 @@ echo add \"export PYTHONPATH=$localpython\" to your .bashrc file
 
 echo "or source the paella_environment file that was just created in this directory"
 echo before using paella.
+
+cat <<EOF > ~/.screenrc
+chdir workspace
+screen -t local 0
+
+chdir /freespace/live
+screen -t live 1
+
+chdir /freespace/debian
+screen -t debian 2
+
+chdir /freespace/paellalog
+screen -t paellalog1 3
+
+chdir /freespace/paellalog
+screen -t paellalog2 4
+
+screen -t root 5
+
+
+
+EOF

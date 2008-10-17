@@ -115,25 +115,9 @@ a little_ page on paella and FAI.
 
 how this website is maintained_.
 
-+ Documentation_ for Paella.
+Documentation_ for Paella.
 
-  - gui_ document (very outdated)
-
-  - guide_ to using the paella-managment gui
-
-  - known problems_ with paella.
-
-  - installer_
-
-  - objects_
-
-  - configuration_
-
-  - schema_
-
-  - notes_ about paella
-
-  - todo_ list for paella
+Todo_ list for paella
 
 ---------------------------
 
@@ -186,7 +170,7 @@ Authors
 .. _Joseph Rawson:  mailto:umeboshi3@gmail.com
 .. _tarball: http://download.berlios.de/paella/paella_0.7.31.tar.gz 
 .. _DebianLive: http://debian-live.alioth.debian.org/
-.. _todo:  todo.html
+.. _Todo:  todo.html
 .. _maintained: svnwebsite.html
 .. _little: fai.html
 .. _gui:   docs/gui.html

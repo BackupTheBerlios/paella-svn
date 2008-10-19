@@ -14,7 +14,7 @@ LH_BINARY_INDICES="enabled"
 
 # $LH_BOOTAPPEND_LIVE: set boot parameters
 # (Default: empty)
-LH_BOOTAPPEND_LIVE=""
+LH_BOOTAPPEND_LIVE="timezone=America/Chicago utc=no"
 
 # $LH_BOOTAPPEND_INSTALL: set boot parameters
 # (Default: empty)
@@ -152,3 +152,7 @@ LH_SYSLINUX_MENU_MEMTEST_ENTRY="Memory test"
 # $LH_USERNAME: set username
 # (Default: installer)
 LH_USERNAME="installer"
+
+
+# to help make images quicker
+#MKSQUASHFS_OPTIONS="-noI -noD -noF"

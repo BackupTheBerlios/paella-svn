@@ -24,4 +24,5 @@ syslinux-common			install
 libapt-pkg-perl			install
 libparse-recdescent-perl	install
 liblinux-lvm-perl		install
+libnet-libidn-perl		install
 

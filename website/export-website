@@ -1,2 +1,3 @@
 #!/bin/bash
 ssh shell.berlios.de svn export --force --quiet svn://svn.berlios.de/paella/website /home/groups/paella/htdocs
+ssh shell.berlios.de svn export --force --quiet svn://svn.berlios.de/paella/trunk/docs /home/groups/paella/htdocs/src/docs

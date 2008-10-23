@@ -7,6 +7,10 @@ echo "copying scripts to /usr/local/bin"
 cp /cdrom/setup-paella-server /target/usr/local/bin
 cp /cdrom/paella-user-quick-setup /target/usr/local/bin
 
+echo "copying paella config files to /usr/local/share/paella"
+cp -a /cdrom/paella /target/usr/local/share/
+chmod -R +w /usr/local/share/paella
+
 echo "copying logs to /target/root/"
 cp -a /var/log  /target/root/install-logs
 cp -a /var/lib/preseed /target/root/install-preseed

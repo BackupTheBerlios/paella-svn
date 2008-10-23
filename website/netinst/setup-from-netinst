@@ -12,6 +12,10 @@ echo "copying paella config files to /usr/local/share/paella"
 cp -a /cdrom/paella /target/usr/local/share/
 chmod -R +w /target/usr/local/share/paella
 
+# if we run this here, we build modules for the installer kernel
+# which may be different than the default installed kernel
+#chroot /target module-assistant -t -i auto-install virtualbox-ose-guest-source
+
 echo "copying logs to /target/root/"
 cp -a /var/log  /target/root/install-logs
 cp -a /var/lib/preseed /target/root/install-preseed

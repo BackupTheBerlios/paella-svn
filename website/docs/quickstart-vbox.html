@@ -477,7 +477,13 @@ cat paella_environment &gt;&gt; .bashrc
 <p>This is optional, as it's only needed to work with the code, and possibly fix bugs that you
 encounter.</p>
 <p><strong>Important:</strong>  You need to cut and paste the apt-get command from the output
-of the script, to build all of the paella and python-useless-* packages.</p>
+of the script, to build all of the paella and python-useless-* packages.  The command
+should be</p>
+<pre class="literal-block">
+sudo apt-get install build-essential cdbs devscripts python-docutils \
+python-all-dev live-helper dosfstools memtest86+ parted squashfs-tools \
+genext2fs mtd-tools syslinux uuid-runtime
+</pre>
 </div>
 <div class="section" id="build-paella-packages-from-source-tree">
 <h2><a class="toc-backref" href="#id19">Build paella packages from source tree</a></h2>

@@ -30,7 +30,7 @@ paragraph is removed.  This will probably happen soon after lenny is released.</
 <li><a class="reference internal" href="#hardware" id="id6">Hardware</a></li>
 <li><a class="reference internal" href="#virtualbox-ose" id="id7">VirtualBox OSE</a></li>
 <li><a class="reference internal" href="#networking" id="id8">Networking</a></li>
-<li><a class="reference internal" href="#debian-netinst-cd-image-lennybeta2" id="id9">Debian Netinst CD Image (LennyBeta2)</a></li>
+<li><a class="reference internal" href="#debian-netinst-cd-image-lenny" id="id9">Debian Netinst CD Image (Lenny)</a></li>
 <li><a class="reference internal" href="#remaster-the-netinst-iso" id="id10">Remaster the netinst iso</a></li>
 </ul>
 </li>
@@ -129,10 +129,10 @@ ip's.  If you can't use the 10.0.1.0 network, I recommend that you still use som
 the 10.0.x.0 network.  I have tested the quickstart while changing the network to 10.0.x.0, and
 it appears to work without problems.</p>
 </div>
-<div class="section" id="debian-netinst-cd-image-lennybeta2">
-<h2><a class="toc-backref" href="#id9">Debian Netinst CD Image (LennyBeta2)</a></h2>
-<p>The upcoming lenny release is what is currently supported.  You should get the netinst iso,
-which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/cdimage/lenny_di_beta2/i386/iso-cd/debian-LennyBeta2-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
+<div class="section" id="debian-netinst-cd-image-lenny">
+<h2><a class="toc-backref" href="#id9">Debian Netinst CD Image (Lenny)</a></h2>
+<p>The stable (lenny) release is what is currently supported.  You should get the netinst iso,
+which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/debian-cd/5.0.0/i386/iso-cd/debian-500-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll
 be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.</p>
 </div>
@@ -495,7 +495,8 @@ useless package.  Pay attention to the lines below, as you won't be able to just
 these lines:</p>
 <pre class="literal-block">
 cd ~/workspace/useless
-dch -n  # This will create an NMU (Non-maintainer upload)
+dch --bpo # This will create an backport version that
+# won't interfere with newer versions
 # type something like &quot;testing paella&quot; to the right of the asterisk
 # save the file in the text editor
 debuild
@@ -504,7 +505,8 @@ reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../usele
 <p>Repeat this process for paella:</p>
 <pre class="literal-block">
 cd ~/workspace/paella
-dch -n  # This will create an NMU (Non-maintainer upload)
+dch --bpo # This will create an backport version that
+# won't interfere with newer versions
 # type something like &quot;testing paella&quot; to the right of the asterisk
 # save the file in the text editor
 debuild

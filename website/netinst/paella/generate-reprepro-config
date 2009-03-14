@@ -1,0 +1,190 @@
+#!/usr/bin/python -i
+import os, sys
+import subprocess
+import random
+
+DPKG_ARCH_BINARY = "/usr/bin/dpkg-architecture"
+USER = os.environ['USER']
+REPREPRO_BASE = '/freespace/debian'
+REPREPRO_BASE = './'
+REPREPRO_CONF_DIR = os.path.join(REPREPRO_BASE, 'conf')
+DEBIAN_REPOS_KEYID = '6070D3A1'
+
+def get_arch():
+    proc = subprocess.Popen([DPKG_ARCH_BINARY], stdout=subprocess.PIPE)
+    arch_line = None
+    for line in proc.stdout:
+        if line.startswith('DEB_HOST_ARCH='):
+            arch_line = line.strip()
+            arch = arch_line.split('=')[1]
+    if arch_line is None:
+        raise RuntimeError , 'Host architecture not found.'
+    return arch
+
+def generate_gpg_key(batchinfo):
+    keygen_proc = subprocess.Popen(['gpg', '--gen-key', '--batch'],
+                                   stdin=subprocess.PIPE)
+    keygen_proc.stdin.write(batchinfo)
+    keygen_proc.stdin.close()
+    findcmd = ['find', '/usr', '-type', 'f']
+    #find_proc = subprocess.Popen(findcmd, stdout=subprocess.PIPE)
+    #retcode = keygen_proc.wait()
+    #if retcode:
+    #    raise RuntimeError , "GPG returned %d" % retcode
+    #count = 0
+    #nullfile = file(os.devnull, 'w')
+    #while keygen_proc.poll() is None:
+    #    count += 1
+        
+    #    filename = find_proc.stdout.next().strip()
+    #    shacmd = ['sha256sum', filename]
+    #    subprocess.call(shacmd, stdout=nullfile)
+    #    #print count
+    #while find_proc.poll() is None:
+    #    print "key should be done, finishing find command"
+    #    filename = find_proc.stdout.next().strip()
+    retcode = keygen_proc.wait()
+    if retcode:
+        raise RuntimeError , "GPG returned %d" % retcode
+    
+#gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+def get_gpg_keyid(username=USER):
+    cmd = ['gpg', '--list-key', username]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    pub_line = None
+    for line in proc.stdout:
+        if line.startswith('pub'):
+            pub_line = line.strip()
+            pub, size_id, kdate = pub_line.split()
+            keyid = size_id.split('/')[1]
+    if pub_line is None:
+        raise RuntimeError , 'gpg key not found'
+    return keyid
+
+def gpg_recv_key(keyid):
+    cmd = ['gpg', '--recv-keys', keyid]
+    subprocess.check_call(cmd)
+
+def gpg_export_key(keyid, filename):
+    cmd = ['gpg', '--export', '-a', keyid]
+    subprocess.check_call(cmd, stdout=file(filename, 'w'))
+    
+# perform system checks
+
+if not os.path.isfile(DPKG_ARCH_BINARY):
+    raise RuntimeError , "%s not found, aborting." % DPKG_ARCH_BINARY
+else:
+    print "%s located." % DPKG_ARCH_BINARY 
+
+# make sure reprepro conf directory exists
+if not os.path.isdir(REPREPRO_CONF_DIR):
+    os.mkdir(REPREPRO_CONF_DIR)
+
+gpg_keygen_batchfile = """Key-Type: DSA
+Key-Length: 1024
+Subkey-Type: ELG-E
+Subkey-Length: 2048
+Name-Real: Paella User
+Name-Email: paella@paella
+Name-Comment: Example Repository Key (INSECURE)
+Expire-Date: 0
+%commit
+"""
+
+def genkey():
+    return generate_gpg_key(gpg_keygen_batchfile)
+
+genkey()
+gpg_recv_key(DEBIAN_REPOS_KEYID)
+
+
+# generate configuration
+arch = get_arch()
+keyid = get_gpg_keyid(username=USER)
+
+template_data = dict(arch=arch, keyid=keyid)
+
+# distribution stanzas
+
+debian_stanza = """Origin: Debian
+Label: Debian
+Suite: stable
+Version: 5.0
+Codename: lenny
+Architectures: %(arch)s
+Components: main contrib non-free
+Description: Partial Debian Mirror
+Log: logfile
+Update: lenny lenny-security
+SignWith: %(keyid)s
+"""
+
+paella_stanza = """Origin: Paella
+Label: Paella
+Suite: paella
+Version: None
+Codename: paella
+Architectures: %(arch)s source
+Components: main contrib non-free
+Log: logfile
+Update: sid-fai
+SignWith: %(keyid)s
+"""
+
+# update stanzas
+
+lenny_update_stanza = """Name: lenny
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Architectures: %(arch)s
+Components: main contrib non-free
+UDebComponents: none
+FilterList: deinstall startup-packages extra-packages local-packages
+"""
+
+security_update_stanza = """Name: lenny-security
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Codename: lenny/updates
+Architectures: %(arch)s
+Components: main contrib non-free
+UDebComponents: none
+FilterList: deinstall startup-packages extra-packages local-packages
+"""
+
+sid_fai_update_stanza = """Name: sid-fai
+Method: http://ftp.us.debian.org/debian
+Fallback: http://ftp.de.debian.org/debian
+VerifyRelease: 6070D3A1
+Codename: sid
+Architectures: %(arch)s
+Components: main contrib non-free
+UDebComponents: none
+FilterList: deinstall sid-fai
+"""
+
+# make distributions file
+distfilename = os.path.join(REPREPRO_CONF_DIR, 'distributions')
+
+distfile = file(distfilename, 'w')
+distfile.write(debian_stanza % template_data)
+distfile.write('\n')
+distfile.write(paella_stanza % template_data)
+distfile.close()
+
+
+# make updates file
+
+updates_filename = os.path.join(REPREPRO_CONF_DIR, 'updates')
+updates_file = file(updates_filename, 'w')
+updates_file.write(lenny_update_stanza % template_data)
+updates_file.write('\n')
+updates_file.write(security_update_stanza % template_data)
+updates_file.write('\n')
+updates_file.write(sid_fai_update_stanza % template_data)
+updates_file.close()
+
+
+gpg_export_key(keyid, 'testfile.gpg')

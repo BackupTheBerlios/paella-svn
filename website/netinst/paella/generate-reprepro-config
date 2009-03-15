@@ -6,7 +6,6 @@ import random
 DPKG_ARCH_BINARY = "/usr/bin/dpkg-architecture"
 USER = os.environ['USER']
 REPREPRO_BASE = '/freespace/debian'
-REPREPRO_BASE = './'
 REPREPRO_CONF_DIR = os.path.join(REPREPRO_BASE, 'conf')
 DEBIAN_REPOS_KEYID = '6070D3A1'
 
@@ -21,32 +20,6 @@ def get_arch():
         raise RuntimeError , 'Host architecture not found.'
     return arch
 
-def generate_gpg_key(batchinfo):
-    keygen_proc = subprocess.Popen(['gpg', '--gen-key', '--batch'],
-                                   stdin=subprocess.PIPE)
-    keygen_proc.stdin.write(batchinfo)
-    keygen_proc.stdin.close()
-    findcmd = ['find', '/usr', '-type', 'f']
-    #find_proc = subprocess.Popen(findcmd, stdout=subprocess.PIPE)
-    #retcode = keygen_proc.wait()
-    #if retcode:
-    #    raise RuntimeError , "GPG returned %d" % retcode
-    #count = 0
-    #nullfile = file(os.devnull, 'w')
-    #while keygen_proc.poll() is None:
-    #    count += 1
-        
-    #    filename = find_proc.stdout.next().strip()
-    #    shacmd = ['sha256sum', filename]
-    #    subprocess.call(shacmd, stdout=nullfile)
-    #    #print count
-    #while find_proc.poll() is None:
-    #    print "key should be done, finishing find command"
-    #    filename = find_proc.stdout.next().strip()
-    retcode = keygen_proc.wait()
-    if retcode:
-        raise RuntimeError , "GPG returned %d" % retcode
-    
 #gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
 def get_gpg_keyid(username=USER):
     cmd = ['gpg', '--list-key', username]
@@ -69,6 +42,34 @@ def gpg_export_key(keyid, filename):
     cmd = ['gpg', '--export', '-a', keyid]
     subprocess.check_call(cmd, stdout=file(filename, 'w'))
     
+def initialize_debian_repository(basedir):
+    if not os.path.isdir(basedir):
+        cmd = ['sudo', 'mkdir', basedir]
+        subprocess.check_call(cmd)
+    aptmove_dir = os.path.join(basedir, '.apt-move')
+    dists_dir = os.path.join(basedir, 'dists')
+    commands = [['sudo', 'apt-move', 'update'],
+                ['sudo', 'rm', aptmove_dir, '-fr'],
+                ['sudo', 'rm', dists_dir, '-fr']]
+    for command in commands:
+        subprocess.check_call(command)
+    here = os.getcwd()
+    os.chdir('/freespace/debian')
+    subprocess.check_call(['sudo', 'chown', '-R', 'paella:staff', '.'])
+    os.chdir(here)
+    os.mkdir('/freespace/debian/conf')
+    outfile = file('/freespace/debian/conf/local-packages', 'w')
+    subprocess.check_call(['dpkg', '--get-selections'], stdout=outfile)
+    outfile.close()
+    listfiles = ['extra-packages', 'startup-packages', 'sid-fai']
+    for listfile in listfiles:
+        fullpath = os.path.join('/usr/local/share/paella/reprepro', listfile)
+        cmd = ['cp', fullpath, '/freespace/debian/conf']
+        subprocess.check_call(cmd)
+        confpath = os.path.join('/freespace/debian/conf', listfile)
+        subprocess.check_call(['chmod', '+w', confpath])
+        
+
 # perform system checks
 
 if not os.path.isfile(DPKG_ARCH_BINARY):
@@ -76,33 +77,27 @@ if not os.path.isfile(DPKG_ARCH_BINARY):
 else:
     print "%s located." % DPKG_ARCH_BINARY 
 
+# initialize_debian_repository
+initialize_debian_repository(REPREPRO_BASE)
+
 # make sure reprepro conf directory exists
 if not os.path.isdir(REPREPRO_CONF_DIR):
     os.mkdir(REPREPRO_CONF_DIR)
 
-gpg_keygen_batchfile = """Key-Type: DSA
-Key-Length: 1024
-Subkey-Type: ELG-E
-Subkey-Length: 2048
-Name-Real: Paella User
-Name-Email: paella@paella
-Name-Comment: Example Repository Key (INSECURE)
-Expire-Date: 0
-%commit
-"""
-
-def genkey():
-    return generate_gpg_key(gpg_keygen_batchfile)
-
-genkey()
+# import official debian archive key
 gpg_recv_key(DEBIAN_REPOS_KEYID)
 
 
 # generate configuration
 arch = get_arch()
 keyid = get_gpg_keyid(username=USER)
+main_mirror = 'http://ftp.us.debian.org/debian'
+fallback_mirror = 'http://ftp.de.debian.org/debian'
+security_mirror = 'http://security.debian.org/'
 
-template_data = dict(arch=arch, keyid=keyid)
+template_data = dict(arch=arch, keyid=keyid,
+                     main_mirror=main_mirror, fallback_mirror=fallback_mirror,
+                     security_mirror=security_mirror)
 
 # distribution stanzas
 
@@ -134,8 +129,8 @@ SignWith: %(keyid)s
 # update stanzas
 
 lenny_update_stanza = """Name: lenny
-Method: http://ftp.us.debian.org/debian
-Fallback: http://ftp.de.debian.org/debian
+Method: %(main_mirror)s
+Fallback: %(fallback_mirror)s
 VerifyRelease: 6070D3A1
 Architectures: %(arch)s
 Components: main contrib non-free
@@ -144,10 +139,9 @@ FilterList: deinstall startup-packages extra-packages local-packages
 """
 
 security_update_stanza = """Name: lenny-security
-Method: http://ftp.us.debian.org/debian
-Fallback: http://ftp.de.debian.org/debian
+Method: %(security_mirror)s
 VerifyRelease: 6070D3A1
-Codename: lenny/updates
+Suite: lenny/updates
 Architectures: %(arch)s
 Components: main contrib non-free
 UDebComponents: none
@@ -155,15 +149,17 @@ FilterList: deinstall startup-packages extra-packages local-packages
 """
 
 sid_fai_update_stanza = """Name: sid-fai
-Method: http://ftp.us.debian.org/debian
-Fallback: http://ftp.de.debian.org/debian
+Method: %(main_mirror)s
+Fallback: %(fallback_mirror)s
 VerifyRelease: 6070D3A1
-Codename: sid
+Suite: sid
 Architectures: %(arch)s
 Components: main contrib non-free
 UDebComponents: none
 FilterList: deinstall sid-fai
 """
+
+
 
 # make distributions file
 distfilename = os.path.join(REPREPRO_CONF_DIR, 'distributions')
@@ -174,6 +170,7 @@ distfile.write('\n')
 distfile.write(paella_stanza % template_data)
 distfile.close()
 
+print "Created", distfilename
 
 # make updates file
 
@@ -186,5 +183,17 @@ updates_file.write('\n')
 updates_file.write(sid_fai_update_stanza % template_data)
 updates_file.close()
 
+print "Created", updates_filename
 
-gpg_export_key(keyid, 'testfile.gpg')
+gpgfilename = os.path.join(REPREPRO_BASE, 'paella.gpg')
+gpg_export_key(keyid, gpgfilename)
+
+print "Exported", gpgfilename
+
+here = os.getcwd()
+os.chdir(REPREPRO_BASE)
+
+print "Updating Debian Repository"
+subprocess.check_call(['reprepro', '-VV', '--noskipold', 'update'])
+
+print "Local Repository Updated"

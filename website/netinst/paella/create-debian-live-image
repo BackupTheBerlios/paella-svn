@@ -1,0 +1,73 @@
+#!/usr/bin/python -i
+import os, sys
+import subprocess
+import random
+
+DPKG_ARCH_BINARY = "/usr/bin/dpkg-architecture"
+USER = os.environ['USER']
+DEBIAN_REPOS_KEYID = '6070D3A1'
+DEBIAN_LIVE_BASEDIR = '/freespace/live'
+DEBIAN_LIVE_CONFDIR = os.path.join(DEBIAN_LIVE_BASEDIR, 'config')
+PAELLA_LIVE_INIT_CONFDIR = '/usr/local/share/paella/live-config'
+
+def get_arch():
+    proc = subprocess.Popen([DPKG_ARCH_BINARY], stdout=subprocess.PIPE)
+    arch_line = None
+    for line in proc.stdout:
+        if line.startswith('DEB_HOST_ARCH='):
+            arch_line = line.strip()
+            arch = arch_line.split('=')[1]
+    if arch_line is None:
+        raise RuntimeError , 'Host architecture not found.'
+    return arch
+
+#gpg --fingerprint "Paella User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+def get_gpg_keyid(username=USER):
+    cmd = ['gpg', '--list-key', username]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    pub_line = None
+    for line in proc.stdout:
+        if line.startswith('pub'):
+            pub_line = line.strip()
+            pub, size_id, kdate = pub_line.split()
+            keyid = size_id.split('/')[1]
+    if pub_line is None:
+        raise RuntimeError , 'gpg key not found'
+    return keyid
+
+def gpg_export_key(keyid, filename):
+    cmd = ['gpg', '--export', '-a', keyid]
+    subprocess.check_call(cmd, stdout=file(filename, 'w'))
+    
+def initialize_debian_live_config():
+    cmd = ['cp', '-a', PAELLA_LIVE_INIT_CONFDIR, DEBIAN_LIVE_CONFDIR]
+    subprocess.check_call(cmd)
+    cmd = ['chmod', '+w', '-R', DEBIAN_LIVE_CONFDIR]
+    subprocess.check_call(cmd)
+    keyid = get_gpg_keyid(username=USER)
+    keyfilename = os.path.join(DEBIAN_LIVE_CONFDIR, 'chroot_sources/paella.chroot.gpg')
+    gpg_export_key(keyid, keyfilename)
+        
+
+def build_live_image():
+    here = os.getcwd()
+    os.chdir(DEBIAN_LIVE_BASEDIR)
+    subprocess.check_call(['sudo', 'lh_clean'])
+    subprocess.check_call(['sudo', 'lh_build'])
+    subprocess.check_call(['sudo', './config/prepare-netboot'])
+    
+# perform system checks
+
+if not os.path.isfile(DPKG_ARCH_BINARY):
+    raise RuntimeError , "%s not found, aborting." % DPKG_ARCH_BINARY
+else:
+    print "%s located." % DPKG_ARCH_BINARY 
+
+
+# initialize debian live build area
+initialize_debian_live_config()
+print "Finished setting up live area"
+
+print "Building live image"
+build_live_image()
+print "Finished building live image"

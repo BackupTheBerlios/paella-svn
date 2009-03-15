@@ -38,6 +38,18 @@ def gpg_recv_key(keyid):
     cmd = ['gpg', '--recv-keys', keyid]
     subprocess.check_call(cmd)
 
+def apt_key_export(keyid, filename):
+    pass
+
+def import_apt_key(keyid):
+    export_cmd = ['sudo', 'apt-key', 'export', keyid]
+    import_cmd = ['gpg', '--import']
+    export_proc = subprocess.Popen(export_cmd, stdout=subprocess.PIPE)
+    import_proc = subprocess.Popen(import_cmd, stdin=export_proc.stdout)
+    retcode = import_proc.wait()
+    if retcode:
+        raise RuntimeError , "gpg returned %d" % retcode
+    
 def gpg_export_key(keyid, filename):
     cmd = ['gpg', '--export', '-a', keyid]
     subprocess.check_call(cmd, stdout=file(filename, 'w'))
@@ -80,27 +92,37 @@ else:
 # initialize_debian_repository
 initialize_debian_repository(REPREPRO_BASE)
 
+# export key to local repository
+keyid = get_gpg_keyid(username=USER)
+gpgfilename = os.path.join(REPREPRO_BASE, 'paella.gpg')
+gpg_export_key(keyid, gpgfilename)
+print "Exported", gpgfilename
+
+
+# add key to apt
+print "Adding paella repository key to apt..."
+subprocess.check_call(['sudo', 'apt-key', 'add', gpgfilename])
+
 # make sure reprepro conf directory exists
 if not os.path.isdir(REPREPRO_CONF_DIR):
     os.mkdir(REPREPRO_CONF_DIR)
 
-# import official debian archive key
-gpg_recv_key(DEBIAN_REPOS_KEYID)
+# import official debian archive key to personal keyring
+#gpg_recv_key(DEBIAN_REPOS_KEYID)
+import_apt_key(DEBIAN_REPOS_KEYID)
 
 
 # generate configuration
 arch = get_arch()
-keyid = get_gpg_keyid(username=USER)
 main_mirror = 'http://ftp.us.debian.org/debian'
 fallback_mirror = 'http://ftp.de.debian.org/debian'
 security_mirror = 'http://security.debian.org/'
-
+# keyid defined just above
 template_data = dict(arch=arch, keyid=keyid,
                      main_mirror=main_mirror, fallback_mirror=fallback_mirror,
                      security_mirror=security_mirror)
 
 # distribution stanzas
-
 debian_stanza = """Origin: Debian
 Label: Debian
 Suite: stable
@@ -127,7 +149,6 @@ SignWith: %(keyid)s
 """
 
 # update stanzas
-
 lenny_update_stanza = """Name: lenny
 Method: %(main_mirror)s
 Fallback: %(fallback_mirror)s
@@ -163,17 +184,14 @@ FilterList: deinstall sid-fai
 
 # make distributions file
 distfilename = os.path.join(REPREPRO_CONF_DIR, 'distributions')
-
 distfile = file(distfilename, 'w')
 distfile.write(debian_stanza % template_data)
 distfile.write('\n')
 distfile.write(paella_stanza % template_data)
 distfile.close()
-
 print "Created", distfilename
 
 # make updates file
-
 updates_filename = os.path.join(REPREPRO_CONF_DIR, 'updates')
 updates_file = file(updates_filename, 'w')
 updates_file.write(lenny_update_stanza % template_data)
@@ -182,18 +200,12 @@ updates_file.write(security_update_stanza % template_data)
 updates_file.write('\n')
 updates_file.write(sid_fai_update_stanza % template_data)
 updates_file.close()
-
 print "Created", updates_filename
 
-gpgfilename = os.path.join(REPREPRO_BASE, 'paella.gpg')
-gpg_export_key(keyid, gpgfilename)
-
-print "Exported", gpgfilename
-
-here = os.getcwd()
-os.chdir(REPREPRO_BASE)
-
+# update repository
 print "Updating Debian Repository"
-subprocess.check_call(['reprepro', '-VV', '--noskipold', 'update'])
-
+subprocess.check_call(['reprepro', '-b', REPREPRO_BASE,
+                       '-VV', '--noskipold', 'update'])
 print "Local Repository Updated"
+
+

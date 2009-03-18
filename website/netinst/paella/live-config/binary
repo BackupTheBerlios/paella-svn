@@ -66,12 +66,12 @@ LH_ISO_APPLICATION="Debian Live"
 LH_ISO_PREPARER="live-helper $VERSION; http://packages.qa.debian.org/live-helper"
 
 # $LH_ISO_PUBLISHER: set iso publisher
-# (Default: Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org)
-LH_ISO_PUBLISHER="Debian Live project; http://debian-live.alioth.debian.org/; debian-live-devel@lists.alioth.debian.org"
+# (Default: Debian Live project; http://debian-live.alioth.debian.org/; debian-live@lists.debian.org)
+LH_ISO_PUBLISHER="Debian Live project; http://debian-live.alioth.debian.org/; debian-live@lists.debian.org"
 
 # $LH_ISO_VOLUME: set iso volume (max 32 chars)
-# (Default: Debian Live $(date +%Y%m%d-%H:%M))
-LH_ISO_VOLUME="Debian Live $(date +%Y%m%d-%H:%M)"
+# (Default: Debian Live lenny $(date +%Y%m%d-%H:%M))
+LH_ISO_VOLUME="Debian Live lenny $(date +%Y%m%d-%H:%M)"
 
 # $LH_JFFS2_ERASEBLOCK: set jffs2 eraseblock size
 # (Default: unset)
@@ -82,8 +82,8 @@ LH_JFFS2_ERASEBLOCK=""
 LH_MEMTEST="memtest86+"
 
 # $LH_WIN32_LOADER: set win32-loader
-# (Default: enabled)
-LH_WIN32_LOADER="enabled"
+# (Default: disabled)
+LH_WIN32_LOADER="disabled"
 
 # $LH_NET_ROOT_FILESYSTEM: set netboot filesystem
 # (Default: nfs)

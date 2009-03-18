@@ -1,0 +1,101 @@
+#!/usr/bin/env python
+import os
+import subprocess
+
+def svn_checkout(project):
+    cmd = ['svn', 'co', 'svn://svn.berlios.de/%s/trunk' % project, project]
+    subprocess.check_call(cmd)
+    
+
+HOME = os.environ['HOME']
+
+localpython = os.path.join(HOME, 'local/python')
+workspace = os.path.join(HOME, 'workspace')
+binpath = os.path.join(HOME, 'bin')
+
+map(os.makedirs, [localpython, workspace, binpath])
+
+
+packages = ['python-support', 'build-essential', 'cdbs',
+            'devscripts', 'python-docutils', 'python-all-dev',
+            'live-helper', 'dosfstools', 'memtest86+',
+            'parted', 'squashfs-tools', 'genext2fs', 'mtd-tools',
+            'syslinux', 'uuid-runtime']
+
+here = os.getcwd()
+os.chdir(workspace)
+if not os.path.isdir('paella'):
+    svn_checkout('paella')
+if not os.path.isdir('useless'):
+    svn_checkout('useless')
+
+os.chdir(localpython)
+if not os.path.isdir('paella'):
+    subprocess.check_call(['ln', '-s', os.path.join(workspace, 'paella/src/paella')])
+
+if not os.path.isdir('useless'):
+    subprocess.check_call(['ln', '-s', os.path.join(workspace, 'useless/useless')])
+    
+
+os.chdir(HOME)
+
+screenrc_data = """chdir workspace
+screen -t local 0
+
+chdir /freespace/live
+screen -t live 1
+
+chdir /freespace/debian
+screen -t debian 2
+
+chdir /freespace/paellalog
+screen -t paellalog1 3
+
+chdir /freespace/paellalog
+screen -t paellalog2 4
+
+screen -t root 5
+
+"""
+
+screenrc_filename = os.path.join(HOME, '.screenrc')
+screenrc_file = file(screenrc_filename, 'w')
+screenrc_file.write(screenrc_data)
+screenrc_file.close()
+
+install_cmd = ['sudo', 'apt-get', '-y', 'install'] + packages
+
+subprocess.check_call(install_cmd)
+
+os.chdir(here)
+
+# build packages
+
+def build_package(name):
+    os.chdir(name)
+    dchcmd = ['dch', '--bpo', '--force-distribution',
+              '-D', 'paella', 'testing paella']
+    subprocess.check_call(dchcmd)
+
+    retcode = subprocess.call(['debuild'])
+    print 'debuild returned', retcode
+    os.chdir('..')
+    
+def upload_package(name):
+    changes = [f for f in os.listdir('.') if f.startswith(name) and f.endswith('changes')]
+    if not len(changes) or len(changes) > 1:
+        raise RuntimeError , "Problem locating changes file"
+    changes = changes[0]
+
+    print "Changes files is: %s" % changes
+    cmd = ['reprepro', '-b', '/freespace/debian', '--ignore=wrongdistribution',
+           'include', 'paella', changes]
+    subprocess.call(cmd)
+
+    
+os.chdir(workspace)
+for package in ['useless', 'paella']:
+    build_package(package)
+    upload_package(package)
+    
+

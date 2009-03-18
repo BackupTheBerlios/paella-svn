@@ -39,7 +39,6 @@ Subkey-Type: ELG-E
 Subkey-Length: 2048
 Name-Real: %(fullname)s
 Name-Email: %(email)s
-Name-Comment: Example Repository Key (INSECURE)
 Expire-Date: 0
 %%commit
 """

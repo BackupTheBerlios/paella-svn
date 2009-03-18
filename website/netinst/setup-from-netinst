@@ -6,7 +6,10 @@ in-target apt-get -y dist-upgrade
 
 echo "copying scripts to /usr/local/bin"
 cp /cdrom/setup-paella-server /target/usr/local/bin
-cp /cdrom/paella-user-quick-setup /target/usr/local/bin
+cp /cdrom/paella/paella-user-quick-setup /target/usr/local/bin
+cp /cdrom/paella/generate-gpg-key /target/usr/local/bin
+cp /cdrom/paella/initialize-local-debian-repository /target/usr/local/bin
+cp /cdrom/paella/create-debian-live-image /target/usr/local/bin
 
 echo "copying paella config files to /usr/local/share/paella"
 cp -a /cdrom/paella /target/usr/local/share/

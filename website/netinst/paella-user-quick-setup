@@ -125,3 +125,10 @@ screen -t root 5
 
 
 EOF
+
+
+# Install packages
+echo "installing these packages: $PACKAGES"
+sudo apt-get install $PACKAGES
+echo "New Packages Installed."
+

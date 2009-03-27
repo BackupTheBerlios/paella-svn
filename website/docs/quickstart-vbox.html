@@ -42,39 +42,32 @@ paragraph is removed.  This will probably happen soon after lenny is released.</
 <li><a class="reference internal" href="#create-a-partial-debian-archive" id="id14">Create a Partial Debian Archive</a><ul>
 <li><a class="reference internal" href="#make-a-gpg-key" id="id15">Make a gpg key</a></li>
 <li><a class="reference internal" href="#setup-initial-debian-mirror" id="id16">Setup initial debian mirror</a></li>
-<li><a class="reference internal" href="#create-the-config-files-for-reprepro" id="id17">Create the config files for reprepro</a></li>
-<li><a class="reference internal" href="#obtain-paella-from-subversion" id="id18">Obtain paella from subversion</a></li>
-<li><a class="reference internal" href="#build-paella-packages-from-source-tree" id="id19">Build paella packages from source tree</a></li>
+<li><a class="reference internal" href="#obtain-paella-from-subversion" id="id17">Obtain paella from subversion</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#debian-live" id="id20">Debian Live</a><ul>
-<li><a class="reference internal" href="#why-debian-live" id="id21">Why Debian Live?</a></li>
-<li><a class="reference internal" href="#starting-with-debian-live" id="id22">Starting with Debian Live</a></li>
-<li><a class="reference internal" href="#copy-the-debian-live-config-files" id="id23">Copy the Debian Live Config Files</a></li>
-<li><a class="reference internal" href="#modify-the-debian-live-configuration" id="id24">Modify the Debian Live Configuration</a></li>
-<li><a class="reference internal" href="#copy-the-archive-key" id="id25">Copy the Archive Key</a></li>
-<li><a class="reference internal" href="#build-the-debianlive-nfsroot" id="id26">Build the DebianLive nfsroot</a></li>
+<li><a class="reference internal" href="#debian-live" id="id18">Debian Live</a><ul>
+<li><a class="reference internal" href="#why-debian-live" id="id19">Why Debian Live?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-paella-management-interface" id="id27">Using Paella Management Interface</a><ul>
-<li><a class="reference internal" href="#install-the-admin-package" id="id28">Install the Admin Package</a></li>
-<li><a class="reference internal" href="#setup-paellarc" id="id29">Setup ~/.paellarc</a></li>
-<li><a class="reference internal" href="#start-paella-management" id="id30">Start paella-management</a></li>
-<li><a class="reference internal" href="#import-the-database" id="id31">Import the database</a></li>
-<li><a class="reference internal" href="#guide-to-paella-management" id="id32">Guide to Paella Management</a></li>
+<li><a class="reference internal" href="#using-paella-management-interface" id="id20">Using Paella Management Interface</a><ul>
+<li><a class="reference internal" href="#install-the-admin-package" id="id21">Install the Admin Package</a></li>
+<li><a class="reference internal" href="#setup-paellarc" id="id22">Setup ~/.paellarc</a></li>
+<li><a class="reference internal" href="#start-paella-management" id="id23">Start paella-management</a></li>
+<li><a class="reference internal" href="#import-the-database" id="id24">Import the database</a></li>
+<li><a class="reference internal" href="#guide-to-paella-management" id="id25">Guide to Paella Management</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id33">Configure quickstart-vbox database</a><ul>
-<li><a class="reference internal" href="#add-the-archive-key" id="id34">Add the archive key</a></li>
-<li><a class="reference internal" href="#edit-the-default-environment" id="id35">Edit the Default Environment</a></li>
+<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id26">Configure quickstart-vbox database</a><ul>
+<li><a class="reference internal" href="#add-the-archive-key" id="id27">Add the archive key</a></li>
+<li><a class="reference internal" href="#edit-the-default-environment" id="id28">Edit the Default Environment</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#create-a-machine-to-install" id="id36">Create A Machine to Install</a><ul>
-<li><a class="reference internal" href="#side-salad-to-a-paella" id="id37">Side Salad to a Paella</a></li>
-<li><a class="reference internal" href="#boot-the-new-machine" id="id38">Boot the new machine</a></li>
-<li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id39">Tell Paella about the new machine</a></li>
-<li><a class="reference internal" href="#manage-the-database-again" id="id40">Manage the database again</a></li>
-<li><a class="reference internal" href="#create-the-sidesalad-machine" id="id41">Create the Sidesalad Machine</a></li>
+<li><a class="reference internal" href="#create-a-machine-to-install" id="id29">Create A Machine to Install</a><ul>
+<li><a class="reference internal" href="#side-salad-to-a-paella" id="id30">Side Salad to a Paella</a></li>
+<li><a class="reference internal" href="#boot-the-new-machine" id="id31">Boot the new machine</a></li>
+<li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id32">Tell Paella about the new machine</a></li>
+<li><a class="reference internal" href="#manage-the-database-again" id="id33">Manage the database again</a></li>
+<li><a class="reference internal" href="#create-the-sidesalad-machine" id="id34">Create the Sidesalad Machine</a></li>
 </ul>
 </li>
 </ul>
@@ -256,363 +249,88 @@ since debian has spent a great deal of time making it possible to verify the aut
 packages being installed on your system.  Full instructions on how to generate a key and use it
 properly are beyond the scope of this docuement.  You can find more detailed
 at <a class="reference external" href="http://www.gnupg.org/">http://www.gnupg.org/</a> .</p>
-<p>If you just want to get up and running, you can follow these quick and <strong>potentially insecure</strong> instructions.
-Type:</p>
+<p>I have written a script that will help create a key to sign the archives with.  This key will be
+created without a passphrase and should only be used with this quickstart guide.</p>
+<p>To run the script, type:</p>
 <pre class="literal-block">
-echo $USER&#64;`cat /etc/mailname`
+generate-gpg-key
 </pre>
-<p>This will be the default email address used to search for the key that signs the packages
-you build.  We will also use this key to sign the Release file in the locally generated mirror.</p>
-<p>Now type:</p>
-<pre class="literal-block">
-getent passwd | grep $USER | cut -f5 -d: | cut -f1 -d,
-</pre>
-<p>This will be the &quot;Real Name&quot; that you will use for the key.  Either remember the email and &quot;Real
-Name&quot;, or use another terminal to generate the key.</p>
-<p>Now type:</p>
-<pre class="literal-block">
-gpg --gen-key
-</pre>
-<p>Answer the questions in the dialog.  It should be ok to answer the defaults, until you get to
-the question asking &quot;Is this correct?&quot;.  After this, you'll need to enter the &quot;Real Name&quot; and
-email address that you obtained from the steps above.  You will probably want to enter
-&quot;(insecure testing key)&quot; or something similar for the comment.  After you tell gpg that the
-information is &quot;Okay&quot;, you'll be prompted for a passphrase.  You can enter an empty
-passphrase, but remember that you can't use this key for anything more serious than
-working with paella in a testing environment.  If you do want a passphrase, you'll also
-need to know how to use gpg-agent, which is also beyond the scope of this document.  It's
-recommended that you just use an empty passphrase, and keep the fact that this is a
-testing key in mind (The comment and bogus email address should remind you, in case you
-forget later).</p>
 <p>If you need more random bytes, try moving the mouse around a lot, and pecking the keyboard
 randomly in a text editor.  To get the disk moving, type this in another terminal window:</p>
 <pre class="literal-block">
 find /usr/share | xargs sha1sum
 </pre>
-<p>In an earlier version of this document, I referred to the key ID as the fingerprint, which is
-inaccurate.  The code for paella may still refer to the key ID as a fingerprint, and might not
-be corrected by the time you read this.  Please keep this in mind as you use paella.  I hope to
-have the code corrected after I'm sure that this quickstart routine is fully functional.</p>
-<p>You'll need to know the key ID of the gpg key for the steps below. Here, I'm assuming
-that the &quot;Real Name&quot; you entered above is &quot;Paella User&quot;.  To obtain it, type:</p>
-<pre class="literal-block">
-gpg --fingerprint &quot;Paella User&quot; | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
-</pre>
-<p>You should get an eight digit hexadecimal number, which you'll need to remember.  From
-here on, I'll just refer to it as your gpg key ID.</p>
 </div>
 <div class="section" id="setup-initial-debian-mirror">
 <h2><a class="toc-backref" href="#id16">Setup initial debian mirror</a></h2>
-<p>type:</p>
+<p>I have written a script to help setup the partial debian repository that will be used in this
+guide.</p>
+<p>To run the script, type:</p>
 <pre class="literal-block">
-sudo apt-move update
-sudo rm /freespace/debian/.apt-move -fr
-sudo rm /freespace/debian/dists -fr
-sudo chown -R paella:staff /freespace/debian/*
+initialize-local-debian-repository
 </pre>
-<p>This will move all the packages installed on the virtual machine to /freespace/debian .  This will
-be the last that apt-move will be used, since we just needed it to move the installed packages
-and setup the initial repository structure.</p>
-<p>Now type:</p>
-<pre class="literal-block">
-mkdir /freespace/debian/conf
-dpkg --get-selections &gt; /freespace/debian/conf/local-packages
-</pre>
-<p>This will be the configuration directory for reprepro.  We will be using reprepro to generate
-and maintain the local debian mirror for here on.</p>
-</div>
-<div class="section" id="create-the-config-files-for-reprepro">
-<h2><a class="toc-backref" href="#id17">Create the config files for reprepro</a></h2>
-<p>In the instructions below, you don't have to create these files.  The files are present on the
-remastered netinst cdrom that you made, and they are copied
-to /usr/local/share/paella/reprepro during the install.  You can copy them to where they
-belong by typing:</p>
-<pre class="literal-block">
-cp /usr/local/share/paella/reprepro/* /freespace/debian/conf
-chmod +w /freespace/debian/conf/*
-</pre>
-<p>Now type:</p>
-<pre class="literal-block">
-editor /freespace/debian/conf/distributions
-</pre>
-<p>In the editor you want to type something similar to this:</p>
-<pre class="literal-block">
-Origin: Debian
-Label: Debian
-Suite: testing
-Version: 4.0
-Codename: lenny
-Architectures: i386
-Components: main contrib non-free
-Description: Debian x.y Testing - Not Yet Released
-Log: logfile
-Update: lenny security-testing
-SignWith: &lt;your gpg key ID&gt;
-
-Origin: Paella
-Label: Paella
-Suite: paella
-Version: 4.0
-Codename: paella
-Architectures: i386 source
-Components: main contrib non-free
-Description: Paella local repository
-Log: logfile
-Update: sid-fai
-SignWith: &lt;your gpg key ID&gt;
-</pre>
-<p>Be sure to replace &lt;your gpg key ID&gt; with the actual key ID that you obtained above.</p>
-<p>Now we want to use the editor again:</p>
-<pre class="literal-block">
-editor /freespace/debian/conf/updates
-</pre>
-<p>In the editor you want to type  something similar to this:</p>
-<pre class="literal-block">
-Name: lenny
-Method: http://ftp.us.debian.org/debian
-Fallback: http://ftp.de.debian.org/debian
-VerifyRelease: 6070D3A1
-Architectures: i386
-Components: main contrib non-free
-UDebComponents: none
-FilterList: deinstall startup-packages extra-packages local-packages
-
-Name: security-testing
-Method: http://security.debian.org/debian-security
-VerifyRelease: 6070D3A1
-Suite: testing/updates
-Architectures: i386
-Components: main contrib non-free
-UDebComponents: none
-FilterList: deinstall startup-packages extra-packages local-packages
-
-Name: sid-fai
-Method: http://ftp.us.debian.org/debian
-Fallback: http://ftp.de.debian.org/debian
-VerifyRelease: 6070D3A1
-Suite: unstable
-Architectures: i386
-Components: main contrib non-free
-UDebComponents: none
-FilterList: deinstall sid-fai
-</pre>
-<p>Note:  The sid-fai update stanza is being used to get the latest fai-client from sid.  At the
-moment, the fai-client package in lenny won't work properly (and even the package in sid
-isn't working).  I doubt that the newer fai packages will make their way into lenny, and as
-a result, it's possible that future updates to fai may break paella.  In the past, it has been
-practically impossible to get everything that paella depends on from stable, and it seems
-that this will be the case for lenny also.</p>
-<p>In order to verify the release files, you'll need to import the debian archive signing key:</p>
-<pre class="literal-block">
-gpg --recv-keys 6070D3A1
-</pre>
-<p>Now would also be a good time to export the public key you made above:</p>
-<pre class="literal-block">
-gpg --export -a &quot;Paella User&quot; &gt; /freespace/debian/paella.gpg
-</pre>
-<p>Let apt on paella know about it too:</p>
-<pre class="literal-block">
-sudo apt-key add /freespace/debian/paella.gpg
-</pre>
-<p>To make sure apt got the key:</p>
-<pre class="literal-block">
-sudo apt-key list
-</pre>
-<p>Make sure the key is on the list</p>
-<p>Now we're ready to use reprepro to manage the repository:</p>
-<pre class="literal-block">
-reprepro -b /freespace/debian/  -VV update
-</pre>
-<p>The -VV options sets the verbosity of reprepro to 10, which will help determine if anything
-goes wrong, and where it does go wrong.</p>
+<p>The script will call apt-move to install the packages located in /var/cache/apt/archives
+into the local repository.  It will then setup reprepro and fill the repository with the rest
+of the packages that will be needed to finish this guide.  It will use the gpg key that you
+created above to sign the repository, add that key to apt, add the local repository to
+/etc/apt/sources.list, and run apt-get update.</p>
 <p>Take a break.  Grab some coffee.  This will take a bit, depending on your internet
 connection.  I've taken care to only include the packages that needed, plus a few
 extra packages that I use as tools to help me test this quickstart routine.  As of the time
 this was written, the pool directory was 451MB in size.</p>
-<p>After the update is done, you may need to export the packages lists:</p>
-<pre class="literal-block">
-reprepro -b /freespace/debian/  -VV export
-</pre>
-<p>Since reprepro doesn't make verbatim mirrors, when you update from security.debian.org,
-the updated packages are added to the main package list for the suite, instead of
-&lt;suite&gt;/updates .  This is generally a good thing, since when you use a local mirror generated
-by reprepro, you only need one apt source line.  Paella, however was developed before
-reprepro existed, and used to mirror the complete debian archive.  Until paella is fixed to work
-better with this, the workaround is to trick paella into thinking it's looking at &lt;suite&gt;/updates .
-To do this, type:</p>
-<pre class="literal-block">
-pushd /freespace/debian/dists/lenny
-ln -s . updates
-popd
-</pre>
-<p>Hopefully things went well.  You should wind up with just enough of a partial mirror to complete
-the instructions and get a feel for paella.</p>
-<p>Now it's time to add the new mirror to the sources list:</p>
-<pre class="literal-block">
-sudo editor /etc/apt/sources.list
-</pre>
-<p>Make sure these lines are at the top:</p>
-<pre class="literal-block">
-deb http://paella/debian lenny main contrib non-free
-deb http://paella/debian paella main contrib non-free
-deb-src http://paella/debian paella main contrib non-free
-</pre>
-<p>Now update apt with the new sources:</p>
-<pre class="literal-block">
-sudo apt-get update
-</pre>
 </div>
 <div class="section" id="obtain-paella-from-subversion">
-<h2><a class="toc-backref" href="#id18">Obtain paella from subversion</a></h2>
+<h2><a class="toc-backref" href="#id17">Obtain paella from subversion</a></h2>
 <p>Now you're ready to get the source code from subversion.  To do this, type</p>
 <pre class="literal-block">
 cd
 paella-user-quick-setup
 </pre>
 <p>This will setup the directories, and download the source code from the berlios subversion
-repository.  If you plan on working on the code in the working copy, you'll need to either source
-the paella_environment file, add the lines of that file to your .bashrc, or source the file from
-your .bashrc if you plan on working on the code.  Since you're using a virtual machine, it
-would probably be best to add it to your .bashrc</p>
-<pre class="literal-block">
-cat paella_environment &gt;&gt; .bashrc
-</pre>
-<p>This is optional, as it's only needed to work with the code, and possibly fix bugs that you
-encounter.</p>
-<p><strong>Important:</strong>  You need to cut and paste the apt-get command from the output
-of the script, to build all of the paella and python-useless-* packages.  The command
-should be</p>
-<pre class="literal-block">
-sudo apt-get install build-essential cdbs devscripts python-docutils \
-python-all-dev live-helper dosfstools memtest86+ parted squashfs-tools \
-genext2fs mtd-tools syslinux uuid-runtime
-</pre>
-</div>
-<div class="section" id="build-paella-packages-from-source-tree">
-<h2><a class="toc-backref" href="#id19">Build paella packages from source tree</a></h2>
-<p>Now it's time to build the useless and paella packages.  First we're going to start with the
-useless package.  Pay attention to the lines below, as you won't be able to just cut-n-paste
-these lines:</p>
-<pre class="literal-block">
-cd ~/workspace/useless
-dch --bpo # This will create an backport version that
-# won't interfere with newer versions
-# type something like &quot;testing paella&quot; to the right of the asterisk
-# save the file in the text editor
-debuild
-reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../useless_&lt;version&gt;_i386.changes
-</pre>
-<p>Repeat this process for paella:</p>
-<pre class="literal-block">
-cd ~/workspace/paella
-dch --bpo # This will create an backport version that
-# won't interfere with newer versions
-# type something like &quot;testing paella&quot; to the right of the asterisk
-# save the file in the text editor
-debuild
-reprepro -b /freespace/debian --ignore=wrongdistribution include paella ../paella_&lt;version&gt;_i386.changes
-</pre>
-<p>Normally, you'd export the working copy before building the packages, but we'll just be sloppy
-here, because we're almost ready to install the packages that were just built.  There's no
-need to build them correctly until you're sure that paella is the right type of program for your
-needs.</p>
-<p>Let's test our new mirror:</p>
-<pre class="literal-block">
-sudo apt-get update
-</pre>
-<p>If you are getting hash mismatches from apt, try this:</p>
-<pre class="literal-block">
-rm /freespace/debian/dists/* -fr
-reprepro -b /freespace/debian/  -VV export
-pushd /freespace/debian/dists/lenny
-ln -s . updates
-popd
-</pre>
-<p>I got these mismatches a few times, and don't know what caused the errors.  When I get
-the time to investigate the problem further, I'll find a better solution, but this solution should
-work just fine for our purposes here.</p>
+repository.  It will also install build dependencies, plus some extra packages required to
+create the netboot image that will be made later in this guide.  It will then build the packages
+and install them into your freshly made debian repository.</p>
 </div>
 </div>
 <div class="section" id="debian-live">
-<h1><a class="toc-backref" href="#id20">Debian Live</a></h1>
+<h1><a class="toc-backref" href="#id18">Debian Live</a></h1>
 <div class="section" id="why-debian-live">
-<h2><a class="toc-backref" href="#id21">Why Debian Live?</a></h2>
+<h2><a class="toc-backref" href="#id19">Why Debian Live?</a></h2>
 <p>Now you're ready to make the live nfsroot installer.  In the past, I had done this with paella,
 and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to
 compile a special kernel to allow me to mount an nfsroot, and have the network drivers
 compiled right into the kernel image.  Later, the work on the initrd filesystem allowed me to
-use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky an limited
+use stock kernels to boot from an nfsroot, but the readonly live nfsroot was flaky and limited
 at best.  These days, there's <a class="reference external" href="http://wiki.debian.org/DebianLive">DebianLive</a> to help do much of the dirty work here.  It's even
 possible to use DebianLive to make a live iso with the paella installer on it, for machines
 that won't boot off of the network.  I actually had to do this with the older livecd package in
 the past, but DebianLive is much better.  Now I can leave the management of a good live
 system in somebody else's hands, and just concentrate on using that live system as an
 installer for paella.</p>
-</div>
-<div class="section" id="starting-with-debian-live">
-<h2><a class="toc-backref" href="#id22">Starting with Debian Live</a></h2>
-<p>To begin making the nfsroot installer, we need to change directories to the place I've setup
-for you to build the installer:</p>
+<p>I have written a script that will help build the live netboot image for the installer.  To run
+the script , type:</p>
+<pre class="literal-block">
+create-debian-live-image
+</pre>
+<p>This script will copy the live-helper config files to /freespace/live/config and build the
+image, then install the image and the tftpboot files to the appropriate locations.</p>
+<p><strong>Important</strong>  If you aren't able to use 10.0.1.1 as the ip address of your eth1 interface
+on the virtual machine, you will have to edit /freespace/live/config/binary and set
+LH_NET_ROOT_SERVER to the value of the ip that you will be using and then build the image
+again.</p>
+<p>Here are some quick instructions on how to do that:</p>
 <pre class="literal-block">
 cd /freespace/live
-</pre>
-<p>You'll need to stay in this directory for the rest of the instructions on building the DebianLive
-nfsroot installer.</p>
-</div>
-<div class="section" id="copy-the-debian-live-config-files">
-<h2><a class="toc-backref" href="#id23">Copy the Debian Live Config Files</a></h2>
-<p>The configuration for debian live is on the netinst cdrom image, and during the install
-they are copied to /usr/local/share/paella/live-config .  You will need to copy them
-to the config directory by typing:</p>
-<pre class="literal-block">
-cp -a /usr/local/share/paella/live-config/ config
-chmod +w -R config/
-</pre>
-</div>
-<div class="section" id="modify-the-debian-live-configuration">
-<h2><a class="toc-backref" href="#id24">Modify the Debian Live Configuration</a></h2>
-<p><strong>Important</strong> If you had to change the network ip's from the defaults, you'll need to
-edit config/binary and set LH_NET_ROOT_SERVER with the ip of your eth1 interface.  If the ip
-of the eth1 interface is 10.0.1.1, you can probably skip this step.  This should be the only file
-that is required to be edited in the DebianLive configuration.  If this variable isn't set properly,
-the live system will boot, but the root filesystem will never be mounted.</p>
-<p>In the config/binary file, there are some other variables that you may want to configure.
-These aren't absolutely necessary, but it may be useful for you to do so.  The
-LH_BOOTAPPEND_LIVE variable is set to my timezone, and you may wish to change this to
-have the correct local time on your installer image.  The utc variable should match the UTC
-variable in /etc/default/rcS on your host system.</p>
-<p>Also, at the bottom of the config/binary file, there is a variable, MKSQUASHFS_OPTIONS ,
-which has been commented out.  Uncommenting this will keep mksquashfs from
-compressing the binary image, otherwise it will be compressed as normal.  This is
-optional and is there only to help make the binary image quicker than compressing it.</p>
-</div>
-<div class="section" id="copy-the-archive-key">
-<h2><a class="toc-backref" href="#id25">Copy the Archive Key</a></h2>
-<p>Now, copy the archive key to the DebianLive config:</p>
-<pre class="literal-block">
-cp /freespace/debian/paella.gpg config/chroot_sources/paella.chroot.gpg
-</pre>
-</div>
-<div class="section" id="build-the-debianlive-nfsroot">
-<h2><a class="toc-backref" href="#id26">Build the DebianLive nfsroot</a></h2>
-<p>Now type:</p>
-<pre class="literal-block">
 sudo lh_clean
-sudo lh_build  #(this will take a while)
-</pre>
-<p>If the lh_build ended without raising an error, you can move the result to it's proper
-resting places.  I wrote a script in the DebianLive config to help with this.  Type:</p>
-<pre class="literal-block">
+sudo lh_build
 sudo ./config/prepare-netboot
 </pre>
-<p>Now you'll be able to boot machines off the local internal VM network, but it won't be
-useful without a database prepared for paella to use.</p>
 </div>
 </div>
 <div class="section" id="using-paella-management-interface">
-<h1><a class="toc-backref" href="#id27">Using Paella Management Interface</a></h1>
+<h1><a class="toc-backref" href="#id20">Using Paella Management Interface</a></h1>
 <div class="section" id="install-the-admin-package">
-<h2><a class="toc-backref" href="#id28">Install the Admin Package</a></h2>
+<h2><a class="toc-backref" href="#id21">Install the Admin Package</a></h2>
 <p>Now we're almost ready to use the management interface.  To install it, type:</p>
 <pre class="literal-block">
 sudo apt-get install paella-admin
@@ -622,7 +340,7 @@ terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't r
 should set up the configuration file first.</p>
 </div>
 <div class="section" id="setup-paellarc">
-<h2><a class="toc-backref" href="#id29">Setup ~/.paellarc</a></h2>
+<h2><a class="toc-backref" href="#id22">Setup ~/.paellarc</a></h2>
 <p>The master config file will be found at /etc/paellarc .  The master config file is the one that
 the installer will use.  You can copy this file to ~/.paellarc and edit it.  The paella-management
 program will read the master config file, then the local one at ~/.paellarc .  The local file will
@@ -657,7 +375,7 @@ The paella installer user only needs the database section of the paellarc file, 
 uses the paella database for the rest of his configuration.</p>
 </div>
 <div class="section" id="start-paella-management">
-<h2><a class="toc-backref" href="#id30">Start paella-management</a></h2>
+<h2><a class="toc-backref" href="#id23">Start paella-management</a></h2>
 <p>Run the paella-management script to start the management interface:</p>
 <pre class="literal-block">
 paella-management
@@ -678,7 +396,7 @@ this, the database import procedure will create these tables for you, but you wo
 use the paella-management interface until you do this.</p>
 </div>
 <div class="section" id="import-the-database">
-<h2><a class="toc-backref" href="#id31">Import the database</a></h2>
+<h2><a class="toc-backref" href="#id24">Import the database</a></h2>
 <p>Now we are going to import the startup database.  You may need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
@@ -707,14 +425,14 @@ to help when creating traits, but that's in the future, and it would need the fu
 package to be stored in the database.</p>
 </div>
 <div class="section" id="guide-to-paella-management">
-<h2><a class="toc-backref" href="#id32">Guide to Paella Management</a></h2>
+<h2><a class="toc-backref" href="#id25">Guide to Paella Management</a></h2>
 <p>A more complete guide to using paella-management can be found <a class="reference external" href="gui-guide.html">here</a>.</p>
 </div>
 </div>
 <div class="section" id="configure-quickstart-vbox-database">
-<h1><a class="toc-backref" href="#id33">Configure quickstart-vbox database</a></h1>
+<h1><a class="toc-backref" href="#id26">Configure quickstart-vbox database</a></h1>
 <div class="section" id="add-the-archive-key">
-<h2><a class="toc-backref" href="#id34">Add the archive key</a></h2>
+<h2><a class="toc-backref" href="#id27">Add the archive key</a></h2>
 <p>Now you'll need to add the gpg key you made above to paella, so that paella can install
 the packages from the new mirror.  Type:</p>
 <pre class="literal-block">
@@ -728,7 +446,7 @@ and key id of the paella key on the list.  The name is taken from the filename w
 imported the key.</p>
 </div>
 <div class="section" id="edit-the-default-environment">
-<h2><a class="toc-backref" href="#id35">Edit the Default Environment</a></h2>
+<h2><a class="toc-backref" href="#id28">Edit the Default Environment</a></h2>
 <p>Access to the default environment is provided on the &quot;list menu&quot; in the &quot;main paella
 window&quot;, under the &quot;environ&quot; item in the list.  Click on the &quot;+&quot; to the left of the &quot;environ&quot;
 list item, and two list items will be displayed below the environ item, named &quot;current&quot; and
@@ -745,12 +463,12 @@ exit the text editor for paella to save the information to the database.</p>
 </div>
 </div>
 <div class="section" id="create-a-machine-to-install">
-<h1><a class="toc-backref" href="#id36">Create A Machine to Install</a></h1>
+<h1><a class="toc-backref" href="#id29">Create A Machine to Install</a></h1>
 <p>We're done with the paella VM for a little bit.  Now it's time to create a new VM which will be
 used to install a system.  You don't want to poweroff or reboot the paella VM, since we'll be
 using again shortly.</p>
 <div class="section" id="side-salad-to-a-paella">
-<h2><a class="toc-backref" href="#id37">Side Salad to a Paella</a></h2>
+<h2><a class="toc-backref" href="#id30">Side Salad to a Paella</a></h2>
 <p>Creating the next machine will be almost just like creating the paella VM.  This new machine
 should be named &quot;sidesalad&quot;, as that's what I'm going to be calling for the remainder of this
 quickstart document.  Follow the instructions for making the paella VM, except keep the
@@ -766,7 +484,7 @@ Network all the way to the top.  This will let it boot from the network first.  
 only configuration changes you'll need to make.</p>
 </div>
 <div class="section" id="boot-the-new-machine">
-<h2><a class="toc-backref" href="#id38">Boot the new machine</a></h2>
+<h2><a class="toc-backref" href="#id31">Boot the new machine</a></h2>
 <p>Now we're ready to boot the machine.  The machine should boot straight from the network
 without any problems.  If this doesn't happen, it's a sign that something went wrong.  If I have
 time later, I might write a short troubleshooting section to help figure out what went wrong.  If
@@ -779,7 +497,7 @@ I'd really like to know about it, so we can figure out what went wrong, and how 
 document to be prepared for that possibility.</p>
 </div>
 <div class="section" id="tell-paella-about-the-new-machine">
-<h2><a class="toc-backref" href="#id39">Tell Paella about the new machine</a></h2>
+<h2><a class="toc-backref" href="#id32">Tell Paella about the new machine</a></h2>
 <p>If sidesalad booted from the network correctly, at the end of the boot process, there should
 be a message explaining that this is an unknown machine, and to use paella-submit-machine
 to tell paella about it.  This is what we're going to do now.  Type:</p>
@@ -801,7 +519,7 @@ sudo poweroff
 </pre>
 </div>
 <div class="section" id="manage-the-database-again">
-<h2><a class="toc-backref" href="#id40">Manage the database again</a></h2>
+<h2><a class="toc-backref" href="#id33">Manage the database again</a></h2>
 <p>Now we need to go back to the paella VM.  Edit the default environment, and set the
 sidesalad option to 'True' in the autoinstall section.  This will tell the paella-init-nfsinstaller
 script to install the machine, once it boots.  The admin should be aware about this part of
@@ -809,7 +527,7 @@ the default environment, since when the autoinstall value is set to 'True', the 
 install each time it's booted from the network.</p>
 </div>
 <div class="section" id="create-the-sidesalad-machine">
-<h2><a class="toc-backref" href="#id41">Create the Sidesalad Machine</a></h2>
+<h2><a class="toc-backref" href="#id34">Create the Sidesalad Machine</a></h2>
 <p>Now we are ready to create the sidesalad machine in the database.</p>
 <p><strong>If you've made it this far, and the &quot;unfinished&quot; disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.</strong></p>
 <p><a class="reference external" href="index.html">toc</a></p>

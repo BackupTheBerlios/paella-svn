@@ -13,7 +13,7 @@ src/docs/installer = a810f1b11e2376346738c45e63eaa4a3
 src/docs/notes = 9e26c2142bdb61584c68785e0da86984
 src/defaultdb = 08862e2d7a2474272bea89b4075bc1c4
 src/docs/schema = 2fa92cbfb063a57e014f090d82311013
-src/docs/default-environment = 7ad953710f602c824bff5f19f7bb5ee2
+src/docs/default-environment = 816b496771fa46f06cf68b439c4c0e5b
 src/docs/gui-guide = fb26810b419e3b66e6268bd32b1fd364
 src/index = db34f2fcba939c3c15e47de4d074ce78
 

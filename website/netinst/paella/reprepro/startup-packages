@@ -466,6 +466,9 @@ linux-image-2.6.24-1-686			install
 linux-image-2.6.26-1-486			install
 linux-image-2.6.26-1-686			install
 linux-image-2.6.26-1-amd64			install
+linux-image-2.6.26-2-486			install
+linux-image-2.6.26-2-686			install
+linux-image-2.6.26-2-amd64			install
 linux-libc-dev					install
 live-helper					install
 live-initramfs					install
@@ -626,6 +629,9 @@ squashfs-modules-2.6-amd64			install
 squashfs-modules-2.6.26-1-486			install
 squashfs-modules-2.6.26-1-686			install
 squashfs-modules-2.6.26-1-amd64			install
+squashfs-modules-2.6.26-2-486			install
+squashfs-modules-2.6.26-2-686			install
+squashfs-modules-2.6.26-2-amd64			install
 squashfs-tools					install
 ssl-cert					install
 strace						install

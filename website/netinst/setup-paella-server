@@ -27,6 +27,11 @@ lapnet_dhcpend=10.0.1.253
 # called /etc/X11/xorg.conf.unused
 xserver_resolution=1024x768
 
+# set do_backports to yes if you want to use
+# lenny-backports for the guest modules and utils.
+# If you are not running virtualbox 1.6.6, this is recommended.
+
+do_backports=no
 #####################################################
 #####################################################
 #   You shouldn't need to set anything below here, but take a look           
@@ -813,13 +818,29 @@ echo "restarting apache2"
 echo "restarting nfs server"
 /etc/init.d/nfs-kernel-server restart
 
-echo "building virtualbox guest module"
-# module-assistant keeps exiting with error 249, stopping
-# the rest of the script from running
-module-assistant -t -i auto-install virtualbox-ose-guest-source || true
 
-echo "reconfiguring xorg.conf"
-/usr/share/virtualbox/x11config.pl
+if [ $do_backports = yes ] ; then
+    echo "adding backports to /etc/apt/sources.list"
+    echo deb http://www.backports.org/debian lenny-backports main >> /etc/apt/sources.list
+    echo "retrieving backports archive key"
+    wget -O - http://backports.org/debian/archive.key | apt-key add -
+    apt-get -y update
+    echo "installing guest source and guest utils"
+    apt-get -y -t lenny-backports install virtualbox-ose-guest-source virtualbox-ose-guest-utils
+    echo "installing packages for module-assistant"
+    apt-get -y install fakeroot build-essential
+    echo "building virtualbox guest module"
+    module-assistant -t -i auto-install virtualbox-ose-guest-source || true
+    echo "reconfiguring xorg.conf"
+    /usr/share/virtualbox/x11config.pl
+else
+    echo "building virtualbox guest module"
+    # module-assistant keeps exiting with error 249, stopping
+    # the rest of the script from running
+    module-assistant -t -i auto-install virtualbox-ose-guest-source || true
+    echo "reconfiguring xorg.conf"
+    /usr/share/virtualbox/x11config.pl
+fi
 
 echo "restarting virtualbox guest utils"
 /etc/init.d/virtualbox-ose-guest-utils restart

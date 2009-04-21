@@ -19,6 +19,9 @@ aufs-modules-2.6-amd64			install
 aufs-modules-2.6.26-1-486			install
 aufs-modules-2.6.26-1-686			install
 aufs-modules-2.6.26-1-amd64			install
+aufs-modules-2.6.26-2-486			install
+aufs-modules-2.6.26-2-686			install
+aufs-modules-2.6.26-2-amd64			install
 base-files					install
 base-passwd					install
 bash						install

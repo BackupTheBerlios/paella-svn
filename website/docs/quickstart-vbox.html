@@ -125,9 +125,14 @@ it appears to work without problems.</p>
 <div class="section" id="debian-netinst-cd-image-lenny">
 <h2><a class="toc-backref" href="#id9">Debian Netinst CD Image (Lenny)</a></h2>
 <p>The stable (lenny) release is what is currently supported.  You should get the netinst iso,
-which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/debian-cd/5.0.0/i386/iso-cd/debian-500-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
+which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-500-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll
-be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.</p>
+be testing the amd64 architecture.  Feedback on any other architectures would be appreciated.
+If you are using a virtualbox version less than 2, you will have to use the i386 image, as the guest
+machines will only run i386 code.  The virtualbox-ose package that ships with debian lenny is
+version 1.6.6, which will require using i386 guests.  There are newer virtualbox-ose packages
+available at <a class="reference external" href="http://backports.org">http://backports.org</a> that will run amd64 code on the guests, if you wish to use
+those.  This quickstart should work with any version from 1.6.6 and above.</p>
 </div>
 <div class="section" id="remaster-the-netinst-iso">
 <h2><a class="toc-backref" href="#id10">Remaster the netinst iso</a></h2>
@@ -139,6 +144,8 @@ are obtained through subversion in the script to get an idea of how to proceed m
 without performing this step.</p>
 <p>If you are running debian, remastering the iso is easy:</p>
 <pre class="literal-block">
+mkdir remaster-netinst
+cd remaster-netinst
 svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
 </pre>
 <p>if you already grabbed the netinst iso image, type:</p>
@@ -149,12 +156,12 @@ svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
 <pre class="literal-block">
 ./remaster-netinst-iso
 </pre>
+<p>The script will attempt to download the netinst iso for lenny, but it may be out of date
+when by the time you read this, so you are recommended to download the <a class="reference external" href="http://cdimage.debian.org/debian-cd">iso</a> manually.</p>
 <p><strong>WARNING!!!</strong>  This script uses sudo to perform the loopback mounting of the iso
 image.  Be sure to look over the script really good before you execute it.  You may want to
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).
 Be sure that you have rsync, sudo, and subversion installed.</p>
-<p>Either download the iso, and enter the filename as the first argument, or just run the script
-without arguments.  The script will download the debian-LennyBeta2-i386-netinst.iso for you.</p>
 <p>The script will give you a chance to review and edit the preseed files before you create the
 remastered iso image.  All the files that will be used in the remastered iso image will be
 located in the cd/ directory. If you have a local mirror that you want to install from, you should
@@ -168,7 +175,12 @@ run unless your locale is generated, and referenced in the postgresql.conf file.
 </div>
 <div class="section" id="setup-the-paella-virtual-machine">
 <h1><a class="toc-backref" href="#id11">Setup the paella virtual machine</a></h1>
-<p>You need to get the virtualbox frontend up and running.</p>
+<p>You need to get the virtualbox frontend up and running.  The user interface varies between
+different versions of virtualbox.  These instructions were written using version 1.6.6, which
+is the default version in debian lenny.  To start the virtualbox gui type:</p>
+<pre class="literal-block">
+virtualbox
+</pre>
 <p>Make a new machine using the wizard provided by the virtualbox frontend.  Press next
 and name the machine &quot;paella&quot;.  Select &quot;Debian&quot; for the OS type.  Press next.  Set the base
 memory size to 256MB.  Press next.  Make a new disk image at the default 8GB size (I chose
@@ -176,16 +188,19 @@ dynamically expanding size).  Press finish.</p>
 <p>Select paella from the list of machines on the frontend, and click the settings button.  In the
 configuration dialog, select CD/DVD-ROM on the left hand side.  Click on the Mount CD/DVD
 Drive button at the top.  Select the ISO Image File.  Press the folder on the right to bring up
-the Virtual Disk Manager.  Here you want to add the netinst iso that you downloaded.  Close
-the Virtual Disk Manager, and make sure that the iso is selected as the image file that will
-be mounted.</p>
+the Virtual Disk Manager.  Here you want to add the netinst iso that you remastered.  It should
+be called paella-netinst-$arch.iso, where $arch is the architecture that either you are running,
+or that you selected.  Close the Virtual Disk Manager, and make sure that the iso is selected as
+the image file that will be mounted.</p>
 <p>Now, select the Network part of the list of the left hand side of the settings dialog.  By default,
 the network adapter should be enabled, and set to NAT.  This is what we want.  We also want
-to add another network interface to this machine, so select the Adapter 1 tab.  Click the
+to add another network interface to this machine, so select the Adapter 2 tab.  Click the
 &quot;Enable Network Adapter&quot; button.  Make sure the &quot;Attached to&quot; selection is set to &quot;Internal
 Network&quot;.  You will need to name the network in the field that says &quot;Network Name&quot;.  Any name
 should do just fine.  I used &quot;lapnet&quot; (no quotes), since I'm on a laptop.  Remember this name,
 since you'll need this for the other machine(s) that you will use paella to install to.</p>
+<p>If you are using an newer 64 bit processor that has hardware virtualization support, you may want
+to enable this in the general preferences, as the virtual machine will run much faster.</p>
 <!-- Boot the paella virtual machine -->
 <!-- ================================ -->
 <div class="section" id="install-the-paella-virtual-machine">
@@ -210,7 +225,8 @@ an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf qu
 <h2><a class="toc-backref" href="#id13">First boot on the paella virtual machine</a></h2>
 <p>After the debian installer is finished, the virtual machine should reboot .  You should take
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else
-the iso will boot everytime you boot the virtual machine.</p>
+the iso will boot everytime you boot the virtual machine.  You may also want to save a
+snapshot of the virtual machine, in case you have problems with the initial setup script.</p>
 <p>When the system boots up for the first time, you will want to want to login to the console.
 You can reach the console by pressing the &quot;Host&quot; key and F1 (By default, the &quot;Host&quot; key
 is the right &lt;ctrl&gt; key).  You will want to login here, instead of to the X session, because
@@ -221,8 +237,22 @@ of this procedure.  The script is located at /usr/local/bin/setup-paella-server 
 need to edit the script and set the ip addresses that are set near the top.  The default
 internal network that is used is 10.0.1.0/24.  You may need to change this if the ip
 values conflict with your local network setup.  I suggest you try to stick to these values
-if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.  When
-you are ready you should type:</p>
+if it's possible, and if it's not possible, to use 10.0.2.0/24, or something similar.</p>
+<p>Please note that the script will try to install the guest utils and build the guest modules.
+If you are not running virtualbox-ose version 1.6.6, you may need to may want to set
+&quot;do_backports&quot; to &quot;yes&quot; in the script.  If the version of virtualbox-ose that you are using
+doesn't match the version that's available at backports.org, the guest additions are
+unlikely to work.  The guest additions are not absolutely necessary.  They just help
+keep the mouse from feeling jerky, and also help configure the size of the screen to
+more comfortable resolutions.  The attempt to build and install the guest additions
+happens at the very end of the script, so if you have problems with this and using the
+backports repository doesn't help, you will have to do without the guest modules.  If
+you can't use the guest modules, you may need to use a modified xorg.conf to adjust
+the resolution of the screen on the guest machine.  Regardless of whether the guest
+additions are installed or not, the script will create an example xorg.conf located at
+/etc/X11/xorg.conf.unused .  You may copy this to /etc/X11/xorg.conf and modify it
+as you need.  If you do this, you must use a resolution that the vesa driver supports.</p>
+<p>When  you are ready you should type:</p>
 <pre class="literal-block">
 sudo setup-paella-server
 </pre>
@@ -277,7 +307,7 @@ created above to sign the repository, add that key to apt, add the local reposit
 <p>Take a break.  Grab some coffee.  This will take a bit, depending on your internet
 connection.  I've taken care to only include the packages that needed, plus a few
 extra packages that I use as tools to help me test this quickstart routine.  As of the time
-this was written, the pool directory was 451MB in size.</p>
+this was written, the pool directory was 465MB in size.</p>
 </div>
 <div class="section" id="obtain-paella-from-subversion">
 <h2><a class="toc-backref" href="#id17">Obtain paella from subversion</a></h2>
@@ -333,6 +363,7 @@ sudo ./config/prepare-netboot
 <h2><a class="toc-backref" href="#id21">Install the Admin Package</a></h2>
 <p>Now we're almost ready to use the management interface.  To install it, type:</p>
 <pre class="literal-block">
+sudo apt-get update
 sudo apt-get install paella-admin
 </pre>
 <p>The executable is called <strong>paella-management</strong>.  You can either type it into a

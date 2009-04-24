@@ -12,6 +12,8 @@ memtest86+
 squashfs-tools
 bash-completion
 
+python-dnspython
+
 paella-machine-installer
 paella-nfs-installer
 

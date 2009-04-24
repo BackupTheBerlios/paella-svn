@@ -572,6 +572,7 @@ python-apt					install
 python-central					install
 python-cheetah					install
 python-dev					install
+python-dnspython					install
 python-doc					install
 python-docutils					install
 python-egenix-mxdatetime			install

@@ -537,7 +537,7 @@ paella-base					install
 paella-db					install
 paella-debian					install
 paella-installer				install
-paella-machine-installer			install
+paella-live-installer			install
 parted						install
 passwd						install
 patch						install

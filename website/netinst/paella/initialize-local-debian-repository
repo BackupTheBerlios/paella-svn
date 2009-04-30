@@ -235,13 +235,6 @@ updates_file.write(sid_fai_update_stanza % template_data)
 updates_file.close()
 print "Created", updates_filename
 
-# update repository
-print "Updating Debian Repository"
-subprocess.check_call(['reprepro', '-b', REPREPRO_BASE,
-                       '-VV', '--noskipold', 'update'])
-print "Local Repository Updated"
-
-
 
 apt_sources_data = file('/etc/apt/sources.list').read()
 
@@ -259,6 +252,13 @@ dd_proc.stdin.close()
 retcode = dd_proc.wait()
 if retcode:
     raise RuntimeError , "Problem creating new /etc/apt/sources.list"
+
+# update repository
+print "Updating Debian Repository"
+subprocess.check_call(['reprepro', '-b', REPREPRO_BASE,
+                       '-VV', '--noskipold', 'update'])
+print "Local Repository Updated"
+
 
 update_apt_cmd = ['sudo', 'apt-get', '-y', 'update']
 subprocess.check_call(update_apt_cmd)

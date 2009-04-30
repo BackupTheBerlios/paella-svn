@@ -8,6 +8,11 @@ USER = os.environ['USER']
 REPREPRO_BASE = '/freespace/debian'
 REPREPRO_CONF_DIR = os.path.join(REPREPRO_BASE, 'conf')
 DEBIAN_REPOS_KEYID = '6070D3A1'
+# if you leave MAIN_MIRROR blank, this script will
+# determine it from the first deb line in /etc/apt/sources.list
+MAIN_MIRROR = ''
+FALLBACK_MIRROR = 'http://ftp.de.debian.org/debian'
+SECURITY_MIRROR = 'http://security.debian.org/'
 
 def get_arch():
     proc = subprocess.Popen([DPKG_ARCH_BINARY], stdout=subprocess.PIPE)
@@ -85,9 +90,10 @@ def initialize_debian_repository(basedir):
 def get_main_mirror():
     aptline = None
     for line in file('/etc/apt/sources.list'):
-        if line.startswith('deb'):
-            aptline = line.strip()
-            mirror = line.split()[1]
+        if aptline is None:
+            if line.startswith('deb'):
+                aptline = line.strip()
+                mirror = line.split()[1]
     if aptline is None:
         raise RuntimeError , "main mirror not found in /etc/apt/sources.list"
     return mirror
@@ -124,9 +130,11 @@ import_apt_key(DEBIAN_REPOS_KEYID)
 
 # generate configuration
 arch = get_arch()
-main_mirror = 'http://ftp.us.debian.org/debian'
-fallback_mirror = 'http://ftp.de.debian.org/debian'
-security_mirror = 'http://security.debian.org/'
+main_mirror = MAIN_MIRROR
+if not main_mirror:
+    main_mirror = get_main_mirror()
+fallback_mirror = FALLBACK_MIRROR
+security_mirror = SECURITY_MIRROR
 # keyid defined just above
 template_data = dict(arch=arch, keyid=keyid,
                      main_mirror=main_mirror, fallback_mirror=fallback_mirror,

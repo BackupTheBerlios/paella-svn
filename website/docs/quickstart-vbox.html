@@ -107,7 +107,7 @@ environment with a network of machines.</p>
 <div class="section" id="virtualbox-ose">
 <h2><a class="toc-backref" href="#id7">VirtualBox OSE</a></h2>
 <p>This quickstart will use VirtualBox OSE to setup the machine that will act as the main
-paella server, and also to test to make machines to test the installs.  The procedure outlined
+paella server, and also to make machines to test those installs.  The procedure outlined
 below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but
 there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.</p>
 </div>
@@ -294,7 +294,8 @@ find /usr/share | xargs sha1sum
 <div class="section" id="setup-initial-debian-mirror">
 <h2><a class="toc-backref" href="#id16">Setup initial debian mirror</a></h2>
 <p>I have written a script to help setup the partial debian repository that will be used in this
-guide.</p>
+guide.  <strong>Note:</strong>  If you used a local mirror with the netinst iso, the script may fail during
+the final part.</p>
 <p>To run the script, type:</p>
 <pre class="literal-block">
 initialize-local-debian-repository
@@ -308,6 +309,17 @@ created above to sign the repository, add that key to apt, add the local reposit
 connection.  I've taken care to only include the packages that needed, plus a few
 extra packages that I use as tools to help me test this quickstart routine.  As of the time
 this was written, the pool directory was 465MB in size.</p>
+<p><strong>Note:</strong>  If the script failed, and you installed from a local mirror, you will need to
+edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in
+the update stanzas.  You may have to import a key using gpg --import, or you may
+just remove the VerifyRelease fields from the stanzas.  Once you are sure the
+stanzas are correct, you can type:</p>
+<pre class="literal-block">
+reprepro -b /freespace/debian -VV --noskipold update
+sudo apt-get update
+</pre>
+<p>This will finish preparing the initial debian repository, and use that repository
+in your apt sources.</p>
 </div>
 <div class="section" id="obtain-paella-from-subversion">
 <h2><a class="toc-backref" href="#id17">Obtain paella from subversion</a></h2>

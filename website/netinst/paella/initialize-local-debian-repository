@@ -146,7 +146,7 @@ Label: Debian
 Suite: stable
 Version: 5.0
 Codename: lenny
-Architectures: %(arch)s
+Architectures: %(arch)s  source
 Components: main contrib non-free
 Description: Partial Debian Mirror
 Log: logfile
@@ -160,7 +160,7 @@ Suite: stable/updates
 Codename: lenny/updates
 Version: 5.0
 FakeComponentPrefix: updates
-Architectures: %(arch)s
+Architectures: %(arch)s source
 Components: main contrib non-free
 Description: Debian 5.0 Security Updates
 Log: logfile

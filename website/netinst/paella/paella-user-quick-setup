@@ -72,14 +72,20 @@ os.chdir(here)
 # build packages
 
 def build_package(name):
+    here = os.getcwd()
     os.chdir(name)
     dchcmd = ['dch', '--bpo', '--force-distribution',
               '-D', 'paella', 'testing paella']
     subprocess.check_call(dchcmd)
-
+    export_directory = '../%s-exported' % name
+    if os.path.isdir(export_directory):
+        subprocess.check_call(['rm', '-fr', export_directory])
+    export_cmd = ['svn', 'export', '.', export_directory]
+    subprocess.check_call(export_cmd)
+    os.chdir(export_directory)
     retcode = subprocess.call(['debuild'])
     print 'debuild returned', retcode
-    os.chdir('..')
+    os.chdir(here)
     
 def upload_package(name):
     changes = [f for f in os.listdir('.') if f.startswith(name) and f.endswith('changes')]
@@ -98,4 +104,27 @@ for package in ['useless', 'paella']:
     build_package(package)
     upload_package(package)
     
+
+print "updating apt"
+subprocess.call(['sudo', 'apt-get', '-y', 'update'])
+
+print "installing paella packages"
+subprocess.call(['sudo', 'apt-get', '-y', 'install',
+                 'paella-admin', 'paella-defaultdb',
+                 'paella-installer'])
+
+
+env = dict(os.environ.items())
+env['PAELLA_DBUSER'] = 'dbadmin'
+
+print "Importing quickstart database"
+import_cmd = ['paella-import']
+dbfile = '/usr/share/paella/databases/quickstart-vbox/database.xml'
+cmd = import_cmd + [dbfile]
+print "using command", ' '.join(cmd)
+subprocess.call(cmd, env=env)
+
+print "Importing paella archive key"
+gpgfile = '/freespace/debian/paella.gpg'
+subprocess.call(import_cmd + ['--aptkey', gpgfile], env=env)
 

@@ -5,7 +5,7 @@
 LH_BINARY_FILESYSTEM="fat16"
 
 # $LH_BINARY_IMAGES: set image type
-# (Default: net)
+# (Default: iso)
 LH_BINARY_IMAGES="net"
 
 # $LH_BINARY_INDICES: set apt/aptitude generic indices
@@ -54,7 +54,7 @@ LH_ENCRYPTION="disabled"
 LH_GRUB_SPLASH=""
 
 # $LH_HOSTNAME: set hostname
-# (Default: installer)
+# (Default: debian)
 LH_HOSTNAME="installer"
 
 # $LH_ISO_APPLICATION: set iso author
@@ -94,11 +94,11 @@ LH_NET_ROOT_FILESYSTEM="nfs"
 LH_NET_ROOT_MOUNTOPTIONS=""
 
 # $LH_NET_ROOT_PATH: set netboot server directory
-# (Default: /freespace/paella)
+# (Default: /srv/debian-live)
 LH_NET_ROOT_PATH="/freespace/paella"
 
 # $LH_NET_ROOT_SERVER: set netboot server address
-# (Default: 10.0.1.1)
+# (Default: 192.168.1.1)
 LH_NET_ROOT_SERVER="10.0.1.1"
 
 # $LH_NET_COW_FILESYSTEM: set net client cow filesystem
@@ -150,7 +150,7 @@ LH_SYSLINUX_MENU_LIVE_FAILSAFE_ENTRY=""
 LH_SYSLINUX_MENU_MEMTEST_ENTRY="Memory test"
 
 # $LH_USERNAME: set username
-# (Default: installer)
+# (Default: user)
 LH_USERNAME="installer"
 
 

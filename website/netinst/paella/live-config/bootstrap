@@ -29,11 +29,11 @@ LH_BOOTSTRAP_KEYRING=""
 LH_DISTRIBUTION="lenny"
 
 # $LH_MIRROR_BOOTSTRAP: set mirror to bootstrap from
-# (Default: http://10.0.1.1/debian)
+# (Default: http://ftp.us.debian.org/debian/)
 LH_MIRROR_BOOTSTRAP="http://paella.lapnet/debian"
 
 # $LH_MIRROR_CHROOT: set mirror to fetch packages from
-# (Default: http://10.0.1.1/debian)
+# (Default: http://ftp.us.debian.org/debian/)
 LH_MIRROR_CHROOT="$LH_MIRROR_BOOTSTRAP"
 
 # $LH_MIRROR_CHROOT_SECURITY: set security mirror to fetch packages from
@@ -49,6 +49,6 @@ LH_MIRROR_BINARY="$LH_MIRROR_BOOTSTRAP"
 # (Default: http://security.debian.org/)
 LH_MIRROR_BINARY_SECURITY="$LH_MIRROR_BOOTSTRAP"
 
-# $LH_SECTIONS: select section(s) to use
-# (Default: main contrib non-free)
-LH_SECTIONS="main contrib non-free"
+# $LH_CATEGORIES: select categories to use
+# (Default: main)
+LH_CATEGORIES="main contrib non-free"

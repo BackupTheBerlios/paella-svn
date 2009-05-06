@@ -13,10 +13,11 @@ PAELLA_LIVE_INIT_CONFDIR = '/usr/local/share/paella/live-config'
 def get_arch():
     proc = subprocess.Popen([DPKG_ARCH_BINARY], stdout=subprocess.PIPE)
     arch_line = None
+    marker = 'DEB_HOST_ARCH='
     for line in proc.stdout:
-        if line.startswith('DEB_HOST_ARCH='):
+        if line.startswith(marker):
             arch_line = line.strip()
-            arch = arch_line.split('=')[1]
+            arch = arch_line.split(marker)[1]
     if arch_line is None:
         raise RuntimeError , 'Host architecture not found.'
     return arch
@@ -49,12 +50,31 @@ def initialize_debian_live_config():
     gpg_export_key(keyid, keyfilename)
         
 
+def prepare_paella_installer():
+    # make sure paella-installer is installed
+    subprocess.check_call(['sudo', 'apt-get', '-y', 'install', 'paella-installer'])
+    here = os.getcwd()
+    os.chdir(DEBIAN_LIVE_BASEDIR)
+    # create stage directory
+    os.mkdir('.stage')
+    # simple way to create an empty file
+    file('.stage/bootstrap', 'w')
+    os.chdir(here)
+
+def install_live_chroot():
+    here = os.getcwd()
+    os.chdir(DEBIAN_LIVE_BASEDIR)
+    command = ['sudo', 'paella-machine-installer', 'install',
+               'live_chroot', 'chroot']
+    subprocess.check_call(command)
+    os.chdir(here)
+    
 def build_live_image():
     here = os.getcwd()
     os.chdir(DEBIAN_LIVE_BASEDIR)
-    subprocess.check_call(['sudo', 'lh_clean'])
     subprocess.check_call(['sudo', 'lh_build'])
     subprocess.check_call(['sudo', './config/prepare-netboot'])
+    os.chdir(here)
     
 # perform system checks
 
@@ -67,6 +87,13 @@ else:
 # initialize debian live build area
 initialize_debian_live_config()
 print "Finished setting up live area"
+
+print "Preparing paella installer"
+prepare_paella_installer()
+
+print "Installing live chroot installer"
+install_live_chroot()
+
 
 print "Building live image"
 build_live_image()

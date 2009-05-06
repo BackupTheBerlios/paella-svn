@@ -34,7 +34,7 @@ LH_BOOTSTRAP="debootstrap"
 
 # $LH_CACHE: control cache
 # (Default: enabled)
-LH_CACHE="enabled"
+LH_CACHE="disabled"
 
 # $LH_CACHE_INDICES: control if downloaded package indices should be cached
 # (Default: disabled)
@@ -42,11 +42,11 @@ LH_CACHE_INDICES="disabled"
 
 # $LH_CACHE_PACKAGES: control if downloaded packages files should be cached
 # (Default: enabled)
-LH_CACHE_PACKAGES="enabled"
+LH_CACHE_PACKAGES="disabled"
 
 # $LH_CACHE_STAGES: control if completed stages should be cached
 # (Default: bootstrap)
-LH_CACHE_STAGES="bootstrap"
+LH_CACHE_STAGES="none"
 
 # $LH_DEBCONF_FRONTEND: set debconf(1) frontend to use
 # (Default: noninteractive)
@@ -61,8 +61,8 @@ LH_DEBCONF_NOWARNINGS="yes"
 LH_DEBCONF_PRIORITY="critical"
 
 # $LH_INITRAMFS: set initramfs hook
-# (Default: live-initramfs)
-LH_INITRAMFS="live-initramfs"
+# (Default: auto)
+LH_INITRAMFS="auto"
 
 # $LH_FDISK: set fdisk program
 # (Default: autodetected)
@@ -85,7 +85,7 @@ LH_MODE="debian"
 LH_USE_FAKEROOT="disabled"
 
 # $LH_TASKSEL: set tasksel program
-# (Default: aptitude)
+# (Default: tasksel)
 LH_TASKSEL="aptitude"
 
 # $LH_INCLUDES: set includes

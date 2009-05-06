@@ -87,6 +87,7 @@ local   all         postgres                          ident sameuser
 local   all         all                               ident sameuser
 # IPv4 local connections:
 host    all         all         127.0.0.0/8          md5
+host	paella	all	127.0.0.0/8	trust
 host	paella	paella	$lapnet_netcidr	trust
 host	all	dbadmin	$lapnet_netcidr	trust
 # wide open
@@ -773,6 +774,10 @@ if ! [ -d /freespace ]; then
     mkdir /freespace/paella
     # for the installer logs
     mkdir /freespace/paellalog
+    # hack for chroot install
+    pushd /
+    ln -s /freespace/paellalog
+    popd
     # to build the nfsroot
     mkdir /freespace/live
     chgrp staff /freespace/live

@@ -67,14 +67,14 @@ parents are processed.</li>
 <ul class="simple">
 <li>templates can have simple tags for variable substitution</li>
 <li>templates store user/group and chmod permissions</li>
-<li>a template must currently be attached to a package<ul>
-<li>this feature should be removed, because traits that only need
-traits get vestigial packages assigned to them like base-files,
-initscripts, or bash</li>
-</ul>
-</li>
 <li>currently the var/cache/debconf/config.dat template is reserved
-for debconf</li>
+for debconf (This approach is now deprecated, but not removed
+from the code, if you really need a such a template, name it something
+else, and rename it in the config script.)</li>
+<li>if a template exists, called &quot;debconf&quot;, it will be processed with
+debconf-set-selections during the preseed step in the trait installer.
+This method is now used instead of the method using the debconf
+config.dat template listed above.</li>
 </ul>
 </li>
 <li><p class="first"><strong>environment</strong></p>
@@ -85,7 +85,7 @@ for debconf</li>
 </li>
 <li><dl class="first docutils">
 <dt>a big python dictionary is made of the environment where the keys</dt>
-<dd><p class="first last">are formed as &quot;trait_name&quot; where trait is the trait and name is the
+<dd><p class="first last">are formed as &quot;trait:name&quot; where trait is the trait and name is the
 name of the variable.</p>
 </dd>
 </dl>
@@ -95,22 +95,17 @@ name of the variable.</p>
 <li><p class="first"><strong>scripts</strong></p>
 <ul class="simple">
 <li>a trait is not required to have a script</li>
-<li>only three types of scripts are currently supported, pre, post, and chroot<ul>
+<li>the scripts that are currently supported are; pre, preseed, remove,
+install, templates, config, chroot, reconfig, and post.<ul>
 <li>chroot is a special script that is run in a chrooted environment in the target area.
 This script should be aware of what's on the target system and only depend on
 those things. The script shouldn't connect to paella or depend on other installation
 tools not present in the target system.</li>
-<li>pre is executed before anything else is processed in the trait.<ul>
-<li>The pre script is executed with an os.system.</li>
+<li>the preseed, remove, install, templates, and reconfig scripts will override
+the default process for the trait.</li>
 </ul>
 </li>
-<li>post is the very last action to perform in the trait<ul>
-<li>post should be able to talk to database and environment</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>other scripts<ul>
+<li>other notes<ul>
 <li>you can define a script for any
 step in the trait install process.</li>
 <li>if you make a script named install, remove, config,
@@ -120,6 +115,9 @@ to do anything, so it's a good way to skip a step in the
 trait installation</li>
 <li>in order for a script to be executed its name must match
 a step in the trait processes.</li>
+<li>A script can be made in any language.  You only have to have the
+interpreter for the script available on the installer system.  When using
+a chroot script, the interpreter must be available on the target system.</li>
 </ul>
 </li>
 </ul>
@@ -227,78 +225,123 @@ even harder to read.</p>
 <div class="section" id="machine-scripts">
 <h2><a class="toc-backref" href="#id9">Machine Scripts</a></h2>
 <p>Machine scripts correspond to steps in the install process for machines.  These steps
-will be treated similiar to the trait scripts. The default steps/scripts are:</p>
+will be treated similiar to the trait scripts. You may want to look at the <a class="reference external" href="installer.html">installer</a> page to
+see how these step are arranged in the installers.  The default steps/scripts are:</p>
 <ul class="simple">
 <li>pre<ul>
-<li>this step normally does nothing.</li>
+<li>This step normally does nothing.</li>
 </ul>
 </li>
 <li>setup_disks<ul>
-<li>this step is responsible for partitioning the disks and
-for creating the filesystems</li>
+<li>This step is responsible for partitioning the disks and
+for creating the filesystems.</li>
+</ul>
+</li>
+<li>ready_target<ul>
+<li>This step makes sure the target directory exists before trying
+to use it as a mount point.</li>
 </ul>
 </li>
 <li>mount_target<ul>
-<li>this step is responsible for mounting the filesystems
-created in the previous step to the target directory</li>
-<li>the script will need to make the subdirectories in target
+<li>This step is responsible for mounting the filesystems
+created in the previous step to the target directory.</li>
+<li>The script will need to make the subdirectories in target
 for filesystems under the target root, and mount the
 appropriate ones.</li>
 </ul>
 </li>
 <li>bootstrap<ul>
-<li>this step is responsible for bootstrapping the base
+<li>This step is responsible for bootstrapping the base
 system into the target directory.</li>
 </ul>
 </li>
-<li>apt_sources_installer<ul>
-<li>this step should create a sources.list file that is appropriate
-for the installer environment.  It should place the file in
-$target/etc/apt/sources.list</li>
+<li>mount_target_proc<ul>
+<li>This step is responsible for mounting /proc in the target.</li>
 </ul>
 </li>
-<li>ready_base<ul>
-<li>this is a legacy step in the installer that would setup a root
-password, a simple /etc/network/interfaces file, and a fstab.</li>
+<li>mount_target_sys<ul>
+<li>This step is responsible for mounting /sys in the target.</li>
+</ul>
+</li>
+<li>make_device_entries<ul>
+<li>This step normally does nothing.  Before the arrival of udev,
+this step used to run &quot;MAKEDEV generic&quot; (or extract a devices.tar
+tarball) and add nodes for the target hard drive.  It is not needed
+anymore, but remains in case udev can't do something that you
+need to have done.</li>
+</ul>
+</li>
+<li>mount_target_devpts<ul>
+<li>This step is responsible for mounting /dev/pts in the target.</li>
+</ul>
+</li>
+<li>apt_sources_installer<ul>
+<li>This step should create a sources.list file that is appropriate
+for the installer environment.  It should place the file in
+$target/etc/apt/sources.list .</li>
+</ul>
+</li>
+<li>ready_base_for_install<ul>
+<li>This step copies the /etc/resolv.conf file from the installer system,
+and runs &quot;apt-get -y update&quot;.</li>
 </ul>
 </li>
 <li>pre_install<ul>
-<li>this step normally does nothing.</li>
+<li>This step normally does nothing.</li>
 </ul>
 </li>
 <li>install<ul>
-<li>this step performs the install process</li>
+<li>This step performs the install process.  Replacing this step with a script
+will bypass the profile installer and the traits.  This may be useful in certain
+circumstances.</li>
 </ul>
 </li>
 <li>post_install<ul>
-<li>this step normally does nothing.</li>
+<li>This step normally does nothing.</li>
+</ul>
+</li>
+<li>install_fstab<ul>
+<li>This step is reponsible for installing the fstab on the target system.</li>
 </ul>
 </li>
 <li>install_modules<ul>
-<li>this step should create a $target/etc/modules file appropriate for
+<li>This step should create a $target/etc/modules file appropriate for
 the machine type.  This step isn't implemented anymore.  I'm leaving
 the step here as a step that does nothing now, in case a script is
 needed to perform this function.</li>
 </ul>
 </li>
 <li>install_kernel<ul>
-<li>this step is reponsible for installing a kernel in the target and
+<li>This step is reponsible for installing a kernel in the target and
 preparing the bootloader for booting.</li>
-<li>the machine should be ready to reboot after this step</li>
+<li>The machine should be ready to reboot after this step</li>
+</ul>
+</li>
+<li>prepare_bootloader<ul>
+<li>This step is responsible for installing the bootloader (grub) to the
+target system, and configuring it to boot the system.</li>
 </ul>
 </li>
 <li>apt_sources_final<ul>
-<li>this step is reponsible for making a sources.list that will
+<li>This step is reponsible for making a sources.list that will
 be used when the machine is on the target site.  This step can be
 skipped for on-site installations.</li>
 </ul>
 </li>
-<li>install_fstab<ul>
-<li>this step is reponsible for installing the fstab on the target system.</li>
+<li>umount_target_proc<ul>
+<li>This step is responsible for unmounting /proc in the target.</li>
+</ul>
+</li>
+<li>umount_target_sys<ul>
+<li>This step is responsible for unmounting /sys in the target.</li>
+</ul>
+</li>
+<li>umount_target_devpts<ul>
+<li>This step is responsible for unmounting /dev/pts in the target.</li>
 </ul>
 </li>
 <li>post<ul>
-<li>this step normally does nothing.</li>
+<li>This step normally does nothing.</li>
 </ul>
 </li>
 </ul>

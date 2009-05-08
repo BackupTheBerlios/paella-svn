@@ -16,7 +16,7 @@
 <p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#local-debian-repository" id="id1">Local Debian Repository</a></li>
-<li><a class="reference internal" href="#database-maintainence" id="id2">Database Maintainence</a></li>
+<li><a class="reference internal" href="#database-maintenance" id="id2">Database Maintenance</a></li>
 <li><a class="reference internal" href="#external-editor-differ" id="id3">External Editor/Differ</a></li>
 <li><a class="reference internal" href="#memory-usage" id="id4">Memory Usage</a></li>
 <li><a class="reference internal" href="#root-paella" id="id5">/root/paella</a></li>
@@ -49,8 +49,8 @@ and you can add packages that you build to it.  It also uses the pool structure,
 signs the Release files, and can make partial mirrors.  Using reprepro is
 highly recommended.</p>
 </div>
-<div class="section" id="database-maintainence">
-<h1><a class="toc-backref" href="#id2">Database Maintainence</a></h1>
+<div class="section" id="database-maintenance">
+<h1><a class="toc-backref" href="#id2">Database Maintenance</a></h1>
 <p>At the moment, there is no code to help maintain the database.  There are two
 areas in the database that could use some code to help keep the database in
 good working order.</p>
@@ -68,7 +68,12 @@ the database using the xml format, dropping the database, creating a new
 database with the same name, then importing the last export.  This is an
 ugly way to keep the package list updated, and I'd like to keep from having
 to drop the database, or remove large parts of it just to update the package
-lists.</p>
+lists.  This method also hurts if you use extra tables in the database to keep
+parts of the configuration, as paella is designed to allow the administrator
+to be able to use the database to store the configuration.  Even if the schema
+that paella uses isn't appropriate to hold the configuration for a server, group
+of users, or whatever, the administrator is free to make a set of tables that
+can hold the configuration and use them from the paella scripts.</p>
 <p>The second area is the textfiles table that stores all of the templates and
 scripts.  When you delete a template or script from a trait, or machine, the
 actual file remains in the textfiles table.  Since the database uses foreign

@@ -45,9 +45,8 @@ styles of design and configurations.  Traits are held in suites.</p>
 A trait belongs to a suite.  The table in the database that holds the list of traits
 is called $(suite)_traits.  A trait can have packages, parents, templates, scripts
 and a set of variables.</p>
-<ul>
-<li><p class="first"><strong>parents</strong></p>
 <ul class="simple">
+<li><strong>parents</strong><ul>
 <li>no trait can be processed during the installation before all
 of its parents are processed.</li>
 <li>parents are not required, but most traits should depend on a default
@@ -56,15 +55,13 @@ trait.</li>
 parents are processed.</li>
 </ul>
 </li>
-<li><p class="first"><strong>packages</strong></p>
-<ul class="simple">
+<li><strong>packages</strong><ul>
 <li>this is a list of packages to install or remove
 - although other options are available, only install and remove are supported now</li>
 <li>packages are not required</li>
 </ul>
 </li>
-<li><p class="first"><strong>templates</strong></p>
-<ul class="simple">
+<li><strong>templates</strong><ul>
 <li>templates can have simple tags for variable substitution</li>
 <li>templates store user/group and chmod permissions</li>
 <li>currently the var/cache/debconf/config.dat template is reserved
@@ -77,23 +74,15 @@ This method is now used instead of the method using the debconf
 config.dat template listed above.</li>
 </ul>
 </li>
-<li><p class="first"><strong>environment</strong></p>
-<ul>
-<li><p class="first">a collection of name, value pairs for use in the templates and scripts</p>
-</li>
-<li><p class="first">a trait's environment contains its parents' environment</p>
-</li>
-<li><dl class="first docutils">
-<dt>a big python dictionary is made of the environment where the keys</dt>
-<dd><p class="first last">are formed as &quot;trait:name&quot; where trait is the trait and name is the
-name of the variable.</p>
-</dd>
-</dl>
-</li>
+<li><strong>environment</strong><ul>
+<li>a collection of name, value pairs for use in the templates and scripts</li>
+<li>a trait's environment contains its parents' environment</li>
+<li>a big python dictionary is made of the environment where the keys
+are formed as &quot;trait:name&quot; where trait is the trait and name is the
+name of the variable.</li>
 </ul>
 </li>
-<li><p class="first"><strong>scripts</strong></p>
-<ul class="simple">
+<li><strong>scripts</strong><ul>
 <li>a trait is not required to have a script</li>
 <li>the scripts that are currently supported are; pre, preseed, remove,
 install, templates, config, chroot, reconfig, and post.<ul>
@@ -138,21 +127,14 @@ but it has to be tied to a trait.</li>
 </div>
 <div class="section" id="profile">
 <h1><a class="toc-backref" href="#id5">Profile</a></h1>
-<ul>
-<li><p class="first">A profile is a collection of traits, and an environment</p>
-<ul>
-<li><p class="first">Traits - the traits listed in the profile are ordered</p>
-</li>
-<li><p class="first">Families - an unordered list of families</p>
-</li>
-<li><dl class="first docutils">
-<dt>Environment</dt>
-<dd><ul class="first last simple">
+<ul class="simple">
+<li>A profile is a collection of traits, and an environment<ul>
+<li>Traits - the traits listed in the profile are ordered</li>
+<li>Families - an unordered list of families</li>
+<li>Environment<ul>
 <li>the profile environment overrides the trait environments
 and the family environment</li>
 </ul>
-</dd>
-</dl>
 </li>
 </ul>
 </li>
@@ -160,9 +142,11 @@ and the family environment</li>
 </div>
 <div class="section" id="machine-database">
 <h1><a class="toc-backref" href="#id6">Machine Database</a></h1>
-<p>This section describes the machine database part of paella.  Profile, traits, and families
-should not be machine specific.  The Machine database trying to be design to hold
-information about physical systems to install logical systems from.</p>
+<p>This section describes the machine database part of paella.  Profiles and traits should
+not be machine specific.  Families should be either machine specific, or not machine
+specific.  It may help for a machine specific family to depend on one that's not machine
+specific.  The Machine database trying to be design to hold information about physical
+systems to install logical systems from.</p>
 <div class="section" id="machine">
 <h2><a class="toc-backref" href="#id7">Machine</a></h2>
 <p>a machine contains</p>

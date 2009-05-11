@@ -5,9 +5,27 @@ import subprocess
 def svn_checkout(project):
     cmd = ['svn', 'co', 'svn://svn.berlios.de/%s/trunk' % project, project]
     subprocess.check_call(cmd)
+
+def svn_export(project, version, tagdir='tags'):
+    dirname = '%s-%s' % (project, version)
+    url = 'svn://svn.berlios.de/%s/%s' % (project, dirname)
+    print "URL:", url
+    cmd = ['svn', 'export', url]
+    subprocess.check_call(cmd)
     
 
+def export_useless(version='0.2.0'):
+    svn_export('useless', version, tagdir='release')
+    
 HOME = os.environ['HOME']
+
+# expected release versions to be used
+USELESS_VERSION = '0.2.0'
+PAELLA_VERSION = '0.8.0'
+
+# default to using svn checkout, right now
+USELESS_TRUNK = True
+PAELLA_TRUNK = True
 
 localpython = os.path.join(HOME, 'local/python')
 workspace = os.path.join(HOME, 'workspace')
@@ -24,10 +42,25 @@ packages = ['python-support', 'build-essential', 'cdbs',
 
 here = os.getcwd()
 os.chdir(workspace)
-if not os.path.isdir('paella'):
-    svn_checkout('paella')
-if not os.path.isdir('useless'):
-    svn_checkout('useless')
+
+paella_directory = 'paella'
+if not PAELLA_TRUNK:
+    paella_directory = 'paella-%s' % PAELLA_VERSION
+if not os.path.isdir(paella_directory):
+    if PAELLA_TRUNK:
+        svn_checkout('paella')
+    else:
+        svn_export('paella', PAELLA_VERSION, tagdir='tags')
+        
+
+useless_directory = 'useless'
+if not USELESS_TRUNK:
+    useless_directory = 'useless-%s' % USELESS_VERSION
+if not os.path.isdir(useless_directory):
+    if USELESS_TRUNK:
+        svn_checkout('useless')
+    else:
+        svn_export('useless', USELESS_VERSION, tagdir='release')
 
 os.chdir(localpython)
 if not os.path.isdir('paella'):
@@ -35,8 +68,6 @@ if not os.path.isdir('paella'):
 
 if not os.path.isdir('useless'):
     subprocess.check_call(['ln', '-s', os.path.join(workspace, 'useless/useless')])
-    
-
 os.chdir(HOME)
 
 screenrc_data = """chdir workspace
@@ -114,7 +145,9 @@ subprocess.call(['sudo', 'apt-get', '-y', 'install',
                  'paella-installer'])
 
 
+# copy the environment
 env = dict(os.environ.items())
+# and add PAELLA_DBUSER to it
 env['PAELLA_DBUSER'] = 'dbadmin'
 
 print "Importing quickstart database"

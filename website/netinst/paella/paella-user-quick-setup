@@ -1,6 +1,46 @@
 #!/usr/bin/env python
 import os
 import subprocess
+import hashlib
+
+#################################################
+# expected release versions to be used
+USELESS_VERSION = '0.2.0'
+PAELLA_VERSION = '0.8.0'
+
+# default to using svn checkout, right now
+USELESS_TRUNK = False
+PAELLA_TRUNK = True
+
+# use ftp? (this is ignored if *_TRUNK is True)
+USELESS_FTP = True
+PAELLA_FTP = False
+#################################################
+
+useless_md5sums = {'0.2.0' : 'f2024a56b744767df3876009a0044028'}
+
+paella_md5sums = {}
+
+md5sums  = dict(useless=useless_md5sums, paella=paella_md5sums)
+
+
+def get_md5sum(filename):
+    m = hashlib.new('md5')
+    block_size = 1024
+    f = file(filename)
+    block = f.read(block_size)
+    while block:
+        m.update(block)
+        block = f.read(block_size)
+    return m.hexdigest()
+
+def check_md5sum(project, version, tarball=None):
+    if tarball is None:
+        tarball = '%s-%s.tar.gz' % (project, version)
+    this_md5 = get_md5sum(tarball)
+    known_md5 = md5sums[project][version]
+    return this_md5 == known_md5
+
 
 def svn_checkout(project):
     cmd = ['svn', 'co', 'svn://svn.berlios.de/%s/trunk' % project, project]
@@ -8,116 +48,151 @@ def svn_checkout(project):
 
 def svn_export(project, version, tagdir='tags'):
     dirname = '%s-%s' % (project, version)
-    url = 'svn://svn.berlios.de/%s/%s' % (project, dirname)
+    url = 'svn://svn.berlios.de/%s/%s/%s' % (project, tagdir, dirname)
     print "URL:", url
     cmd = ['svn', 'export', url]
     subprocess.check_call(cmd)
-    
+
+def get_ftp_tarball(project, tarball):
+    if os.path.exists(tarball):
+        print "%s already exists." % tarball
+        return
+    url = 'ftp://ftp.berlios.de/pub/%s/%s' % (project, tarball)
+    print "Retrieving", url
+    subprocess.check_call(['wget', url])
 
 def export_useless(version='0.2.0'):
     svn_export('useless', version, tagdir='release')
+
+def extract_tarball(tarball):
+    if not os.path.isfile(tarball):
+        raise RuntimeError , "tarball %s doesn't exist." % tarball
+    cmd = ['tar', '--extract', '--verbose', '--gzip', '--file', tarball]
+    subprocess.check_call(cmd)
     
-HOME = os.environ['HOME']
 
-# expected release versions to be used
-USELESS_VERSION = '0.2.0'
-PAELLA_VERSION = '0.8.0'
+def make_screenrc(HOME):
+    screens = [('local', 'workspace'),
+               ('live', '/freespace/live'),
+               ('debian', '/freespace/debian'),
+               ('paellalog1', '/freespace/paellalog'),
+               ('paellalog2', '/freespace/paellalog'),
+               ('root', '')]
+    index = 0
+    screenrc_data = ''
+    for name, directory in screens:
+        if directory:
+            screenrc_data += 'chdir %s\n' % directory
+        screenrc_data += 'screen -t %s %d\n\n' % (name, index)
+        index += 1
+    screenrc_filename = os.path.join(HOME, '.screenrc')
+    screenrc_file = file(screenrc_filename, 'w')
+    screenrc_file.write(screenrc_data)
+    screenrc_file.close()
 
-# default to using svn checkout, right now
-USELESS_TRUNK = True
-PAELLA_TRUNK = True
+def make_skeleton_directories(HOME):
+    localpython = os.path.join(HOME, 'local/python')
+    workspace = os.path.join(HOME, 'workspace')
+    binpath = os.path.join(HOME, 'bin')
+    for directory in [localpython, workspace, binpath]:
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+    return localpython, workspace, binpath
 
-localpython = os.path.join(HOME, 'local/python')
-workspace = os.path.join(HOME, 'workspace')
-binpath = os.path.join(HOME, 'bin')
 
-map(os.makedirs, [localpython, workspace, binpath])
-
-
-packages = ['python-support', 'build-essential', 'cdbs',
-            'devscripts', 'python-docutils', 'python-all-dev',
-            'live-helper', 'dosfstools', 'memtest86+',
-            'parted', 'squashfs-tools', 'genext2fs', 'mtd-tools',
-            'syslinux', 'uuid-runtime']
-
-here = os.getcwd()
-os.chdir(workspace)
-
-paella_directory = 'paella'
-if not PAELLA_TRUNK:
-    paella_directory = 'paella-%s' % PAELLA_VERSION
-if not os.path.isdir(paella_directory):
-    if PAELLA_TRUNK:
-        svn_checkout('paella')
-    else:
-        svn_export('paella', PAELLA_VERSION, tagdir='tags')
-        
-
-useless_directory = 'useless'
-if not USELESS_TRUNK:
-    useless_directory = 'useless-%s' % USELESS_VERSION
-if not os.path.isdir(useless_directory):
-    if USELESS_TRUNK:
-        svn_checkout('useless')
-    else:
-        svn_export('useless', USELESS_VERSION, tagdir='release')
-
-os.chdir(localpython)
-if not os.path.isdir('paella'):
-    subprocess.check_call(['ln', '-s', os.path.join(workspace, 'paella/src/paella')])
-
-if not os.path.isdir('useless'):
-    subprocess.check_call(['ln', '-s', os.path.join(workspace, 'useless/useless')])
-os.chdir(HOME)
-
-screenrc_data = """chdir workspace
-screen -t local 0
-
-chdir /freespace/live
-screen -t live 1
-
-chdir /freespace/debian
-screen -t debian 2
-
-chdir /freespace/paellalog
-screen -t paellalog1 3
-
-chdir /freespace/paellalog
-screen -t paellalog2 4
-
-screen -t root 5
-
-"""
-
-screenrc_filename = os.path.join(HOME, '.screenrc')
-screenrc_file = file(screenrc_filename, 'w')
-screenrc_file.write(screenrc_data)
-screenrc_file.close()
-
-install_cmd = ['sudo', 'apt-get', '-y', 'install'] + packages
-
-subprocess.check_call(install_cmd)
-
-os.chdir(here)
-
-# build packages
-
-def build_package(name):
+# localpython is the directory that will be
+# used in the PYTHONPATH (this isn't needed,
+# but we'll keep the code anyway).
+def make_localpython_links(localpython, workspace):
     here = os.getcwd()
-    os.chdir(name)
+    os.chdir(localpython)
+    if not os.path.isdir('paella'):
+        subprocess.check_call(['ln', '-s', os.path.join(workspace, 'paella/src/paella')])
+        if not os.path.isdir('useless'):
+            subprocess.check_call(['ln', '-s', os.path.join(workspace, 'useless/useless')])
+    os.chdir(here)
+    
+def install_builddeps():
+    packages = ['python-support', 'build-essential', 'cdbs',
+                'devscripts', 'python-docutils', 'python-all-dev',
+                'live-helper', 'dosfstools', 'memtest86+',
+                'parted', 'squashfs-tools', 'genext2fs', 'mtd-tools',
+                'syslinux', 'uuid-runtime']
+    install_cmd = ['sudo', 'apt-get', '-y', 'install'] + packages
+    subprocess.check_call(install_cmd)
+
+# returns directory name to be used for building package
+# the cwd should be the workspace directory when we
+# call this function.
+def get_project_code(project, version=None, ftp=False):
+    tagdir = dict(useless='release', paella='tags')
+    if version is None:
+        if os.path.isdir(project):
+            print "directory %s already exists." % project
+        else:
+            print "retrieve %s from svn trunk" % project
+            svn_checkout(project)
+        return project
+    else:
+        print "retrieve release %s of %s" % (version, project)
+        name = '%s-%s' % (project, version)
+        if os.path.isdir(name):
+            print "directory %s already exists." % name
+            return name
+        # determine whether to use ftp or svn export
+        if not ftp:
+            print "retrieve %s from svn export" % name
+            svn_export(project, version, tagdir=tagdir[project])
+            return name
+        else:
+            print "retrieve %s from ftp" % name
+            tarball = '%s.tar.gz' % name
+            print "tarball is", tarball
+            get_ftp_tarball(project, tarball)
+            if not check_md5sum(project, version, tarball=tarball):
+                raise RuntimeError , "md5 checksum doesn't match for %s" % tarball
+            else:
+                print "MD5 is ok for", tarball
+            extract_tarball(tarball)
+            return name
+            #raise RuntimeError , "not able to retrieve from ftp site yet."
+    # there should only be four possibilities
+    # svn co project, svn export project, wget ftp://project, or
+    # the directory already exists.
+    # If none of these happen, we have a problem, which we'll
+    # raise here.
+    raise RuntimeError , "unable to retrieve code for project %s" % project
+    
+def build_package(project, dirname):
+    here = os.getcwd()
+    svn_working_copy = False
+    os.chdir(dirname)
     dchcmd = ['dch', '--bpo', '--force-distribution',
               '-D', 'paella', 'testing paella']
     subprocess.check_call(dchcmd)
-    export_directory = '../%s-exported' % name
-    if os.path.isdir(export_directory):
-        subprocess.check_call(['rm', '-fr', export_directory])
-    export_cmd = ['svn', 'export', '.', export_directory]
-    subprocess.check_call(export_cmd)
-    os.chdir(export_directory)
-    retcode = subprocess.call(['debuild'])
-    print 'debuild returned', retcode
+    print "current dir might have changed names"
+    print os.getcwd()
+    dirname = os.getcwd()
+    dotsvndir = '.svn'
+    if os.path.isdir(dotsvndir):
+        print "we're in a working copy"
+        svn_working_copy = True
+        export_directory = '../%s-exported' % project
+        if os.path.isdir(export_directory):
+            print "removing previous export directory", export_directory
+            subprocess.check_call(['rm', '-fr', export_directory])
+        export_cmd = ['svn', 'export', '.', export_directory]
+        subprocess.check_call(export_cmd)
+        dirname = export_directory
+    #print "dirname is", dirname
+    #print "cwd is", os.getcwd()
+    #print "here is here", here
+    os.chdir(dirname)
+    retval = subprocess.call(['debuild'])
+    print "debuild returned", retval
     os.chdir(here)
     
+
 def upload_package(name):
     changes = [f for f in os.listdir('.') if f.startswith(name) and f.endswith('changes')]
     if not len(changes) or len(changes) > 1:
@@ -128,13 +203,42 @@ def upload_package(name):
     cmd = ['reprepro', '-b', '/freespace/debian', '--ignore=wrongdistribution',
            'include', 'paella', changes]
     subprocess.call(cmd)
+    
+HOME = os.environ['HOME']
 
-    
+
+print "making skeleton directories"
+localpython, workspace, binpath = make_skeleton_directories(HOME)
+print "installing build dependencies"
+install_builddeps()
+print "making .screenrc file"
+make_screenrc(HOME)
+
+
+here = os.getcwd()
 os.chdir(workspace)
-for package in ['useless', 'paella']:
-    build_package(package)
-    upload_package(package)
-    
+
+# get useless code
+if USELESS_TRUNK:
+    version = None
+else:
+    version = USELESS_VERSION
+useless_dirname = get_project_code('useless', version=version, ftp=USELESS_FTP)
+
+# get paella code
+if PAELLA_TRUNK:
+    version = None
+else:
+    version = PAELLA_VERSION
+paella_dirname = get_project_code('paella', version=version, ftp=PAELLA_FTP)
+
+dirnames = dict(useless=useless_dirname, paella=paella_dirname)
+for project in ['useless', 'paella']:
+    build_package(project, dirnames[project])
+    upload_package(project)
+    print "cwd", os.getcwd()
+os.chdir(here)
+
 
 print "updating apt"
 subprocess.call(['sudo', 'apt-get', '-y', 'update'])

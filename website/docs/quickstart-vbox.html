@@ -150,7 +150,7 @@ svn export svn://svn.berlios.de/paella/trunk/config/scripts/remaster-netinst-iso
 </pre>
 <p>if you already grabbed the netinst iso image, type:</p>
 <pre class="literal-block">
-./remaster-netinst-iso /path/to/debian-500-i386-netinst.iso
+./remaster-netinst-iso /path/to/debian-501-i386-netinst.iso
 </pre>
 <p>if you haven't gotten the netinst iso image yet, type:</p>
 <pre class="literal-block">
@@ -389,7 +389,9 @@ live_chroot machine as it's being installed.</p>
 <h1><a class="toc-backref" href="#id20">Using Paella Management Interface</a></h1>
 <div class="section" id="install-the-admin-package">
 <h2><a class="toc-backref" href="#id21">Install the Admin Package</a></h2>
-<p>Now we're almost ready to use the management interface.  To install it, type:</p>
+<p>Now we're almost ready to use the management interface.  The package containing
+this application should've been installed earlier when you ran the &quot;paella-user-quick-setup&quot;
+script earlier.  In case you still need to install it, type:</p>
 <pre class="literal-block">
 sudo apt-get update
 sudo apt-get install paella-admin
@@ -449,13 +451,22 @@ I'm going to be calling this part of the interface the &quot;list menu&quot;.</p
 on the toolbar for you to press.  The connection dialog entries are taken from your ~/.paellarc
 file.  The settings for postgresql in this quickstart don't require a password for dbadmin, but
 you'll want to use one if you use paella in a production environment.</p>
-<p>Once you connect to the database, you should get a dialog asking to create the primary
-tables.  You should click yes here to setup an empty database structure.  If you don't do
-this, the database import procedure will create these tables for you, but you won't be able to
-use the paella-management interface until you do this.</p>
+<p>If you didn't run the &quot;paella-user-quick-setup&quot; script above, or if there were problems
+encountered when running the script , then once you connect to the database, you
+should get a dialog asking to create the primary tables.  You should click yes here
+to setup an empty database structure.  If you don't do this, the database import procedure
+will create these tables for you, but you won't be able to use the paella-management interface
+until you do this.</p>
+<p>If the &quot;paella-user-quick-setup&quot; script ran without problems, the quickstart database
+should already imported, and you can skip the next section that describes how to import
+the database.</p>
 </div>
 <div class="section" id="import-the-database">
 <h2><a class="toc-backref" href="#id24">Import the database</a></h2>
+<p>You may need to install the paella-defaultdb package:</p>
+<pre class="literal-block">
+sudo apt-get install paella-defaultdb
+</pre>
 <p>Now we are going to import the startup database.  You may need an internet connection to
 import the database.  The importer downloads the Packages files from the debian mirror in
 the database.xml file, and inserts them into the database.  Go to the menubar, and in the
@@ -463,15 +474,16 @@ database menu, select &quot;import database&quot;.  A directory selection dialog
 VM I tested, this window was a little bit too skinny, so you'll probably need to make it wider
 with your mouse.  The database directory will be at:</p>
 <pre class="literal-block">
-~/workspace/paella/config/share/databases/quickstart-vbox/
+/usr/share/paella/databases/quickstart-vbox/
 </pre>
 <p>Note that the default debian mirror is  <a class="reference external" href="http://ftp.us.debian.org/debian">http://ftp.us.debian.org/debian</a> .  If you need to
-change this, edit the database.xml file in the quickstart-vbox  directory, and alter the uri
-attribute to the aptsource xml element at the top of the file.  You can change this to a local
-mirror if you already have one.  I recommend against using the local mirror that you just
-created in this quickstart routine, as you would likely want to make new traits with packages
-that aren't available in that mirror.  Paella has only been tested with http apt sources, it's
-behaviour on other methods is unknown.</p>
+change this, copy the quickstart-vbox directory, then edit the database.xml file
+in the new quickstart-vbox  directory, and alter the uri attribute to the aptsource xml
+element at the top of the file.  You can change this to a local mirror if you already have
+one.  I recommend against using the local mirror that you just created in this quickstart
+routine, as you would likely want to make new traits with packages that aren't available
+in that mirror.  Paella has only been tested with http apt sources, it's behaviour on other
+methods is unknown.</p>
 <p>If everything is working, you should be seeing an ugly little progress dialog displaying
 something resembling what it should be doing.  I need to fix this dialog to make it more
 accurate, but at least you'll see it working while it inserts the information into the
@@ -492,6 +504,11 @@ package to be stored in the database.</p>
 <h1><a class="toc-backref" href="#id26">Configure quickstart-vbox database</a></h1>
 <div class="section" id="add-the-archive-key">
 <h2><a class="toc-backref" href="#id27">Add the archive key</a></h2>
+<p>If you ran the paella-user-quick-setup script above, the archive key that you made
+earlier should already be imported into the paella database.  If this didn't occur, or
+you need to import another key, the instructions to do this lie below.  If you do import
+more archive keys, see the section below on editing the default environment so you
+can learn how to get paella to use those keys in an install.</p>
 <p>Now you'll need to add the gpg key you made above to paella, so that paella can install
 the packages from the new mirror.  Type:</p>
 <pre class="literal-block">
@@ -517,7 +534,7 @@ format is the same as the paellarc config file.</p>
 option is a comma separated list of key names that will be used for the installer.  The key,
 &quot;paella&quot;, should already be here.  If you named your key something else, or have other keys
 that you want to use, you need to list them here.  The other option is &quot;http_mirror&quot;, and you
-will want to either set this to &quot;<a class="reference external" href="http://paella.lapnet/debian">http://paella.lapnet/debian</a>&quot; .  You must save the file and
+will want to set this to &quot;<a class="reference external" href="http://paella.lapnet/debian">http://paella.lapnet/debian</a>&quot; .  You must save the file and
 exit the text editor for paella to save the information to the database.</p>
 </div>
 </div>

@@ -18,7 +18,7 @@
 <li><a class="reference internal" href="#introduction" id="id1">Introduction</a></li>
 <li><a class="reference internal" href="#inspiration" id="id2">Inspiration</a><ul>
 <li><a class="reference internal" href="#fai" id="id3">FAI</a></li>
-<li><a class="reference internal" href="#debconf" id="id4">debconf</a></li>
+<li><a class="reference internal" href="#debconf" id="id4">Debconf</a></li>
 <li><a class="reference internal" href="#knoppix" id="id5">Knoppix</a></li>
 <li><a class="reference internal" href="#demudi-debian-lex" id="id6">Demudi, Debian-Lex, ...</a></li>
 </ul>
@@ -43,7 +43,12 @@ tell what is going to be installed and configured.</p>
 </div>
 <div class="section" id="inspiration">
 <h1><a class="toc-backref" href="#id2">Inspiration</a></h1>
-<p>Inspiration for paella comes from many places.</p>
+<p>Inspiration for paella comes from many places.  Since inspiration is
+what it is, please note that the following sections were written quite a few
+years ago.  While the inspiration hasn't really changed much, the focus of
+development has changed to match and make use of the improvements
+and additions that have occured in the software community since paella
+was started.</p>
 <div class="section" id="fai">
 <h2><a class="toc-backref" href="#id3">FAI</a></h2>
 <p>FAI (the fully automated installer)
@@ -51,15 +56,14 @@ An excellent installer, with the capability of bootstrapping
 an entire network!  paella was going to just complement fai,
 but I'm starting to prefer the configuration layout i'm planning,
 so paella will probably completely replace fai.</p>
-<p>Much of this has been
-done, and now only the setup-storage command is being used
-from the fai-client package.  There is no need to reinvent the
-wheel here, as setting up disks can be complex and error
-proned if it's not managed right</p>
+<p>Much of this has been done, and now only the setup-storage
+command is being used from the fai-client package.  There is
+no need to reinvent the wheel here, as setting up disks can
+be complex and error proned if it's not managed right.</p>
 </div>
 <div class="section" id="debconf">
-<h2><a class="toc-backref" href="#id4">debconf</a></h2>
-<p>an important abstract configuration system</p>
+<h2><a class="toc-backref" href="#id4">Debconf</a></h2>
+<p>Debconf is an important abstract configuration system.</p>
 <p>Much of the inspiration for paella comes straight from both
 debconf and FAI.  I wanted to make a system that held the
 configuration for many packages in many formats and be

@@ -82,7 +82,7 @@ docpages = ['abstract', 'configuration',
             'gui', 'installer', 'notes', 'objects',
             'problems', 'schema', 'quickstart-vbox',
             'default-environment', 'gui-guide', 'index',
-            'defaultdb'
+            'defaultdb', 'plans'
             ]
 
 for page in toppages:

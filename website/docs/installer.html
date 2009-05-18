@@ -15,46 +15,46 @@
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
-<li><a class="reference internal" href="#introduction" id="id8">Introduction</a></li>
-<li><a class="reference internal" href="#installer-hierarchy" id="id9">Installer Hierarchy</a><ul>
-<li><a class="reference internal" href="#base-processor" id="id10">Base Processor</a></li>
-<li><a class="reference internal" href="#base-installer" id="id11">Base Installer</a><ul>
-<li><a class="reference internal" href="#important-attributes" id="id12">Important Attributes</a></li>
+<li><a class="reference internal" href="#introduction" id="id7">Introduction</a></li>
+<li><a class="reference internal" href="#installer-hierarchy" id="id8">Installer Hierarchy</a><ul>
+<li><a class="reference internal" href="#base-processor" id="id9">Base Processor</a></li>
+<li><a class="reference internal" href="#base-installer" id="id10">Base Installer</a><ul>
+<li><a class="reference internal" href="#important-attributes-and-methods" id="id11">Important Attributes and Methods</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#trait-installer" id="id13">Trait Installer</a><ul>
-<li><a class="reference internal" href="#processes" id="id14">Processes</a></li>
-<li><a class="reference internal" href="#id1" id="id15">Important Attributes</a></li>
+<li><a class="reference internal" href="#trait-installer" id="id12">Trait Installer</a><ul>
+<li><a class="reference internal" href="#processes" id="id13">Processes</a></li>
+<li><a class="reference internal" href="#important-attributes" id="id14">Important Attributes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#profile-installer" id="id16">Profile Installer</a><ul>
-<li><a class="reference internal" href="#id2" id="id17">Processes</a></li>
-<li><a class="reference internal" href="#id3" id="id18">Important Attributes</a></li>
+<li><a class="reference internal" href="#profile-installer" id="id15">Profile Installer</a><ul>
+<li><a class="reference internal" href="#id1" id="id16">Processes</a></li>
+<li><a class="reference internal" href="#id2" id="id17">Important Attributes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#chroot-installer" id="id19">Chroot Installer</a><ul>
-<li><a class="reference internal" href="#id4" id="id20">Processes</a></li>
-<li><a class="reference internal" href="#id5" id="id21">Important Attributes</a></li>
+<li><a class="reference internal" href="#chroot-installer" id="id18">Chroot Installer</a><ul>
+<li><a class="reference internal" href="#id3" id="id19">Processes</a></li>
+<li><a class="reference internal" href="#id4" id="id20">Important Attributes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#machine-installer" id="id22">Machine Installer</a><ul>
-<li><a class="reference internal" href="#id6" id="id23">Processes</a></li>
-<li><a class="reference internal" href="#id7" id="id24">Important Attributes</a></li>
+<li><a class="reference internal" href="#machine-installer" id="id21">Machine Installer</a><ul>
+<li><a class="reference internal" href="#id5" id="id22">Processes</a></li>
+<li><a class="reference internal" href="#id6" id="id23">Important Attributes</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#installer-toolkit" id="id25">Installer Toolkit</a></li>
-<li><a class="reference internal" href="#automatic-install" id="id26">Automatic Install</a></li>
+<li><a class="reference internal" href="#installer-toolkit" id="id24">Installer Toolkit</a></li>
+<li><a class="reference internal" href="#automatic-install" id="id25">Automatic Install</a></li>
 </ul>
 </div>
 <div class="section" id="introduction">
-<h1><a class="toc-backref" href="#id8">Introduction</a></h1>
+<h1><a class="toc-backref" href="#id7">Introduction</a></h1>
 <p>This document explains how the installer works, and how the different
 parts are put together.</p>
 </div>
 <div class="section" id="installer-hierarchy">
-<h1><a class="toc-backref" href="#id9">Installer Hierarchy</a></h1>
+<h1><a class="toc-backref" href="#id8">Installer Hierarchy</a></h1>
 <ul class="simple">
 <li><a class="reference external" href="#base-processor">BaseProcessor</a> (object)<ul>
 <li><a class="reference external" href="#base-installer">BaseInstaller</a> (BaseProcessor)<ul>
@@ -70,7 +70,7 @@ parts are put together.</p>
 </li>
 </ul>
 <div class="section" id="base-processor">
-<h2><a class="toc-backref" href="#id10">Base Processor</a></h2>
+<h2><a class="toc-backref" href="#id9">Base Processor</a></h2>
 <p>This is the base class of all the installer objects.  This class isn't meant to
 be instantiated on it's own, but to be subclassed.  This class has four main
 attributes; _processes, _process_map, current, and log.  Hereafter, I'll refer
@@ -89,20 +89,20 @@ return the path to a script to be executed in place of the process.  This step i
 done before checking the process_map to see if it's mapped to a method or
 function.  This enables a script to run in place of a process that would normally
 be skipped.</p>
-<p>There are also two special method that can be implemented in a subclass.
+<p>There are also two special methods that can be implemented in a subclass.
 These are named &quot;pre_process&quot; and &quot;post_process&quot;.  They take the name
 of the process as an argument, and can be used to do things before and/or
 after the process in processed.</p>
 </div>
 <div class="section" id="base-installer">
-<h2><a class="toc-backref" href="#id11">Base Installer</a></h2>
+<h2><a class="toc-backref" href="#id10">Base Installer</a></h2>
 <p>This is the base installer object, and is a subclass of BaseProcessor.  Like
 the BaseProcessor, this class is also not meant to be instantiated on its own,
 but to be subclassed.  This class holds attributes and methods that are in
 common with all the installer objects.  These are described briefly below.  Not
 all of them are described, but only the more important ones.</p>
-<div class="section" id="important-attributes">
-<h3><a class="toc-backref" href="#id12">Important Attributes</a></h3>
+<div class="section" id="important-attributes-and-methods">
+<h3><a class="toc-backref" href="#id11">Important Attributes and Methods</a></h3>
 <ul class="simple">
 <li>conn<ul>
 <li>This attribute is the connection object to the paella database.</li>
@@ -115,31 +115,37 @@ where the system will be installed.</li>
 </li>
 <li>defenv<ul>
 <li>This attribute is the object that accesses the &quot;default_environment&quot;
-table in the database.</li>
+table in the database.  This object is used as though it were a ConfigParser
+object.</li>
 </ul>
 </li>
 <li>installer<ul>
 <li>This attribute is the instance of a child installer, if the installer has a
 child installer.  This is how the installers are stacked onto one another.
 Generally, there is an &quot;install&quot; process in the parent installer that will
-be used to run all the processes in the child installer.</li>
+be used to run all the processes in the child installer.  The default is
+None.</li>
 </ul>
 </li>
 <li>set_logger<ul>
 <li>This method is responsible for creating the logger object that will be
-used to inform us on what the installer is doing.</li>
+used to inform us on what the installer is doing.  The python logging
+facility is used for this, and theoretically, any handler that's defined in
+that facility should work, although only the FileHandler method is being
+used.</li>
 </ul>
 </li>
 <li>chroot<ul>
 <li>This method is used to execute a command in the target directory
-in a chroot environment.</li>
+in a chroot environment.  The stdout and stderr of each command is
+redirected to the logger.</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div class="section" id="trait-installer">
-<h2><a class="toc-backref" href="#id13">Trait Installer</a></h2>
+<h2><a class="toc-backref" href="#id12">Trait Installer</a></h2>
 <p>This is the most basic of the installer objects, and it's the object that does
 most of the work.  This object doesn't exist by itself, but is an attribute of
 the profile installer object.  This object will process a trait, but it won't check
@@ -153,10 +159,10 @@ to see how a system is without templates, or without scripts being run.  In this
 case you would set <strong>trait_processes</strong> to  &quot;remove, install&quot; and the other
 processes will be skipped.</p>
 <div class="section" id="processes">
-<h3><a class="toc-backref" href="#id14">Processes</a></h3>
+<h3><a class="toc-backref" href="#id13">Processes</a></h3>
 <ul class="simple">
 <li>pre<ul>
-<li>this process normally does nothing.  It can be hooked with a script</li>
+<li>This process normally does nothing.  It can be hooked with a script.</li>
 </ul>
 </li>
 <li>preseed<ul>
@@ -179,28 +185,28 @@ package list.</li>
 </ul>
 </li>
 <li>config<ul>
-<li>this process normally does nothing.  It can be hooked with a script</li>
+<li>This process normally does nothing.  It can be hooked with a script.</li>
 </ul>
 </li>
 <li>chroot<ul>
-<li>this process normally does nothing.  It can be hooked with a script</li>
-<li>if a script exists for this process, it will be run in a chroot environment
+<li>This process normally does nothing.  It can be hooked with a script.</li>
+<li>If a script exists for this process, it will be run in a chroot environment
 in the target directory.</li>
 </ul>
 </li>
 <li>reconfig<ul>
 <li>This process will run &quot;dpkg-reconfigure -plow&quot; on all the packages
-marked &quot;reconfig&quot; in thr trait's package list.</li>
+marked &quot;reconfig&quot; in the trait's package list.</li>
 </ul>
 </li>
 <li>post<ul>
-<li>this process normally does nothing.  It can be hooked with a script</li>
+<li>This process normally does nothing.  It can be hooked with a script.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="id1">
-<h3><a class="toc-backref" href="#id15">Important Attributes</a></h3>
+<div class="section" id="important-attributes">
+<h3><a class="toc-backref" href="#id14">Important Attributes</a></h3>
 <ul class="simple">
 <li>suite<ul>
 <li>This attribute determines what suite the trait should be processed from.
@@ -211,17 +217,17 @@ This attribute is generally set by the profile installer.</li>
 <li>This is the helper object that actually does most of the work for the trait
 installer.  It has some very important attributes that should be discussed.<ul>
 <li>familydata<ul>
-<li>variables from the families defined in the profile</li>
-<li>this should probably be merged with profiledata in the future</li>
+<li>This attribute contains variables from the families defined in the profile.</li>
+<li>This should probably be merged with profiledata in the future.</li>
 </ul>
 </li>
 <li>profiledata<ul>
-<li>variables defined in the profile</li>
+<li>This attribute contains variables defined in the profile.</li>
 </ul>
 </li>
 <li>machine_data<ul>
-<li>variables defined in the machine, and it's families</li>
-<li>this is how the profiledata should look in the future.</li>
+<li>This attribute contains variables defined in the machine, and it's families.</li>
+<li>This is how the profiledata should probably look in the future.</li>
 </ul>
 </li>
 </ul>
@@ -232,9 +238,9 @@ installer.  It has some very important attributes that should be discussed.<ul>
 </div>
 </div>
 <div class="section" id="profile-installer">
-<h2><a class="toc-backref" href="#id16">Profile Installer</a></h2>
-<p>The profile installer isn't used alone, but is and attribute of either
-the chroot installer or the machine installer.</p>
+<h2><a class="toc-backref" href="#id15">Profile Installer</a></h2>
+<p>The profile installer isn't used alone, but exists as an attribute of the
+machine installer.</p>
 <p>The profile installer is responsible for getting the traits processed.  The
 list of traits contained in the profile is expanded to make an ordered list
 that includes the parents of the traits.  Then that list of traits becomes
@@ -243,19 +249,20 @@ calls the trait installer to process each trait in the expanded list.</p>
 <p>The profile installer also creates a directory in target called /root/paella ,
 and uses this directory to store information about the install.  The list of
 traits to be installed, and a list of currently installed traits are placed in
-this directory.</p>
-<div class="section" id="id2">
-<h3><a class="toc-backref" href="#id17">Processes</a></h3>
+this directory.  In the future, I plan to make this part more configurable, in
+case the administrator wants to keep the target system cleaner.</p>
+<div class="section" id="id1">
+<h3><a class="toc-backref" href="#id16">Processes</a></h3>
 <p>The list of processes is the list of traits to be installed.  While it's possible
 to hook a trait with a script, it's not implemented, and there's no table in
 the database to hold the script.  The ability to skip or modify a trait would
 probably be useful, so this might be implemented in the future.</p>
 </div>
-<div class="section" id="id3">
-<h3><a class="toc-backref" href="#id18">Important Attributes</a></h3>
+<div class="section" id="id2">
+<h3><a class="toc-backref" href="#id17">Important Attributes</a></h3>
 <ul class="simple">
 <li>installer<ul>
-<li>This is the trait installer object</li>
+<li>This is the trait installer object.</li>
 </ul>
 </li>
 <li>familydata<ul>
@@ -277,7 +284,7 @@ so that this dictionary is passed to the trait installer as well.</li>
 </div>
 </div>
 <div class="section" id="chroot-installer">
-<h2><a class="toc-backref" href="#id19">Chroot Installer</a></h2>
+<h2><a class="toc-backref" href="#id18">Chroot Installer</a></h2>
 <p>The chroot installer is probably the most important installer, as it is
 the installer that actually installs the profile to the target.  It has a lot
 of processes that happen both before and after installing the profile.
@@ -293,12 +300,20 @@ chroot system, or to install a chroot profile while installing a
 machine.  Currently, the processes can't be overridden when just
 the chroot installer is being used.  These processes are inherited
 by the machine installer, and hook scripts can be made there.</p>
-<p>If you really need to hook a process in the chroot installer, you
-should make a &quot;chroot machine&quot; that skips the formatting of
-the disks and installing the kernel, and use the machine installer
-to install the profile in a target directory.</p>
-<div class="section" id="id4">
-<h3><a class="toc-backref" href="#id20">Processes</a></h3>
+<p><strong>NOTE</strong>:  I have just recently removed the script that ran the
+chroot installer, deciding that it was better just to run the machine
+installer.  Once paella gained the flexibility to have parents for machines,
+the chroot installer seemed out of place, since there was no place
+existing in the database to be able to hook a process for just a
+chroot install.  This seems to be an overall better solution than trying
+to keep track two different installers.</p>
+<p>In order to make a &quot;chroot install&quot;, you should make a &quot;chroot machine&quot;
+that skips the formatting of the disks and installing the kernel, and use
+the machine installer to install the profile in a target directory.  The paella
+installer is created this way, and you can see the examples in the default
+database that ships with paella.</p>
+<div class="section" id="id3">
+<h3><a class="toc-backref" href="#id19">Processes</a></h3>
 <ul class="simple">
 <li>ready_target<ul>
 <li>This process creates the target directory if it doesn't exist.</li>
@@ -313,21 +328,24 @@ step a separate process.</li>
 </ul>
 </li>
 <li>mount_target_proc<ul>
-<li>mounts /proc in the target directory</li>
+<li>This process mounts /proc in the target directory.</li>
 </ul>
 </li>
 <li>mount_target_sys<ul>
-<li>mounts /sys in the target directory</li>
+<li>This process mounts /sys in the target directory.</li>
 </ul>
 </li>
 <li>make_device_entries<ul>
 <li>This process is deprecated now and does nothing.  The udev package
 has made this step obsolete.  It is kept here as a process so it can be
 hooked with a script, if needed.</li>
+<li>This process is also the main reason why there's no mount_virtfs step
+being used to mount /proc, /sys, and /dev/pts in one step.  That behavior
+may change in the future.</li>
 </ul>
 </li>
 <li>mount_target_devpts<ul>
-<li>mounts /dev/pts in the target directory</li>
+<li>This process mounts /dev/pts in the target directory.</li>
 </ul>
 </li>
 <li>apt_sources_installer<ul>
@@ -337,7 +355,7 @@ from the local mirror defined in the default environment.</li>
 </li>
 <li>ready_base_for_install<ul>
 <li>This process copies /etc/resolv.conf from the installer system, and
-runs &quot;apt-get update&quot;</li>
+runs &quot;apt-get -y update&quot;.</li>
 </ul>
 </li>
 <li>pre_install<ul>
@@ -359,37 +377,37 @@ same as the ones you install from).</li>
 </ul>
 </li>
 <li>umount_target_sys<ul>
-<li>Unmounts /sys from the target directory.</li>
+<li>This process unmounts /sys from the target directory.</li>
 </ul>
 </li>
 <li>umount_target_proc<ul>
-<li>Unmounts /proc from the target directory.</li>
+<li>This process unmounts /proc from the target directory.</li>
 </ul>
 </li>
 <li>umount_target_devpts<ul>
-<li>Unmounts /dev/pts from the target directory.</li>
+<li>This process unmounts /dev/pts from the target directory.</li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="section" id="id5">
-<h3><a class="toc-backref" href="#id21">Important Attributes</a></h3>
+<div class="section" id="id4">
+<h3><a class="toc-backref" href="#id20">Important Attributes</a></h3>
 <ul class="simple">
 <li>installer<ul>
-<li>This is the profile installer object</li>
+<li>This is the profile installer object.</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div class="section" id="machine-installer">
-<h2><a class="toc-backref" href="#id22">Machine Installer</a></h2>
+<h2><a class="toc-backref" href="#id21">Machine Installer</a></h2>
 <p>The machine installer is a subclass of the chroot installer, so it
 does everything that the chroot installer does, plus those things
 that are specific to installing a machine, such as filesystem formatting
 and installing the kernel and bootloader.</p>
-<div class="section" id="id6">
-<h3><a class="toc-backref" href="#id23">Processes</a></h3>
+<div class="section" id="id5">
+<h3><a class="toc-backref" href="#id22">Processes</a></h3>
 <ul class="simple">
 <li>pre<ul>
 <li>This process does nothing and can be hooked with a script.</li>
@@ -499,11 +517,11 @@ it to boot the kernel.</li>
 </li>
 </ul>
 </div>
-<div class="section" id="id7">
-<h3><a class="toc-backref" href="#id24">Important Attributes</a></h3>
+<div class="section" id="id6">
+<h3><a class="toc-backref" href="#id23">Important Attributes</a></h3>
 <ul class="simple">
 <li>installer<ul>
-<li>This is the profile installer object</li>
+<li>This is the profile installer object.</li>
 </ul>
 </li>
 <li>machine_data<ul>
@@ -515,7 +533,7 @@ it to boot the kernel.</li>
 </div>
 </div>
 <div class="section" id="installer-toolkit">
-<h1><a class="toc-backref" href="#id25">Installer Toolkit</a></h1>
+<h1><a class="toc-backref" href="#id24">Installer Toolkit</a></h1>
 <p>The installer toolkit is made to be used in the trait scripts.  It can't be
 used for the chroot script, unless you have paella configured on the
 target system.  It is the job of the installer toolkit to provide you with a
@@ -523,7 +541,7 @@ good set of tools contained within the toolkit object, so that your scripts
 contain a minimum of boilerplate type code.</p>
 </div>
 <div class="section" id="automatic-install">
-<h1><a class="toc-backref" href="#id26">Automatic Install</a></h1>
+<h1><a class="toc-backref" href="#id25">Automatic Install</a></h1>
 <p>Automatic installation is supported.  The setup is fairly simple.  There is a
 script in the nfs installer package called paella-submit-machine.  You pass
 it a machine name argument, and the machine will be recognized by the

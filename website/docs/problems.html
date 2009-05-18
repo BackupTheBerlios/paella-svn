@@ -20,11 +20,12 @@
 <li><a class="reference internal" href="#template-editor" id="id4">Template Editor</a></li>
 <li><a class="reference internal" href="#templates-with-in-the-filename" id="id5">Templates with &quot;%&quot; in the filename</a></li>
 <li><a class="reference internal" href="#delete-trait-variables" id="id6">Delete Trait Variables</a></li>
+<li><a class="reference internal" href="#machine-manager" id="id7">Machine Manager</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#schema-problems" id="id7">Schema Problems</a></li>
-<li><a class="reference internal" href="#circular-dependencies" id="id8">Circular Dependencies</a></li>
-<li><a class="reference internal" href="#apt-sources" id="id9">Apt Sources</a></li>
+<li><a class="reference internal" href="#schema-problems" id="id8">Schema Problems</a></li>
+<li><a class="reference internal" href="#circular-dependencies" id="id9">Circular Dependencies</a></li>
+<li><a class="reference internal" href="#apt-sources" id="id10">Apt Sources</a></li>
 </ul>
 </div>
 <div class="section" id="introduction">
@@ -64,11 +65,17 @@ ugly hack.</p>
 <h2><a class="toc-backref" href="#id6">Delete Trait Variables</a></h2>
 <p>There is currently no way to delete variables from a trait with the gui.  You will have to
 use either plain sql or another database gui (like <a class="reference external" href="http://tora.sourceforge.net/">TOra</a>) to delete trait variables.  This
-is not a problem with</p>
+is not a problem when managing variables in profiles, families, or machines.</p>
+</div>
+<div class="section" id="machine-manager">
+<h2><a class="toc-backref" href="#id7">Machine Manager</a></h2>
+<p>The machine manager is still somewhat new.  Most of the dialogs are just simple
+text entry dialogs, instead of having a list to select the entry from.  More appropriate
+dialogs should be added in the future.</p>
 </div>
 </div>
 <div class="section" id="schema-problems">
-<h1><a class="toc-backref" href="#id7">Schema Problems</a></h1>
+<h1><a class="toc-backref" href="#id8">Schema Problems</a></h1>
 <blockquote>
 <ul class="simple">
 <li>templates in the traits are tied to packages <strong>fixed</strong></li>
@@ -82,10 +89,10 @@ the code.</li>
 </blockquote>
 </div>
 <div class="section" id="circular-dependencies">
-<h1><a class="toc-backref" href="#id8">Circular Dependencies</a></h1>
+<h1><a class="toc-backref" href="#id9">Circular Dependencies</a></h1>
 <blockquote>
 <ul class="simple">
-<li>the traits, families, and machines all have parents, and there is
+<li>The traits, families, and machines all have parents, and there is
 no code to check on whether there is a circular relationship among
 these entities.  Fixing this problem is a low priority for me.  The
 administrator who makes the paella database should be aware of
@@ -99,7 +106,7 @@ complexity.  These problems can probably be easily fixed by using
 the kjbuckets graph class that's already being used in paella.  I just
 haven't gotten around to doing this, and probably won't until I start
 experiencing problems here.</li>
-<li>due to the way the variables are substituted, there is also the chance
+<li>Due to the way the variables are substituted, there is also the chance
 that a circular dependency can occur here.  This problem will be harder
 to detect, and therefore, harder to prevent in the code.  Also, as the
 database increases in size and complexity, it's more likely that a
@@ -110,7 +117,7 @@ fixed.</li>
 </blockquote>
 </div>
 <div class="section" id="apt-sources">
-<h1><a class="toc-backref" href="#id9">Apt Sources</a></h1>
+<h1><a class="toc-backref" href="#id10">Apt Sources</a></h1>
 <p>The way apt sources are handled by the installer is not the very flexible.  Only the
 http method is handled by paella, and for the install, all of the packages must come
 from a single host.  It is probably possible to overcome this by using the hook scripts

@@ -42,7 +42,7 @@ paragraph is removed.  This will probably happen soon after lenny is released.</
 <li><a class="reference internal" href="#create-a-partial-debian-archive" id="id14">Create a Partial Debian Archive</a><ul>
 <li><a class="reference internal" href="#make-a-gpg-key" id="id15">Make a gpg key</a></li>
 <li><a class="reference internal" href="#setup-initial-debian-mirror" id="id16">Setup initial debian mirror</a></li>
-<li><a class="reference internal" href="#obtain-paella-from-subversion" id="id17">Obtain paella from subversion</a></li>
+<li><a class="reference internal" href="#obtain-paella-from-berlios" id="id17">Obtain Paella from Berlios</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#debian-live" id="id18">Debian Live</a><ul>
@@ -184,8 +184,8 @@ when by the time you read this, so you are recommended to download the <a class=
 image.  Be sure to look over the script really good before you execute it.  You may want to
 change the ARCH variable near the top of the file (note: only i386 is tested at the moment).
 Be sure that you have rsync, sudo, genisoimage, and subversion installed.</p>
-<p>This script is the only place where you will need to be root on the host system.  Every other
-script that requires root permissions, will be run on a virtual machine.</p>
+<p>This script is the only place where you will need to have root access on the host
+system.  Every other script that requires root permissions, will be run on a virtual machine.</p>
 <p>The script will give you a chance to review and edit the preseed files before you create the
 remastered iso image.  All the files that will be used in the remastered iso image will be
 located in the cd/ directory. If you have a local mirror that you want to install from, you should
@@ -345,20 +345,21 @@ sudo apt-get update
 <p>This will finish preparing the initial debian repository, and use that repository
 in your apt sources.</p>
 </div>
-<div class="section" id="obtain-paella-from-subversion">
-<h2><a class="toc-backref" href="#id17">Obtain paella from subversion</a></h2>
-<p>Now you're ready to get the source code from subversion.  To do this, type</p>
+<div class="section" id="obtain-paella-from-berlios">
+<h2><a class="toc-backref" href="#id17">Obtain Paella from Berlios</a></h2>
+<p>Now you're ready to get the source code from berlios.de.  To do this, type</p>
 <pre class="literal-block">
 cd
 paella-user-quick-setup
 </pre>
-<p>This will setup the directories, and download the source code from the berlios subversion
-repository.  It will also install build dependencies, plus some extra packages required to
-create the netboot image that will be made later in this guide.  It will then build the packages
-and install them into your freshly made debian repository.  After that, it will update apt, then
-install the paella-admin, paella-installer, and paella-defaultdb packages.  Then it will import
-the quickstart database from the paella-defaultdb package into the postgresql database.  It
-will also import the archive key that you created earlier.</p>
+<p>This will setup the directories, and download the source code from either the berlios
+subversion repository, or the berlios ftp site.  It will also install build dependencies,
+plus some extra packages required to create the netboot image that will be made later
+in this guide.  It will then build the packages and install them into your freshly made
+debian repository.  After that, it will update apt, then install the paella-admin,
+paella-installer, and paella-defaultdb packages.  Then it will import the quickstart
+database from the paella-defaultdb package into the postgresql database.  It will also
+import the archive key that you created earlier.</p>
 </div>
 </div>
 <div class="section" id="debian-live">

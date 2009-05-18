@@ -94,9 +94,13 @@ unavailable or misspelled.</li>
 <li><strong>PAELLA_DB_AUTOCONNECT</strong> -- If this variable exists, the paella-management
 application will automatically connect to the database with the information in ~/.paellarc
 instead of presenting a connection dialog.</li>
+<li><strong>DEBUG</strong> -- This is used mainly to test the paella-management application.  If this
+variable exists, extra information will be displayed in the terminal that launched the
+paella-management application.  If an exception is raised in the application, a python
+debugger will be launched in the terminal that launched paella-management.</li>
 </ul>
 </li>
-<li>These are used in scripts and are mostly unimportant:<ul>
+<li>These were used in scripts and are mostly unimportant:<ul>
 <li><strong>SUITES</strong></li>
 <li><strong>USER</strong></li>
 <li><strong>PATH</strong></li>

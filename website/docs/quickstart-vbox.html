@@ -12,15 +12,15 @@
 <h1 class="title">Paella Quick Start Guide</h1>
 
 <!-- -*- mode: rst -*- -->
-<p>This guide is unfinished.  If you are reading this, do not expect the guide to be correct or
+<p>This guide almost finished.  If you are reading this, do not expect the guide to be correct or
 accurate.  This guide has been a work in progress, and has been changing with respect to
 things that have been changing in paella, and its dependencies.  This guide should not be
 considered to be complete, until this paragraph is removed.  However, much of this guide,
 and the scripts and configuration that surround it, are almost complete.  This means that
-this guide can be considered as &quot;beta&quot; instead of &quot;alpha&quot;.  While there may be parts of this
-guide that are incorrect, I believe that most of this guide can be followed without any
-unexpected surprises.  This guide should not be considered as 100% complete until this
-paragraph is removed.  This will probably happen soon after lenny is released.</p>
+this guide can be considered as &quot;release candidate&quot; instead of &quot;beta&quot;.  While there may be
+parts of this guide that are incorrect, I believe that most of this guide can be followed without
+any unexpected surprises.  This guide should not be considered as 100% complete until this
+paragraph is removed.  This will probably happen before the end of May, 2009.</p>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
@@ -71,6 +71,12 @@ paragraph is removed.  This will probably happen soon after lenny is released.</
 <li><a class="reference internal" href="#configure-the-sidesalad-machine" id="id35">Configure the Sidesalad Machine</a></li>
 <li><a class="reference internal" href="#boot-sidesalad-again" id="id36">Boot Sidesalad Again</a></li>
 <li><a class="reference internal" href="#reboot-sidesalad-machine" id="id37">Reboot Sidesalad Machine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mission-accomplished" id="id38">Mission Accomplished!!!</a><ul>
+<li><a class="reference internal" href="#what-do-i-do-now" id="id39">What do I do now?</a></li>
+<li><a class="reference internal" href="#browse-the-quickstart-database" id="id40">Browse the Quickstart Database</a></li>
+<li><a class="reference internal" href="#start-using-the-default-database" id="id41">Start Using the Default Database</a></li>
 </ul>
 </li>
 </ul>
@@ -692,7 +698,7 @@ and it's configured to talk to sidesalad to get the install information.</p>
 <div class="section" id="boot-sidesalad-again">
 <h2><a class="toc-backref" href="#id36">Boot Sidesalad Again</a></h2>
 <p>Boot the sidesalad machine from the network again.  This time the sidesalad machine
-should automatically install.</p>
+should start installing automatically.</p>
 <p>While the paella installer is installing the sidesalad machine, you can watch the progress in
 the logfile, /freespace/paellalog/paella-install-sidesalad.log on the paella machine.  You can
 do this with the most program.  Bring up another terminal, and make it bigger, if you want
@@ -712,6 +718,7 @@ type:</p>
 <pre class="literal-block">
 sudo reboot
 </pre>
+<p>(load this page on sidesalad, so you can cut and paste the commands below)</p>
 <p>Now the machine should boot from the hard drive.  When the machine finishes booting, there
 are only a few commands left to make sidesalad a paella server.  The login should be the
 same as the paella machine (user: paella, password: paella).</p>
@@ -747,7 +754,37 @@ then run the paella-management application:</p>
 paella-management
 </pre>
 <p>Edit the default environment and set &quot;http_mirror&quot; to &quot;<a class="reference external" href="http://sidesalad.lapnet2/debian">http://sidesalad.lapnet2/debian</a>&quot;.</p>
-<p><strong>If you've made it this far, and the &quot;unfinished&quot; disclaimer is still at the top of this document, feel free to play around with paella anyway, and see if you can figure out how to use it.</strong></p>
+<p>Now, the sidesalad machine should work as a paella server.</p>
+</div>
+</div>
+<div class="section" id="mission-accomplished">
+<h1><a class="toc-backref" href="#id38">Mission Accomplished!!!</a></h1>
+<p>If you made it this far, then this quickstart guide is complete!
+Congratulations on installing your first test machine with paella!</p>
+<div class="section" id="what-do-i-do-now">
+<h2><a class="toc-backref" href="#id39">What do I do now?</a></h2>
+<p>If you wish, you could reinstall the paella machine, using sidesalad as the server.  The
+steps to do this would be very similar to how you made the sidesalad machine, so I'm
+not going to bother with the details.  This guide is long enough as it is (and it's called
+a &quot;quickstart&quot; guide).  Even so, it shouldn't be difficult to figure out how to install the
+paella machine  from sidesalad.</p>
+</div>
+<div class="section" id="browse-the-quickstart-database">
+<h2><a class="toc-backref" href="#id40">Browse the Quickstart Database</a></h2>
+<p>You could spend some time browsing the quickstart database with the paella-management
+application.  This would help to see how paella is structured, and may give you some ideas
+of how to use it for your machines and network(s).  Take note, the quickstart database was
+forked from the default database that ships with paella in order to make it easier to
+bootstrap paella, and make it through this guide.</p>
+</div>
+<div class="section" id="start-using-the-default-database">
+<h2><a class="toc-backref" href="#id41">Start Using the Default Database</a></h2>
+<p>The default <a class="reference external" href="defaultdb.html">database</a> is probably a better database to work with, although it has some
+parts that are still incomplete.  Using it will require a more complete debian mirror, plus
+a local mirror of the debian repository at <a class="reference external" href="http://www.debian-multimedia.org/">http://www.debian-multimedia.org/</a> .  You
+may also want to build a few extra packages to use with it.  The default database makes
+a better use of the framework that paella provides which can help teach you how to use
+paella in creating your own database.</p>
 <p><a class="reference external" href="index.html">toc</a></p>
 <hr class="docutils" />
 <p>This <a class="reference external" href="http://developer.berlios.de/projects/paella">project</a> is hosted by <a class="reference external" href="http://developer.berlios.de"><img alt="berlios" src="http://developer.berlios.de/bslogo.php?group_id=0&amp;type=1" /></a>.</p>

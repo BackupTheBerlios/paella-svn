@@ -3,6 +3,10 @@
 todo list:
 --------------------
 
+This items on this list are mostly complete now.  For a better synopsis of 
+what's going to be done with paella, please look at the plans_ page.
+
+
 .. contents:: :backlinks: entry
 
 ---------------------------------
@@ -181,3 +185,5 @@ general kde client todo
 - need to make widgets out of different managers and keep them in
   one window.
 
+
+.. _plans: docs/plans.html

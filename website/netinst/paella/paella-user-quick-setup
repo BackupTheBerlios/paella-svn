@@ -19,7 +19,7 @@ PAELLA_FTP = True
 
 useless_md5sums = {'0.2.0' : 'f2024a56b744767df3876009a0044028'}
 
-paella_md5sums = {'0.7.43', '3cc214f6b60a7b03c883461f2a17e620'}
+paella_md5sums = {'0.7.43' : '037abb62f46f1c9c6013519f976b0073'}
 
 md5sums  = dict(useless=useless_md5sums, paella=paella_md5sums)
 

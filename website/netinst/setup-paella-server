@@ -86,12 +86,12 @@ local   all         postgres                          ident sameuser
 # "local" is for Unix domain socket connections only
 local   all         all                               ident sameuser
 # IPv4 local connections:
-host    all         all         127.0.0.0/8          md5
 host	paella	all	127.0.0.0/8	trust
 host	paella	paella	$lapnet_netcidr	trust
 host	all	dbadmin	$lapnet_netcidr	trust
 # wide open
 #host	all	dbadmin	0.0.0.0/0  	trust
+host    all         all         127.0.0.0/8          md5
 host	all	all	$lapnet_netcidr	md5
 # IPv6 local connections:
 host    all         all         ::1/128               md5
@@ -117,7 +117,7 @@ external_pid_file = '/var/run/postgresql/8.3-main.pid'		# write an extra PID fil
 					# (change requires restart)
 
 # - Connection Settings -
-listen_addresses = '$lapnet_address,127.0.0.1'
+listen_addresses = '$lapnet_address,127.0.0.1,127.0.1.1'
 #listen_addresses = 'localhost'		# what IP address(es) to listen on;
 # wide open
 #listen_addresses = '*'			# comma-separated list of addresses;

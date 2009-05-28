@@ -1,0 +1,123 @@
+#!/bin/bash
+set -e
+
+# WARNING!!! 
+#This script uses sudo, and shouldn't be run without inspection.
+
+# commands needed to run this script
+# rsync - apt-get install rsync
+# sudo - apt-get install sudo
+# svn - apt-get install subversion
+# genisoimage - apt-get install genisoimage
+
+# I use the next line to remind me for testing purposes
+#export PAELLA_NETINST_WORKING_COPY=~/workspace/websites/paella/netinst
+
+# you may need to set these variables
+#ARCH=i386
+if [ -z $ARCH ]; then
+    ARCH=`dpkg --print-architecture`
+fi
+
+echo "ARCH: $ARCH"
+official_netinst_image=debian-501-$ARCH-netinst.iso
+official_netinst_image_url=http://cdimage.debian.org/debian-cd/current/$ARCH/iso-cd/$official_netinst_image
+official_netinst_image_arg=$1
+# if there's no iso argument, download the iso
+if [ -z $official_netinst_image_arg ]; then
+    if ! [ -e $official_netinst_image ]; then 
+	wget $official_netinst_image_url
+    fi
+else
+    official_netinst_image=$official_netinst_image_arg
+fi
+
+echo "Using $official_netinst_image as netinst iso image"
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+mkdir -p loopdir
+sudo mount -o loop $official_netinst_image loopdir 
+
+if [ -d cd ]; then
+    echo "removing old cd directory"
+    rm -rf cd
+fi
+
+
+mkdir cd
+rsync -a -H --exclude=TRANS.TBL loopdir/ cd
+sudo umount loopdir
+
+rmdir loopdir
+
+chmod +w -R cd/
+
+if [ -z $PAELLA_NETINST_WORKING_COPY ]; then
+    svn export --force svn://svn.berlios.de/paella/website/netinst cd
+else
+    echo "exporting from working copy"
+    svn export --force $PAELLA_NETINST_WORKING_COPY cd
+    if [ -e ~/vpaella/paella-myconfig.tar.gz ]; then 
+	echo "copying myconfig to netinst"
+	cp ~/vpaella/paella-myconfig.tar.gz cd
+    fi
+fi
+
+
+echo "Testing arch stuff"
+
+if test $ARCH = i386 ; then
+    isoarch=386
+elif test $ARCH = amd64 ; then
+    isoarch=amd
+else
+    isoarch=unknown
+    echo "Unknown Architecture $ARCH"
+    exit 1
+fi
+echo "Arch is $isoarch"
+
+
+cat <<EOF > cd/isolinux/txt.cfg
+default install
+timeout 50
+label install
+	menu label ^Install
+	kernel /install.$isoarch/vmlinuz
+	append vga=normal initrd=/install.$isoarch/initrd.gz preseed/file=/cdrom/preseed.cfg locale=en_US console-keymaps-at/keymap=us -- quiet 
+
+label localmirror
+	menu label Install w/ ^Local Mirror
+	kernel /install.$isoarch/vmlinuz
+	append vga=normal initrd=/install.$isoarch/initrd.gz preseed/file=/cdrom/localmirror.cfg locale=en_US console-keymaps-at/keymap=us -- quiet 
+
+EOF
+
+#exit 0
+
+echo "Here you may need to examine and modify the preseed files"
+echo "Be sure to check ./cd/isolinux/txt.cfg for proper architecture"
+echo "Use another terminal, and do this. When you're ready,"
+echo "press enter to continue."
+read
+
+
+
+
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+#Fix md5sum's
+pushd cd
+md5sum `find ! -name "md5sum.txt" ! -path "./isolinux/*" -follow -type f` > md5sum.txt
+popd
+
+
+# this scrap was taken from http://wiki.debian.org/DebianInstaller/Modify/CD
+genisoimage -o paella-netinst-$ARCH.iso -r -J -no-emul-boot -boot-load-size 4 \
+ -boot-info-table -b isolinux/isolinux.bin -c isolinux/boot.cat ./cd
+
+if [ -d cd ]; then
+    echo "removing cd directory"
+    rm -rf cd
+fi
+

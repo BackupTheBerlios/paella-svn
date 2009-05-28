@@ -1,0 +1,156 @@
+.. -*- mode: rst -*-
+
+==============================
+Known Problems with Paella_
+==============================
+
+.. contents:: :backlinks: entry
+
+-----------------------------------
+Introduction
+-----------------------------------
+
+This page details problems with paella that are planned to be fixed at some 
+point in the future.  Be sure to also read the notes_ page, as the problem you 
+are experiencing may be listed there.  Generally, the items on the notes_ page 
+are not so much problems or bugs as they are an explanation of the behavior 
+of paella, what to expect, and what's required when using it.  There may be a 
+couple of items on the notes_ page that could be considered problems, but I'm 
+not listing them here, until I can determine a good course of action to resolve 
+them.  I welcome input on what should be done about both the items here and on 
+the notes_ page.
+
+-------------------------------------------------------
+The gui needs more work
+-------------------------------------------------------
+
+There are a lot of unimplemented features in the gui.  There are also features 
+that don't work appropriately.
+
+Template Editor
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The simple template editor may have problems in some desktop environments.  When 
+some text is selected, and you right-click the mouse, the selection may disappear.  I 
+have not seen this happen in a gnome or kde desktop environment, but I have experienced 
+this in xfce and lxde environments.  I have not yet figured out what to do about this problem.  
+**Update**  I've noticed that this mainly happens while running the paella-management 
+application from within virtualbox, so perhaps the bug lies there.
+
+Templates with "%" in the filename
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+There seem to be problems when accessing templates that have a "%" character 
+present in the path of the template.  This problem has been noticed while trying to 
+modify gconf xml files.  Presumably, this problem can be easily fixed by proper 
+escaping of the "%" character, but I don't know how to do this yet, at least without an 
+ugly hack.
+
+Delete Trait Variables
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+There is currently no way to delete variables from a trait with the gui.  You will have to 
+use either plain sql or another database gui (like TOra_) to delete trait variables.  This 
+is not a problem when managing variables in profiles, families, or machines.
+
+Machine Manager
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The machine manager is still somewhat new.  Most of the dialogs are just simple 
+text entry dialogs, instead of having a list to select the entry from.  More appropriate 
+dialogs should be added in the future.
+
+
+--------------------------------------------------
+Schema Problems
+--------------------------------------------------
+
+  - templates in the traits are tied to packages **fixed**
+
+  - current_environment should look more like default_environment
+
+    + changing this will require some changes to the code.  Either the
+      changes will be extensive, or they will be minor, and scattered throughout
+      the code.
+
+
+----------------------------------------------------
+Circular Dependencies
+----------------------------------------------------
+
+  - The traits, families, and machines all have parents, and there is
+    no code to check on whether there is a circular relationship among
+    these entities.  Fixing this problem is a low priority for me.  The 
+    administrator who makes the paella database should be aware of 
+    how the entities relate to each other.  If there are times when the
+    install or parts of the management interface seem to stall, and
+    there's a python process using all the cpu, this is probably the reason.  
+    I'm open to accepting patches from people who wish to have this 
+    problem fixed, especially since it might become more difficult to tell 
+    that a circular dependency exists as the database grows in size and 
+    complexity.  These problems can probably be easily fixed by using 
+    the kjbuckets graph class that's already being used in paella.  I just 
+    haven't gotten around to doing this, and probably won't until I start
+    experiencing problems here.
+
+    
+  - Due to the way the variables are substituted, there is also the chance
+    that a circular dependency can occur here.  This problem will be harder 
+    to detect, and therefore, harder to prevent in the code.  Also, as the 
+    database increases in size and complexity, it's more likely that a 
+    circular dependency will happen here, rather than in the objects above.  
+    I'm open to suggestions on how this problem can be both spotted and 
+    fixed.
+
+
+----------------------------------------------------
+Apt Sources
+----------------------------------------------------
+
+The way apt sources are handled by the installer is not the very flexible.  Only the 
+http method is handled by paella, and for the install, all of the packages must come 
+from a single host.  It is probably possible to overcome this by using the hook scripts 
+to create the apt sources yourself, but this is still not tested.
+
+Also, for every apt source listed in a suite, the installer will place both deb and 
+deb-src entries into the sources.list file.  In some cases this is not desirable 
+and you may need to make your own scripts to handle the apt sources.  You 
+can do this by making machine scripts for **apt_sources_installer** and 
+**apt_sources_final** in a machine and have all machines that need this 
+to depend on that machine.
+
+----------------------------------------------------
+Man Pages
+----------------------------------------------------
+
+There are no man pages for the scripts that are invoked in the shell.  In the past, 
+I've not been interested in learning yet another document format, so I haven't 
+bothered with man pages.
+
+Recently, it's come to my attention that rst2man has been uploaded to unstable, so 
+there will likely be manpages created when I start building paella against squeeze.
+
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi3@gmail.com
+.. _problems: problems.html
+

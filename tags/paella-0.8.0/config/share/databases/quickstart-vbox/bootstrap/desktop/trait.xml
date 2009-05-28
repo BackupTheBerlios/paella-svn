@@ -1,0 +1,21 @@
+<trait name="desktop">
+	<parents>
+		<parent>
+			desktop_base
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			xorg
+		</package>
+		<package action="install">
+			xserver-xorg-input-all
+		</package>
+		<package action="install">
+			xserver-xorg-video-all
+		</package>
+	</packages>
+	<environ/>
+	<templates/>
+	<scripts/>
+</trait>

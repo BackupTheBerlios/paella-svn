@@ -1,0 +1,156 @@
+.. -*- mode: rst -*-
+
+====================================
+Default Environment
+====================================
+
+.. contents:: :backlinks: entry
+
+----------------------
+Introduction
+----------------------
+
+This document will explain the sections and options in the default environment.  There are, 
+at the moment, only three sections reserved for use with paella.  They are named; installer, 
+machines, and autoinstall.  The default environment can be treated as if it were a 
+global configuration file for your installation system.  You can feel free to make your own 
+sections and use them in your installs.  For example, you may wish to make a section that 
+defines the machines, locations and methods for restoring data that has been previously 
+backed up.  This could be helpful if you have had a hardware failure, and you are replacing 
+a machine, with a newer machine, and you need the new machine to be preloaded with 
+dumps or backups from the previous machine, or a machine that stores those.
+
+
+Installer Section
+-------------------
+
+[installer]
+
+- **allow_unauthenticated_packages**:  This option tells apt to refrain from authenticating
+  the Release file from the debian mirror.  It's highly recommended that you leave this option 
+  set to False and sign your mirrors with a key.  This option is likely to be removed at some 
+  point in the future, in favor of setting the option in **apt_command_opts**.
+
+- **apt_command**:  This is the command that will be used to install and remove packages.  
+  If this is set to "aptitude", the packages that are installed will be marked with user-tags that
+  correspond to the trait that installed those packages.  **Warning**:  Currently there is a 
+  bug in aptitude that impedes the ability to install packages automatically.  Aptitude will always 
+  return a 0 whether the command was successful or not.  This is an insidious bug that could 
+  possibly insnare you when you least expect it.  Using aptitude, and not paying close attention 
+  to the install log can leave your newly installed system in an undesirable state, as you may be 
+  missing a few packages that you really need.   It is recommended, when you are 
+  testing new configurations and installs, that you set this variable to "apt-get".  This will help
+  spot errors in the install.  Once you are sure that the configuration is correct, you can then 
+  switch it back to "aptitude".  If you use aptitude, be sure to keep an eye on the installer's log 
+  file, as you will be able to spot an error more easily.  **Note**:  If in doubt, leaving this option 
+  blank will cause the code to default to apt-get.
+
+- **apt_command_opts**:  These are options that will be passed to the apt_command 
+  listed above.  By default, this variable is empty.  Adding "--allow-unauthenticated"(apt-get) or 
+  "--allow-untrusted"(aptitude)  here will override the "allow_unauthenticated_packages" 
+  setting described above.
+
+- **archive_keys**:  This is a comma separated list of key names that paella will feed to
+  apt-key during installation in order to authenticate locally generated debian mirrors.  These 
+  are the names of the keys that are stored in the apt-key manager in the paella database.
+
+- **base_log_directory**":  This is full path to the directory where the log file for 
+  the installer will be placed.
+
+- **bootstrap_target**:  This option, when set to True, will call debootstrap to bootstrap 
+  the target system.  When this option is False, the base system will be extracted from 
+  a premade tarball.  If you extract from a premade tarball, you'll have to create a
+  /etc/resolv.conf file that will work early in the install process.  The code in paella may do 
+  this for you one day, but until then, it's the responsibility of the paella database to run 
+  the code required to build the /etc/resolv.conf (probably by copying it from the nfsroot
+  system).  **Update**:  Paella now copies the /etc/resolv.conf from the installer system 
+  during the "ready_base_for_install" step.  If any of your machines have a script that 
+  replaces this step, it may need to implement this part.
+
+- **bootstrap_suites**:  **DEPRECATED** This is a comma separated list of suites that 
+  will be bootstrapped, and tarred up for later extraction.  This option is used by the 
+  paella-setup-nfsinstaller script, and can be ignored if you use your own method to make 
+  the tarballs.  **Note**:  The paella-setup-nfsinstaller script may not work and shouldn't 
+  be used.  **NEW**:  There is now a new script called paella-setup-installer that will make 
+  tarballs for every suite in the database, and doesn't need to read this variable.
+
+- **default_target**:  This is the target directory where the system will be installed.  If 
+  this isn't set, /tmp/target will be used.
+
+- **devices_tarball**:  This option provides the location of the devices tarball on the installer.  
+  This tarball is created with "MAKEDEV generic", and the resulting device nodes are tarred 
+  up for extraction later.  This is done as a time saver, since the MAKEDEV script can take 
+  a good bit of time to run.  This option will be kept around in case it needs to be used, but
+  it's not being used anymore, since much of the device creation is done by the udev program.
+
+- **disk_log_directory**:  This is the directory where the files that setup-storage creates 
+  will be placed.  Usually this is a subdirectory of the base_log_directory.  The full path to 
+  the directory needs to be specified.
+
+- **http_mirror**:  This is the url to the debian mirror that will be used to install the target 
+  system.  This is probably a bad name for the variable, and it is likely to be deprecated in 
+  the future (once I figure out a better name).
+
+- **keep_installed_packages**:  This option, when set to True, will keep the downloaded 
+  packages in /var/cache/apt/archives .  When the option is False, the packages will be 
+  deleted at the end of each trait process.
+
+- **trait_processes**:  This option determines the processes that will be run for each 
+  trait during the install process.  This can be useful if you only want to install the packages 
+  and skip the installation of templates, packages, or skip the running of scripts during the 
+  install process.  Since this is a default option, any machine being installed will follow this 
+  behaviour, so this is mostly useful for testing and maintainence purposes.  Eventually, 
+  the trait processes may be set on a per machine, profile, or even trait level, allowing more 
+  control over the installation of specific machines.  The default processes are:  pre, preseed, 
+  remove, install, templates, config, chroot, reconfig, and post.
+
+- **suite_storage**:  This option provides the location of the debootstrapped suite tarballs.  
+  The tarballs provide a convenient way of speeding the installation without having to have the 
+  installer run debootstrap for each install.
+
+- **use_devices_tarball**:  This option is meaningless now, but in case it isn't, it should
+  be set to False.  The udev package (and kernels) have improved a lot since sarge, and 
+  this option may never have to be used again.
+
+
+Machines Section
+------------------------
+
+[machines]
+
+All the options in this section are of the form::
+
+    hwaddr_11_22_33_44_55_66:     machinename
+
+The option is and encoded representation of a mac address, and the value is
+the name of a machine.  The paella installer uses this section to figure out 
+which machine to install.
+
+
+Auto Install Section
+------------------------
+
+[autoinstall]
+
+All the options in this section are of the form::
+
+    machinename:   True (or False)
+
+Once the paella installer identifies the machine from the entry in the 
+machines section, it uses the autoinstall section to decide whether to
+install or not.  You can always install the machine manually by typing
+(as root)::
+
+    paella-machine-installer install machinename /tmp/target 
+
+I've historically used /tmp/target as the target directory since the paella 
+installer used to run from a read-only nfs mount.  With debianlive this
+is not necessary anymore.
+
+
+toc_
+
+.. _toc: index.html
+
+
+

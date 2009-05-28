@@ -1,0 +1,58 @@
+<trait name="paella_server">
+	<parents>
+		<parent>
+			clockserver
+		</parent>
+		<parent>
+			debianlive
+		</parent>
+		<parent>
+			debrepos
+		</parent>
+		<parent>
+			nfsroot_server
+		</parent>
+		<parent>
+			postgresql_server
+		</parent>
+		<parent>
+			subversion
+		</parent>
+		<parent>
+			web_server
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			paella-installer
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="signing_key" trait="paella_server">
+			&lt;your gpg key ID&gt;
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/distributions
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/extra-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/local-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/sid-fai
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/startup-packages
+		</template>
+		<template grp_owner="staff" mode="0644" owner="paella">
+			freespace/debian/conf/updates
+		</template>
+	</templates>
+	<scripts>
+		<script name="chroot"/>
+	</scripts>
+</trait>

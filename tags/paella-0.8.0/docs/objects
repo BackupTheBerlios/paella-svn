@@ -1,0 +1,377 @@
+.. -*- mode: rst -*-
+
+
+==========================================
+Objects and Definitions
+==========================================
+.. contents:: :backlinks: entry
+
+
+Apt Source
+------------------
+An apt source is similar to a line in an /etc/apt/sources.list file.  The main 
+difference is that it has a name (or label) and a local_path, which is the 
+path to the source on the local mirror that you are using.
+
+
+Suite
+-------
+A suite is a similiar to debian suites like woody or sarge.  A suite 
+can be used to make different versions of configurations, or different
+styles of design and configurations.  Traits are held in suites.
+
+Basically a suite is an ordered list of apt sources, and a set of traits.  The first 
+apt source that is listed will be the repository that debootstrap will be run against.
+
+When I started writing paella, a suite was just the "codename" for a debian 
+distribution, like woody, sarge, or sid, and  I appended the local mirror to each 
+suite.  This isn't being done anymore, but I've kept the term suite.
+
+Trait 
+------
+A trait is an atomic unit that signifies a feature.  It may be effective to think of 
+a trait like a task in tasksel, although a trait doesn't have to install packages.  
+For instance, a trait can be used as a namespace to hold variables, or a 
+container to hold a set of templates (or files).
+ 
+A trait belongs to a suite.  The table in the database that holds the list of traits
+is called $(suite)_traits.  A trait can have packages, parents, templates, scripts 
+and a set of variables.
+
+Parents
+++++++++++++++++
+
++ No trait can be processed during the installation before all
+  of its parents are processed.	     
++ Parents are not required, but most traits should depend on a default
+  trait.
+    
+
+Packages
+++++++++++++++++
+  
++ This is a list of packages to install, remove or reconfigure.
+
+  - Although other options are available, only install, remove, 
+    and reconfig are supported now.
+
++ Packages are not required in a trait.
+
+Templates
+++++++++++++++++
+ 
++ Templates can have simple tags for variable substitution, but this is not 
+  required.  They can be regular text files.
++ Templates must contain text, binary blobs are not supported. (Use base64 
+  if you really need blobs)
++ Templates store user/group and chmod permissions.
++ Currently, the var/cache/debconf/config.dat template is reserved 
+  for debconf (This approach is now deprecated, but not removed
+  from the code, if you really need a such a template, name it something 
+  else, and rename it in the config script.)
++ If a template exists, called "debconf", it will be processed with
+  debconf-set-selections during the preseed step in the trait installer.  
+  This method is now used instead of the method using the debconf 
+  config.dat template listed above.
+
+
+Environment
+++++++++++++++++
+
++ This should more accurately be called "Variables", but I started with 
+  calling it "Environment" and got stuck with it.
++ It is a collection of name, value pairs for use in the templates and scripts.
++ A trait's environment contains its parents' environment.
++ A big python dictionary is made of the environment where the keys
+  are formed as "trait:name" where trait is the trait and name is the 
+  name of the variable.
+
+Scripts
+++++++++++++++++
+
++ A trait is not required to have a script.
++ The scripts that are currently supported are; pre, preseed, remove, 
+  install, templates, config, chroot, reconfig, and post.  They correspond to 
+  the steps in the trait installer.
+
+  - The chroot script is a special script that is run in a chrooted environment in the 
+    target area.  This script should be aware of what's on the target system and only 
+    depend on those things. The script shouldn't connect to paella or depend on other 
+    installation tools not present in the target system. 
+  - The preseed, remove, install, templates, and reconfig scripts will override
+    the default process for the trait.
+
++ You should be able to use any scripting language that has an interpreter on the 
+  installer system.  It's up to the administrator to put the interpreter on the installer 
+  system.  
+
+  - When using a chroot script, the interpreter must be available on the target system.
+
+Other Notes
+++++++++++++++++
+    
+- You can define a script for any
+  step in the trait install process.
+
+- If you make a script named install, remove, config,
+  or reconfig, that step in the trait process is ignored,
+  and the script run instead.  The script doesn't have
+  to do anything, so it's a good way to skip a step in the 
+  trait installation.
+
+- In order for a script to be executed, its name must match
+  a step in the trait processes.
+
+Family
+--------
+
+A family is a collection of variables, possibly from different traits.
+
++ A family can have parents.
++ A family is not tied to a suite.
++ A variable in a family doesn't have to exist in a trait,
+  but it has to be tied to a trait.
+
+Profile
+-------
+
+A profile is a collection of traits, families, and variables.
+
++ Traits - The traits listed in the profile are ordered.
++ Families - The list of families is not ordered.
++ Variables
+
+  - The profile variables override the trait and family variables
+    attached to the profile.
+
+
+
+
+Machine Database
+--------------------------------
+This section describes the machine database part of paella.  Profiles and traits should 
+not be machine specific.  Families should be either machine specific, or not machine 
+specific.  It may help for a machine specific family to depend on one that's not machine 
+specific.  The Machine database trying to be design to hold information about physical 
+systems to install logical systems from.
+
+Machine
+++++++++++
+
+A machine contains:
+
+- A **name**
+
+- A **parent** - This is a parent machine that current machine is based from.
+
+  + Unlike traits and families, a machine can only have one parent.
+
+  + This is an optional field.
+
+- A **kernel** 
+  
+  + A kernel is simply the name of a kernel image package (for example, 
+    linux-image-2.6-686).
+  + The package must be install-able by apt, in a chroot environment, on the target system. 
+  + This attribute must be set somewhere in the machine's ancestry.
+  + A kernel named "default" will try to install "linux-image-2.6-$arch" corresponding to 
+    the arch that you are installing.  Kernel names, as well as the names of some other 
+    packages impede the attempt to make a single paella database support multiple 
+    architectures.
+
+- A **diskconfig** 
+  
+  + A diskconfig is the name of a diskconfig file that will be used by setup-storage when
+    during the setup_disks part of the install.
+  + This attribute must be set somewhere in the machine's ancestry.
+
+- A **profile** - This is the profile that will be installed on the machine.
+
+  + This attribute must be set somewhere in the machine's ancestry.
+
+- **families** - These are the normal families in the paella database.  These families
+  override the families in the profile.
+
+- **scripts** - These are "hook" scripts to override steps in the install process.
+
+- **variables** - These are variables that will override the variables defined in the 
+  traits, families, profile, and families for the machine.  In other words, **these are the
+  variables that override all other variables**.
+
+Machine Inheritance
++++++++++++++++++++++++++++++
+
+
+Since machines can have parents, it's important to know how a parent affects the
+machine.  There are three main attributes that each machine has.  These are the
+kernel, profile, and diskconfig attributes.  If the child machine doesn't have one of 
+these attributes set, it is resolved by going up the ancestral chain until the attribute 
+is found.  So a kernel set on a parent machine will be installed on all the child machines, 
+unless one of the child machines has their kernel attribute set, which will override the
+parent machine's kernel.  This allows the administrator to make groups of machines 
+by using a parent, setting the attributes on the parent, and leaving them as NULL on the 
+children.
+
+Machine scripts are treated similarly to the attributes mentioned above.  A script set 
+on a parent machine will be run on each of the child machines, unless the child has 
+that script set itself.  There is currently not a way to tell a child machine to ignore a 
+parent's script and perform the regular step in the paella installer.
+
+
+Families and variables are done differently.  Here, the variables are resolved from 
+"oldest" to "youngest".  Each machine updates the variables with its families, then 
+its own variables.  If there is a parent family on a child machine that has a child family 
+on a parent machine, the parent family on the child machine will override the child 
+family on the parent machine.  This is because the variables are updated one machine 
+at a time from "oldest" to "youngest", families first, then variables.
+
+I'll put some examples here later, since this section is hard to write, and probably 
+even harder to read.
+
+
+Machine Scripts
++++++++++++++++++++++++++++++
+
+Machine scripts correspond to steps in the install process for machines.  These steps
+will be treated similiar to the trait scripts. You may want to look at the installer_ page to 
+see how these step are arranged in the installers.  Any step that "normally does nothing" 
+is a place for you to add something to be done, without overriding the default steps in the 
+installation process.  The default steps/scripts are:
+
+- pre
+
+  + This step normally does nothing.
+
+- setup_disks
+
+  + This step is responsible for partitioning the disks and
+    for creating the filesystems.
+
+- ready_target
+
+  + This step makes sure the target directory exists before trying 
+    to use it as a mount point.
+
+- mount_target
+
+  + This step is responsible for mounting the filesystems
+    created in the previous step to the target directory.
+
+  + The script will need to make the subdirectories in target
+    for filesystems under the target root, and mount the
+    appropriate ones.
+
+- bootstrap
+
+  + This step is responsible for bootstrapping the base
+    system into the target directory.
+
+- mount_target_proc
+
+  + This step is responsible for mounting /proc in the target.
+
+- mount_target_sys
+
+  + This step is responsible for mounting /sys in the target.
+
+- make_device_entries
+
+  + This step normally does nothing.  Before the arrival of udev, 
+    this step used to run "MAKEDEV generic" (or extract a devices.tar 
+    tarball) and add nodes for the target hard drive(s).  It is not needed 
+    anymore, but remains in case udev can't do something that you 
+    need to have done.
+
+- mount_target_devpts
+
+  + This step is responsible for mounting /dev/pts in the target.
+
+- apt_sources_installer
+
+  + This step should create a sources.list file that is appropriate
+    for the installer environment.  It should place the file in 
+    $target/etc/apt/sources.list .
+
+- ready_base_for_install
+
+  + This step copies the /etc/resolv.conf file from the installer system,
+    and runs "apt-get -y update".
+
+- pre_install
+
+  + This step normally does nothing.
+
+- install
+
+  + This step performs the install process.  Replacing this step with a script 
+    will bypass the profile installer and the traits.  This may be useful in certain 
+    circumstances.
+
+- post_install
+
+  + This step normally does nothing.
+
+- install_fstab
+
+  + This step is reponsible for installing the fstab on the target system.
+
+- install_modules
+
+  + This step should create a $target/etc/modules file appropriate for
+    the machine type.  This step isn't implemented anymore.  I'm leaving
+    the step here as a step that does nothing now, in case a script is 
+    needed to perform this function.
+
+- install_kernel
+
+  + This step is reponsible for installing a kernel in the target and
+    preparing the bootloader for booting.
+
+  +  The machine should be ready to reboot after this step
+
+- prepare_bootloader
+
+  + This step is responsible for installing the bootloader (grub) to the
+    target system, and configuring it to boot the system.
+
+- apt_sources_final
+
+  + This step is reponsible for making a sources.list that will
+    be used when the machine is on the target site.  This step can be
+    skipped for on-site installations.
+
+- umount_target_proc
+
+  + This step is responsible for unmounting /proc in the target.
+
+- umount_target_sys
+
+  + This step is responsible for unmounting /sys in the target.
+
+- umount_target_devpts
+
+  + This step is responsible for unmounting /dev/pts in the target.
+
+- post
+
+  + This step normally does nothing.
+
+
+toc_
+
+.. _toc: index.html
+
+
+--------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+
+.. _machines: #machine
+.. _installer: installer.html
+

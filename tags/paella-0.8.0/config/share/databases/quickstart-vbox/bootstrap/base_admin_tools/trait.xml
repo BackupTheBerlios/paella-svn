@@ -1,0 +1,70 @@
+<trait name="base_admin_tools">
+	<parents>
+		<parent>
+			base
+		</parent>
+		<parent>
+			xemacs
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			lrzsz
+		</package>
+		<package action="install">
+			lsof
+		</package>
+		<package action="install">
+			members
+		</package>
+		<package action="install">
+			minicom
+		</package>
+		<package action="install">
+			most
+		</package>
+		<package action="install">
+			openssh-client
+		</package>
+		<package action="install">
+			rsync
+		</package>
+		<package action="install">
+			screen
+		</package>
+		<package action="install">
+			slay
+		</package>
+	</packages>
+	<environ>
+		<trait_variable name="logcheck_reportlevel" trait="base_admin_tools">
+			workstation
+		</trait_variable>
+		<trait_variable name="most_color_normal" trait="base_admin_tools">
+			lightgray black
+		</trait_variable>
+		<trait_variable name="most_color_overstrike" trait="base_admin_tools">
+			brightred black
+		</trait_variable>
+		<trait_variable name="most_color_status" trait="base_admin_tools">
+			yellow magenta
+		</trait_variable>
+		<trait_variable name="most_color_underline" trait="base_admin_tools">
+			brightgreen black
+		</trait_variable>
+		<trait_variable name="pager" trait="base_admin_tools">
+			/usr/bin/most
+		</trait_variable>
+		<trait_variable name="pager_priority" trait="base_admin_tools">
+			999
+		</trait_variable>
+	</environ>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			etc/most.conf
+		</template>
+	</templates>
+	<scripts>
+		<script name="config"/>
+	</scripts>
+</trait>

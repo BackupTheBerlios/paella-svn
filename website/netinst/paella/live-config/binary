@@ -151,7 +151,7 @@ LH_SYSLINUX_MENU_MEMTEST_ENTRY="Memory test"
 
 # $LH_USERNAME: set username
 # (Default: user)
-LH_USERNAME="installer"
+LH_USERNAME="paella"
 
 
 # to help make images quicker

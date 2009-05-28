@@ -5,7 +5,9 @@ import random
 
 DPKG_ARCH_BINARY = "/usr/bin/dpkg-architecture"
 USER = os.environ['USER']
-DEBIAN_REPOS_KEYID = '6070D3A1'
+# damn! they just stopped using this key!
+#DEBIAN_REPOS_KEYID = '6070D3A1'
+DEBIAN_REPOS_KEYID = '55BE302B'
 DEBIAN_LIVE_BASEDIR = '/freespace/live'
 DEBIAN_LIVE_CONFDIR = os.path.join(DEBIAN_LIVE_BASEDIR, 'config')
 PAELLA_LIVE_INIT_CONFDIR = '/usr/local/share/paella/live-config'

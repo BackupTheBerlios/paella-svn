@@ -7,7 +7,7 @@ DPKG_ARCH_BINARY = "/usr/bin/dpkg-architecture"
 USER = os.environ['USER']
 REPREPRO_BASE = '/freespace/debian'
 REPREPRO_CONF_DIR = os.path.join(REPREPRO_BASE, 'conf')
-DEBIAN_REPOS_KEYID = '6070D3A1'
+DEBIAN_REPOS_KEYID = '55BE302B'
 # if you leave MAIN_MIRROR blank, this script will
 # determine it from the first deb line in /etc/apt/sources.list
 MAIN_MIRROR = ''
@@ -183,7 +183,7 @@ SignWith: %(keyid)s
 lenny_update_stanza = """Name: lenny
 Method: %(main_mirror)s
 Fallback: %(fallback_mirror)s
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Architectures: %(arch)s
 Components: main contrib non-free
 UDebComponents: none
@@ -192,7 +192,7 @@ FilterList: deinstall startup-packages extra-packages local-packages
 
 security_update_stanza = """Name: lenny-security
 Method: %(security_mirror)s
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Suite: lenny/updates
 Architectures: %(arch)s
 Components: main contrib non-free
@@ -203,7 +203,7 @@ FilterList: deinstall startup-packages extra-packages local-packages
 sid_fai_update_stanza = """Name: sid-fai
 Method: %(main_mirror)s
 Fallback: %(fallback_mirror)s
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Suite: sid
 Architectures: %(arch)s
 Components: main contrib non-free

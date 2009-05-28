@@ -1,7 +1,7 @@
 Name: lenny
 Method: http://ftp.us.debian.org/debian
 Fallback: http://ftp.de.debian.org/debian
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Architectures: i386
 Components: main contrib non-free
 UDebComponents: none
@@ -9,7 +9,7 @@ FilterList: deinstall startup-packages extra-packages local-packages
 
 Name: security-testing
 Method: http://security.debian.org/debian-security
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Suite: testing/updates
 Architectures: i386
 Components: main contrib non-free
@@ -19,7 +19,7 @@ FilterList: deinstall startup-packages extra-packages local-packages
 Name: sid-fai
 Method: http://ftp.us.debian.org/debian
 Fallback: http://ftp.de.debian.org/debian
-VerifyRelease: 6070D3A1
+VerifyRelease: 55BE302B
 Suite: unstable
 Architectures: i386
 Components: main contrib non-free

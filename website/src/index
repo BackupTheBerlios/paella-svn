@@ -83,7 +83,12 @@ equivalent.
 Download
 --------------
 
-Currently, the best way to obtain paella is through subversion::
+The latest release of paella is version 0.8.0 .  There is a tarball_ available on the 
+ftp site.
+
+I'm not a big fan of the berlios file release system.  It's a long and time consuming 
+process, and I haven't yet found any advantages using it, rather than using subversion 
+or ftp.  Currently, the best way to obtain paella is through subversion::
 
 	  svn checkout svn://svn.berlios.de/useless/trunk useless
 	  svn checkout svn://svn.berlios.de/paella/trunk paella
@@ -91,11 +96,7 @@ Currently, the best way to obtain paella is through subversion::
 Have the build-deps installed on your system, and the packages should build 
 without problems.
 
-There is a tarball_ available, but it is likely to be out of date.  There is still a lot
-to do before a 1.0 release will be made.  Heck, there's still a lot to be done before 
-I release 0.8.0 . ;)
-
-Probably, the best way to get started using paella is to read the quickstart guide 
+Probably, the best way to get started using paella is to read the quickstart_ guide 
 that's mentioned in the documentation section below.
 
 ------------------
@@ -168,7 +169,7 @@ Authors
 .. _dfsg: http://www.debian.org/social_contract.html#guidelines
 .. _TOra: http://tora.sourceforge.net/
 .. _Joseph Rawson:  mailto:umeboshi3@gmail.com
-.. _tarball: http://download.berlios.de/paella/paella_0.7.31.tar.gz 
+.. _tarball: ftp://ftp.berlios.de/pub/paella/paella-0.8.0.tar.gz
 .. _DebianLive: http://debian-live.alioth.debian.org/
 .. _Todo:  todo.html
 .. _maintained: svnwebsite.html
@@ -184,3 +185,4 @@ Authors
 .. _default-environment: docs/default-environment.html
 .. _Documentation: docs/index.html
 .. _guide: docs/gui-guide.html
+.. _quickstart: docs/quickstart-vbox.html

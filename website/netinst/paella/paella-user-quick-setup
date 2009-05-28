@@ -6,8 +6,8 @@ import hashlib
 #################################################
 # expected release versions to be used
 USELESS_VERSION = '0.2.0'
-#PAELLA_VERSION = '0.8.0'
-PAELLA_VERSION = '0.7.43'
+PAELLA_VERSION = '0.8.0'
+#PAELLA_VERSION = '0.7.43'
 # default to using svn checkout, right now
 USELESS_TRUNK = False
 PAELLA_TRUNK = False
@@ -19,7 +19,9 @@ PAELLA_FTP = True
 
 useless_md5sums = {'0.2.0' : 'f2024a56b744767df3876009a0044028'}
 
-paella_md5sums = {'0.7.43' : '037abb62f46f1c9c6013519f976b0073'}
+paella_md5sums = {'0.7.43' : '037abb62f46f1c9c6013519f976b0073',
+                  '0.8.0' : '5c88183b83e029a04d1a0f5cb1757cbd'
+                  }
 
 md5sums  = dict(useless=useless_md5sums, paella=paella_md5sums)
 

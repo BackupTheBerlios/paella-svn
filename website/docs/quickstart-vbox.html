@@ -12,71 +12,64 @@
 <h1 class="title">Paella Quick Start Guide</h1>
 
 <!-- -*- mode: rst -*- -->
-<p>This guide almost finished.  If you are reading this, do not expect the guide to be correct or
-accurate.  This guide has been a work in progress, and has been changing with respect to
-things that have been changing in paella, and its dependencies.  This guide should not be
-considered to be complete, until this paragraph is removed.  However, much of this guide,
-and the scripts and configuration that surround it, are almost complete.  This means that
-this guide can be considered as &quot;release candidate&quot; instead of &quot;beta&quot;.  While there may be
-parts of this guide that are incorrect, I believe that most of this guide can be followed without
-any unexpected surprises.  This guide should not be considered as 100% complete until this
-paragraph is removed.  This will probably happen before the end of May, 2009.</p>
 <div class="contents topic" id="contents">
 <p class="topic-title first">Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
 <li><a class="reference internal" href="#requirements" id="id4">Requirements</a><ul>
-<li><a class="reference internal" href="#debian" id="id5">Debian</a></li>
-<li><a class="reference internal" href="#hardware" id="id6">Hardware</a></li>
-<li><a class="reference internal" href="#virtualbox-ose" id="id7">VirtualBox OSE</a></li>
-<li><a class="reference internal" href="#networking" id="id8">Networking</a></li>
-<li><a class="reference internal" href="#debian-netinst-cd-image-lenny" id="id9">Debian Netinst CD Image (Lenny)</a></li>
-<li><a class="reference internal" href="#remaster-the-netinst-iso" id="id10">Remaster the netinst iso</a></li>
+<li><a class="reference internal" href="#time" id="id5">Time</a></li>
+<li><a class="reference internal" href="#debian" id="id6">Debian</a></li>
+<li><a class="reference internal" href="#hardware" id="id7">Hardware</a></li>
+<li><a class="reference internal" href="#virtualbox-ose" id="id8">VirtualBox OSE</a></li>
+<li><a class="reference internal" href="#networking" id="id9">Networking</a></li>
+<li><a class="reference internal" href="#debian-netinst-cd-image-lenny" id="id10">Debian Netinst CD Image (Lenny)</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#setup-the-paella-virtual-machine" id="id11">Setup the paella virtual machine</a><ul>
-<li><a class="reference internal" href="#install-the-paella-virtual-machine" id="id12">Install the paella virtual machine</a></li>
-<li><a class="reference internal" href="#first-boot-on-the-paella-virtual-machine" id="id13">First boot on the paella virtual machine</a></li>
+<li><a class="reference internal" href="#remaster-the-netinst-iso" id="id12">Remaster the netinst iso</a></li>
+<li><a class="reference internal" href="#start-virtualbox" id="id13">Start VirtualBox</a></li>
+<li><a class="reference internal" href="#install-the-paella-virtual-machine" id="id14">Install the paella virtual machine</a></li>
+<li><a class="reference internal" href="#first-boot-on-the-paella-virtual-machine" id="id15">First boot on the paella virtual machine</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#create-a-partial-debian-archive" id="id14">Create a Partial Debian Archive</a><ul>
-<li><a class="reference internal" href="#make-a-gpg-key" id="id15">Make a gpg key</a></li>
-<li><a class="reference internal" href="#setup-initial-debian-mirror" id="id16">Setup initial debian mirror</a></li>
-<li><a class="reference internal" href="#obtain-paella-from-berlios" id="id17">Obtain Paella from Berlios</a></li>
+<li><a class="reference internal" href="#create-a-partial-debian-archive" id="id16">Create a Partial Debian Archive</a><ul>
+<li><a class="reference internal" href="#make-a-gpg-key" id="id17">Make a gpg key</a></li>
+<li><a class="reference internal" href="#setup-initial-debian-mirror" id="id18">Setup initial debian mirror</a></li>
+<li><a class="reference internal" href="#obtain-paella-from-berlios" id="id19">Obtain Paella from Berlios</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#debian-live" id="id18">Debian Live</a><ul>
-<li><a class="reference internal" href="#why-debian-live" id="id19">Why Debian Live?</a></li>
+<li><a class="reference internal" href="#debian-live" id="id20">Debian Live</a><ul>
+<li><a class="reference internal" href="#why-debian-live" id="id21">Why Debian Live?</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-paella-management-interface" id="id20">Using Paella Management Interface</a><ul>
-<li><a class="reference internal" href="#install-the-admin-package" id="id21">Install the Admin Package</a></li>
-<li><a class="reference internal" href="#setup-paellarc" id="id22">Setup ~/.paellarc</a></li>
-<li><a class="reference internal" href="#start-paella-management" id="id23">Start paella-management</a></li>
-<li><a class="reference internal" href="#import-the-database" id="id24">Import the database</a></li>
-<li><a class="reference internal" href="#guide-to-paella-management" id="id25">Guide to Paella Management</a></li>
+<li><a class="reference internal" href="#using-paella-management-interface" id="id22">Using Paella Management Interface</a><ul>
+<li><a class="reference internal" href="#install-the-admin-package" id="id23">Install the Admin Package</a></li>
+<li><a class="reference internal" href="#setup-paellarc" id="id24">Setup ~/.paellarc</a></li>
+<li><a class="reference internal" href="#start-paella-management" id="id25">Start paella-management</a></li>
+<li><a class="reference internal" href="#import-the-database" id="id26">Import the database</a></li>
+<li><a class="reference internal" href="#guide-to-paella-management" id="id27">Guide to Paella Management</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id26">Configure quickstart-vbox database</a><ul>
-<li><a class="reference internal" href="#add-the-archive-key" id="id27">Add the archive key</a></li>
-<li><a class="reference internal" href="#edit-the-default-environment" id="id28">Edit the Default Environment</a></li>
+<li><a class="reference internal" href="#configure-quickstart-vbox-database" id="id28">Configure quickstart-vbox database</a><ul>
+<li><a class="reference internal" href="#add-the-archive-key" id="id29">Add the archive key</a></li>
+<li><a class="reference internal" href="#edit-the-default-environment" id="id30">Edit the Default Environment</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#create-a-machine-to-install" id="id29">Create A Machine to Install</a><ul>
-<li><a class="reference internal" href="#side-salad-to-a-paella" id="id30">Side Salad to a Paella</a></li>
-<li><a class="reference internal" href="#boot-the-new-machine" id="id31">Boot the new machine</a></li>
-<li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id32">Tell Paella about the new machine</a></li>
-<li><a class="reference internal" href="#manage-the-database-again" id="id33">Manage the database again</a></li>
-<li><a class="reference internal" href="#create-the-sidesalad-machine" id="id34">Create the Sidesalad Machine</a></li>
-<li><a class="reference internal" href="#configure-the-sidesalad-machine" id="id35">Configure the Sidesalad Machine</a></li>
-<li><a class="reference internal" href="#boot-sidesalad-again" id="id36">Boot Sidesalad Again</a></li>
-<li><a class="reference internal" href="#reboot-sidesalad-machine" id="id37">Reboot Sidesalad Machine</a></li>
+<li><a class="reference internal" href="#create-a-machine-to-install" id="id31">Create A Machine to Install</a><ul>
+<li><a class="reference internal" href="#side-salad-to-a-paella" id="id32">Side Salad to a Paella</a></li>
+<li><a class="reference internal" href="#boot-the-new-machine" id="id33">Boot the new machine</a></li>
+<li><a class="reference internal" href="#tell-paella-about-the-new-machine" id="id34">Tell Paella about the new machine</a></li>
+<li><a class="reference internal" href="#manage-the-database-again" id="id35">Manage the database again</a></li>
+<li><a class="reference internal" href="#create-the-sidesalad-machine" id="id36">Create the Sidesalad Machine</a></li>
+<li><a class="reference internal" href="#configure-the-sidesalad-machine" id="id37">Configure the Sidesalad Machine</a></li>
+<li><a class="reference internal" href="#boot-sidesalad-again" id="id38">Boot Sidesalad Again</a></li>
+<li><a class="reference internal" href="#reboot-sidesalad-machine" id="id39">Reboot Sidesalad Machine</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#mission-accomplished" id="id38">Mission Accomplished!!!</a><ul>
-<li><a class="reference internal" href="#what-do-i-do-now" id="id39">What do I do now?</a></li>
-<li><a class="reference internal" href="#browse-the-quickstart-database" id="id40">Browse the Quickstart Database</a></li>
-<li><a class="reference internal" href="#start-using-the-default-database" id="id41">Start Using the Default Database</a></li>
+<li><a class="reference internal" href="#mission-accomplished" id="id40">Mission Accomplished!!!</a><ul>
+<li><a class="reference internal" href="#what-do-i-do-now" id="id41">What do I do now?</a></li>
+<li><a class="reference internal" href="#browse-the-quickstart-database" id="id42">Browse the Quickstart Database</a></li>
+<li><a class="reference internal" href="#start-using-the-default-database" id="id43">Start Using the Default Database</a></li>
 </ul>
 </li>
 </ul>
@@ -114,8 +107,23 @@ to worry about extensive changes to your host system.</p>
 </div>
 <div class="section" id="requirements">
 <h1><a class="toc-backref" href="#id4">Requirements</a></h1>
+<div class="section" id="time">
+<h2><a class="toc-backref" href="#id5">Time</a></h2>
+<p>Stepping through this quickstart guide will take some time.  Most of the time will be spent
+in waiting for the system to be installed, and for packages to be downloaded from the
+internet.  The effort required to type the commands necessary to complete this guide has
+been minimized, and should only require a simple cut and paste in most circumstances.  The
+time required to complete this guide will still take a few hours.  I will try to give time estimates
+for the longest tasks in this guide.  These estimates will be taken from a test run, using a
+local debian mirror.  I am going to approximate the size of the downloads at these steps, so you
+will be better able to calculate the time required with your internet connection.</p>
+<p>I'm hoping that this guide can be completed in about 3 to 4 hours, although it may take a lot
+less, depending on your machines, network connection, and your knowledge of debian.  Much
+of this time should come from reading this document.  If you already know the guide step by
+step, then the time required should be less than 2 hours.</p>
+</div>
 <div class="section" id="debian">
-<h2><a class="toc-backref" href="#id5">Debian</a></h2>
+<h2><a class="toc-backref" href="#id6">Debian</a></h2>
 <p>You should be running debian to follow this quickstart procedure.  It's technically not
 required, but this document will assume that your running either lenny, sid, or etch
 with VirtualBox running (from backports.org or similar).  This procedure has been tested
@@ -123,7 +131,7 @@ while running sid, although lenny should work just fine.  There also shouldn't r
 any problem with using etch, save for having to have VirtualBox installed.</p>
 </div>
 <div class="section" id="hardware">
-<h2><a class="toc-backref" href="#id6">Hardware</a></h2>
+<h2><a class="toc-backref" href="#id7">Hardware</a></h2>
 <p>This quickstart routine was developed and tested using a laptop with 3GB of memory.
 You could probably get by with less which I will try to estimate later.  Most of the memory
 is required to run the virtual machines.  I estimate that only 2GB of ram will be required.
@@ -133,14 +141,14 @@ environment with a network of machines.</p>
 <p>You will need to run an operating system that can host VirtualBox OSE.</p>
 </div>
 <div class="section" id="virtualbox-ose">
-<h2><a class="toc-backref" href="#id7">VirtualBox OSE</a></h2>
+<h2><a class="toc-backref" href="#id8">VirtualBox OSE</a></h2>
 <p>This quickstart will use VirtualBox OSE to setup the machine that will act as the main
 paella server, and also to make machines to test those installs.  The procedure outlined
 below is assuming that you are using a GNU/Linux system as a host for VirtualBox OSE, but
 there shouldn't be anything stopping somebody from using VirtualBox  on another host OS.</p>
 </div>
 <div class="section" id="networking">
-<h2><a class="toc-backref" href="#id8">Networking</a></h2>
+<h2><a class="toc-backref" href="#id9">Networking</a></h2>
 <p>This quickstart has been written to use 10.0.1.0 for the internal network that the virtual
 machines will be using.  The main virtual machine (paella.lapnet) will be using the 10.0.1.1
 ip, while the other virtual machines will be obtaining their ip's from the dhcp server running
@@ -151,7 +159,7 @@ the 10.0.x.0 network.  I have tested the quickstart while changing the network t
 it appears to work without problems (when x is either 1, 2, or 3).</p>
 </div>
 <div class="section" id="debian-netinst-cd-image-lenny">
-<h2><a class="toc-backref" href="#id9">Debian Netinst CD Image (Lenny)</a></h2>
+<h2><a class="toc-backref" href="#id10">Debian Netinst CD Image (Lenny)</a></h2>
 <p>The stable (lenny) release is what is currently supported.  You should get the netinst iso,
 which available on this <a class="reference external" href="http://www.debian.org/devel/debian-installer/">page</a>.  I used the <a class="reference external" href="http://cdimage.debian.org/debian-cd/current/i386/iso-cd/debian-500-i386-netinst.iso">i386</a> image.  Hopefully any architecture should work,
 but at the moment, only i386 is tested.  When I'm satisfied that the i386 is working properly, I'll
@@ -162,8 +170,11 @@ version 1.6.6, which will require using i386 guests.  There are newer virtualbox
 available at <a class="reference external" href="http://backports.org">http://backports.org</a> that will run amd64 code on the guests, if you wish to use
 those.  This quickstart should work with any version from 1.6.6 and above.</p>
 </div>
+</div>
+<div class="section" id="setup-the-paella-virtual-machine">
+<h1><a class="toc-backref" href="#id11">Setup the paella virtual machine</a></h1>
 <div class="section" id="remaster-the-netinst-iso">
-<h2><a class="toc-backref" href="#id10">Remaster the netinst iso</a></h2>
+<h2><a class="toc-backref" href="#id12">Remaster the netinst iso</a></h2>
 <p>This step is highly recommended.  This step is technically optional, but it may be handy,
 especially if you have an application that can remaster an iso image.  This allows you to
 preseed the debian installer and make an automated install.  Even though this step is
@@ -202,9 +213,8 @@ is set to en_US.UTF-8 .  If you are using another locale, you really need to mod
 preseed.cfg file, and the setup-paella-server script.  The postgresql database server will not
 run unless your locale is generated, and referenced in the postgresql.conf file.</p>
 </div>
-</div>
-<div class="section" id="setup-the-paella-virtual-machine">
-<h1><a class="toc-backref" href="#id11">Setup the paella virtual machine</a></h1>
+<div class="section" id="start-virtualbox">
+<h2><a class="toc-backref" href="#id13">Start VirtualBox</a></h2>
 <p>You need to get the virtualbox frontend up and running.  The user interface varies between
 different versions of virtualbox.  These instructions were written using version 1.6.6, which
 is the default version in debian lenny.  To start the virtualbox gui type:</p>
@@ -233,8 +243,9 @@ since you'll need this for the other machine(s) that you will use paella to inst
 to enable this in the general preferences, as the virtual machine will run much faster.</p>
 <!-- Boot the paella virtual machine -->
 <!-- ================================ -->
+</div>
 <div class="section" id="install-the-paella-virtual-machine">
-<h2><a class="toc-backref" href="#id12">Install the paella virtual machine</a></h2>
+<h2><a class="toc-backref" href="#id14">Install the paella virtual machine</a></h2>
 <p>Now you should be ready to boot the virtual machine, and install debian lenny.</p>
 <p>Boot the machine by pressing Start (the green arrow) on the virtualbox frontend (make sure
 the paella virtual machine is the one that's selected).  When the boot screen appears, select
@@ -250,9 +261,11 @@ the main user's password are all set to &quot;paella&quot; to make it easy to re
 user should be added to the src, staff, adm, and sudo groups, but this probably isn't
 an absolute necessity.  Set the dhcp3-server to listen to eth1 on the debconf question.</p>
 <p>The rest of the instructions will assume that you installed from a remastered iso.</p>
+<p><strong>Time:</strong>  This step took me around 20 minutes to complete, and required ~280 megabytes of
+packages to installed (~80 megabytes were already present on the netinst iso).</p>
 </div>
 <div class="section" id="first-boot-on-the-paella-virtual-machine">
-<h2><a class="toc-backref" href="#id13">First boot on the paella virtual machine</a></h2>
+<h2><a class="toc-backref" href="#id15">First boot on the paella virtual machine</a></h2>
 <p>After the debian installer is finished, the virtual machine should reboot .  You should take
 this time to disassociate the iso image from the machine in the VirtualBox frontend, else
 the iso will boot everytime you boot the virtual machine.  You may also want to save a
@@ -298,12 +311,15 @@ into the X session.</p>
 browser in the virtual machine and continue this guide.  This will make it easier to
 cut and paste the commands that are given here.  The rest of the guide will assume that
 you have done this.</p>
+<p><strong>Time:</strong>  This step took me around 5 minutes to complete.  I chose to build guest
+additions from backports.org, which required about ~15 megabytes of extra packages
+to be installed.</p>
 </div>
 </div>
 <div class="section" id="create-a-partial-debian-archive">
-<h1><a class="toc-backref" href="#id14">Create a Partial Debian Archive</a></h1>
+<h1><a class="toc-backref" href="#id16">Create a Partial Debian Archive</a></h1>
 <div class="section" id="make-a-gpg-key">
-<h2><a class="toc-backref" href="#id15">Make a gpg key</a></h2>
+<h2><a class="toc-backref" href="#id17">Make a gpg key</a></h2>
 <p>You'll need a gpg key to sign the Release files of the local debian repository.  This is important,
 since debian has spent a great deal of time making it possible to verify the authenticity of the
 packages being installed on your system.  Full instructions on how to generate a key and use it
@@ -320,9 +336,10 @@ randomly in a text editor.  To get the disk moving, type this in another termina
 <pre class="literal-block">
 find /usr/share | xargs sha1sum
 </pre>
+<p><strong>Time:</strong>  This step took me around 2 minutes to complete.  Time here will vary randomly.</p>
 </div>
 <div class="section" id="setup-initial-debian-mirror">
-<h2><a class="toc-backref" href="#id16">Setup initial debian mirror</a></h2>
+<h2><a class="toc-backref" href="#id18">Setup initial debian mirror</a></h2>
 <p>I have written a script to help setup the partial debian repository that will be used in this
 guide.  <strong>Note:</strong>  If you used a local mirror with the netinst iso, the script may fail during
 the final part.</p>
@@ -337,8 +354,8 @@ created above to sign the repository, add that key to apt, add the local reposit
 /etc/apt/sources.list, and run apt-get update.</p>
 <p>Take a break.  Grab some coffee.  This will take a bit, depending on your internet
 connection.  I've taken care to only include the packages that needed, plus a few
-extra packages that I use as tools to help me test this quickstart routine.  As of the time
-this was written, the pool directory was 468MB in size.</p>
+extra packages that I use as tools to help me test this quickstart routine.  I estimate
+about 180 megabytes of packages will need to be downloaded during this step.</p>
 <p><strong>Note:</strong>  If the script failed, and you installed from a local mirror, you will need to
 edit the /freespace/debian/conf/updates file and adjust the VerifyRelease fields in
 the update stanzas.  You may have to import a key using gpg --import, or you may
@@ -350,9 +367,13 @@ sudo apt-get update
 </pre>
 <p>This will finish preparing the initial debian repository, and use that repository
 in your apt sources.</p>
+<p><strong>Time:</strong>  Using a local mirror, this step took about 5 minutes.  You should adjust this
+time by the time it takes to download about 180M from your internet connection.  From this
+point on, there should be no need to download anything more packages from a debian
+mirror.  The rest of the times will depend entirely on the speed of your system.</p>
 </div>
 <div class="section" id="obtain-paella-from-berlios">
-<h2><a class="toc-backref" href="#id17">Obtain Paella from Berlios</a></h2>
+<h2><a class="toc-backref" href="#id19">Obtain Paella from Berlios</a></h2>
 <p>Now you're ready to get the source code from berlios.de.  To do this, type</p>
 <pre class="literal-block">
 cd
@@ -366,12 +387,16 @@ debian repository.  After that, it will update apt, then install the paella-admi
 paella-installer, and paella-defaultdb packages.  Then it will import the quickstart
 database from the paella-defaultdb package into the postgresql database.  It will also
 import the archive key that you created earlier.</p>
+<p><strong>Time:</strong>  This step is a bit more involved than the other steps, so far, and it will take
+some time to complete.  During the import of the database, package lists will be downloaded
+from official debian mirrors, totalling just over 8 megabytes.  This step took me about
+8 minutes to complete.</p>
 </div>
 </div>
 <div class="section" id="debian-live">
-<h1><a class="toc-backref" href="#id18">Debian Live</a></h1>
+<h1><a class="toc-backref" href="#id20">Debian Live</a></h1>
 <div class="section" id="why-debian-live">
-<h2><a class="toc-backref" href="#id19">Why Debian Live?</a></h2>
+<h2><a class="toc-backref" href="#id21">Why Debian Live?</a></h2>
 <p>Now you're ready to make the live nfsroot installer.  In the past, I had done this with paella,
 and I had a flaky configuration that worked, albeit just barely.  In the beginning, I had to
 compile a special kernel to allow me to mount an nfsroot, and have the network drivers
@@ -389,7 +414,9 @@ the script , type:</p>
 create-debian-live-image
 </pre>
 <p>This script will copy the live-helper config files to /freespace/live/config and build the
-image, then install the image and the tftpboot files to the appropriate locations.</p>
+image, then install the image and the tftpboot files to the appropriate locations.  This
+step will take quite a while, so this is a good place to take a break and let the machine
+do its work.</p>
 <p><strong>Important</strong>  If you aren't able to use 10.0.1.1 as the ip address of your eth1 interface
 on the virtual machine, you will have to edit /freespace/live/config/binary and set
 LH_NET_ROOT_SERVER to the value of the ip that you will be using and then build the image
@@ -414,12 +441,16 @@ most /freespace/paellalog/paella-install-live_chroot.log
 </pre>
 <p>Then press 'b', followed by &lt;Shift&gt;-F.  Now you'll be able to watch the progress of the
 live_chroot machine as it's being installed.</p>
+<p><strong>Time:</strong>  This step, takes a long time to complete, and it's probably the longest step
+in this guide.  The installation of the chroot will take about 10 minutes.  After that the
+live-helper scripts will take the chroot and make a squashfs image from it.  All in all, it
+seems to take about 20 minutes to fully complete this step.</p>
 </div>
 </div>
 <div class="section" id="using-paella-management-interface">
-<h1><a class="toc-backref" href="#id20">Using Paella Management Interface</a></h1>
+<h1><a class="toc-backref" href="#id22">Using Paella Management Interface</a></h1>
 <div class="section" id="install-the-admin-package">
-<h2><a class="toc-backref" href="#id21">Install the Admin Package</a></h2>
+<h2><a class="toc-backref" href="#id23">Install the Admin Package</a></h2>
 <p>Now we're almost ready to use the management interface.  The package containing
 this application should've been installed earlier when you ran the &quot;paella-user-quick-setup&quot;
 script earlier.  In case you still need to install it, type:</p>
@@ -432,7 +463,7 @@ terminal, or find it in the debian menu (but not in the kde menu, yet).  Don't r
 should set up the configuration file first.</p>
 </div>
 <div class="section" id="setup-paellarc">
-<h2><a class="toc-backref" href="#id22">Setup ~/.paellarc</a></h2>
+<h2><a class="toc-backref" href="#id24">Setup ~/.paellarc</a></h2>
 <p>The master config file will be found at /etc/paellarc .  The master config file is the one that
 the installer will use.  You can copy this file to ~/.paellarc and edit it.  The paella-management
 program will read the master config file, then the local one at ~/.paellarc .  The local file will
@@ -467,7 +498,7 @@ The paella installer user only needs the database section of the paellarc file, 
 uses the paella database for the rest of his configuration.</p>
 </div>
 <div class="section" id="start-paella-management">
-<h2><a class="toc-backref" href="#id23">Start paella-management</a></h2>
+<h2><a class="toc-backref" href="#id25">Start paella-management</a></h2>
 <p>Run the paella-management script to start the management interface:</p>
 <pre class="literal-block">
 paella-management
@@ -493,7 +524,7 @@ should already imported, and you can skip the next section that describes how to
 the database.</p>
 </div>
 <div class="section" id="import-the-database">
-<h2><a class="toc-backref" href="#id24">Import the database</a></h2>
+<h2><a class="toc-backref" href="#id26">Import the database</a></h2>
 <p>If the &quot;paella-user-quick-setup&quot; script ran without problems, you should already have the
 quickstart database imported.  If there were problems running the script, you'll have to
 follow the instructions in this section to import the quickstart database.  Otherwise, you
@@ -531,14 +562,14 @@ to help when creating traits, but that's in the future, and it would need the fu
 package to be stored in the database.</p>
 </div>
 <div class="section" id="guide-to-paella-management">
-<h2><a class="toc-backref" href="#id25">Guide to Paella Management</a></h2>
+<h2><a class="toc-backref" href="#id27">Guide to Paella Management</a></h2>
 <p>A more complete guide to using paella-management can be found <a class="reference external" href="gui-guide.html">here</a>.</p>
 </div>
 </div>
 <div class="section" id="configure-quickstart-vbox-database">
-<h1><a class="toc-backref" href="#id26">Configure quickstart-vbox database</a></h1>
+<h1><a class="toc-backref" href="#id28">Configure quickstart-vbox database</a></h1>
 <div class="section" id="add-the-archive-key">
-<h2><a class="toc-backref" href="#id27">Add the archive key</a></h2>
+<h2><a class="toc-backref" href="#id29">Add the archive key</a></h2>
 <p>If you ran the &quot;paella-user-quick-setup&quot; script above, the archive key that you made
 earlier should already be imported into the paella database.  If this didn't occur, or
 you need to import another key, the instructions to do this lie below.  If you do import
@@ -557,7 +588,7 @@ and key id of the paella key on the list.  The name is taken from the filename w
 imported the key.</p>
 </div>
 <div class="section" id="edit-the-default-environment">
-<h2><a class="toc-backref" href="#id28">Edit the Default Environment</a></h2>
+<h2><a class="toc-backref" href="#id30">Edit the Default Environment</a></h2>
 <p>Access to the default environment is provided on the &quot;list menu&quot; in the &quot;main paella
 window&quot;, under the &quot;environ&quot; item in the list.  Click on the &quot;+&quot; to the left of the &quot;environ&quot;
 list item, and two list items will be displayed below the environ item, named &quot;current&quot; and
@@ -574,12 +605,12 @@ exit the text editor for paella to save the information to the database.</p>
 </div>
 </div>
 <div class="section" id="create-a-machine-to-install">
-<h1><a class="toc-backref" href="#id29">Create A Machine to Install</a></h1>
+<h1><a class="toc-backref" href="#id31">Create A Machine to Install</a></h1>
 <p>We're done with the paella VM for a little bit.  Now it's time to create a new VM which will be
 used to install a system.  You don't want to poweroff or reboot the paella VM, since we'll be
 using again shortly.</p>
 <div class="section" id="side-salad-to-a-paella">
-<h2><a class="toc-backref" href="#id30">Side Salad to a Paella</a></h2>
+<h2><a class="toc-backref" href="#id32">Side Salad to a Paella</a></h2>
 <p>Creating the next machine will be almost just like creating the paella VM.  This new machine
 should be named &quot;sidesalad&quot;, as that's what I'm going to be calling for the remainder of this
 quickstart document.  Follow the instructions for making the paella VM, except keep the
@@ -596,7 +627,7 @@ will also need to be set to use an internal network, and the network name should
 machine.</p>
 </div>
 <div class="section" id="boot-the-new-machine">
-<h2><a class="toc-backref" href="#id31">Boot the new machine</a></h2>
+<h2><a class="toc-backref" href="#id33">Boot the new machine</a></h2>
 <p>Now we're ready to boot the machine.  In order to boot from the network, press &quot;F12&quot;
 when the boot screen appears, then select &quot;l&quot;.</p>
 <p>The machine should boot straight from the network without any problems.  If this doesn't
@@ -625,7 +656,7 @@ it does seem to occur about 5-10% of the time.  If this happens to you, just pre
 key (right &lt;ctrl&gt;) and &quot;r&quot; to reset the machine.</p>
 </div>
 <div class="section" id="tell-paella-about-the-new-machine">
-<h2><a class="toc-backref" href="#id32">Tell Paella about the new machine</a></h2>
+<h2><a class="toc-backref" href="#id34">Tell Paella about the new machine</a></h2>
 <p>If sidesalad booted from the network correctly, at the end of the boot process, there should
 be a message explaining that this is an unknown machine, and to use paella-submit-machine
 to tell paella about it.  This is what we're going to do now.  Type:</p>
@@ -647,7 +678,7 @@ sudo poweroff
 </pre>
 </div>
 <div class="section" id="manage-the-database-again">
-<h2><a class="toc-backref" href="#id33">Manage the database again</a></h2>
+<h2><a class="toc-backref" href="#id35">Manage the database again</a></h2>
 <p>Now we need to go back to the paella VM.  Edit the default environment, and set the
 sidesalad option to 'True' in the autoinstall section.  This will tell the paella-init-nfsinstaller
 script to install the machine, once it boots.  The admin should be aware about this part of
@@ -655,7 +686,7 @@ the default environment, since when the autoinstall value is set to 'True', the 
 install each time it's booted from the network.</p>
 </div>
 <div class="section" id="create-the-sidesalad-machine">
-<h2><a class="toc-backref" href="#id34">Create the Sidesalad Machine</a></h2>
+<h2><a class="toc-backref" href="#id36">Create the Sidesalad Machine</a></h2>
 <p>Now we are ready to create the sidesalad machine in the database.  You will need to
 start an instance of the machine manager, which you can do by selecting &quot;machines&quot; from
 the list in main paella window.  When the machine manager shows up on the desktop, you
@@ -670,7 +701,7 @@ cause a dialog box to be displayed asking for the name of the new machine.  You 
 enter &quot;sidesalad&quot; into the text entry in the dialog.</p>
 </div>
 <div class="section" id="configure-the-sidesalad-machine">
-<h2><a class="toc-backref" href="#id35">Configure the Sidesalad Machine</a></h2>
+<h2><a class="toc-backref" href="#id37">Configure the Sidesalad Machine</a></h2>
 <p>Now it's time to configure the sidesalad machine.  You will want to select &quot;sidesalad&quot; from the
 list of machines on the left hand side of the manager.  The first thing that you will wan to do is
 select a parent for the machine.  In the quickstart database, all of the machines are set to be
@@ -696,7 +727,7 @@ value to &quot;live_chroot2&quot;.  The live_chroot2 machine should already be p
 and it's configured to talk to sidesalad to get the install information.</p>
 </div>
 <div class="section" id="boot-sidesalad-again">
-<h2><a class="toc-backref" href="#id36">Boot Sidesalad Again</a></h2>
+<h2><a class="toc-backref" href="#id38">Boot Sidesalad Again</a></h2>
 <p>Boot the sidesalad machine from the network again.  This time the sidesalad machine
 should start installing automatically.</p>
 <p>While the paella installer is installing the sidesalad machine, you can watch the progress in
@@ -710,9 +741,14 @@ most /freespace/paellalog/paella-install-sidesalad.log
 sidesalad machine as it's being installed.</p>
 <p>While the live installer that sidesalad will host is being installed, you can follow the progress
 by looking at /freespace/paellalog/paella-install-live_chroot2.log .</p>
+<p><strong>Time:</strong>  This step can take a while.  In many ways, this step is a composition of the steps
+that have already been performed.  The sidesalad machine should be extremely similar to the
+paella machine.  The main difference is that you don't need to download packages from the
+internet, but from the paella machine, which should be faster.  In total, this step should take
+about 30 minutes.</p>
 </div>
 <div class="section" id="reboot-sidesalad-machine">
-<h2><a class="toc-backref" href="#id37">Reboot Sidesalad Machine</a></h2>
+<h2><a class="toc-backref" href="#id39">Reboot Sidesalad Machine</a></h2>
 <p>Once the installer finishes, we can reboot into the new system.  On the sidesalad machine,
 type:</p>
 <pre class="literal-block">
@@ -755,14 +791,17 @@ paella-management
 </pre>
 <p>Edit the default environment and set &quot;http_mirror&quot; to &quot;<a class="reference external" href="http://sidesalad.lapnet2/debian">http://sidesalad.lapnet2/debian</a>&quot;.</p>
 <p>Now, the sidesalad machine should work as a paella server.</p>
+<p><strong>Time:</strong>  This step can also take a while.  I have tried to make the live-helper step a bit
+shorter by not compressing the squashfs image.  Still, this step should take about 30
+minutes.</p>
 </div>
 </div>
 <div class="section" id="mission-accomplished">
-<h1><a class="toc-backref" href="#id38">Mission Accomplished!!!</a></h1>
+<h1><a class="toc-backref" href="#id40">Mission Accomplished!!!</a></h1>
 <p>If you made it this far, then this quickstart guide is complete!
 Congratulations on installing your first test machine with paella!</p>
 <div class="section" id="what-do-i-do-now">
-<h2><a class="toc-backref" href="#id39">What do I do now?</a></h2>
+<h2><a class="toc-backref" href="#id41">What do I do now?</a></h2>
 <p>If you wish, you could reinstall the paella machine, using sidesalad as the server.  The
 steps to do this would be very similar to how you made the sidesalad machine, so I'm
 not going to bother with the details.  This guide is long enough as it is (and it's called
@@ -770,7 +809,7 @@ a &quot;quickstart&quot; guide).  Even so, it shouldn't be difficult to figure o
 paella machine  from sidesalad.</p>
 </div>
 <div class="section" id="browse-the-quickstart-database">
-<h2><a class="toc-backref" href="#id40">Browse the Quickstart Database</a></h2>
+<h2><a class="toc-backref" href="#id42">Browse the Quickstart Database</a></h2>
 <p>You could spend some time browsing the quickstart database with the paella-management
 application.  This would help to see how paella is structured, and may give you some ideas
 of how to use it for your machines and network(s).  Take note, the quickstart database was
@@ -778,7 +817,7 @@ forked from the default database that ships with paella in order to make it easi
 bootstrap paella, and make it through this guide.</p>
 </div>
 <div class="section" id="start-using-the-default-database">
-<h2><a class="toc-backref" href="#id41">Start Using the Default Database</a></h2>
+<h2><a class="toc-backref" href="#id43">Start Using the Default Database</a></h2>
 <p>The default <a class="reference external" href="defaultdb.html">database</a> is probably a better database to work with, although it has some
 parts that are still incomplete.  Using it will require a more complete debian mirror, plus
 a local mirror of the debian repository at <a class="reference external" href="http://www.debian-multimedia.org/">http://www.debian-multimedia.org/</a> .  You

@@ -1,0 +1,15 @@
+Source: repserve
+Section: misc
+Priority: optional
+Maintainer: Joseph Rawson <umeboshi3@gmail.com>
+Build-Depends: cdbs, debhelper (>= 7)
+Standards-Version: 3.7.3
+Homepage: <insert the upstream URL, if relevant>
+
+Package: repserve
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, reprepro
+Recommends: germinate
+Description: A tool to help manage partial debian repositories
+ Say something more verbose here.
+

@@ -1,0 +1,20 @@
+#!/usr/bin/python -i
+#!/usr/bin/env python
+import os, sys
+from optparse import OptionParser
+
+from repserve.config import BaseConfig
+from repserve.reprepro import RepRepRo
+
+parser = OptionParser()
+
+parser.add_option('-c', '--config', action='store', type='string',
+                  dest='configfile', default='/etc/apt/repserve.conf')
+
+opts, args = parser.parse_args(sys.argv[1:])
+
+config = BaseConfig()
+config.read(opts.configfile)
+
+reprepro = RepRepRo(config)
+

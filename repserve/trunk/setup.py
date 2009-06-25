@@ -42,7 +42,7 @@ class build(_build):
         # add extra build commands below
         
 
-version = get_vesion()
+version = get_version()
 description = 'Reprepro frontend for Debian written in Python'
 author = 'Joseph Rawson'
 author_email = 'umeboshi3@gmail.com'
@@ -72,7 +72,7 @@ package_dir = {'' : 'lib'}
 #    ]
 data_files = []
 
-setup(name='dosbox-pykde',
+setup(name='repserve',
       version=version,
       description=description,
       author=author,

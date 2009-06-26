@@ -17,11 +17,12 @@ from Germinate import Germinator
 class MyGerminator(Germinator):
     # here we initialize apt_pkg when we
     # instantiate the class
-    def __init__(self):
+    def __init__(self, arch=None):
         Germinator.__init__(self)
-        ARCH = get_architecture()
+        if arch is None:
+            arch = get_architecture()
         apt_pkg.InitConfig()
-        apt_pkg.Config.Set("APT::Architecture", ARCH)
+        apt_pkg.Config.Set("APT::Architecture", arch)
         apt_pkg.InitSystem()
 
 

@@ -174,9 +174,18 @@ class RepRepConfig(object):
             if not cfd.isdir():
                 cfd.makedirs()
         # handling too many confdirs is irritating
-        confdir_map = dict().fromkeys(confdirs, [])
+        # the commented line below uses the same list
+        # for all the keys.  This is not immediately apparent
+        # and was the cause of much confusion.
+        #confdir_map = dict().fromkeys(confdirs, [])
+        confdir_map = dict().fromkeys(confdirs)
+        # use another method to initialize the dictionary
+        # with *separate* empty lists
+        for confdir in confdir_map:
+            confdir_map[confdir] = []
         for section in self.config.sections():
-            confdir_map[self.config.get(section, 'confdir')].append(section)
+            confdir = self.config.get(section, 'confdir')
+            confdir_map[confdir].append(section)
         for confdir in confdir_map:
             sections = confdir_map[confdir]
             distlines, updatelines = self._generate_section_configs(sections)
@@ -214,5 +223,7 @@ class RepRepRo(object):
             
     
 if __name__ == '__main__':
-    filename = 'test~'
+    pass
+
+
      

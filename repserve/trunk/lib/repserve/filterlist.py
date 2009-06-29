@@ -97,7 +97,6 @@ class FilterListManager(object):
             filterlist = FilterList(name)
             filterlist.parse_file(confdir)
             self.lists[name] = filterlist
-        
 
     def add_filterlist(self, section, filterlist):
         name = filterlist.name

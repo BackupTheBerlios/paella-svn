@@ -26,7 +26,7 @@ case "$1" in
     fi
     if ! getent passwd $repuser > /dev/null; then
 	adduser --system --quiet --group --no-create-home \
-	    --home $rephome $repuser || true
+	    --home $rephome --shell /bin/bash $repuser || true
 	chown -R  $repuser:$repuser $rephome
     fi
     ;;

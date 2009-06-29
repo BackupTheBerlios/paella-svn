@@ -12,9 +12,10 @@ DEFAULT_CONFIG = """# default config file for repserve
 # repositories.  It's used when generating
 # the default configuration, but isn't
 # required.
-reprepro_parent_dir:  /srv/reprepro
+reprepro_parent_dir: /var/lib/repserve/repos-db
+reprepro_parent_outdir: /var/www/repserve
 basedir: %(reprepro_parent_dir)s/debian
-outdir:  %(basedir)s
+outdir:  %(reprepro_parent_outdir)s/debian
 confdir: %(basedir)s/conf
 distdir: %(outdir)s/dists
 logdir:  %(basedir)s/logs
@@ -142,16 +143,19 @@ def create_names_dictionary(methods):
         names[uri] = guess_name_for_uri(uri, index=index)
     return names
 
-def handle_section(config, section, names, uri, parent_dir):
+def handle_section(config, section, names, uri):
     if section not in config.sections():
         config.add_section(section)
+        # create basedir option
         prefix = '%(reprepro_parent_dir)s'
-        # try to avoid // in the directories
-        if not parent_dir.endswith('/'):
-            prefix += '/'
-        value = prefix + names[uri]
-        config.set(section, 'basedir', value)
-
+        basedir = '%s/%s' % (prefix, names[uri])
+        config.set(section, 'basedir', basedir)
+        # create outdir option
+        prefix = '%(reprepro_parent_outdir)s'
+        outdir = '%s/%s' % (prefix, names[uri])
+        config.set(section, 'outdir', outdir)
+        
+        
 def handle_codename(config, section, dist):
     if config.has_option(section, 'codename'):
         cdist = config.get(section, 'codename')
@@ -256,7 +260,7 @@ def sources_to_config(filename='/etc/apt/sources.list', arch=None,
             #print "dist is", dist
             section = "%s-%s" % (repos_name, dist)
             #print "section will be", section
-            handle_section(config, section, names, uri, parent_dir)
+            handle_section(config, section, names, uri)
             if uri != source['uri']:
                 # hopefully, this should never happen
                 raise RuntimeError , "Something bad happened"

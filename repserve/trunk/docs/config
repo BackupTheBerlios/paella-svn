@@ -1,0 +1,75 @@
+.. -*- mode: rst -*-
+
+==========================================
+Configuration Notes
+==========================================
+
+.. contents:: :backlinks: entry
+
+
+Configuration File
+===================================
+
+Introduction
+------------------------
+
+Introduce the config file.
+
+Required Options
+-------------------------------------
+
+List the options, and describe them.
+
+Directory Options
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+- **reprepro_parent_dir:** This option should only be set in the DEFAULT section.
+
+- **basedir:**  The --basedir option for reprepro.
+
+- **confdir:**  The --confdir option for reprepro.
+
+- **distdir:**  The --distdir option for reprepro.
+
+- **dbdir:**  The --dbdir option for reprepro.
+
+- **listdir:**  The --listdir option for reprepro.
+
+- **logdir:**  The --logdir option for reprepro.
+
+- **outdir:**  The --outdir option for reprepro.
+
+Repository Options
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+- **codename:**  Corresponds to the "Codename" field in the distributions and updates 
+  configuration files for reprepro.
+
+- **archs:**  Corresponds to the "Architectures" field in the distributions and updates configuration files for reprepro.
+
+- **components:**  Corresponds to the "Components" field in the distributions and updates configuration files for reprepro.
+
+- **method:**  Corresponds to the "Method" field in the updates configuration file for reprepro.
+
+
+Optional Options
+-------------------------------------
+
+- **origin:**  Corresponds to the "Origin" field in the distributions configuration file for reprepro.
+
+- **description:**  Corresponds to the "Description" field in the distributions configuration file for reprepro.
+
+- **label:**  Corresponds to the "Label" field in the distributions configuration file for reprepro.
+
+- **version:**  Corresponds to the "Version" field in the distributions configuration file for reprepro.
+
+- **suite:**  Corresponds to the "Suite" field in the distributions configuration file for reprepro.
+
+
+
+
+.. toc_
+
+------------------------------------------------
+
+.. _toc: index.html

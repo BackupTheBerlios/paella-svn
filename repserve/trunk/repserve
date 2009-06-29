@@ -3,20 +3,58 @@
 import os, sys
 from optparse import OptionParser
 
-from repserve.config import BaseConfig
+from repserve.config import RepserveConfig
 from repserve.reprepro import RepRepRo
 
-parser = OptionParser()
+REPSERVE_COMMANDS = []
+# add/remove filterlists
+REPSERVE_COMMANDS += ['addfilterlist', 'removefilterlist']
+# add apt sources
+REPSERVE_COMMANDS += ['addsources']
+# initialize repserve
+REPSERVE_COMMANDS += ['initialize']
+# control reprepro
+REPSERVE_COMMANDS += ['update', 'export']
+# gpg stuff
+REPSERVE_COMMANDS += ['addkeyring', 'importkey']
 
+parser = OptionParser()
 parser.add_option('-c', '--config', action='store', type='string',
-                  dest='configfile', default='/etc/apt/repserve.conf')
+                  dest='configfile', default='~/repserve.conf',
+                  help='config file to use')
+
+parser.set_usage('%prog [options] command [args]')
 
 opts, args = parser.parse_args(sys.argv[1:])
 
-config = BaseConfig()
-config.read(opts.configfile)
+config = RepserveConfig()
+config.read(os.path.expanduser(opts.configfile))
 
 reprepro = RepRepRo(config)
+
+if not args:
+    print parser.print_help()
+    sys.exit(0)
+    
+
+command = args[0]
+if command not in REPSERVE_COMMANDS:
+    raise RuntimeError , "%s is an unknown command." % command
+
+if command == 'init':
+    print "do init stuff"
+elif command == 'addfilterlist':
+    print "add a filterlist"
+elif command == 'removefilterlist':
+    print "remove a filterlist"
+elif command == 'addsources':
+    print "add apt sources"
+elif command == 'info':
+    print "Some info about me"
+else:
+    print "%s is not handled" % command
+    raise RuntimeError , "Unhandled command: %s" % command
+
 
 
 if __name__ == '__main__':

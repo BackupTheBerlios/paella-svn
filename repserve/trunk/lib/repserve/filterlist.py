@@ -1,15 +1,19 @@
 from repserve.path import path
 
 class FilterList(list):
-    def __init__(self, iterable=[]):
+    def __init__(self, name, iterable=[]):
         list.__init__(self, iterable)
+        self.name = name
         # by default just use package names
         # if self.contains_items is True, we
         # store a list of (package, action) items
         # Setting this does nothing now
         self.contains_items = False
 
-    def parse_file(self, filename):
+    def parse_file(self, confdir):
+        filename = path(confdir) / self.name
+        
+    def _parse_file(self, filename):
         lines = path(filename).lines()
         # strip newlines
         lines = [line.strip() for line in lines]
@@ -35,34 +39,76 @@ class FilterList(list):
             if action != 'install':
                 print "Action for package %s is %s" % (package, action)
             packages.append(package)
-            packages.sort()
+        packages.sort()
         return packages
 
     def merge_file(self, filename, empty_first=False):
         if empty_first:
             while len(self):
                 self.pop()
-        packages = self.parse_file(filename)
+        packages = self._parse_file(filename)
         for package in packages:
             if package not in self:
                 self.append(package)
         self.sort()
 
     def _create_lines(self):
-        self.sort()
-        lines = ['%s\tinstall' % p for p in self]
+        if not self.contains_items:
+            self.sort()
+            lines = ['%s\tinstall' % p for p in self]
+        else:
+            data = dict(self)
+            keys = data.keys()
+            keys.sort()
+            lines = ['%s\t%s' % (key, data[key]) for key in keys]
         return lines
-    
-    def write_file(self, filename):
+
+    def _write_file(self, filename):
+        filename = path(filename)
         lines = self._create_lines()
-        path(filename).write_lines(lines)
-
-
+        filename.write_lines(lines)
+        
+    def write_file(self, confdir):
+        filename = path(confdir) / self.name
+        self._write_file(filename)
+        
     def remove_package(self, package):
         if package in self:
             index = self.index(package)
             self.pop(index)
         
+
+
+class FilterListManager(object):
+    def __init__(self, config):
+        self.config = config
+        self.lists = dict()
+        self.section = None
+        
+    def set_section(self, section):
+        self.section = section
+        self.lists  = dict()
+        self.read_filterlists(section)
+        
+    def read_filterlists(self, section):
+        names = self.config.get_filterlist_names(section)
+        confdir = self.config.getpath(section, 'confdir')
+        for name in names:
+            filterlist = FilterList(name)
+            filterlist.parse_file(confdir)
+            self.lists[name] = filterlist
+        
+
+    def add_filterlist(self, section, filterlist):
+        name = filterlist.name
+        self.config.add_filterlist(name, section)
+        confdir = self.config.getpath(section, 'confdir')
+        filterlist.write_file(confdir)
+
+    def make_filterlist(self, name, packages):
+        pass
+    
+
     
 if __name__ == '__main__':
     filename = 'test~'

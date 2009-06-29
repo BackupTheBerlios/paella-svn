@@ -52,6 +52,31 @@ class BaseConfig(ConfigParser):
 
     def getpath(self, section, option):
         return path(self.get(section, option))
+
+
+class RepserveConfig(BaseConfig):
+    def add_filterlist_to_section(self, name, section):
+        filterlists = self.getlist(section, 'filterlist')
+        if name not in filterlists:
+            filterlists.append(name)
+            self.setlist(section, 'filterlist', filterlists)
+        else:
+            print "%s already in filterlists for section %s" % (name, section)
+            
+
+    def remove_filterlist_from_section(self, name, section):
+        filterlists = self.getlist(section, 'filterlist')
+        if name in filterlists:
+            index = filterlists.index(name)
+            ignore = filterlists.pop(index)
+            self.setlist(section, 'filterlist', filterlists)
+        else:
+            print "%s not in filterlists for section %s" % (name, section)
+
+    def get_filterlist_names(self, section):
+        return self.getlist(section, 'filterlist')
+    
+            
     
 # Here is an attempt to make better
 # names for the sections in the config.

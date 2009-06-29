@@ -1,5 +1,6 @@
 import os
 import subprocess
+import tempfile
 
 from repserve.path import path
 
@@ -216,8 +217,38 @@ class RepRepRo(object):
         cmd += options + [command] + args
         return cmd
 
+    def _build_command(self, section, options, command, *args):
+        diropts = self._get_dir_opts(section)
+        return ['reprepro'] + diropts + [command] + args
+        
     def _run_command(self, command):
         subprocess.check_call(command)
+
+    def _runcmd(self, command, section, options):
+        cmd = self._build_command(section, options, command)
+        self._run_command(cmd)
+        
+    def update(self, section, options=[]):
+        self._runcmd('update', section, options)
+
+    def export(self, section, options=[]):
+        self._runcmd('export', section, options)
+
+    def createsymlinks(self, section, options=[]):
+        self._runcmd('createsymlinks', section, options)
+
+    def checkupdate(self, section, options=[]):
+        cmd = self._build_command(section, options, 'checkupdate')
+        outfile = tempfile.TemporaryFile()
+        proc = subprocess.Popen(cmd, stdout=outfile)
+        retval = proc.wait()
+        if retval:
+            raise RuntimeError , "%s returned %d" % (' '.join(cmd), retval)
+        outfile.seek(0)
+        return outfile
+
+    
+        
 
 
             

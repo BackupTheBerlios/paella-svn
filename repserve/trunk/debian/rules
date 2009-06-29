@@ -4,3 +4,11 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 DEB_PYTHON_SYSTEM=pysupport
 include /usr/share/cdbs/1/class/python-distutils.mk
 
+install/repserve::
+	python setup.py main install --prefix=$(CURDIR)/debian/repserve/usr
+	rm -r build/
+build/repserve-doc::
+	python setup.py doc install \
+		--prefix=$(CURDIR)/debian/repserve-doc/usr/share/doc/repserve-doc
+clean::
+	dh_clean configure-stamp docs/html/*.html

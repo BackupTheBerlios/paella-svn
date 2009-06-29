@@ -2,14 +2,22 @@ Source: repserve
 Section: misc
 Priority: optional
 Maintainer: Joseph Rawson <umeboshi3@gmail.com>
-Build-Depends: cdbs, debhelper (>= 7)
+Build-Depends: cdbs, debhelper (>= 7), python-docutils, python-all-dev, python-support
 Standards-Version: 3.7.3
 Homepage: <insert the upstream URL, if relevant>
 
 Package: repserve
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, reprepro
 Recommends: germinate
 Description: A tool to help manage partial debian repositories
+ Say something more verbose here.
+
+Package: repserve-doc
+Section: doc
+Architecture: all
+Depends: doc-base
+Suggests: dwww
+Description: Documentation for repserve
  Say something more verbose here.
 

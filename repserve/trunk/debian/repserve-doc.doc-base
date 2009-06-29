@@ -1,0 +1,13 @@
+Document: repserve
+Title: Debian repserve Manual
+Author: Joseph Rawson
+Abstract: This manual describes what repserve is
+ and how it can be used to
+ manage partial Debian repositories on Debian systems.
+Section: Debian
+
+Format: HTML
+Index: /usr/share/doc/repserve-doc/html/index.html
+Files: /usr/share/doc/repserve-doc/html/*.html
+
+

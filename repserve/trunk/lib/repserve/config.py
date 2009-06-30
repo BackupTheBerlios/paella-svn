@@ -13,7 +13,11 @@ DEFAULT_CONFIG = """# default config file for repserve
 # the default configuration, but isn't
 # required.
 reprepro_parent_dir: /var/lib/repserve/repos-db
+# This is the parent directory for the
+# public facing of the repositories
 reprepro_parent_outdir: /var/www/repserve
+# These options correspond to the
+# reprepro options
 basedir: %(reprepro_parent_dir)s/debian
 outdir:  %(reprepro_parent_outdir)s/debian
 confdir: %(basedir)s/conf
@@ -21,6 +25,14 @@ distdir: %(outdir)s/dists
 logdir:  %(basedir)s/logs
 dbdir:   %(basedir)s/db
 listdir: %(basedir)s/lists
+
+# The full name of the repserve user
+fullname:  Automated Repository Manager
+# email account of repserve user
+# if left blank, it defaults to
+# repserve@`cat /etc/mailname`
+email:
+
 
 # example
 #[lenny]
@@ -54,6 +66,11 @@ class BaseConfig(ConfigParser):
     def getpath(self, section, option):
         return path(self.get(section, option))
 
+    def write_file(self):
+        if not hasattr(self, 'configfilename'):
+            raise RuntimeError , "The config file hasn't been set yet."
+        self.write(file(self.configfilename, 'w'))
+        
 
 class RepserveConfig(BaseConfig):
     def add_filterlist_to_section(self, name, section):
@@ -242,8 +259,9 @@ def sources_to_config(filename='/etc/apt/sources.list', arch=None,
             infile = file(input)
         config.readfp(infile)
     else:
-        print "using previous config object"
-        print config.ReleaseFiles.keys()
+        #print "using previous config object"
+        #print config.ReleaseFiles.keys()
+        pass
     # use ReleaseFiles attribute to help
     # keep from retrieving the same Release
     # files over and over again

@@ -17,17 +17,24 @@ set -e
 # for details, see http://www.debian.org/doc/debian-policy/ or
 # the debian-policy package
 
+# we should maybe use debconf for these variables
 rephome=/var/lib/repserve
 repuser=repserve
+repoutparent=/var/www/repserve
+
 case "$1" in
     configure)
     if ! [ -d $rephome ]; then
 	mkdir -p $rephome
     fi
+    if ! [ -d $repoutparent ]; then
+	mkdir -p $repoutparent
+    fi
     if ! getent passwd $repuser > /dev/null; then
 	adduser --system --quiet --group --no-create-home \
 	    --home $rephome --shell /bin/bash $repuser || true
 	chown -R  $repuser:$repuser $rephome
+	chown -R  $repuser:$repuser $repoutparent
     fi
     ;;
 

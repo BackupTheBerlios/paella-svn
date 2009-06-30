@@ -206,7 +206,7 @@ class RepRepRo(object):
         for opt in ['basedir', 'outdir', 'confdir', 'distdir',
                     'logdir', 'dbdir', 'listdir']:
             opts.append('--%s' % opt)
-            optdir = self.config.get(self.config_section, opt)
+            optdir = self.config.get(section, opt)
             opts.append(optdir)
         return opts
 
@@ -219,7 +219,7 @@ class RepRepRo(object):
 
     def _build_command(self, section, options, command, *args):
         diropts = self._get_dir_opts(section)
-        return ['reprepro'] + diropts + [command] + args
+        return ['reprepro'] + diropts + [command] + list(args)
         
     def _run_command(self, command):
         subprocess.check_call(command)

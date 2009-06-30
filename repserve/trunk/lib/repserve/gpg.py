@@ -50,6 +50,20 @@ def make_default_signing_key(fullname=None, email=None):
     batchinfo = gpg_keygen_batchfile % template_data
     generate_gpg_key(batchinfo)
 
+#gpg --fingerprint "GPG User" | grep ^pub | cut -f2 -d/ | cut -f1 -d' '
+def get_gpg_keyid(username):
+    cmd = ['gpg', '--list-key', username]
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+    pub_line = None
+    for line in proc.stdout:
+        if line.startswith('pub'):
+            pub_line = line.strip()
+            pub, size_id, kdate = pub_line.split()
+            keyid = size_id.split('/')[1]
+    if pub_line is None:
+        raise RuntimeError , 'gpg key not found'
+    return keyid
+
 
 if __name__ == '__main__':
     pass

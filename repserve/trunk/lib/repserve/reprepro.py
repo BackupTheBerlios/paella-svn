@@ -101,6 +101,13 @@ class RepRepConfig(object):
         optdict['ignore'] = False
         if self.config.has_option(section, 'ignore_release'):
             optdict['ignore'] = self.config.getboolean(section, 'ignore_release')
+        filterlist_cmd = 'deinstall'
+        if self.config.has_option(section, 'filterlist_cmd'):
+            filterlist_cmd = self.config.get(section, 'filterlist_cmd')
+        optdict['filterlist_cmd'] = filterlist_cmd
+        if self.config.has_option(section, 'filterlist'):
+            flists = self.config.getlist(section, 'filterlist')
+        optdict['filterlist'] = flists
         distlines = make_dist_stanza_lines(codename, archs, components,
                                            **optdict)
         # still need to figure out what to do about filterlist
@@ -209,13 +216,6 @@ class RepRepRo(object):
             optdir = self.config.get(section, opt)
             opts.append(optdir)
         return opts
-
-    # options should be a list
-    def _build_command(self, options, command, *args):
-        section = None
-        cmd = ['reprepro'] + self._get_dir_opts(section)
-        cmd += options + [command] + args
-        return cmd
 
     def _build_command(self, section, options, command, *args):
         diropts = self._get_dir_opts(section)

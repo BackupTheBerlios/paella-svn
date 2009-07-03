@@ -13,17 +13,40 @@ Configuration File
 Introduction
 ------------------------
 
-Introduce the config file.
+The configuration file supports multiple upstream repositories.  The "name" of 
+each repository is determined by the "method", or url, where the repository 
+resides.  Each repository can mirror multiple dists.  Each section of the file is in the 
+form of "name-dist", where name is taken from the method option.
 
 Required Options
 -------------------------------------
 
 List the options, and describe them.
 
-Directory Options
+Default Options
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-- **reprepro_parent_dir:** This option should only be set in the DEFAULT section.
+The options listed here should only be set in the **DEFAULT** section.
+
+- **reprepro_parent_dir:** This option should only be set in the **DEFAULT** section.  This 
+  is the default parent directory for the **basedir** option in each section.
+
+- **reprepro_parent_outdir:** This option should only be set in the **DEFAULT** section. This
+  is the default parent directory for the **outdir** option in each section.
+
+- **fullname:**  This option is used to make the gpg key that will be used to 
+  sign the the Release files.
+
+- **email:**  This option is used to make the gpg key that will be used to  sign
+  the Release files.  This option is empty by default, and when it's empty, the 
+  value will be repserve@(the contents of /etc/mailname).
+
+- **signwith:**  The key ID of the gpg key that will be used to sign the Release
+  files.
+
+
+Directory Options
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 - **basedir:**  The --basedir option for reprepro.
 
@@ -42,6 +65,8 @@ Directory Options
 Repository Options
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+These options are required for each section:
+
 - **codename:**  Corresponds to the "Codename" field in the distributions and updates 
   configuration files for reprepro.
 
@@ -54,6 +79,8 @@ Repository Options
 
 Optional Options
 -------------------------------------
+
+These options are optional for each section.
 
 - **origin:**  Corresponds to the "Origin" field in the distributions configuration file for reprepro.
 
@@ -68,7 +95,7 @@ Optional Options
 
 
 
-.. toc_
+toc_
 
 ------------------------------------------------
 

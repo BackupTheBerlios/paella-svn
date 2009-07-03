@@ -10,11 +10,19 @@ class FilterList(list):
         # Setting this does nothing now
         self.contains_items = False
 
-    def parse_file(self, confdir):
+    def parse_filterlist(self, confdir):
         filename = path(confdir) / self.name
-        
-    def _parse_file(self, filename):
+        return self.parse_file(filename)
+
+    def parse_file(self, filename):
         lines = path(filename).lines()
+        return self.parse_lines(lines)
+    
+    def parse_contents(self, contents):
+        lines = contents.split('\n')
+        return self.parse_lines(lines)
+    
+    def parse_lines(self, lines):
         # strip newlines
         lines = [line.strip() for line in lines]
         # remove comments
@@ -46,7 +54,7 @@ class FilterList(list):
         if empty_first:
             while len(self):
                 self.pop()
-        packages = self._parse_file(filename)
+        packages = self.parse_file(filename)
         for package in packages:
             if package not in self:
                 self.append(package)
@@ -92,20 +100,33 @@ class FilterListManager(object):
         
     def read_filterlists(self, section):
         names = self.config.get_filterlist_names(section)
-        confdir = self.config.getpath(section, 'confdir')
+        confdir = self.config.get_confdir(section)
         for name in names:
             filterlist = FilterList(name)
             filterlist.parse_file(confdir)
             self.lists[name] = filterlist
 
-    def add_filterlist(self, section, filterlist):
+    def add_filterlist_to_section(self, section, filterlist):
         name = filterlist.name
-        self.config.add_filterlist(name, section)
-        confdir = self.config.getpath(section, 'confdir')
+        self.config.add_filterlist_to_section(name, section)
+        confdir = self.config.get_confdir(section)
         filterlist.write_file(confdir)
+        self.config.write_file()
 
-    def make_filterlist(self, name, packages):
-        pass
+    def remove_filterlist_from_section(self, name, section):
+        self.config.remove_filterlist_from_section(name, section)
+        self.config.write_file()
+                
+    def make_filterlist(self, name, packages=[], filename=None):
+        flist = FilterList(name, packages)
+        if filename is not None:
+            packages = flist.parse_file(filename)
+            while len(flist):
+                flist.pop()
+            flist += packages
+        return flist
+    
+            
     
 
     

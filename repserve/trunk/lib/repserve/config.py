@@ -95,6 +95,17 @@ class RepserveConfig(BaseConfig):
         return self.getlist(section, 'filterlist')
     
             
+    def search_for_filterlist(self, name):
+        sections_containing_filterlist = []
+        for section in self.sections():
+            names = self.get_filterlist_names(section)
+            if name in names:
+                sections_containing_filterlist.append(section)
+        return sections_containing_filterlist
+
+    def get_confdir(self, section):
+        return self.getpath(section, 'confdir')
+    
     
 # Here is an attempt to make better
 # names for the sections in the config.

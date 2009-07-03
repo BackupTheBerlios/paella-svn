@@ -1,3 +1,4 @@
+import sys
 import subprocess
 import tempfile
 import urlparse
@@ -150,6 +151,23 @@ def retrieve_and_parse_release_file(url, codename):
     release = parse_release_file(tfile)
     return release
 
+# This is a helper function to use stdin for
+# the contents of a file, for functions
+# that require filename arguments.
+# Returns a filename to use as an argument
+# to the function.
+def use_stdin_instead_of_filename(self):
+    infile = sys.stdin
+    ignore, filename = tempfile.mkstemp('infile', 'repserve')
+    outfile = file(filename, 'wb')
+    block = sys.stdin.read(BLOCK_SIZE)
+    while block:
+        outfile.write(block)
+        block = sys.stdin.read(BLOCK_SIZE)
+    outfile.close()
+    return filename
+    
+    
 
 
 if __name__ == '__main__':

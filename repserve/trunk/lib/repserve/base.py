@@ -156,7 +156,7 @@ def retrieve_and_parse_release_file(url, codename):
 # that require filename arguments.
 # Returns a filename to use as an argument
 # to the function.
-def use_stdin_instead_of_filename(self):
+def use_stdin_instead_of_filename():
     infile = sys.stdin
     ignore, filename = tempfile.mkstemp('infile', 'repserve')
     outfile = file(filename, 'wb')

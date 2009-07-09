@@ -15,6 +15,10 @@ parser.add_option('-c', '--config', action='store', type='string',
                   help='config file to use')
 parser.add_option('--arch', action='store', type='string',
                   dest='arch', default=None)
+parser.add_option('--dist', action='store', type='string',
+                  dest='dist', default=None)
+parser.add_option('--repos', action='store', type='string',
+                  dest='repos', default=None)
 parser.set_usage('%prog [options] command [args]')
 
 opts, args = parser.parse_args(sys.argv[1:])

@@ -8,7 +8,7 @@ Homepage: <insert the upstream URL, if relevant>
 
 Package: repserve
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, reprepro, python
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, reprepro, python, python-apt
 Recommends: germinate
 Description: A tool to help manage partial debian repositories
  Say something more verbose here.

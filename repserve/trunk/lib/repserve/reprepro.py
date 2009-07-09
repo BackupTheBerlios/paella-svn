@@ -107,7 +107,7 @@ class RepRepConfig(object):
         optdict['filterlist_cmd'] = filterlist_cmd
         if self.config.has_option(section, 'filterlist'):
             flists = self.config.getlist(section, 'filterlist')
-        optdict['filterlist'] = flists
+            optdict['filterlist'] = flists
         distlines = make_dist_stanza_lines(codename, archs, components,
                                            **optdict)
         # still need to figure out what to do about filterlist
@@ -205,7 +205,13 @@ class RepRepRo(object):
     def __init__(self, config):
         self.config = config
         self.rconfig = RepRepConfig(self.config)
-
+        self.reprepro_verbosity = ''
+        if self.config.has_option('DEFAULT', 'reprepro_verbosity'):
+            self.reprepro_verbosity = self.config.get('DEFAULT', 'reprepro_verbosity')
+            if self.reprepro_verbosity and not self.reprepro_verbosity.startswith('-'):
+                print "Prepending - to reprepro verbosity"
+                self.reprepro_verbosity = '-%s' % self.reprepro_verbosity
+                
     def _get_dir_opts(self, section):
         if section is None:
             section = 'DEFAULT'
@@ -219,26 +225,34 @@ class RepRepRo(object):
 
     def _build_command(self, section, options, command, *args):
         diropts = self._get_dir_opts(section)
-        return ['reprepro'] + diropts + [command] + list(args)
+        verbosity_opt = []
+        if self.reprepro_verbosity:
+            verbosity_opt = [self.reprepro_verbosity]
+        return ['reprepro'] + verbosity_opt + diropts + options + [command] + list(args)
         
     def _run_command(self, command):
         subprocess.check_call(command)
 
-    def _runcmd(self, command, section, options):
-        cmd = self._build_command(section, options, command)
+    def _runcmd(self, command, section, options, *args):
+        cmd = self._build_command(section, options, command, *args)
         self._run_command(cmd)
         
     def update(self, section, options=[]):
-        self._runcmd('update', section, options)
+        codename = self.config.get(section, 'codename')
+        if '--noskipold' not in options:
+            options.append('--noskipold')
+        self._runcmd('update', section, options, codename)
 
     def export(self, section, options=[]):
-        self._runcmd('export', section, options)
+        codename = self.config.get(section, 'codename')
+        self._runcmd('export', section, options, codename)
 
     def createsymlinks(self, section, options=[]):
         self._runcmd('createsymlinks', section, options)
 
     def checkupdate(self, section, options=[]):
-        cmd = self._build_command(section, options, 'checkupdate')
+        codename = self.config.get(section, 'codename')
+        cmd = self._build_command(section, options, 'checkupdate', codename)
         outfile = tempfile.TemporaryFile()
         proc = subprocess.Popen(cmd, stdout=outfile)
         retval = proc.wait()
@@ -247,12 +261,21 @@ class RepRepRo(object):
         outfile.seek(0)
         return outfile
 
-    
-        
+    def checkpoolfast(self, section, options=[]):
+        #self._runcmd('checkpool', section, options, 'fast')
+        cmd = self._build_command(section, options, 'checkpool', 'fast')
+        retval = subprocess.call(cmd)
+        if retval:
+            print "checkpool returned %d" % retval
+
+    def check(self, section, options=[]):
+        codename = self.config.get(section, 'codename')
+        cmd = self._build_command(section, options, 'check', codename)
+        retval = subprocess.call(cmd)
+        if retval:
+            print "check returned %d" % retval
 
 
-            
-    
 if __name__ == '__main__':
     pass
 

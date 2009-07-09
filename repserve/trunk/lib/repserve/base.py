@@ -1,5 +1,6 @@
 import sys
 import subprocess
+from subprocess import CalledProcessError
 import tempfile
 import urlparse
 import urllib2
@@ -10,13 +11,41 @@ from repserve.path import path
 
 BLOCK_SIZE = 1024
 
+###################################
+# Exceptions
+###################################
+class ImproperCommandLineError(Exception):
+    pass
+
+class ImproperArgumentsError(ImproperCommandLineError):
+    pass
+
+class ImproperOptionsError(ImproperCommandLineError):
+    pass
+
+class UnhandledCommandError(ImproperCommandLineError):
+    pass
+
+class BaseConfigError(Exception):
+    pass
+
+class EmptyConfigError(BaseConfigError):
+    pass
+
+class NoArchiveKeyError(BaseConfigError):
+    pass
+
+
+###################################
+###################################
+
 def get_architecture():
     proc = subprocess.Popen(['dpkg', '--print-architecture'],
                             stdout=subprocess.PIPE)
     arch = proc.stdout.read().strip()
     retcode = proc.wait()
     if retcode:
-        raise RuntimeError , "dpkg returned %d" % retcode
+        raise CalledProcessError , "dpkg returned %d" % retcode
     return arch
 
 def unzip_list_file(filename):
@@ -30,7 +59,7 @@ def unzip_list_file(filename):
         block = proc.stdout.read(BLOCK_SIZE)
     retval = proc.wait()
     if retval:
-        raise RuntimeError , "Problem reading/unzipping %s" % filename
+        raise CalledProcessError , "Problem reading/unzipping %s" % filename
     tmpfile.seek(0)
     return tmpfile
 
@@ -125,9 +154,46 @@ def parse_sources_list(filename='/etc/apt/sources.list', arch=None):
             parsed_sources.append(parsed)
     return parsed_sources
 
-def retrieve_release_file(url, codename):
+
+class ReleaseParser(object):
+    def __init__(self):
+        pass
+
+    def retrieve_release_file(self, url, codename, gpg=False):
+        url = Url(url)
+        ext = ''
+        if gpg:
+            ext = '.gpg'
+        relpath = 'dists/%s/Release%s' % (codename, ext)
+        url.path = url.path / relpath
+        return url.open()
+
+    def parse_release_file(self, fileobj):
+        parsed = apt_pkg.ParseTagFile(fileobj)
+        # There should only be one section
+        if parsed.Step() != 1:
+            raise RuntimeError , "There was a problem parsing the Release file"
+        section = parsed.Section
+        keys = section.keys()
+        release = dict()
+        for key in keys:
+            release[key.lower()] = section[key]
+        return release
+        
+    def retrieve_and_parse_release_file(url, codename):
+        ufile = retrieve_release_file(url, codename)
+        tfile = tempfile.TemporaryFile()
+        tfile.write(ufile.read())
+        tfile.seek(0)
+        release = parse_release_file(tfile)
+        return release
+
+def retrieve_release_file(url, codename, gpg=False):
     url = Url(url)
-    relpath = 'dists/%s/Release' % codename
+    ext = ''
+    if gpg:
+        ext = '.gpg'
+    relpath = 'dists/%s/Release%s' % (codename, ext)
     url.path = url.path / relpath
     return url.open()
 

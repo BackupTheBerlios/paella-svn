@@ -78,6 +78,8 @@ class FilterList(list):
         
     def write_file(self, confdir):
         filename = path(confdir) / self.name
+        if filename.isfile():
+            print "Overwriting previous filterlist", str(filename)
         self._write_file(filename)
         
     def remove_package(self, package):
@@ -109,10 +111,21 @@ class FilterListManager(object):
     def add_filterlist_to_section(self, section, filterlist):
         name = filterlist.name
         self.config.add_filterlist_to_section(name, section)
-        confdir = self.config.get_confdir(section)
-        filterlist.write_file(confdir)
         self.config.write_file()
 
+    def write_filterlist_to_confdir(self, filterlist, confdir):
+        filterlist.write_file(confdir)
+
+    def write_filterlist_to_confdirs(self, filterlist, sections):
+        confdirs = []
+        for section in sections:
+            confdir = self.config.get_confdir(section)
+            if confdir not in confdirs:
+                confdirs.append(confdir)
+        for confdir in confdirs:
+            self.write_filterlist_to_confdir(filterlist, confdir)
+            
+        
     def remove_filterlist_from_section(self, name, section):
         self.config.remove_filterlist_from_section(name, section)
         self.config.write_file()

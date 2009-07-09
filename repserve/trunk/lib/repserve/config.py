@@ -3,8 +3,9 @@ from StringIO import StringIO
 
 from repserve.base import parse_sources_list
 from repserve.base import Url
-from repserve.base import retrieve_and_parse_release_file
 from repserve.path import path
+
+from repserve.release import ReleaseParser
 
 DEFAULT_CONFIG = """# default config file for repserve
 [DEFAULT]
@@ -13,9 +14,16 @@ DEFAULT_CONFIG = """# default config file for repserve
 # the default configuration, but isn't
 # required.
 reprepro_parent_dir: /var/lib/repserve/repos-db
+
 # This is the parent directory for the
 # public facing of the repositories
 reprepro_parent_outdir: /var/www/repserve
+
+# the verbosity option for reprepro, handy
+# if you want to see what reprepro is doing
+# include the - in the value, i.e. -VV
+reprepro_verbosity:
+
 # These options correspond to the
 # reprepro options
 basedir: %(reprepro_parent_dir)s/debian
@@ -28,19 +36,11 @@ listdir: %(basedir)s/lists
 
 # The full name of the repserve user
 fullname:  Automated Repository Manager
+
 # email account of repserve user
 # if left blank, it defaults to
 # repserve@`cat /etc/mailname`
 email:
-
-
-# example
-#[lenny]
-#codename: lenny
-#components: main contrib non-free
-#archs:  amd64 source
-#ignore_release:  True
-#method:  http://ftp.us.debian.org/debian
 
 """
 
@@ -74,6 +74,8 @@ class BaseConfig(ConfigParser):
 
 class RepserveConfig(BaseConfig):
     def add_filterlist_to_section(self, name, section):
+        if not self.has_option(section, 'filterlist'):
+            self.setlist(section, 'filterlist', [])
         filterlists = self.getlist(section, 'filterlist')
         if name not in filterlists:
             filterlists.append(name)
@@ -103,8 +105,57 @@ class RepserveConfig(BaseConfig):
                 sections_containing_filterlist.append(section)
         return sections_containing_filterlist
 
+    def _get_diropt(self, section, option):
+        return self.getpath(section, option)
+    
     def get_confdir(self, section):
-        return self.getpath(section, 'confdir')
+        return self._get_diropt(section, 'confdir')
+
+    def get_basedir(self, section):
+        return self._get_diropt(section, 'basedir')
+    
+    def _get_dir_sections(self, option, value):
+        sections = []
+        for section in self.sections():
+            if value == self._get_diropt(section, option):
+                sections.append(section)
+        return sections
+    
+    def get_confdir_sections(self, confdir):
+        return self._get_dir_sections('confdir', confdir)
+
+    def get_basedir_sections(self, basedir):
+        return self._get_dir_sections('basedir', basedir)
+
+    def get_repos_names(self):
+        names = []
+        for section in self.sections():
+            name = self.get(section, 'repos_name')
+            if name not in names:
+                names.append(name)
+        return names
+
+    def get_repositories(self):
+        return self.get_repos_names()
+    
+    def get_repos_dists(self, name):
+        codenames = []
+        for section in self.sections():
+            if self.get(section, 'repos_name') == name:
+                codename = self.get(section, 'codename')
+                if codename in codenames:
+                    raise RuntimeError , "The codename %s is already there." % codename
+                codenames.append(codename)
+        return codenames
+
+    # so many synonyms, I don't know which ones
+    # are the best to use
+    def get_codenames(self, repos):
+        return self.get_repos_dists(repos)
+    
+
+    
+    
     
     
 # Here is an attempt to make better
@@ -174,13 +225,15 @@ def create_names_dictionary(methods):
 def handle_section(config, section, names, uri):
     if section not in config.sections():
         config.add_section(section)
+        repos_name = names[uri]
+        config.set(section, 'repos_name', repos_name)
         # create basedir option
         prefix = '%(reprepro_parent_dir)s'
-        basedir = '%s/%s' % (prefix, names[uri])
+        basedir = '%s/%s' % (prefix, repos_name)
         config.set(section, 'basedir', basedir)
         # create outdir option
         prefix = '%(reprepro_parent_outdir)s'
-        outdir = '%s/%s' % (prefix, names[uri])
+        outdir = '%s/%s' % (prefix, repos_name)
         config.set(section, 'outdir', outdir)
         
         
@@ -227,7 +280,8 @@ def handle_release(config, section, source):
         release = config.ReleaseFiles[section]
         print "Release already here for", section
     else:
-        release = retrieve_and_parse_release_file(uri, dist)
+        parser = ReleaseParser()
+        release = parser.handle_release(uri, dist)
         config.ReleaseFiles[section] = release
     for option in ['origin', 'description', 'label',
                    'suite', 'version']:

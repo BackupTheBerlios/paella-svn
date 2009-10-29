@@ -1,0 +1,56 @@
+	<profile name="paella_vbox" suite="bootstrap">
+		<traits>
+			<trait ord="0">
+				default
+			</trait>
+			<trait ord="1">
+				paella_server
+			</trait>
+			<trait ord="2">
+				boot_server
+			</trait>
+			<trait ord="3">
+				dhcp_server
+			</trait>
+			<trait ord="4">
+				nameserver
+			</trait>
+			<trait ord="5">
+				firewall
+			</trait>
+			<trait ord="6">
+				xfce_desktop
+			</trait>
+			<trait ord="7">
+				paella_admin
+			</trait>
+			<trait ord="8">
+				gdm
+			</trait>
+			<trait ord="9">
+				final
+			</trait>
+		</traits>
+		<families>
+			<family>
+				fileshare_debian
+			</family>
+			<family>
+				lapnet
+			</family>
+			<family>
+				paella_vbox_server
+			</family>
+			<family>
+				user_paella
+			</family>
+		</families>
+		<environ>
+			<profile_variable name="interfaces" trait="dhcp_server">
+				eth1
+			</profile_variable>
+			<profile_variable name="sysadmin_users" trait="users">
+				paella
+			</profile_variable>
+		</environ>
+	</profile>

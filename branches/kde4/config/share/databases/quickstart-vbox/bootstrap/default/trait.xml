@@ -1,0 +1,28 @@
+<trait name="default">
+	<parents>
+		<parent>
+			base_admin_tools
+		</parent>
+		<parent>
+			debian_admin_base
+		</parent>
+		<parent>
+			users
+		</parent>
+	</parents>
+	<packages>
+		<package action="install">
+			acpid
+		</package>
+		<package action="install">
+			acpi-support-base
+		</package>
+	</packages>
+	<environ/>
+	<templates>
+		<template grp_owner="root" mode="0644" owner="root">
+			boot/grub/menu.lst
+		</template>
+	</templates>
+	<scripts/>
+</trait>

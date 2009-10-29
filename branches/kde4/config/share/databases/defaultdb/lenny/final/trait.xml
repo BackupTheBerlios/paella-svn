@@ -1,0 +1,14 @@
+<trait name="final">
+	<parents>
+		<parent>
+			global
+		</parent>
+	</parents>
+	<packages/>
+	<environ/>
+	<templates/>
+	<scripts>
+		<script name="chroot"/>
+		<script name="config"/>
+	</scripts>
+</trait>

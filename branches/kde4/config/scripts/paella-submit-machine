@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+import os, sys
+from os.path import join
+from optparse import OptionParser
+
+from useless.base import Error, debug
+from useless.base.config import Configuration
+from useless.db.midlevel import StatementCursor
+from useless.sqlgen.clause import Eq, In
+
+from paella.installer.base import InstallerConnection
+from paella.installer.util.misc import get_mac_addresses
+
+parser = OptionParser()
+opts, args = parser.parse_args(sys.argv[1:])
+
+if not len(args):
+    print "We need a machine name as an argument"
+    sys.exit(1)
+
+
+
+machine = args[0]
+macs = get_mac_addresses()
+
+conn = InstallerConnection()
+    
+cursor = StatementCursor(conn)
+cursor.set_table('default_environment')
+for mac in macs:
+    clause = Eq('section', 'machines') & Eq('option', mac)
+    data = dict(section='machines', option=mac, value=machine)
+    rows = cursor.select(clause=clause)
+    if not rows:
+        print 'inserting %s for %s' % (mac, machine)
+        cursor.insert(data=data)
+    else:
+        print "%s is already in the default environment" % mac
+        
+clause = Eq('section', 'autoinstall') & Eq('option', machine)
+rows = cursor.select(clause=clause)
+if not rows:
+    print "inserting autoinstall (Default: False) for", machine
+    cursor.insert(data=dict(section='autoinstall', option=machine, value='False'))
+else:
+    print "autoinstall option already exists for", machine
+    

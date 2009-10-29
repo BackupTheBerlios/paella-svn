@@ -1,0 +1,555 @@
+.. -*- mode: rst -*-
+
+==========================
+Paella Installer
+==========================
+
+.. contents:: :backlinks: entry
+
+
+Introduction
+===================
+
+This document explains how the installer works, and how the different 
+parts are put together.
+
+Installer Hierarchy
+============================
+
++ BaseProcessor_ (object)
+
+  - BaseInstaller_ (BaseProcessor)
+
+    + TraitInstaller_ (BaseInstaller)
+
+    + ProfileInstaller_ (BaseInstaller)
+
+    + ChrootInstaller_ (BaseInstaller)
+
+      - MachineInstaller_ (ChrootInstaller)
+
+
+
+Base Processor
+--------------------------------
+
+This is the base class of all the installer objects.  This class isn't meant to
+be instantiated on it's own, but to be subclassed.  This class has four main 
+attributes; _processes, _process_map, current, and log.  Hereafter, I'll refer 
+to the _processes member as processes, and the _process_map member 
+as process_map.  The current attribute contains the name of the process 
+that's currently being processed.  The log attribute is an instance of the 
+python logging module, and it's expected to be defined in a subclass.
+
+The processes attribute is a list of the steps that will be processed, in order.  
+The process_map attribute is a python dictionary mapping the name of the 
+process (in processes) to the function or method that will be run.  This 
+function or method takes no arguments.  Any process that's in the list, but 
+not in the process_map will be skipped.
+
+Before any process is processed, the make_script method is called, with the
+process name as an argument.  This method will either return None, or it will 
+return the path to a script to be executed in place of the process.  This step is 
+done before checking the process_map to see if it's mapped to a method or 
+function.  This enables a script to run in place of a process that would normally 
+be skipped.
+
+There are also two special methods that can be implemented in a subclass.  
+These are named "pre_process" and "post_process".  They take the name 
+of the process as an argument, and can be used to do things before and/or 
+after the process in processed.
+
+
+Base Installer
+--------------------------------
+
+This is the base installer object, and is a subclass of BaseProcessor.  Like 
+the BaseProcessor, this class is also not meant to be instantiated on its own, 
+but to be subclassed.  This class holds attributes and methods that are in 
+common with all the installer objects.  These are described briefly below.  Not 
+all of them are described, but only the more important ones.
+
+Important Attributes and Methods
+++++++++++++++++++++++++++++++++++++++++++
+
++ conn
+
+  - This attribute is the connection object to the paella database.
+
++ target
+
+  - This attribute is the path object that represents the target directory
+    where the system will be installed.
+
++ defenv
+
+  - This attribute is the object that accesses the "default_environment" 
+    table in the database.  This object is used as though it were a ConfigParser 
+    object.
+
++ installer
+
+  - This attribute is the instance of a child installer, if the installer has a 
+    child installer.  This is how the installers are stacked onto one another.  
+    Generally, there is an "install" process in the parent installer that will
+    be used to run all the processes in the child installer.  The default is 
+    None.
+
++ set_logger
+
+  - This method is responsible for creating the logger object that will be
+    used to inform us on what the installer is doing.  The python logging 
+    facility is used for this, and theoretically, any handler that's defined in 
+    that facility should work, although only the FileHandler method is being 
+    used.
+
++ chroot
+
+  - This method is used to execute a command in the target directory 
+    in a chroot environment.  The stdout and stderr of each command is 
+    redirected to the logger.
+
+
+Trait Installer
+--------------------------
+
+This is the most basic of the installer objects, and it's the object that does 
+most of the work.  This object doesn't exist by itself, but is an attribute of 
+the profile installer object.  This object will process a trait, but it won't check 
+to see if a parent trait has already been processed.  It's probably possible 
+to use this object on it's own in a script to dynamically process traits during 
+the install process, but this hasn't been attempted yet.
+
+The trait processes can be overridden by inserting a comma separated 
+list of processes in the default environment under the section **installer**, 
+with the option named **trait_processes**.  This can be valuable if you want 
+to see how a system is without templates, or without scripts being run.  In this 
+case you would set **trait_processes** to  "remove, install" and the other 
+processes will be skipped.
+
+Processes
++++++++++++++++++
+
+- pre
+
+  + This process normally does nothing.  It can be hooked with a script.
+
+- preseed
+
+  + If there is a template named "debconf" in the list of templates for this
+    trait, this process will run debconf-set-selections on that file.
+
+- remove
+
+  + This process will remove (not purge) all the packages marked "remove"
+    in the trait's package list.
+
+- install
+
+  + This process will install all the packages marked "install" in the trait's
+    package list.
+
+- templates
+
+  + This process will install all of the templates for this trait.
+
+- config
+
+  + This process normally does nothing.  It can be hooked with a script.
+
+- chroot
+
+  + This process normally does nothing.  It can be hooked with a script.
+
+  + If a script exists for this process, it will be run in a chroot environment 
+    in the target directory.
+
+- reconfig
+
+  + This process will run "dpkg-reconfigure -plow" on all the packages
+    marked "reconfig" in the trait's package list.
+
+- post
+
+  + This process normally does nothing.  It can be hooked with a script.
+
+Important Attributes
++++++++++++++++++++++++++++++++
+
+- suite
+
+  + This attribute determines what suite the trait should be processed from.
+    This attribute is generally set by the profile installer.
+
+- helper
+
+  + This is the helper object that actually does most of the work for the trait
+    installer.  It has some very important attributes that should be discussed.
+
+    - familydata
+
+      - This attribute contains variables from the families defined in the profile.
+
+      - This should probably be merged with profiledata in the future.
+
+    - profiledata
+
+      - This attribute contains variables defined in the profile.
+
+    - machine_data
+
+      - This attribute contains variables defined in the machine, and it's families.
+
+      - This is how the profiledata should probably look in the future.
+
+Profile Installer
+----------------------------------
+
+The profile installer isn't used alone, but exists as an attribute of the 
+machine installer.
+
+The profile installer is responsible for getting the traits processed.  The 
+list of traits contained in the profile is expanded to make an ordered list 
+that includes the parents of the traits.  Then that list of traits becomes 
+the list of processes for the profile installer.  The profile installer then 
+calls the trait installer to process each trait in the expanded list.
+
+
+The profile installer also creates a directory in target called /root/paella , 
+and uses this directory to store information about the install.  The list of 
+traits to be installed, and a list of currently installed traits are placed in 
+this directory.  In the future, I plan to make this part more configurable, in 
+case the administrator wants to keep the target system cleaner.
+
+Processes
++++++++++++++++++
+
+The list of processes is the list of traits to be installed.  While it's possible 
+to hook a trait with a script, it's not implemented, and there's no table in 
+the database to hold the script.  The ability to skip or modify a trait would 
+probably be useful, so this might be implemented in the future.
+
+
+Important Attributes
++++++++++++++++++++++++++++++++
+
+- installer
+
+  + This is the trait installer object.
+
+- familydata
+
+  + This dictionary is filled here, and passed to the trait installer.
+
+- profiledata
+
+  + This dictionary is filled here, and passed to the trait installer.
+
+- machine_data
+
+  + This dictionary is empty here, and it's the responsibility of the 
+    machine installer to fill it when it initalizes the profile installer.  This 
+    must be done before the profile installer initalizes the trait installer 
+    so that this dictionary is passed to the trait installer as well.
+
+Chroot Installer
+---------------------------------
+
+The chroot installer is probably the most important installer, as it is 
+the installer that actually installs the profile to the target.  It has a lot 
+of processes that happen both before and after installing the profile.  
+It's responsible for creating the target directory, if it doesn't exist.  It's 
+also responsible for bootstrapping the base system, using either 
+debootstrap or a premade tarball. It's responsible for mounting and 
+unmounting  pseudo filesystems, such as /proc and /sys.  And it's 
+also responsible for various things that need to be done in order 
+to prepare for the profile to be installed, and clean up after.
+
+The chroot installer can be used on it's own to install a profile to 
+a target directory.  This is a good way to create a customized 
+chroot system, or to install a chroot profile while installing a 
+machine.  Currently, the processes can't be overridden when just 
+the chroot installer is being used.  These processes are inherited 
+by the machine installer, and hook scripts can be made there.
+
+**NOTE**:  I have just recently removed the script that ran the 
+chroot installer, deciding that it was better just to run the machine 
+installer.  Once paella gained the flexibility to have parents for machines, 
+the chroot installer seemed out of place, since there was no place 
+existing in the database to be able to hook a process for just a 
+chroot install.  This seems to be an overall better solution than trying 
+to keep track two different installers.
+
+In order to make a "chroot install", you should make a "chroot machine" 
+that skips the formatting of the disks and installing the kernel, and use 
+the machine installer to install the profile in a target directory.  The paella 
+installer is created this way, and you can see the examples in the default 
+database that ships with paella.
+
+
+Processes
++++++++++++++++++
+
+- ready_target
+
+  + This process creates the target directory if it doesn't exist.
+
+- bootstrap
+
+  + This process will bootstrap the target, either using debootstrap, or
+    by extracting a tarball.
+
+  + After bootstrapping, this process will also add the archive keys listed
+    in the default environment to apt.  I'm debating on whether to make this
+    step a separate process.
+
+- mount_target_proc
+
+  + This process mounts /proc in the target directory.
+
+- mount_target_sys
+
+  + This process mounts /sys in the target directory.
+
+- make_device_entries
+
+  + This process is deprecated now and does nothing.  The udev package 
+    has made this step obsolete.  It is kept here as a process so it can be 
+    hooked with a script, if needed.
+
+  + This process is also the main reason why there's no mount_virtfs step 
+    being used to mount /proc, /sys, and /dev/pts in one step.  That behavior 
+    may change in the future.
+
+- mount_target_devpts
+
+  + This process mounts /dev/pts in the target directory.
+
+- apt_sources_installer
+
+  + This process prepares the sources list in the target to install packages
+    from the local mirror defined in the default environment.
+
+- ready_base_for_install
+
+  + This process copies /etc/resolv.conf from the installer system, and
+    runs "apt-get -y update".
+
+- pre_install
+
+  + This process does nothing and can be hooked with a script.
+
+- install
+
+  + This process tells the profile installer to run all of it's processes.
+
+- post_install
+
+  + This process does nothing and can be hooked with a script.
+
+- apt_sources_final
+
+  + This process prepares the sources list in the target to install from 
+    the apt sources listed in the database (which may or may not be the 
+    same as the ones you install from).
+
+- umount_target_sys
+
+  + This process unmounts /sys from the target directory.
+
+- umount_target_proc
+
+  + This process unmounts /proc from the target directory.
+
+- umount_target_devpts
+
+  + This process unmounts /dev/pts from the target directory.
+
+
+Important Attributes
++++++++++++++++++++++++++++++++
+
+- installer
+
+  + This is the profile installer object.
+
+Machine Installer
+---------------------------------
+
+The machine installer is a subclass of the chroot installer, so it 
+does everything that the chroot installer does, plus those things 
+that are specific to installing a machine, such as filesystem formatting 
+and installing the kernel and bootloader.
+
+Processes
++++++++++++++++++
+
+- pre
+
+  + This process does nothing and can be hooked with a script.
+
+- setup_disks
+
+  + This process is responsible for partitioning the disks and creating the 
+    filesystems.  The setup-storage script from the fai-client package is 
+    used to do this.  Information obtained from running this script is also 
+    used to mount the target, identify the root partition and boot device.  
+    If you wish to hook this with a script, you may also have to hook 
+    mount_target, install_fstab, install_kernel, and prepare_bootloader, 
+    since these processes depend on this one.
+
+- ready_target
+
+  + Inherited from chroot installer
+
+- mount_target
+
+  + This process is responsible for mounting the filesystems in the target
+    directory.
+
+- bootstrap
+
+  + Inherited from chroot installer
+
+- mount_target_proc
+
+  + Inherited from chroot installer
+
+- mount_target_sys
+
+  + Inherited from chroot installer
+
+- make_device_entries
+
+  + Inherited from chroot installer
+
+- mount_target_devpts
+
+  + Inherited from chroot installer
+
+- apt_sources_installer
+
+  + Inherited from chroot installer
+
+- ready_base_for_install
+
+  + Inherited from chroot installer
+
+- pre_install
+
+  + Inherited from chroot installer
+
+- install
+
+  + Inherited from chroot installer
+
+- post_install
+
+  + Inherited from chroot installer
+
+- install_fstab
+
+  + This process is responsible for generating the fstab for the target
+    system.
+
+- install_modules
+
+  + This process does nothing and can be hooked with a script.
+
+  + This process used to be used to place a list of modules in /etc/modules
+    on the target system.  Again, udev has made this mostly obsolete, although
+    there are probably still some modules that you may want to install anyway, 
+    since udev can't pick them up.
+
+- install_kernel
+  
+  + This process is responsible for installing the kernel package into the
+    target system.
+
+- prepare_bootloader
+
+  + This process is responsible for installing the grub package and preparing 
+    it to boot the kernel.
+
+- apt_sources_final
+
+  + Inherited from chroot installer
+
+- umount_target_sys
+
+  + Inherited from chroot installer
+
+- umount_target_proc
+
+  + Inherited from chroot installer
+
+- umount_target_devpts
+
+  + Inherited from chroot installer
+
+- post
+
+  + This process does nothing and can be hooked with a script.
+
+
+Important Attributes
++++++++++++++++++++++++++++++++
+
+- installer
+
+  + This is the profile installer object.
+
+- machine_data
+
+  + This dictionary is filled here and passed to the profile installer.
+
+
+Installer Toolkit
+=========================
+
+The installer toolkit is made to be used in the trait scripts.  It can't be
+used for the chroot script, unless you have paella configured on the
+target system.  It is the job of the installer toolkit to provide you with a
+good set of tools contained within the toolkit object, so that your scripts
+contain a minimum of boilerplate type code.
+
+
+Automatic Install
+===========================
+
+Automatic installation is supported.  The setup is fairly simple.  There is a 
+script in the nfs installer package called paella-submit-machine.  You pass 
+it a machine name argument, and the machine will be recognized by the 
+paella database.  It will use the mac addresses of each ethernet interface 
+attached to the machine to identify it.
+
+The script responsible for starting the automatic install is /usr/sbin/paella-init-installer, 
+and it is located in the paella-live-installer package.  Currently, this script is being called 
+from /etc/rc.local , and from there it forks into the background so the boot process can 
+continue and provide a login.  Installing this package will not modify your /etc/rc.local file, 
+nor will it add any initscripts to run the paella-init-installer script.  The modification of the 
+rc.local file is done by the paella installer, so you can modify how and when this script is 
+called to suit your tastes.
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _mounts: #mount
+.. _families: #family
+.. _profiles: #profile
+.. _filesystems: #filesystem
+.. _machine_type: #machine-type
+.. _machine_types: #machine-type
+.. _traits: #trait
+.. _machines: #machine
+
+.. _BaseProcessor: #base-processor
+.. _BaseInstaller: #base-installer
+.. _ChrootInstaller: #chroot-installer
+.. _MachineInstaller: #machine-installer
+.. _TraitInstaller: #trait-installer
+.. _ProfileInstaller: #profile-installer

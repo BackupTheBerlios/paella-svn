@@ -1,0 +1,5 @@
+<machine name="live_chroot" parent="chroot" profile="live_installer">
+	<family>
+		lapnet
+	</family>
+</machine>

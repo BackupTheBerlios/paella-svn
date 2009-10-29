@@ -1,0 +1,515 @@
+.. -*- mode: rst -*-
+
+=======================================================
+Guide to using the Paella Management Interface
+=======================================================
+.. contents:: :backlinks: entry
+
+Introduction
+--------------------------------
+
+The management interface was developed to be a convenient way to
+access and manipulate objects in the database.  The interface is not 
+entirely intuitive and diverges from the way most interfaces both look 
+and behave.  This was done, not to confuse the user, but to get something 
+up and running quickly.  Graphical user interfaces can take a long time to 
+develop, as the developer has to write a lot of supporting code to go along 
+with the widgets.  This can be quite time consuming, and keeps the developer 
+from being able to concentrate on some of the more functional aspects of the 
+interface.  This means that the gui is lacking in buttons, icons, tooltips, and 
+standard menu entries.  This does not mean that the gui is unable to be used, 
+but it will take some time to get used to how things work.
+
+It has been my desire to get as much functionality up and running before 
+getting the interface to conform to more conventional standards.  At the 
+moment, most of the necessary functionality is present, and only the less 
+used (or presumably less used) parts are unimplemented.  Notably the 
+import and export routines for the individual components aren't implemented 
+yet.  To compensate, there are command line tools to handle this; paella-import 
+and paella-export.  Importing and exporting a complete database is supported 
+in the gui, although the progress bars on the status dialogs aren't very 
+accurate.
+
+Common Ideas
++++++++++++++++++++++
+
+Many of the widgets in the paella-management application are in the form of 
+a split view, with a list on the lefthand side, and an html view on the righthand 
+side.  Selecting an item on the lefthand side will display a view of that item on 
+the righthand side.  Many of the actions that can be performed to the objects 
+being managed by these widgets can be done by clicking on links in the html 
+view.
+
+Also, when you need to edit the variables on many of the objects, an external 
+text editor will be spawned and the variables will be displayed in the form of a 
+config file that is used by the python ConfigParser module.  When this is done, 
+all of the sections of the config file will be traits and the options will be then names 
+of the variables.  The values can have tags in them as if they were miniature 
+templates. For example::
+
+	   [some_trait]
+	   my_url:	http://<--|another_trait:hostname|-->.<--|another_trait:domain|-->/
+
+This allows you to create variables that are composed of other variables.
+
+
+Paella Main Menu Window
+---------------------------------------
+.. image:: images/main_menu_widget.png
+
+The main menu window is a small window that is used to access the other widgets in 
+the manager.  The main view is a list view that lists some of the available  widgets.  
+Simply selecting one of the list items will open up one of the widgets, unless the item 
+has child items.  The list items that have children are differs, environ, and suites.  
+The rest of the widgets can be opened with the menubar at the top of the window.
+
+Main Menu
+----------------------------------
+
+I will begin by discussing the widgets that can be accessed from the "Main" menu 
+on the top menu bar.
+
+
+Manage Apt Sources
++++++++++++++++++++++++++++++
+.. image::  images/apt_sources_widget.png
+
+This widget will let you add new apt sources to the database, to be used 
+in the suites.  To add a new apt source, select an apt source from the 
+list on the left, and press the "New" button on the toolbar.  The dialog 
+will contain the values of the apt source that you selected.  Modify the 
+text entries as you need for the new apt source.  You will be able to 
+use this new apt source when you make a new suite.
+
+At the moment, there is no ability to update the apt sources, remove 
+apt sources, or to change the apt sources for a suite.  Some of this 
+functionality is planned for the future, but at a moderate to low priority.
+
+
+Open Suite Manager
++++++++++++++++++++++++++++++
+.. image::  images/suite_manager_widget.png
+
+This widget will allow you to make new suites.  Use the new button on the 
+toolbar to create a new suite.  A dialog window will appear, where the name 
+of the new suite should be placed.  Once the name is set, another dialog will 
+appear that will let you select the apt sources for that suite.  The apt sources 
+are listed by name in the dialog, and the order of the selected apt sources will 
+be the order that they will appear in the /etc/apt/sources.list file on installed 
+systems.
+
+
+Manage Apt Keys
++++++++++++++++++++++++++++++
+
+This widget is a new widget to help manage gpg keys that are used to sign the 
+debian archives.  At the moment, the only function is to add a new key to the 
+database, and this must be done by copying, and pasting the gpg public key 
+into a dialog window.  There is no functionality for modifying or removing keys.
+
+It is recommended that you should use the command line programs, paella-import 
+and paella-export to handle the apt keys at this time.
+
+Database Menu
+-------------------------------------------
+
+Connect/Disconnect to/from database
++++++++++++++++++++++++++++++++++++++++++++
+
+Selecting connect to a database will connect you to the paella database.  A 
+dialog will appear where you can fill out the information required to connect.  
+The dialog will be pre-filled with values from the ~/.paellarc file.
+
+**Note**:  If any of these environment variables are set, they will be used 
+instead of the values entered into the dialog box.  You also won't be notified 
+that this has occurred.  The variables are 'PAELLA_DBHOST', 'PAELLA_DBNAME', 
+'PAELLA_DBPORT', and 'PAELLA_DBUSER'.  In the future, if these environment 
+variables are set, the dialog will display those values and refuse to let them 
+be modified.  Normally, you should use the ~/.paellarc file to store the 
+database connection info, and not use the environment variables in the 
+shell that you run paella-management from.
+
+Disconnecting from the database will do just that, and it will also close all the 
+open widgets that are using the database connection.
+
+Import/Export Database
++++++++++++++++++++++++++++++++++++++++++++
+
+These two menu entries will allow you to import or export the entire database 
+that you are working on.  Selecting either of these will create a directory selection 
+dialog window, where you can choose the directory that you want to import from 
+or export to.
+
+Widgets accessed from the list view
+--------------------------------------------------------
+
+Differs
++++++++++++++++++++++++++++++++
+
+This item has children and doesn't open a widget.  Currently, the 
+only available differs are for families and traits.
+
+The differ program that's used and tested is xxdiff.  It is probably possible 
+to use another graphical differ program.  This can be set in the ~/.paellarc 
+config file.  The database will be updated with both the left and right side, 
+depending on if they've been changed or not.  In order for the graphical 
+differ to work with paella, it must be able to save the left and/or right file 
+under the same filename that it was given as arguments.
+
+In each of the differs, the button that performs the the leftmost button 
+on the toolbar (and it can use a more appropriate icon).
+
+Family Differ
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+The family differ will let you "diff" the variables from two different 
+families.  Each family's variables are presented as a text file that's
+similar to a config file used by the python ConfigParser module.  
+Each of the sections in this file correspond to traits.
+
+Trait Differ
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/trait_differ_widget.png
+
+The trait differ will let you diff either scripts or templates from any trait 
+in any suite.  You will be presented two list views with combo boxes right 
+below them.  The update buttons on the bottom will update the corresponding 
+list view with the selections from the combo boxes.  
+
+
+
+Environ
++++++++++++++++++++++++++++++++
+.. image::  images/default_environment_widget.png
+
+This item has children and doesn't open a widget.  There are two 
+environments that can be edited, the current environment, and the 
+default environment.  The widgets simply display the rows in the 
+database table, but when you need to edit the environment, the 
+external editor will present the table in the form of a config file.
+
+The import and export options are functional in both environment 
+editors.  They correspond to the standard open and save actions 
+that are found on most standard guis.  The file format for import 
+and export is that of a config file.
+
+
+
+
+
+Suites
++++++++++++++++++++++++++++++++
+
+This item has children and doesn't open a widget.  The children to this item are 
+the names of suites and selecting one of them will open up a trait manager 
+widget for that suite.
+
+Trait Manager
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/traits_widget.png
+
+The trait manager is one of the widgets that will be used often, as it's the 
+primary place where most of the important configuring will happen.  The widget 
+is a split window with a list of traits on the lefthand side and an html view on the 
+righthand side.  To create a new trait, click the "New" icon on the toolbar and enter 
+the name of the new trait in the dialog that appears.  When you select a trait from 
+the list on the lefthand side, the information for the trait will appear in the view on 
+the righthand side.
+
+Description
+^^^^^^^^^^^^^^^^^^^^
+There are a lot of options in the trait view.  At the top of the view is the name of the 
+trait.  Just below this are a couple of links for the description of the trait.  Selecting 
+the "(description)" link will bring up an internal text editor where you can edit the 
+description of the trait.  Simple html elements are allowed in this description.  
+Selecting the "(show)" link will display the description right below the top section.  
+This will cause the "(show)" link to change to "(hide)", and selecting this link will 
+then hide the description.  Once you select "(show)", the description will be shown 
+for every trait that is selected from the list on the lefthand side, until the "(hide)" 
+link is clicked.
+
+Parents
+^^^^^^^^^^^^^^^^^^^^
+Below the description is the parents section.  There is an "edit" link on the right 
+of the section header.  Selecting the "edit" link will allow you to assign parents 
+to this trait.  Be careful when selecting the parents, as there are no guards against 
+creating circular_ dependencies.  Each parent that's listed in the view is a link.  
+Clicking on one of the parents will bring up a new trait manager widget with that 
+trait selected.
+
+Packages
+^^^^^^^^^^^^^^^^^^^^
+Below the parents section is the packages section.  Here you can add and remove 
+packages, and define actions for them.  On the right side of the packages header 
+is a "(new)" link.  Selecting this will bring up a dialog where you enter the name of 
+the package and the action that's to be associated with it.  The default action is to 
+"install", but the other other options are "remove", and "reconfig".  Any other option 
+that's entered will be ignored by the installer.  Only one action may be entered at a 
+time.  The delete link to the right of a package in the list of package will delete the 
+package, and *all* of it's associated actions.
+
+Templates
+^^^^^^^^^^^^^^^^^^^^
+Below the packages section is the templates section.  The templates section 
+displays a list of templates to be installed on the target system.  Selecting the 
+"Templates" link in the section will allow you to add templates to the trait.  When 
+this link is selected, a file selection dialog will appear.  The file that should be 
+selected is expected to be a tarball.  This is required, and there is no way just 
+to select a single file to use as a template.  I may add this functionality later, but 
+it's a very low priority for me now.  Besides, although it may seem strange, this 
+method is actually quite useful and timesaving once you really start using paella.  
+Ordinarily the tarball should be made as root on some system, usually like::
+
+     tar cv /etc /var/path/to/something/interesting | gzip > myconfig.tar.gz
+
+Actually, the tarball can contain anything, but the path, ownership, and permissions 
+for the template are taken from the tarball, although these can be adjusted later if 
+you can't add templates in this manner.  You don't want to use a tarball from a full 
+system backup, as it will take a long time to extract the files from it.  If you try to 
+select a template that's already on the list, the template in the database won't be 
+replaced.  If you wish to do this you must either delete or rename the template in 
+the database.
+
+Each column in the list of templates is a link.  The first column is the name of the 
+template.  This is the path of the template, relative to / on the target system.  Clicking 
+on this link will bring up the internal template editor.  The internal template editor is 
+useful for making tags for the template.  To make a tag, select some text and right 
+click the selection, then a context menu will appear.  You can then replace the selected 
+text with a previously defined variable in the context menu, or create a new variable.  
+If you decide to create a new variable, the selected text will appear as the value for 
+that variable.  You will need to save the template by clicking the "save" button on the 
+toolbar, in order to save your changes.  The status bar on the bottom of the editor 
+will let you know if the template has changed, or if it's been saved.
+
+The second column in the list of templates displays the owner, group, and permissions 
+for the template.  Clicking on this link will allow you to change these values, as well as 
+change the name of the template.  This is useful if you used a tarball that wasn't made 
+from backing up part of a system, or if you need to replace a template in the database 
+with a newer one.  If you do this, you can use the trait differ to adjust the differences.
+
+The third column in the list of templates are the "(edit)" and "(delete)" links.  Clicking 
+on the "(edit)" link will spawn the external editor, and you can use the editor of your 
+choice to edit the template.  The external editor is set in the ~/.paellarc file as the 
+text_editor option in the management_gui section.  The **EDITOR** environment 
+variable will override this option.  The **VISUAL** variable isn't used.  The "(delete)" 
+link will allow you to delete the template from the database.
+
+Variables
+^^^^^^^^^^^^^^^^^^^^
+Below the templates is the variables section.  Clicking on the "Variables" link in the 
+section header will bring up the variable editor widget.  This is a very simple widget, 
+and not fully functional.  You can only add and edit variables here, and not delete 
+them.  In the future this widget will probably be replaced by using an external editor 
+with the variables displayed in the form of a config file.
+
+Scripts
+^^^^^^^^^^^^^^^^^^^^
+Below the variables section is the scripts section.  There is a "new" link on the right 
+side of the section header.  Clicking this link will allow you to add a new script to the 
+trait.  A dialog will appear, where you can select the name of the script.  The names 
+correspond to steps in the trait's install process.  Selecting a name such as "install" 
+or "templates" will override the default action of the trait.  For example, if there are 
+templates in the trait, and you create a "templates" script, those templates will not 
+be installed unless the script specifically does this.
+
+There are three columns in the list of traits and each column is a link.  The name of 
+the script is in the first column.  Clicking on the name of the trait will display a 
+window showing the contents of the script.  You can't edit the script with this window.  
+The second column is the "(edit)" link, and clicking on this will spawn the external
+editor and allow you to edit the script.  The last column is the "(delete)" link, and 
+clicking on this will delete the script.
+
+Profiles
++++++++++++++++++++++++++++++++
+.. image::  images/profiles_widget.png
+
+The profile manager is a widget to help manage the profiles in the database.  The 
+widget is a split window with a list of profiles on the lefthand side and an html 
+view on the righthand side.  To create a new profile, select the "New" action from 
+the toolbar.  All new profiles will be based on the "skeleton" profile.  The skeleton 
+profile can be configured in the ~/.paellarc file.
+
+When a profile is selected, information about the profile is presented on the right 
+hand side of the window, in an html view.  At the top of the html view, the name of 
+the profile is displayed, along with the suite it belongs to.  Clicking on the suite will 
+display a dialog where you can change the suite that the profile belongs to.  Be 
+careful that all the traits listed in the profile are in the suite that you select, or the 
+profile won't be able to be installed.  At the moment, the application doesn't check 
+to make sure that the traits listed in the profile are in the suite, but this is planned 
+to be fixed in the future.
+
+You can click the "Traits" link to adjust the list of traits to be installed in the profile.  
+It is not necesary to list every trait, since the parents of the traits that are listed will 
+also be installed with the profile.  The installer will attempt to install the traits in the 
+order that they are listed in, unless a parent trait is listed after its child.  In that case 
+the parent will be installed before the child.
+
+You can click on the "Variables" link to add, remove, and alter variables for the profile.  
+Clicking on this will spawn the external text editor, and the form will be as a config 
+file, where all of the sections are traits.
+
+You can click on the "Families" link to add or remove families from the profile.  The 
+families won't be applied in any specific order, but parent families will be applied 
+before the child families.
+
+At the bottom of the html view is a delete link that you can use to delete the profile.
+
+
+Families
++++++++++++++++++++++++++++++++
+.. image::  images/families_widget.png
+
+The families manager is a simple widget to help manage the 
+families in the database.  You can create a new family by selecting 
+"New" from the menu or toolbar.  To manage a family, you can select 
+one from the list on the left side of the widget.
+
+When a family is selected from the list, an html interface to the family 
+will be presented on the right side.  At the bottom of the page is a 
+"delete" link, which will let you delete the family.  There are two more 
+links on this page, on table headers.  The "Parents" link will let you 
+assign parents to this family.  The "Variables" link will let you edit 
+the variables for the family.
+
+Editing the variables is done in an external editor, and it uses 
+a config file format, where all the sections are traits.
+
+
+
+
+Machines
++++++++++++++++++++++++++++++++
+
+The machine management widget is actually three different widgets in a single 
+"shell".  The objects that will be managed can be selected by clicking on one of 
+the icons on the toolbar, or by selecting it from the menu.  The "New" icon on the 
+toolbar is used to add a new object, the type of which will depend on the manager 
+that's currently being used.  With this widget, you can manage machines, 
+diskconfigs, and kernels.
+
+Manage Machines
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/machines_widget.png
+
+The machine manager is a split window with a list of machines on the lefthand 
+side and an html view on the righthand side.  You can create a new machine by 
+clicking on the "New" icon on the toolbar at the top. Selecting a machine from the 
+list will display information about the machine in the view.  There are a lot of options 
+that can be set for the machine.
+
+Parent
+^^^^^^^^^^^^^^^^^^^^
+At the top, just below the name of the machine is where the parent for the machine 
+is set.  Unlike traits and families, a machine can only have one parent.  Here you can 
+either select a parent by clicking on the "select" link, or delete a parent from clicking 
+on the "delete" link.
+
+Attributes
+^^^^^^^^^^^^^^^^^^^^
+Right below the table that displays the parent is the table that holds the main 
+attributes of the machine.  These attributes are kernel, profile, and diskconfig.  If any 
+of these attributes aren't set, the corresponding attribute of the parent will be used.  
+If you click on one of the links for the attribute in the leftmost column, a dialog will 
+appear where you can enter in the attribute.  The value column will display the value 
+for the attribute.  If an attribute is not set for the machine, the value will be obtained 
+from the closest parent machine.  The "Inherited From" column will display the name 
+of the machine where the attribute is set.  If the attribute is set for the machine you're 
+manipulating, the column will display "(set here)", and in the "Command" column, a 
+link will be present allowing you to clear the value.  If an attribute is not set in the 
+machine you're managing, or anywhere in its ancestry, you will see a warning displayed 
+in the value and "Inherited From" columns.  This is a warning, as the machine will 
+probably fail to be installed if these attributes aren't set anywhere, but it's possible to 
+install a machine if these are unset by having scripts set for the machine that manage 
+installing the kernel, diskconfig, or profile, instead of relying on the default behaviour 
+of paella.  The machine name links in the "Inherited From" column are meant to open 
+an new machine manager with that machine selected, in a manner similar to selecting 
+parent traits in the trait manager.  This is not implemented yet.
+
+Families
+^^^^^^^^^^^^^^^^^^^^
+Below the attributes table is the section for families.  You can add a new family to the 
+machine by clicking the "new" link in the "Families" header on the right.  A dialog will 
+appear where you can enter the name of a family to add to the machine.  In the table 
+of familie, each row has an "edit" and "delete" link.  Clicking on the edit link will do 
+nothing but display a dialog that this operation is not supported yet.  Clicking on the 
+delete link will remove the family from the machine.  In the future, the families will be 
+assigned in a manner similar to how they are assigned to the profiles.
+
+Scripts
+^^^^^^^^^^^^^^^^^^^^
+Just below the Families section is the Scripts section.  You can add a new script by 
+selecting the "new" link on the right side of the section header.  The names of the 
+scripts correspond to steps in the machine installer process.  The table of scripts 
+will show the scripts that will be run by the machine installer, and the machine that 
+the script is inherited from.  A script that is set for the machine will have "(defined 
+here)" in the inherited column, and there will be "edit" and "delete" links in the 
+command column on the right side of the table.  Clicking on the edit link will spawn an 
+external editor where you can edit the script.  Clicking on the delete link will delete 
+the script from the machine.
+
+Variables
+^^^^^^^^^^^^^^^^^^^^
+Below the Scripts section is the Variables section.  Here you can set variables for the 
+machine.  You can click on the "new" link to add a new variable.  This will display a 
+dialog where you can enter the trait, name and value for the variable.  In the table of 
+variables, in the command column exist "edit" and "delete" links.  You can click on the 
+delete link to remove a variable from a machine.  Clicking on the edit link will spawn 
+an external editor where you can edit the variables.  The form of the file in the editor 
+will be a config file where the sections correspond to traits.
+
+
+Manage Disk Configs
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image::  images/diskconfig_widget.png
+
+The diskconfig manager is a split window with a list of diskconfigs on the lefthand 
+side and an html view on the righthand side.  You can create a new diskconfig by 
+clicking on the "New" icon on the toolbar at the top.  Selecting a diskconfig from the 
+list will display the diskconfig in the view on the right.
+
+There are two links in the diskconfig view, "edit" and "delete".  You can click on the 
+delete link to delete the diskconfig.  Clicking on the edit link will spawn an external 
+editor, where you can edit the diskconfig.
+
+The diskconfig manager is a very new widget.  This functionality was "shoe-horned" 
+into the database, and while it's fully functional (at least as far as setup-storage from 
+the fai-client package is), it's still bare and basic.  I have not made too many plans on 
+how to make better use of this yet, but I've decided that just having bare simple text 
+files is insufficient.  It's possible that the templates could be made out of the 
+diskconfigs, but the variables for the template tags won't be coming from the traits.  
+It's also possible that I may create new tables that can be used to generate a 
+diskconfig.  I'm still up in the air on exactly which direction I want to take with how this 
+will be implemented.  I do plan to always support a basic hardcoded diskconfig, but 
+it would be nice to have a more flexible method of making diskconfigs.
+
+.. make a link to the diskconfig document when it's ready
+
+Manage Kernels
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+.. image:: images/kernels_widget.png
+
+
+
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi3@gmail.com
+.. _problems: problems.html
+.. _circular: problems.html#circular-dependencies

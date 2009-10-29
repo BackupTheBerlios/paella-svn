@@ -1,0 +1,96 @@
+Source: paella
+Section: misc
+Priority: optional
+Maintainer: Joseph Rawson (new email) <umeboshi3@gmail.com>
+Build-Depends: debhelper (>> 4.2.0), python, python-dev, python-docutils, cdbs, python-all-dev, python-support, python-dev
+Standards-Version: 3.8.0
+
+Package: paella-base
+Section: admin
+Priority: optional
+Architecture: all
+Depends: python-useless-db (> 0.1.19)
+Description: base utils for paella
+ This is the base package for paella.
+ All other paella packages depend on this 
+ package.
+
+Package: paella-debian
+Section: admin
+Priority: optional
+Architecture: all
+Depends: paella-base (= ${binary:Version}), python-apt, debconf-utils
+Description: Debian specific modules for paella
+ This package contains many class and functions for 
+ use with Debian related activities (dpkg, package repositories, 
+ debconf, etc.).  This package is becoming obsolete, and the
+ python-debian package will soon replace this one.
+
+Package: paella-installer
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-db (= ${binary:Version}), debootstrap
+Suggests: python-dnspython, fai-client (>= 3.2.16)
+Description: Python package for paella installers
+ This package contains most of the code for the paella installer to 
+ work.  The paella-machine-installer script is located in this package,
+ but the scripts that are designed to work on a live system are in the 
+ paella-live-installer package.
+
+Package: paella-live-installer
+Section: admin
+Priority: extra
+Architecture: all
+Depends: paella-installer (= ${binary:Version}), grub, fai-client (>= 3.2.16), parted
+Recommends: mdadm, xfsprogs, reiserfsprogs, hdparm, dmsetup, cryptsetup
+Suggests: fai-client (>= 3.2.18)
+Description: package for machine installer
+ This package should be installed on a live system.  This package contains 
+ helper scripts that are useful for the live installer.  It also recommends 
+ packages that would may be needed on the live system.
+
+Package: paella-admin
+Section: admin
+Priority: optional
+Architecture: all
+Depends: python-useless-kdedb, paella-db (= ${binary:Version}), kdebase-kio-plugins
+Recommends: xxdiff
+Suggests: xemacs21
+Description: package for configuration of the paella database
+ This package should be installed on the admin's desktop.  This 
+ package holds the gui management tool for paella.
+
+Package: paella-db
+Section: misc
+Priority: optional
+Architecture: all
+Depends: paella-debian (= ${binary:Version}), python-kjbuckets, python-useless-db, python-cheetah
+Replaces: paella-machines, paella-schema, paella-profile, paella-paelladb
+Description: skeletons for database generation
+ classes and functions to help create database schemas,
+ generate and primer the databases.
+ This is the main package with the paella configuration applications
+ in it.
+
+Package: paella-defaultdb
+Section: devel
+Priority: optional
+Architecture: all
+Depends: paella-base (= ${binary:Version})
+Description: a default database to start with
+ The provided default database should contain
+ enough toget started.  Included are profiles and
+ traits designed to create a paella installer system.
+
+Package: paella-doc
+Section: doc
+Priority: optional
+Architecture: all
+Depends: doc-base
+Suggests: dwww
+Description: documentation for paella
+ Paella is a system for  installing and managing
+ configurations of Debian systems.  This package
+ holds the pathetic documentation for it.
+

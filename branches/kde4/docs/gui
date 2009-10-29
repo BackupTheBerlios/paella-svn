@@ -1,0 +1,76 @@
+.. -*- mode: rst -*-
+
+============
+Paella Gui
+============
+
+
+Original gui design goals
+------------------------------------
+
+The original goals for the gui were to provide enough of an interface to the paella_ 
+database to do simple operations needed to create traits and their components.  
+Much of the gui was made without regard for new users, or users unfamiliar with 
+the code or paella system.  Most of my time spent in developing paella has been focused
+on the installer code, and in system design.  It can take a great deal of time in 
+testing, troubleshooting problems and improving systems.  As a result, the gui is 
+very minimalistic, and will not do all (although it will do most) necessary operations 
+needed to make use of the database.
+
+
+Gtk/Qt and Gnome/KDE
+----------------------------------
+
+There are two graphical management interfaces for paella.  One is written 
+using pygtk_.  The other is written  using pykde_.  I started paella writing the 
+pygtk interface, but during the end of 2004, I switched to developing with the
+pykde interface.
+
+Way back when I was using python1.5, I learned to write interfaces with pygtk.  At the 
+time the qt license was not dfsg_ compatible, but gtk was.  By the time I got around 
+to writing paella, I had plenty of inertia with pygtk, although there was a dfsg compatible 
+qt available.
+
+I decided to play around with pykde one day and found it a little easier than gtk.  It takes 
+longer for me to write with pykde currently, because my relative exposure to when
+compared to pygtk.  I am expecting that to change with time and practice. One of the 
+things that attracted me to pykde is the lower level widget subclasses.  I haven't used
+to much of pygnome because of it's poor widget selection, and the difficutly in using 
+bonobo.  There don't seem to be many lowlevel replacements for gtk widgets that are 
+gnome aware.  To be fair, at the time the pygnome docs weren't fulfilling, so I may have
+missed out on something I didn't know about.  One example that I am thinking of is the 
+KComboBox which is a QComboBox with text completion methods and configurable 
+hotkeys.
+
+Current State of Paella Gui
+--------------------------------------
+
+Currently, the gtk interface is completely deprecated, and the kde interface is being 
+actively developed.  Most of the necessary functionality required to manage the 
+paella database is implemented in the gui.  This does not mean that the gui is as 
+functional as desired, but it is functional enough to do most of what is required.  A 
+guide_ has been written explaining how to use the paella-managment gui.
+
+toc_
+
+.. _toc: index.html
+
+-------------------------------------------------
+
+.. _paella: http://paella.berlios.de
+.. _project: http://developer.berlios.de/projects/paella
+.. _notes: notes.html
+.. _gui:   gui.html
+.. _debian: http://debian.org
+.. _useless: http://useless.berlios.de
+.. _fai: http://www.informatik.uni-koeln.de/fai/
+.. _python: http://python.org
+.. _postgresql: http://www.postgresql.org
+.. _pygtk: http://pygtk.org
+.. _pykde: http://www.riverbankcomputing.co.uk/pykde/index.php
+.. _dfsg: http://www.debian.org/social_contract.html#guidelines
+.. _TOra: http://tora.sourceforge.net/
+.. _Joseph Rawson:  mailto:umeboshi3@gmail.com
+.. _problems: problems.html
+
+.. _guide: guide.html

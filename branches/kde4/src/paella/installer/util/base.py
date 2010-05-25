@@ -98,7 +98,7 @@ def install_packages_command(packages, defenv, action='install',
     for_phrase = ''
     if trait is not None:
         for_phrase = 'for trait %s ' % trait
-    stmt = '%s command %sis:  %s' % (action, for_phrase, shell_cmd)
+    stmt = '%s command %s is:  %s\n' % (action, for_phrase, shell_cmd)
     loginfo(stmt)
     return full_command
             

@@ -19,43 +19,38 @@ general todo
 
   - all cheetah templates will have ##cheetah on the first line
 
-+ **done** rename template files in traits (use md5sum of filepath, instead of numbered order)
-
-  - not using md5sum of filepath, but replacing '/' with '-slash-'
-
-  - there is no need to determine template name from filename
-
-  - as it's in the xml, so it will be easier to see which template is which
-
-  - in the exported version.
+  - progress has stalled here, and using python scripts to help modify 
+    important config files seems to work just as well.
 
 + fix problems encountered with importing Packages files into the database
 
-  - there is a workaround that seems to be working for now **done**
+  - **done** there is a workaround that seems to be working for now 
 
-  - start using debian-python package and deprecate my debian code
+  - **N/A** start using debian-python package and deprecate my debian code 
 
-
-+ **done** rename template files instead of using numbers
-
-+ **done** remove requirement that templates be matched to packages
-	-----done, I should've done this much, much sooner
-
-+ **done** use trait.xml conversion script to fix template filenames on exported traits
+  - stop using package tables altogether
 
 + consider using bcfg2 for live updating of already installed machines
 
-+ **done** remove python2.3 from all scripts
-	-----done, looks like I did this a while ago
+  - maybe also consider puppet
 
 + **done** completely deprecate the gtk management client
 	----done, the kde manager does most of what gtk manager did
 
-+ **done** fix environ variable tagnames in trait.xml files, make it easy to convert from old to new files
-	----done, made a conversion script for it
-
 + clean up unused options from paellarc file, look for options to move into default 
-  environment in database.
+  environment in database. **mostly done**
+
++ modify default environment to use multiple "installer" sections and be able to 
+  assign a machine to use a particular section.  The "installer" section will stay and 
+  be the default.  This will allow each machine to use it's own installer environment, 
+  so that one machine can be installed with aptitude, while another can be installed 
+  with apt-get, among other possibilities.
+
++ Think about making a "common" suite where the more abstract code and templates 
+  can be stored and used, without having to duplicate things from suite to suite.  This will 
+  likely be difficult and time consuming, but might create a more easily maintained 
+  install system.
+ 
 
 
 --------
@@ -76,15 +71,7 @@ gtk->kde client todo
 
    - import/export database objects separately with the gui
 
- - make family differ **done**
-
- - deprecate commands **done**
-
 - suite-trait manager
-
-  - need to make new traits, missing dialog to do so **done**
-
-  - need to handle parents, fix edit, edit2 links **done**
 
   - need to be able to edit packages and actions
 
@@ -92,41 +79,17 @@ gtk->kde client todo
 
   - need to handle variables
 
-  - need to make new scripts **done**
-
-  - need to delete scripts **done**
-
-  - need to view scripts **done**
-
-  - need to edit scripts **done**
-
-  - need to view templates **done**
-
-  - need to edit templates **done**
-
-  - need to edit template data **done**
-
   - need to be able to delete traits
 
+  - need to be able to delete trait variables
+
 - profile manager
-
-  - need to make new profiles, missing dialog to do so **done**
-
-  - update window after making new profile **done**
-
-  - need to delete profiles **done**
 
   - need to import/export profiles
 
   - don't change suite of profile without checking traits
 
 - family manager
-
-  - need to make new families, missing dialog to do so **done**
-
-  - need to manage family parents **done** 
-
-  - need to delete families **done**
 
   - need to import/export families
 
@@ -142,8 +105,6 @@ gtk->kde client todo
   
   - The code for the trait differ needs to be updated to allow all the 
     traits to be shown on the list views, instead of a particular trait.
-
-- environment editors **done**
 
 - machines manager
 
@@ -162,8 +123,6 @@ gtk->kde client todo
   - need to add kernels **done**
 
   - need to remove kernels **done**
-
-  
 
 - suite manager
 
@@ -184,6 +143,17 @@ general kde client todo
 
 - need to make widgets out of different managers and keep them in
   one window.
+
+
+---------------------------------
+Stuff to do from lenny -> squeeze
+---------------------------------
+
+- kernels now need non-free firmware package installed
+
+- start using grub2
+
+- setup-storage needs /usr/lib/fai in PATH
 
 
 .. _plans: docs/plans.html

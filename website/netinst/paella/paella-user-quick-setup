@@ -2,6 +2,7 @@
 import os
 import subprocess
 import hashlib
+from ConfigParser import ConfigParser
 
 #################################################
 # expected release versions to be used
@@ -206,6 +207,22 @@ def upload_package(name):
            'include', 'paella', changes]
     subprocess.call(cmd)
     
+
+
+def generate_local_paellarc(homedir):
+    sys_paellarc_filename = '/etc/paellarc'
+    local_paellarc_filename = os.path.join(homedir, '.paellarc')
+    config = ConfigParser()
+    config.read(sys_paellarc_filename)
+    config.set('database', 'dbusername', 'dbadmin')
+    local_paellarc = file(local_paellarc_filename, 'w')
+    config.write(local_paellarc)
+    
+
+#################################
+# Main Execution Starts Here
+#################################
+
 HOME = os.environ['HOME']
 
 
@@ -266,4 +283,7 @@ subprocess.call(cmd, env=env)
 print "Importing paella archive key"
 gpgfile = '/freespace/debian/paella.gpg'
 subprocess.call(import_cmd + ['--aptkey', gpgfile], env=env)
+
+print "Creating ~/.paellarc"
+generate_local_paellarc(HOME)
 
